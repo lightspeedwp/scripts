@@ -80,5 +80,18 @@ bats tests/test-script-name.bats
 - **Tests**: Write comprehensive tests for all scripts
 - **Templates**: Keep GitHub templates up-to-date with organization standards
 
+## LightSpeed Automation & Governance
+
+For comprehensive documentation on org-wide automation, workflows, branching strategy, label governance, and project templates, see:
+
+📖 **[LightSpeed Automation & Governance Handbook](LIGHTSPEED_AUTOMATION_HANDBOOK.md)**
+
+This handbook consolidates all automation documentation and serves as the central reference for:
+- Branching strategies for client & product development
+- Changelog & release automation workflows  
+- Label automation and issue type standards
+- Project templates and GitHub Actions governance
+- Implementation rollout plans and quality gates
+
 ## Reference
 This repository structure follows the specifications outlined in: https://github.com/copilot/spaces/lightspeedwp/48
