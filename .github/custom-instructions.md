@@ -40,7 +40,7 @@ All instructions follow the pattern: "You are a [role]. Follow our [framework/pa
 ├── workflows/         # GitHub Actions workflows  
 ├── tests/            # Bats tests and dry-run scripts
 ├── .github/          # GitHub templates, Copilot instructions, and configuration
-└── github-workflow/  # Organization-wide documentation
+└── LIGHTSPEED_AUTOMATION_HANDBOOK.md  # Organization-wide documentation
 ```
 
 ## Usage Guidelines
@@ -57,4 +57,4 @@ These instructions integrate with:
 - Code review processes using CodeRabbit
 - Release management and changelog automation
 
-All instructions are aligned with our org-wide branching strategy, labeling conventions, and project management practices as documented in the `/github-workflow/` directory.
+All instructions are aligned with our org-wide branching strategy, labeling conventions, and project management practices as documented in the LightSpeed Automation & Governance Handbook.

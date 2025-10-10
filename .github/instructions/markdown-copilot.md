@@ -216,7 +216,7 @@ Screenshots, links, or other relevant information.
 
 ### Internal Documentation
 - Reference other organization repos when relevant
-- Link to GitHub workflow documentation in `/github-workflow/`
+- Link to the LightSpeed Automation & Governance Handbook for workflow documentation
 - Cross-reference related scripts and workflows
 - Maintain bidirectional links between related documents
 

@@ -108,4 +108,4 @@ This handbook consolidates all automation documentation and serves as the centra
 ## Reference
 This repository structure follows the specifications outlined in: https://github.com/copilot/spaces/lightspeedwp/48
 
-For detailed governance and workflow documentation, see the `/github-workflow/` directory containing org-wide standards.
+For detailed governance and workflow documentation, see the [LightSpeed Automation & Governance Handbook](LIGHTSPEED_AUTOMATION_HANDBOOK.md).
