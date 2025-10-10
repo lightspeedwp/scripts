@@ -91,9 +91,13 @@ bats tests/test-script-name.bats
 - **Tests**: Write comprehensive tests for all scripts
 - **Templates**: Keep GitHub templates up-to-date with organization standards
 
-## Development Workflow Integration
+## LightSpeed Automation & Governance
 
-All automation follows LightSpeed WP organizational standards:
+All automation follows LightSpeed WP organizational standards for comprehensive documentation on org-wide automation, workflows, branching strategy, label governance, and project templates, see:
+
+📖 **[LightSpeed Automation & Governance Handbook](LIGHTSPEED_AUTOMATION_HANDBOOK.md)**
+
+This handbook consolidates all automation documentation and serves as the central reference for:
 
 - **Branch Strategy**: GitHub Flow with feature branches and protected main
 - **Testing Requirements**: Bats framework for shell scripts, comprehensive test coverage
