@@ -2,6 +2,17 @@
 
 Centralized repository for LightSpeed WP organization automation scripts and CI/CD workflows.
 
+## GitHub Copilot Integration
+
+This repository includes comprehensive GitHub Copilot instructions to assist with automation development:
+
+- **[Custom Instructions](/.github/custom-instructions.md)**: Main Copilot configuration with role-based guidance
+- **[Contributor Guidelines](/.github/instructions/contributor-types.md)**: Role-specific development patterns
+- **[Shell Script Standards](/.github/instructions/shell-script-copilot.md)**: Bash automation best practices
+- **[Documentation Guidelines](/.github/instructions/markdown-copilot.md)**: Technical writing standards
+- **[Reusable Prompts](/.github/prompts/prompts.md)**: Template prompts for Copilot Chat and CLI
+- **[Chat Modes](/.github/chatmodes/chatmodes.md)**: Scenario-based development contexts
+
 ## Repository Structure
 
 ### 📁 `/scripts/`
@@ -34,14 +45,14 @@ Test harnesses using Bats (Bash Automated Testing System) and dry-run scripts fo
 - Mock environments for testing
 
 ### 📁 `/.github/`
-GitHub-specific templates and configuration files.
+GitHub-specific templates, Copilot instructions, and configuration files.
 
 **Contents**:
-- Issue templates
-- Pull request templates  
-- MCP (Model Context Protocol) configuration for VSCode
-- GitHub Actions configuration
-- Organization-level GitHub settings
+- **Copilot Instructions**: Role-based AI assistance configuration
+- **Issue & PR Templates**: Standardized contribution templates
+- **MCP Configuration**: Model Context Protocol for VSCode integration
+- **Prompts & Chat Modes**: Reusable AI interaction patterns
+- **GitHub Actions**: Organization-level workflow configurations
 
 ## Getting Started
 
@@ -82,16 +93,19 @@ bats tests/test-script-name.bats
 
 ## LightSpeed Automation & Governance
 
-For comprehensive documentation on org-wide automation, workflows, branching strategy, label governance, and project templates, see:
+All automation follows LightSpeed WP organizational standards for comprehensive documentation on org-wide automation, workflows, branching strategy, label governance, and project templates, see:
 
 📖 **[LightSpeed Automation & Governance Handbook](LIGHTSPEED_AUTOMATION_HANDBOOK.md)**
 
 This handbook consolidates all automation documentation and serves as the central reference for:
-- Branching strategies for client & product development
-- Changelog & release automation workflows  
-- Label automation and issue type standards
-- Project templates and GitHub Actions governance
-- Implementation rollout plans and quality gates
+
+- **Branch Strategy**: GitHub Flow with feature branches and protected main
+- **Testing Requirements**: Bats framework for shell scripts, comprehensive test coverage
+- **Code Review**: Automated Copilot reviews + human validation
+- **Release Management**: Automated changelog generation and versioning
+- **Security**: Secrets scanning, dependency updates, and compliance checks
 
 ## Reference
 This repository structure follows the specifications outlined in: https://github.com/copilot/spaces/lightspeedwp/48
+
+For detailed governance and workflow documentation, see the `/github-workflow/` directory containing org-wide standards.
