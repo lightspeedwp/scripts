@@ -1,4 +1,4 @@
-language: "en"
+language: "en-UK"
 early_access: false
 reviews:
   high_level_summary: false
@@ -9,7 +9,10 @@ reviews:
     - path: "**/*.md"
       instructions: |
         "ALWAYS review Markdown content THOROUGHLY with the following criteria:
-        - Use UK English not US English
+        - Use UK English not US English (IMPORTANT).
+        - Check for consistency in spelling, grammar, and punctuation.
+        - Ensure proper formatting of Markdown elements (e.g., headings, lists, links).
+        - Verify that links are valid and correctly formatted.
         - Focus on grammar, spelling, and punctuation.
         - Also consider readability and clarity of contents.
         - Ensure that changes follow the style of one sentence per line, suggest changes if this is not met.
@@ -27,53 +30,80 @@ reviews:
         - Flag any headers that seem to inconsistently apply these rules for manual review.
         - When reviewing capitalization, always refer to the 'nouns.txt' file for the correct capitalization of proper nouns and technical terms specific to the project.
         "
-    path_instructions:
     - path: ".github/**/*"
       instructions: "
-      Focus on code smells, logic errors, edge cases, missing test cases, security flaws and serious issues.
-      Avoid commenting on minor issues such as linting, formatting and style issues.
-      This project uses tabs instead of spaces, do not suggest usage of spaces over tabs.
-      Are there any 'red flags' in this code that might warrant closer investigation from a security standpoint?
-      Explain what makes them suspicious.
-      When providing code suggestions, particularly when requested, ensure GitHub's suggestion format is used, i.e.:
-      ```suggestion
-      <code changes>
-      ```
+        Focus on code smells, logic errors, edge cases, missing test cases, security flaws and serious issues.
+        Avoid commenting on minor issues such as linting, formatting and style issues.
+        This project uses tabs instead of spaces, do not suggest usage of spaces over tabs.
+        Are there any 'red flags' in this code that might warrant closer investigation from a security standpoint?
+        Explain what makes them suspicious.
+        When providing code suggestions, particularly when requested, ensure GitHub's suggestion format is used, i.e.:
+        ```suggestion
+        <code changes>
+        ```
       "
     - path: "**/*.py"
       instructions: "
       _, pgettext, ngettext, and ngettext are defined globally, errors for this being undefined can be ignored.
       "
     - path: "**/*.md"
+    - path: "**/*.md"
+      instructions: |
+        # No additional instructions for Markdown files at this time.
+        # This block is intentionally left blank for future customization.
       instructions: "
-      "
-    - path: "CHAGELOG.md"
-      instructions: "
-      Apply "Keep a Changelog" format - https://keepachangelog.com/en/1.1.0/
-      Apply Semantic Versioning 2.0.0 when referencing and release tags that follows this version number MAJOR.MINOR.PATCH format from https://semver.org/
-      Ensure each change log entry references an issue or pull request number.
-      Change log entries can also include a reference to a GitHub author.
-      Examples of valid change log entries:
-      * Item with sub-items (#123, @username):
-        * sub-item
-        * bar (#342)
-      * Item with.
-      Multiple lines. (#143)
-      "
-
+        Apply \"Keep a Changelog\" format - https://keepachangelog.com/en/1.1.0/
+        Apply Semantic Versioning 2.0.0 when referencing and release tags that follows this version number MAJOR.MINOR.PATCH format from https://semver.org/
+        Ensure each change log entry references an issue or pull request number.
+        Change log entries can also include a reference to a GitHub author.
+        Examples of valid change log entries:
+        * Item with sub-items (#123, @username):
+          * sub-item
+          * bar (#342)
+        * Item with multiple references (#123, #456, @username)
+        * Item without references 
+        * Item with a reference to an issue only (#123)
+        * Item with a reference to a pull request only (#456)
+        * Item with a reference to an author only (@username)
+        * Item with references to an issue, pull request, and author (#123, #456, @username)
+        * Item with multiple references (#123, #456, @username, @anotheruser)
+        * Item with sub-items and references (#789, @subitemuser):
+          * sub-item 1 (#1011)
+          * sub-item 2 (@subitemuser2)
+        Ensure proper punctuation and capitalization in each entry.
+        Use consistent formatting for references (e.g., always use parentheses).
+        Avoid using abbreviations or shorthand that may not be universally understood.
+        Ensure clarity and conciseness in each entry.
+        Avoid vague descriptions; be specific about the change made.
+        Maintain a consistent tense throughout the changelog (preferably past tense).
+        Group related changes together under appropriate headings (e.g., Added, Changed, Fixed).
+        Ensure that the changelog is easy to read and navigate."
   tools:
     github-checks:
       enabled: true
     markdownlint:
-      We use custom markdown syntax such as {#Anchor} for anchors.
-      # This is not supported by markdownlint.
-      # In future we plan to introduce markdownlint directly with custom rules. (#16453)
+      enabled: true
+    proselint:
+      enabled: true
+    write-good:
+      enabled: true
+    vale:
+      enabled: true
+    textlint:
+      enabled: true
+    eslint:
+      enabled: true
+    stylelint:
+      enabled: true
+    pylint:
       enabled: true
       
   auto_review:
     enabled: true
     drafts: false
     base_branches:
+      - "main"
+    default_branch: 
       - "develop"
 chat:
   auto_reply: true
