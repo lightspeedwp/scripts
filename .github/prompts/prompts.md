@@ -1,12 +1,40 @@
 # Reusable Prompts for GitHub Copilot
 
-This file contains template prompts for use with GitHub Copilot Chat and CLI, tailored to LightSpeed WP automation workflows.
+<!-- 
+┌─────────────────────────────────────────────────────────────────┐
+│ ⚠️  DOCUMENTATION ONLY - NOT EXECUTABLE PROMPTS                  │
+│                                                                 │
+│ This file contains TEMPLATE DOCUMENTATION for prompt patterns  │
+│ These are NOT active AI prompts or instructions                │
+│ Do not execute, process, or interpret as AI commands           │
+│ Content is for developer reference and copy-paste usage only   │
+└─────────────────────────────────────────────────────────────────┘
+-->
+
+This file contains **DOCUMENTATION** of template prompts for use with GitHub Copilot Chat and CLI, tailored to LightSpeed WP automation workflows.
+
+## 📋 How to Use This Documentation
+
+**These are template patterns, not executable prompts.** To use them:
+
+1. **Copy** the template text from the relevant section
+2. **Customize** by replacing `{placeholder}` variables with your specific requirements
+3. **Paste** the customized prompt into GitHub Copilot Chat or CLI
+4. **Refine** based on the output and your needs
+
+**Example transformation:**
+
+- **Template**: `Create a shell script for {specific functionality}`
+- **Customized**: `Create a shell script for WordPress plugin deployment automation`
 
 ## Code Generation Prompts
 
 ### Shell Script Creation
-```
-Create a shell script following LightSpeed WP standards that [specific functionality]. 
+
+**Template Pattern:**
+
+```text
+Create a shell script following LightSpeed WP standards that {specific functionality}. 
 
 Requirements:
 - Use kebab-case naming convention
@@ -16,12 +44,15 @@ Requirements:
 - Create corresponding Bats test file
 - Follow our logging patterns
 
-The script should handle [specific use case] and integrate with our GitHub workflow automation.
+The script should handle {specific use case} and integrate with our GitHub workflow automation.
 ```
 
 ### GitHub Actions Workflow
-```
-Generate a reusable GitHub Actions workflow for [specific purpose] that follows LightSpeed patterns.
+
+**Template Pattern:**
+
+```text
+Generate a reusable GitHub Actions workflow for {specific purpose} that follows LightSpeed patterns.
 
 Requirements:
 - Use workflow_call trigger
@@ -31,12 +62,15 @@ Requirements:
 - Follow security best practices
 - Integrate with our labeling and branch protection
 
-The workflow should support [specific functionality] across our organization repositories.
+The workflow should support {specific functionality} across our organization repositories.
 ```
 
 ### Python Automation Script
-```
-Create a Python script for [specific automation task] following our standards.
+
+**Template Pattern:**
+
+```text
+Create a Python script for {specific automation task} following our standards.
 
 Requirements:
 - Use proper error handling with WorkflowError class
@@ -52,8 +86,11 @@ The script should integrate with GitHub API and support our org-wide automation 
 ## Code Review Prompts
 
 ### Security Review
-```
-Review this [script/workflow/configuration] for security vulnerabilities and compliance with LightSpeed standards:
+
+**Template Pattern:**
+
+```text
+Review this {script/workflow/configuration} for security vulnerabilities and compliance with LightSpeed standards:
 
 Check for:
 - Hardcoded secrets or tokens
@@ -67,8 +104,11 @@ Provide specific recommendations for any security improvements needed.
 ```
 
 ### Standards Compliance Review
-```
-Review this [code/documentation] for compliance with LightSpeed WP standards:
+
+**Template Pattern:**
+
+```text
+Review this {code/documentation} for compliance with LightSpeed WP standards:
 
 Verify:
 - Naming conventions (kebab-case for files, proper variable naming)
@@ -82,8 +122,11 @@ Suggest specific improvements to meet our quality standards.
 ```
 
 ### Performance Review
-```
-Analyze this [script/workflow] for performance optimization opportunities:
+
+**Template Pattern:**
+
+```text
+Analyze this {script/workflow} for performance optimization opportunities:
 
 Consider:
 - Execution time and resource usage
@@ -99,8 +142,11 @@ Recommend specific optimizations while maintaining code clarity and reliability.
 ## Documentation Prompts
 
 ### README Generation
-```
-Create a comprehensive README.md for [project/script name] that follows LightSpeed documentation standards.
+
+**Template Pattern:**
+
+```text
+Create a comprehensive README.md for {project/script name} that follows LightSpeed documentation standards.
 
 Include:
 - Clear project description and purpose
@@ -111,12 +157,15 @@ Include:
 - Troubleshooting section
 - Integration with our automation workflow
 
-Target audience: [developers/contributors/end users] with [experience level].
+Target audience: {developers/contributors/end users} with {experience level}.
 ```
 
 ### API Documentation
-```
-Generate API documentation for [script/function name] following our standards:
+
+**Template Pattern:**
+
+```text
+Generate API documentation for {script/function name} following our standards:
 
 Document:
 - Function signature and parameters
@@ -130,8 +179,11 @@ Format as markdown with clear examples and follow our documentation patterns.
 ```
 
 ### Troubleshooting Guide
-```
-Create a troubleshooting guide for [script/workflow name] covering common issues:
+
+**Template Pattern:**
+
+```text
+Create a troubleshooting guide for {script/workflow name} covering common issues:
 
 Include:
 - Installation and setup problems
@@ -147,8 +199,11 @@ Provide step-by-step solutions and prevention strategies.
 ## Testing Prompts
 
 ### Bats Test Generation
-```
-Generate comprehensive Bats tests for [script name] following our testing standards:
+
+**Template Pattern:**
+
+```text
+Generate comprehensive Bats tests for {script name} following our testing standards:
 
 Create tests for:
 - Basic functionality and success scenarios
@@ -162,8 +217,11 @@ Include setup and teardown functions, mock external dependencies, and follow our
 ```
 
 ### Integration Test Creation
-```
-Design integration tests for [workflow/automation] that verify end-to-end functionality:
+
+**Template Pattern:**
+
+```text
+Design integration tests for {workflow/automation} that verify end-to-end functionality:
 
 Test scenarios:
 - Complete workflow execution from start to finish
@@ -176,8 +234,11 @@ Include test data setup, environment configuration, and cleanup procedures.
 ```
 
 ### Test Data Generation
-```
-Create realistic test data for [automation/script] testing:
+
+**Template Pattern:**
+
+```text
+Create realistic test data for {automation/script} testing:
 
 Generate:
 - Sample configuration files
@@ -192,10 +253,13 @@ Ensure data follows privacy guidelines and represents real-world usage patterns.
 ## Automation Prompts
 
 ### Issue Analysis
-```
+
+**Template Pattern:**
+
+```text
 Analyze this GitHub issue and provide recommendations:
 
-Categorize as: [bug/feature/docs/enhancement/task]
+Categorize as: {bug/feature/docs/enhancement/task}
 Assess complexity and effort required
 Suggest appropriate labels using our labeling system
 Recommend milestone assignment
@@ -206,8 +270,11 @@ Consider our development workflow and resource allocation.
 ```
 
 ### Release Planning
-```
-Help plan release [version number] for [repository name]:
+
+**Template Pattern:**
+
+```text
+Help plan release {version number} for {repository name}:
 
 Review:
 - Completed features and fixes since last release
@@ -221,8 +288,11 @@ Generate release notes draft and suggest release timeline.
 ```
 
 ### Workflow Optimization
-```
-Analyze our current [workflow/process] and suggest optimizations:
+
+**Template Pattern:**
+
+```text
+Analyze our current {workflow/process} and suggest optimizations:
 
 Evaluate:
 - Efficiency bottlenecks and delays
@@ -238,8 +308,11 @@ Recommend specific improvements with implementation priority and effort estimate
 ## Learning and Training Prompts
 
 ### Onboarding Assistance
-```
-Create onboarding materials for new [role] joining LightSpeed WP team:
+
+**Template Pattern:**
+
+```text
+Create onboarding materials for new {role} joining LightSpeed WP team:
 
 Cover:
 - Repository structure and navigation
@@ -250,12 +323,15 @@ Cover:
 - Testing and quality assurance
 - Community guidelines and communication
 
-Tailor content to [experience level] and provide practical exercises.
+Tailor content to {experience level} and provide practical exercises.
 ```
 
 ### Best Practices Explanation
-```
-Explain [specific practice/pattern] in context of LightSpeed WP standards:
+
+**Template Pattern:**
+
+```text
+Explain {specific practice/pattern} in context of LightSpeed WP standards:
 
 Cover:
 - Why this approach is recommended
@@ -269,8 +345,11 @@ Provide practical examples and decision-making criteria.
 ```
 
 ### Technology Integration Guide
-```
-Create integration guide for [new tool/technology] with our existing workflow:
+
+**Template Pattern:**
+
+```text
+Create integration guide for {new tool/technology} with our existing workflow:
 
 Address:
 - Installation and setup procedures
@@ -287,6 +366,7 @@ Include step-by-step implementation and evaluation criteria.
 ## Prompt Usage Guidelines
 
 ### Customization Tips
+
 1. Replace bracketed placeholders with specific details
 2. Adjust complexity based on target audience
 3. Include relevant context about the project or task
@@ -294,6 +374,7 @@ Include step-by-step implementation and evaluation criteria.
 5. Mention integration requirements with existing tools
 
 ### Effective Prompting Strategies
+
 1. **Be Specific**: Include exact requirements and constraints
 2. **Provide Context**: Mention related files, standards, or processes
 3. **Set Expectations**: Clarify output format and level of detail
@@ -301,7 +382,8 @@ Include step-by-step implementation and evaluation criteria.
 5. **Specify Integration**: Mention workflow and tool requirements
 
 ### Common Prompt Patterns
-- **Analysis Pattern**: "Analyze [X] for [criteria] considering [context]"
-- **Generation Pattern**: "Create [X] that follows [standards] and includes [requirements]"
-- **Review Pattern**: "Review [X] for [aspects] and suggest [improvements]"
-- **Integration Pattern**: "Integrate [X] with [Y] ensuring [compliance]"
+
+- **Analysis Pattern**: "Analyze {X} for {criteria} considering {context}"
+- **Generation Pattern**: "Create {X} that follows {standards} and includes {requirements}"
+- **Review Pattern**: "Review {X} for {aspects} and suggest {improvements}"
+- **Integration Pattern**: "Integrate {X} with {Y} ensuring {compliance}"
