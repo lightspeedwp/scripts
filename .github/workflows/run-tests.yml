@@ -18,6 +18,11 @@ on:
         required: false
         type: string
         default: 'latest'
+      compare-branch:
+        description: 'Branch to compare against for git diff'
+        required: false
+        type: string
+        default: 'develop'
 
 jobs:
   test:
@@ -26,7 +31,19 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v5
-        
+
+      - name: Fetch and diff against input branch
+        run: |
+          git fetch origin ${{ inputs.branch }}
+          if git rev-parse --verify origin/${{ inputs.branch }}; then
+            git diff origin/${{ inputs.branch }} HEAD
+          else
+            echo "Branch '${{ inputs.branch }}' not found. Skipping diff."
+          fi
+      
+      - name: Set branch environment variable
+        run: echo "BRANCH=${{ inputs.branch }}" >> $GITHUB_ENV
+
       - name: Install Bats
         run: |
           if [ "${{ inputs.bats-version }}" = "latest" ]; then
