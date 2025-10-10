@@ -1,4 +1,4 @@
-# GitHub Configuration Directory
+# GitHub Configuration Directory [![Copilot](https://github.com/lightspeedwp/scripts/actions/workflows/copilot-swe-agent/copilot/badge.svg)](https://github.com/lightspeedwp/scripts/actions/workflows/copilot-swe-agent/copilot)
 
 This directory contains GitHub-specific templates and configuration files for the LightSpeed WP organization.
 
