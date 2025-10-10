@@ -76,9 +76,7 @@ All repositories should implement:
 
 ### Reference Documentation
 
-- **Detailed Guide:** [`github-workflow/org-wide-branching-strategy-v1.md`](github-workflow/org-wide-branching-strategy-v1.md)
-- **Client Delivery Prefixes:** [`github-workflow/branch-prefixes-client-delivery-v1.md`](github-workflow/branch-prefixes-client-delivery-v1.md)
-- **Product Development Prefixes:** [`github-workflow/branch-prefixes-product-development-v1.md`](github-workflow/branch-prefixes-product-development-v1.md)
+*Note: Detailed implementation guidelines are consolidated in this handbook. Previous separate documentation files have been superseded by this centralized reference.*
 
 ---
 
@@ -131,8 +129,7 @@ Version bumping is automated based on PR labels:
 
 ### Reference Documentation
 
-- **Client Delivery:** [`github-workflow/changelog-release-automation-client-delivery-v1.md`](github-workflow/changelog-release-automation-client-delivery-v1.md)
-- **Product Development:** [`github-workflow/changelog-release-automation-product-development-v1.md`](github-workflow/changelog-release-automation-product-development-v1.md)
+*Implementation details for both client delivery and product development workflows are specified in the sections below.*
 
 ---
 
@@ -178,8 +175,7 @@ Integration between labels, projects, and milestones:
 
 ### Reference Documentation
 
-- **Complete Strategy:** [`github-workflow/label-automation-strategy-v1.md`](github-workflow/label-automation-strategy-v1.md)
-- **Label Definitions:** [`github-workflow/org-wide-labels-v1-11.md`](github-workflow/org-wide-labels-v1-11.md)
+*Label strategy and definitions are detailed in the sections below.*
 
 ---
 
@@ -219,9 +215,7 @@ PRs are automatically labeled based on:
 
 ### Reference Documentation
 
-- **Issue Types Guide:** [`github-workflow/org-wide-issue-types-v1-9.md`](github-workflow/org-wide-issue-types-v1-9.md)
-- **PR Labels:** [`github-workflow/PR_LABELS.md`](github-workflow/PR_LABELS.md)
-- **Issue Labels:** [`github-workflow/ISSUE_LABELS.md`](github-workflow/ISSUE_LABELS.md)
+*Issue types and labelling strategies are covered in the following sections.*
 
 ---
 
@@ -275,9 +269,7 @@ Both templates integrate with:
 
 ### Reference Documentation
 
-- **Client Delivery Template:** [`github-workflow/project-template-client-delivery-v1-3.md`](github-workflow/project-template-client-delivery-v1-3.md)
-- **Product Development Template:** [`github-workflow/project-template-product-development-v1-3.md`](github-workflow/project-template-product-development-v1-3.md)
-- **Project Meta:** [`github-workflow/PROJECT_META.md`](github-workflow/PROJECT_META.md)
+*Project template specifications are outlined in the following sections.*
 
 ---
 
@@ -505,7 +497,7 @@ Phased implementation approach for organization-wide adoption of automation and 
 
 ### Essential Links
 - **Repository:** https://github.com/lightspeedwp/scripts/
-- **Documentation:** [`github-workflow/`](github-workflow/) directory
+*All organizational standards and workflows are documented in this consolidated handbook.*
 - **Workflows:** [`workflows/`](workflows/) directory  
 - **Scripts:** [`scripts/`](scripts/) directory
 - **Templates:** [`.github/`](.github/) directory
