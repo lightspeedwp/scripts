@@ -1,4 +1,3 @@
-
 # lightspeedwp-automation
 
 <div align="center">
@@ -162,20 +161,43 @@ npx playwright test
 
 This repository uses [Playwright](https://playwright.dev/) for browser-based automation and testing.
 
-- Test files are located in `tests/` and use the `.spec.ts` extension.
-- To run all browser tests:
+
+Test files are located in `tests/` and use the `.spec.ts` extension.
+
+### Playwright MCP Server Automation
+
+- The Playwright MCP server must be running before Playwright tests are executed.
+- MCP server is auto-activated and restarted if stopped using [`scripts/start-mcp-server.sh`](scripts/start-mcp-server.sh).
+- CI workflow [`playwright-mcp-server.yml`](.github/workflows/playwright-mcp-server.yml) ensures MCP server is started and logs are archived.
+- For local development, run:
 
 ```bash
+chmod +x scripts/start-mcp-server.sh
+./scripts/start-mcp-server.sh
 npx playwright test
 ```
 
-- To run a specific test file:
+#### Example GitHub Actions Workflow
 
-```bash
-npx playwright test tests/example.spec.ts
+```yaml
+- name: Start Playwright MCP server
+  run: |
+    chmod +x scripts/start-mcp-server.sh
+    ./scripts/start-mcp-server.sh
+- name: Run Playwright tests
+  run: npx playwright test
 ```
 
-- Playwright configuration and output are ignored via `.gitignore`.
+#### MCP Server Restart Logic
+
+The MCP server is checked and started if not running. For production, use a process manager (e.g., PM2) for persistent uptime.
+
+#### Troubleshooting
+
+- If Playwright tests do not run, ensure Node.js and dependencies are installed (`npm install`).
+- If MCP server fails to start, check `playwright-mcp-server.log` for errors.
+
+Playwright configuration and output are ignored via `.gitignore`.
 
 See [Playwright documentation](https://playwright.dev/docs/intro) for more details.
 
@@ -347,3 +369,17 @@ All automation, workflow, and governance in this repository is aligned with the 
 All scripts, workflows, and automations in this repository are verified to follow the standards and strategies described in these files. Project provisioning, field sync, label/PR automation, and governance are fully aligned.
 
 For detailed governance and workflow documentation, see the [LightSpeed Automation & Governance Handbook](LIGHTSPEED_AUTOMATION_HANDBOOK.md).
+<!-- INSTRUCTIONS-TABLE-START -->
+| File | Purpose |
+|------|---------|
+| [.github/copilot-instructions.md](.github/copilot-instructions.md) | Main Copilot & CodeRabbit integration, file index, and standards cross-reference |
+| [.github/custom-instructions.md](.github/custom-instructions.md) | Copilot custom instructions, role-based configuration |
+| [.github/prompts/prompts.md](.github/prompts/prompts.md) | Reusable prompt templates for Copilot Chat/CLI |
+| [.github/chatmodes/chatmodes.md](.github/chatmodes/chatmodes.md) | Scenario-based chat modes for development contexts |
+| [.github/instructions/contributor-types.md](.github/instructions/contributor-types.md) | Role-specific contributor standards and prompts |
+| [.github/instructions/shell-script-copilot.md](.github/instructions/shell-script-copilot.md) | Shell script automation standards and patterns |
+| [.github/instructions/markdown-copilot.md](.github/instructions/markdown-copilot.md) | Markdown/documentation standards and accessibility |
+| [.github/instructions/js-copilot.md](.github/instructions/js-copilot.md) | JavaScript/Node.js workflow standards |
+| [.github/instructions/python-copilot.md](.github/instructions/python-copilot.md) | Python scripting standards |
+| [.github/instructions/playwright-copilot.md](.github/instructions/playwright-copilot.md) | Playwright-specific Copilot instructions and MCP server automation |
+<!-- INSTRUCTIONS-TABLE-END -->
