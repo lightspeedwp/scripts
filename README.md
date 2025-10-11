@@ -9,20 +9,20 @@
 
   <a href="https://github.com/lightspeedwp/scripts/actions/workflows/playwright.yml">
 
-    <img src="https://github.com/lightspeedwp/scripts/actions/workflows/playwright.yml/badge.svg?branch=develop" alt="Playwright Tests" />
+    <img src="https://github.com/lightspeedwp/scripts/actions/workflows/playwright.yml/badge.svg?branch=main" alt="Playwright Tests" />
   </a>
   <a href="https://github.com/lightspeedwp/scripts/actions/workflows/lint.yml">
-    <img src="https://github.com/lightspeedwp/scripts/actions/workflows/lint.yml/badge.svg?branch=develop" alt="Lint Status (JS/TS/Prettier)" />
+    <img src="https://github.com/lightspeedwp/scripts/actions/workflows/lint.yml/badge.svg?branch=main" alt="Lint Status (JS/TS/Prettier)" />
 
   </a>
 
   <a href="https://github.com/lightspeedwp/scripts/actions/workflows/markdownlint.yml">
-    <img src="https://github.com/lightspeedwp/scripts/actions/workflows/markdownlint.yml/badge.svg?branch=develop" alt="Markdown Lint" />
+    <img src="https://github.com/lightspeedwp/scripts/actions/workflows/markdownlint.yml/badge.svg?branch=main" alt="Markdown Lint" />
 
   </a>
   <a href="https://github.com/lightspeedwp/scripts/actions/workflows/shellcheck.yml">
   <a href="https://github.com/lightspeedwp/scripts/actions/workflows/release.yml">
-    <img src="https://github.com/lightspeedwp/scripts/actions/workflows/release.yml/badge.svg?branch=develop" alt="Development Status" />
+    <img src="https://github.com/lightspeedwp/scripts/actions/workflows/release.yml/badge.svg?branch=main" alt="Release Status" />
   </a>
 
 
