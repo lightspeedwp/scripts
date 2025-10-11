@@ -79,6 +79,20 @@ confirm() {
     local prompt="${1:-Are you sure?}"
     local default="${2:-n}"
     
+    # If not running interactively, use default response
+    if [ ! -t 0 ]; then
+        case "${default,,}" in
+            y|yes)
+                return 0
+                ;;
+            n|no)
+                return 1
+                ;;
+            *)
+                return 1
+                ;;
+        esac
+    fi
     while true; do
         read -p "$prompt [y/N]: " -r response
         response=${response:-$default}
