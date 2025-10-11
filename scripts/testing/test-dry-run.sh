@@ -7,7 +7,7 @@ set -euo pipefail
 SCRIPT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 
 # Run update-projects.sh in dry-run mode with test arguments
-OUTPUT=$("${SCRIPT_DIR}/update-projects.sh" --dry-run --project-owner testorg --to-project 101 --asnz-project 202)
+OUTPUT=$("${SCRIPT_DIR}/update-projects.sh" --dry-run --project-owner testorg --project-a 101 --project-b 202)
 
 # Print the dry-run output for inspection
 echo "---- DRY RUN OUTPUT ----"
