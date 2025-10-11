@@ -1,89 +1,86 @@
 # lightspeedwp-automation
 
-<div align="center">
-  <h3>Workflow Status</h3>
-  
-  <a href="https://github.com/lightspeedwp/scripts/actions/workflows/run-tests.yml">
-    <img src="https://github.com/lightspeedwp/scripts/actions/workflows/run-tests.yml/badge.svg?branch=develop" alt="Shell Script Tests" />
+
+
+
+
+
   </a>
+
   <a href="https://github.com/lightspeedwp/scripts/actions/workflows/playwright.yml">
+
     <img src="https://github.com/lightspeedwp/scripts/actions/workflows/playwright.yml/badge.svg?branch=develop" alt="Playwright Tests" />
   </a>
   <a href="https://github.com/lightspeedwp/scripts/actions/workflows/lint.yml">
     <img src="https://github.com/lightspeedwp/scripts/actions/workflows/lint.yml/badge.svg?branch=develop" alt="Lint Status (JS/TS/Prettier)" />
+
   </a>
+
   <a href="https://github.com/lightspeedwp/scripts/actions/workflows/markdownlint.yml">
     <img src="https://github.com/lightspeedwp/scripts/actions/workflows/markdownlint.yml/badge.svg?branch=develop" alt="Markdown Lint" />
+
   </a>
   <a href="https://github.com/lightspeedwp/scripts/actions/workflows/shellcheck.yml">
-    <img src="https://github.com/lightspeedwp/scripts/actions/workflows/shellcheck.yml/badge.svg?branch=develop" alt="ShellCheck Lint" />
-  </a>
   <a href="https://github.com/lightspeedwp/scripts/actions/workflows/release.yml">
     <img src="https://github.com/lightspeedwp/scripts/actions/workflows/release.yml/badge.svg?branch=main" alt="Release Automation" />
   </a>
+
+
   <a href="https://github.com/lightspeedwp/scripts/actions/workflows/changelog.yml">
-    <img src="https://github.com/lightspeedwp/scripts/actions/workflows/changelog.yml/badge.svg?branch=main" alt="Changelog Automation" />
-  </a>
-</div>
 
 
 
-## Contributor Recognition Automation
+    <a href="https://github.com/lightspeedwp/scripts">
 
-This repository uses the [all-contributors](https://allcontributors.org/) tool to automate contributor recognition in the README.
 
-### Setup
 
-- Install the CLI:
-  ```bash
+    </a>
+
+<!-- Recommended additional badges: -->
+
+<!-- Coverage: <img src="https://img.shields.io/codecov/c/github/lightspeedwp/scripts?style=flat-square" alt="Coverage" /> -->
+
+<!-- Version: <img src="https://img.shields.io/github/package-json/v/lightspeedwp/scripts?style=flat-square" alt="Version" /> -->
+
+<!-- Code Quality: <img src="https://img.shields.io/codacy/grade/PROJECT_ID?style=flat-square" alt="Code Quality" /> -->
+
+
   npm install --save-dev all-contributors-cli
+
+
+
   ```
 - Add contributors:
   ```bash
   npx all-contributors add <username> <contribution-type>
   ```
 - Generate the contributors table:
-  ```bash
-  npx all-contributors generate
-  ```
-- Contributor info is managed in `.all-contributorsrc` and explained in the documentation file below.
 
 #### Contributor Configuration & Types
 
+
+
 See [.all-contributorsrc-docs.md](.all-contributorsrc-docs.md) for:
 - Configuration options for contributor automation
-- Contribution types used in this project
-- How to keep `.all-contributorsrc` up to date
-- Guidance for manual and CLI-based updates
-
 Reference this file in your README or CONTRIBUTING.md to explain how contributor recognition works and which contribution types are supported.
 
-## CodeRabbit Review Automation
 
-This repository uses [CodeRabbit](https://coderabbit.ai/) for automated code review and governance enforcement. Key features:
+## CodeRabbit Review Automation
 
 - Required status checks for linting (markdownlint) and tests before merging
 - Minimum 2 review approvals for all PRs
 - Auto-labeling and auto-assign for shell, docs, CI, and test files
-- Path-specific review instructions for scripts, workflows, tests, and documentation
-- Enhanced merge protection and governance alignment
-
-See [.coderabbit.yml](.coderabbit.yml) for full configuration and review rules.
 \n## Advanced Project Automation Scripts
+
 
 Scripts like `product_dev_project.sh` automate GitHub ProjectV2 provisioning, field management, item/issue linking, and governance. Features include:
 
 - Create/update projects, fields, items, and status
 - Add draft issues, link repositories/teams, update labels and issue types
-- Modular helper functions for GraphQL and CLI integration
-- Full alignment with org-wide meta/template files and governance standards
-- Bats test coverage and error handling
-
-See [scripts/scripts/README.md](scripts/scripts/README.md) for usage and extension details.
 
 Centralized repository for LightSpeed WP organization automation scripts and CI/CD workflows.
 
-## GitHub Copilot Integration
+
 
 This repository includes comprehensive GitHub Copilot instructions to assist with automation development:
 
@@ -102,31 +99,7 @@ Shell scripts for automation tasks across the organization. All scripts follow k
 
 **Naming Convention**: Use kebab-case for all script files (e.g., `deploy-site.sh`, `backup-database.sh`)
 
-**Usage**:
 
-- General automation scripts
-- Deployment helpers
-- Maintenance tasks
-- Utility functions
-
-### 📁 `/workflows/`
-
-Reusable GitHub Actions workflows that can be shared across repositories in the organization.
-
-**Usage**:
-
-- CI/CD pipeline templates
-- Deployment workflows
-- Testing automation
-- Release management
-
-### 📁 `/tests/`
-
-Test harnesses using Bats (Bash Automated Testing System) and dry-run scripts for validation.
-
-
-- Node.js 18+ (for Playwright and linting)
-- npm (for installing JS dependencies)
 **Usage**:
 
 - Bats test files for shell scripts
@@ -151,12 +124,96 @@ npx playwright test
 - **GitHub Actions**: Organization-level workflow configurations
 
 ## Getting Started
+## New Features & CLI Usage
 
-### Prerequisites
+### Key Automation Features
+- MCP/Playwright server auto-activation and restart
+- GitHub ProjectV2 automation (create, update, link, field/item/status management)
+- Contributor recognition automation
+- Badge and changelog update automation
+- Stricter linting and test enforcement via CodeRabbit and CI
 
-- Bash 4.0+
-- Bats (for running tests)
+### CLI Usage Examples
 
+#### Start MCP Server
+```bash
+chmod +x scripts/start-mcp-server.sh
+./scripts/start-mcp-server.sh
+```
+
+#### Run Project Automation Script
+```bash
+chmod +x scripts/project/product_dev_project.sh
+./scripts/project/product_dev_project.sh --create --name "My Project" --owner "lightspeedwp"
+```
+
+#### Update Badges and Changelog
+```bash
+chmod +x scripts/maintenance/update-readme-and-changelog.sh
+./scripts/maintenance/update-readme-and-changelog.sh
+```
+
+#### Run All Tests
+```bash
+bats tests/
+```
+
+#### Find all README files
+```bash
+chmod +x scripts/maintenance/find-readmes.sh
+./scripts/maintenance/find-readmes.sh
+```
+
+### Error Handling Patterns
+- All scripts use `set -euo pipefail` for robust error handling.
+- CLI scripts validate required parameters and provide usage/help output.
+- Errors are logged with timestamps and context for easier troubleshooting.
+- Automated workflows enforce status checks and fail on lint/test errors.
+
+### Markdownlint Compliance
+- All documentation files are checked with markdownlint in CI.
+- Use blank lines around code fences and lists.
+- Avoid duplicate headings and ensure consistent heading structure.
+- See [markdownlint documentation](https://github.com/DavidAnson/markdownlint) for rules and best practices.
+
+## Release & Changelog Instructions
+
+### Automated Release Process
+- On push to `main`, the release workflow:
+  - Generates/updates `CHANGELOG.md` from commit history
+  - Bumps version and tags the release
+  - Publishes a GitHub Release with changelog details
+  - All PRs must include a changelog entry in the required format (see PR template)
+
+### Changelog Entry Format
+```md
+### Added
+- Short description of new features or scripts
+
+### Changed
+- Short description of changes or improvements
+
+### Fixed
+- Short description of bug fixes
+
+### Security
+- Short description of security updates
+```
+
+### Manual Release Fallback
+If automation fails, releases can be created manually:
+1. Update `CHANGELOG.md` with the latest changes
+2. Bump the version in relevant files
+3. Commit and tag the release:
+   ```bash
+   git add CHANGELOG.md
+   git commit -m "chore(release): vX.Y.Z"
+   git tag -a vX.Y.Z -m "Release vX.Y.Z"
+   git push origin main --tags
+   ```
+4. Create a GitHub Release and paste the changelog entry
+
+See [CHANGELOG.md](CHANGELOG.md) and [release workflow](.github/workflows/release.yml) for implementation details.
 ## Playwright Browser Testing
 
 This repository uses [Playwright](https://playwright.dev/) for browser-based automation and testing.
