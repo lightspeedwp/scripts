@@ -22,7 +22,12 @@ Thumbs.db
 .idea/
 *.swp
 *.swo
-*~
+	# IDE/editor config
+	.vscode/
+	.idea/
+	*.swp
+	*.swo
+	*~
 
 # Runtime files
 *.pid
@@ -40,9 +45,44 @@ node_modules/
 .env.production.local
 
 # Test artifacts
+	# Playwright output and traces
+	playwright-report/
+	test-results/
+	trace/
+	screenshots/
+	storage/
+	*.png
+	*.webm
+	*.zip
+
+	# Test files and output
+	coverage/
+	*.coverage
+	tests/
+	*.spec.ts
+	*.test.ts
+	*.spec.js
+	*.test.js
+
+# Playwright output
+playwright-report/
 test-results/
-coverage/
-*.coverage
+*.png
+*.webm
+*.zip
+
+# ShellCheck reports (if you save them)
+shellcheck-report*.txt
+
+# VS Code workspace settings
+.vscode/
+
+# Playwright traces and screenshots
+trace/
+screenshots/
+
+# Ignore Playwright test storage
+storage/
 
 # Backup files
 *.bak

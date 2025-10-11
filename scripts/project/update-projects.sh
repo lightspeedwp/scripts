@@ -234,7 +234,7 @@ check_gh_scopes() {
     if [ "${AUTO_REFRESH}" = "true" ]; then
       echo "\nAuto-refresh enabled: attempting interactive 'gh auth refresh' now..." >&2
       # Run interactive refresh with the missing scopes
-      if gh auth refresh -s $(IFS=,; echo "${missing[*]}"); then
+  if gh auth refresh -s "$(IFS=,; echo "${missing[*]}")"; then
         # Re-fetch scopes after refresh
         scopes_header=$(gh api -I / 2>/dev/null | tr -d '\r' | awk -F": " '/^x-oauth-scopes:/ {print $2}' || true)
         scopes="${scopes_header}"

@@ -4,6 +4,8 @@ This script sets up GitHub Projects fields used by the projects for the
 Tour Operator plugin and the ASNZ client. It uses the GitHub CLI (`gh`) and
 requires the authenticated token to include GitHub Projects scopes.
 
+All scripts follow LightSpeed WP standards for header comments and inline documentation. See `scripts/README.md` for code comment requirements.
+
 Required scopes
 
 - read:project
@@ -11,9 +13,9 @@ Required scopes
 
 If your token is missing scopes the script will print a message like:
 
-  error: your authentication token is missing required scopes [read:project write:project]
-  To request it, run:
-    gh auth refresh -s read:project,write:project
+error: your authentication token is missing required scopes [read:project write:project]
+To request it, run:
+gh auth refresh -s read:project,write:project
 
 Flags
 
@@ -27,6 +29,41 @@ Run the script from the `scripts` directory or provide the path:
 ```bash
 ./update-projects.sh
 ./update-projects.sh --auto-refresh
+```
+
+## Testing & Validation
+
+- Playwright browser tests are available in `tests/` (see `tests/example.spec.ts`).
+- Shell script tests use Bats (see `tests/test-update-projects.bats`).
+- Dry-run validation:
+
+```bash
+./update-projects.sh --dry-run --project-owner myorg --to-project 101 --asnz-project 202
+```
+
+- Simple shell test harness:
+
+```bash
+./scripts/test-dry-run.sh
+```
+
+## Linting & Formatting
+
+Linting and formatting are automated using npm scripts and GitHub Actions:
+
+- Shell scripts: ShellCheck
+- JS/TS: ESLint
+- Formatting: Prettier
+
+Run locally:
+
+```bash
+npm run lint:js
+npm run lint:sh
+npm run format
+```
+
+CI checks run automatically on push/PR via `.github/workflows/lint.yml`.
 ```
 
 Dry-run and testing
@@ -45,7 +82,6 @@ Dry-run and testing
 
 - If you use Bats for shell testing, there is a minimal test at
   `scripts/__tests__/update-projects.bats` (requires `bats` to be installed).
-
 
 Notes
 

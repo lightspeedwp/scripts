@@ -1,4 +1,4 @@
-#!/opt/homebrew/bin/bash
+#!/bin/bash
 set -euo pipefail
 
 # prune-labels.sh - conservative, REST-only label sync + optional prune

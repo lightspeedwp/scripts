@@ -1,0 +1,70 @@
+# Changelog
+
+All notable changes to this project will be documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [Unreleased]
+
+### Added
+- Comprehensive CI/CD workflow automation
+- Badge automation for branch-specific status tracking  
+- Enhanced test coverage with multiple test suites
+- ShellCheck integration for code quality
+
+### Fixed
+- Script shebang compatibility across different systems
+- Test path resolution issues
+
+## [0.1.0] - 2024-10-11
+
+### Added
+- Initial release of LightSpeed WP automation scripts repository
+- GitHub Projects field management scripts with comprehensive testing ([#9](https://github.com/lightspeedwp/scripts/pull/9))
+- Automated testing infrastructure using Bats framework
+- Release workflow with automated changelog generation
+- Comprehensive documentation including CONTRIBUTING.md, CODE_OF_CONDUCT.md
+- GitHub Actions workflows for testing and deployment
+- Shell script linting and validation tools
+- Project field management fixtures and examples
+- Label synchronization and pruning utilities
+
+### Changed
+- Restructured repository from simple scripts to comprehensive automation hub ([#1](https://github.com/lightspeedwp/scripts/pull/1))
+- Updated documentation structure and governance files ([#6](https://github.com/lightspeedwp/scripts/pull/6))
+- Enhanced GitHub Copilot prompt documentation ([#3](https://github.com/lightspeedwp/scripts/pull/3))
+
+### Fixed
+- Resolved GitHub Copilot API failures by restructuring prompts.md ([#7](https://github.com/lightspeedwp/scripts/pull/7))
+- Fixed test path mismatches and test infrastructure issues
+- Corrected workflow configurations and badge references
+
+### Infrastructure
+- [WIP] Add GitHub Projects field management scripts and fixtures [`#8`](https://github.com/lightspeedwp/scripts/pull/8)
+- fix: resolve GitHub Copilot API failures by restructuring prompts.md and cleaning up outdated docs [`#7`](https://github.com/lightspeedwp/scripts/pull/7)
+- [WIP] Update documentation and governance files for release v0.1.0 [`#6`](https://github.com/lightspeedwp/scripts/pull/6)
+- [WIP] Update documentation and governance files with Copilot instructions [`#3`](https://github.com/lightspeedwp/scripts/pull/3)
+- feat: Add scripts for GitHub project management and label synchronization [`#4`](https://github.com/lightspeedwp/scripts/pull/4)
+- Create comprehensive LightSpeed Automation & Governance Handbook [`#2`](https://github.com/lightspeedwp/scripts/pull/2)
+- Transform scripts repository into comprehensive lightspeedwp-automation hub [`#1`](https://github.com/lightspeedwp/scripts/pull/1)
+- Add GitHub workflow docs and project scripts [`40c5130`](https://github.com/lightspeedwp/scripts/commit/40c5130473f038928b7bfca2261e54378db24bd2)
+- Fix prompts.md AI interpretation issues and remove outdated github-workflow docs [`8767b70`](https://github.com/lightspeedwp/scripts/commit/8767b702676127bde4e72a05cb8412d31d12e9f5)
+- Changes before error encountered [`465c73e`](https://github.com/lightspeedwp/scripts/commit/465c73e8def0bcd76d3c685568074a4763cad6bf)
+- Complete restructuring to lightspeedwp-automation repository [`ecd580d`](https://github.com/lightspeedwp/scripts/commit/ecd580d3ec06cd4ed2cfe5ba44e5fa0f16552cef)
+- docs: update README and changelog [skip ci] [`1b059d3`](https://github.com/lightspeedwp/scripts/commit/1b059d36e5f34eb9120b9d288cbd2c8849ab171f)
+- Enhance documentation for GitHub Copilot prompts by standardizing placeholder usage and clarifying template patterns [`516c357`](https://github.com/lightspeedwp/scripts/commit/516c357f2d64c60a643c8082bdc5087b773eab5c)
+- Create coderabbit.yaml [`0c5566c`](https://github.com/lightspeedwp/scripts/commit/0c5566c00fe89fa795ec072bbe8482f7f24476f0)
+- docs: update README and changelog [skip ci] [`0d634d6`](https://github.com/lightspeedwp/scripts/commit/0d634d603e236bd22ab8cd4a104b24adfc1a2cc4)
+- Add CODE_OF_CONDUCT and DEVELOPMENT guides [`13e022c`](https://github.com/lightspeedwp/scripts/commit/13e022c4b89ea933bb361c55f708fe743efdfdda)
+- Update CHANGELOG with new sections and documentation [`1870716`](https://github.com/lightspeedwp/scripts/commit/18707161cbdd317a590c1b927906b08ed59a0254)
+- docs: update README and changelog [skip ci] [`f9a0707`](https://github.com/lightspeedwp/scripts/commit/f9a0707248a6371a34eebf8f424cd712db2b6d21)
+- Initial plan [`70bf542`](https://github.com/lightspeedwp/scripts/commit/70bf542d69e8b9e5a43fb0d1acaea1df82fb739d)
+- Initial plan [`b7e77e2`](https://github.com/lightspeedwp/scripts/commit/b7e77e2ef293c1d5a2f5478eb152d08cce08f50b)
+- feat: Add compare-branch input and fetch/diff logic to run-tests workflow [`2bfb591`](https://github.com/lightspeedwp/scripts/commit/2bfb5916f2eb84a2c99481e2fff2e0accad3fe93)
+- Add README.update-projects.md file [`fb58c77`](https://github.com/lightspeedwp/scripts/commit/fb58c773725df3d8092d6bb51abfcb8b19f8090e)
+- Initial plan [`e7c8e11`](https://github.com/lightspeedwp/scripts/commit/e7c8e11fb3e74e40446735c36fff9613737337be)
+- Add Copilot badge to README.md [`d8caa21`](https://github.com/lightspeedwp/scripts/commit/d8caa21a4a8c585d2a8ca407d09ad9ea7e2eadb1)
+- Initial plan [`f773bb2`](https://github.com/lightspeedwp/scripts/commit/f773bb27ea55f5244626a7ef528e9ee4d71c0610)
+- Initial plan [`b8e0343`](https://github.com/lightspeedwp/scripts/commit/b8e034335b3c91a42605a6321bd3e9270ae3256c)
+- Initial plan [`84db140`](https://github.com/lightspeedwp/scripts/commit/84db14095667b3b3c27de4298a76ac548cd68a66)

@@ -1,4 +1,14 @@
-# Contributing to lightspeedwp-automation
+# Contributing Guide
+
+## Markdown Linting
+
+All Markdown files must pass linting using `markdownlint` before merging any pull request. Linting is enforced via GitHub Actions and must be a required status check for all release branches (main, develop, release/*). Fix all markdownlint errors before requesting review or merging.
+
+To run locally:
+
+```bash
+npm run lint:md
+```markdown
 
 Thank you for your interest in contributing to the LightSpeed WP automation repository! This document provides guidelines and information for contributors.
 
@@ -14,12 +24,14 @@ Thank you for your interest in contributing to the LightSpeed WP automation repo
 ## Development Setup
 
 ### Prerequisites
+
 - Bash 4.0 or higher
 - Git
 - Bats (for testing)
 - VSCode with MCP extension (recommended)
 
 ### Installation
+
 ```bash
 git clone https://github.com/lightspeedwp/lightspeedwp-automation.git
 cd lightspeedwp-automation
@@ -36,6 +48,7 @@ find . -name "*.sh" -exec chmod +x {} \;
 ## Contribution Guidelines
 
 ### Naming Conventions
+
 - **Scripts**: Use kebab-case (e.g., `deploy-wordpress-site.sh`)
 - **Workflows**: Use kebab-case (e.g., `run-tests.yml`)
 - **Tests**: Use `test-` prefix (e.g., `test-deployment.bats`)
@@ -44,6 +57,7 @@ find . -name "*.sh" -exec chmod +x {} \;
 ### Code Standards
 
 #### Shell Scripts
+
 - Use `#!/bin/bash` shebang
 - Include `set -euo pipefail` for error handling
 - Add header comments with script metadata
@@ -51,6 +65,7 @@ find . -name "*.sh" -exec chmod +x {} \;
 - Include proper error handling and logging
 
 #### Example Script Header
+
 ```bash
 #!/bin/bash
 #
@@ -65,6 +80,7 @@ set -euo pipefail
 ```
 
 #### GitHub Workflows
+
 - Use meaningful job and step names
 - Make workflows reusable with `workflow_call`
 - Document all inputs and secrets
@@ -73,12 +89,14 @@ set -euo pipefail
 ### Testing Requirements
 
 #### All Scripts Must Have Tests
+
 - Create corresponding `.bats` test files
 - Test both success and failure scenarios
 - Include dry-run validation where applicable
 - Test edge cases and error conditions
 
 #### Running Tests
+
 ```bash
 # Run all tests
 bats tests/
@@ -93,12 +111,14 @@ bats tests/test-script-name.bats
 ### Documentation
 
 #### Required Documentation
+
 - Update README.md if adding new directories
 - Document script usage in header comments
 - Add examples in relevant README files
 - Update this CONTRIBUTING.md if changing processes
 
 #### Code Comments
+
 - Comment complex logic and decisions
 - Explain why, not just what
 - Keep comments up-to-date with code changes
@@ -106,17 +126,18 @@ bats tests/test-script-name.bats
 ### Pull Request Process
 
 1. **Create descriptive PR title**: Use conventional commit format
-   - `feat: add deployment automation script`
-   - `fix: resolve logging issue in utility functions`
-   - `docs: update workflow usage examples`
+    - `feat: add deployment automation script`
+    - `fix: resolve logging issue in utility functions`
+    - `docs: update workflow usage examples`
 
 2. **Fill out PR template**: Complete all sections of the pull request template
 
 3. **Ensure all checks pass**:
-   - [ ] All Bats tests pass
-   - [ ] Scripts follow naming conventions
-   - [ ] Documentation updated
-   - [ ] No new linting errors
+    - [ ] All Bats tests pass
+    - [ ] Scripts follow naming conventions
+    - [ ] Documentation updated
+    - [ ] No new linting errors
+    - [ ] All Markdown files pass linting (`markdownlint` status check is required for merge)
 
 4. **Request review**: Assign appropriate reviewers
 
@@ -124,15 +145,16 @@ bats tests/test-script-name.bats
 
 ### Directory Structure Rules
 
-```
+```text
 ├── scripts/           # Shell scripts (kebab-case naming)
-├── workflows/         # GitHub Actions workflows  
+├── workflows/         # GitHub Actions workflows
 ├── tests/            # Bats tests and dry-run scripts
 ├── .github/          # GitHub templates and MCP config
 └── logs/             # Log files (ignored in git)
 ```
 
 #### Adding New Scripts
+
 1. Place in appropriate `scripts/` subdirectory or root
 2. Follow naming convention (kebab-case)
 3. Include proper script header
@@ -140,6 +162,7 @@ bats tests/test-script-name.bats
 5. Update relevant README if needed
 
 #### Adding New Workflows
+
 1. Place in `workflows/` directory
 2. Make reusable with `workflow_call` trigger
 3. Document inputs and secrets
@@ -148,12 +171,14 @@ bats tests/test-script-name.bats
 ### Code Review Guidelines
 
 #### For Contributors
+
 - Self-review your changes before submitting
 - Test all changes thoroughly
 - Keep changes focused and atomic
 - Write clear commit messages
 
 #### For Reviewers
+
 - Check for adherence to conventions
 - Verify tests are comprehensive
 - Test workflows/scripts locally when possible
@@ -166,11 +191,33 @@ bats tests/test-script-name.bats
 - Tag relevant maintainers if needed
 - Check existing issues before creating new ones
 
-### Resources
 
-- [Bash Best Practices](https://github.com/anordal/shellcheck)
-- [Bats Testing Framework](https://github.com/bats-core/bats-core)
-- [GitHub Actions Documentation](https://docs.github.com/en/actions)
-- [Repository Structure Reference](https://github.com/copilot/spaces/lightspeedwp/48)
+### Teardown Instructions for Contributor Recognition Automation
+
+If you need to remove contributor automation from this repository, follow these steps:
+
+1. **Remove a Contributor**
+    - Edit `.all-contributorsrc` and remove the contributor's entry from the `contributors` array.
+    - Run:
+      ```bash
+      npx all-contributors generate
+      ```
+    - Commit and push the updated README and `.all-contributorsrc`.
+
+2. **Disable Contributor Update Workflow**
+    - Delete `.github/workflows/all-contributors-update.yml`.
+    - Commit and push the change to remove the workflow.
+
+3. **Remove CLI Dependency**
+    - Uninstall the CLI tool:
+      ```bash
+      npm uninstall --save-dev all-contributors-cli
+      ```
+    - Remove any related documentation from README and `.all-contributorsrc-docs.md` if desired.
+
+4. **Clean Up Files**
+    - Optionally delete `.all-contributorsrc` and `.all-contributorsrc-docs.md` if contributor automation is no longer needed.
+
+---
 
 Thank you for contributing to LightSpeed WP automation! 🚀

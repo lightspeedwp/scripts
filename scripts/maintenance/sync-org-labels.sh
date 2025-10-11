@@ -21,7 +21,7 @@ yq -o=json '.' "$tmp/labels.yml" > "$tmp/labels.json"
 
 # Build repo list
 if [[ -n "$ONLY" ]]; then
-  mapfile -t REPOS < <(printf "%s\n" $ONLY)
+  mapfile -t REPOS < <(printf "%s\n" "$ONLY")
 else
   mapfile -t REPOS < <(gh repo list "$ORG" --archived=false --source --limit 1000 --json name -q '.[].name')
 fi

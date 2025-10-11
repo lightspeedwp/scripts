@@ -1,4 +1,7 @@
 #!/bin/bash
+
+set -euo pipefail
+
 #
 # Script Name: utility-functions.sh
 # Description: Common utility functions for LightSpeed WP automation scripts

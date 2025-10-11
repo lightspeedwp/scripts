@@ -1,0 +1,192 @@
+[
+  {
+    "id": 3,
+    "title": "Automate repo linking to project",
+    "description": "Implement and test a helper function in product_dev_project.sh to link repositories to a GitHub ProjectV2 using the linkProjectV2ToRepository GraphQL mutation. Ensure CLI entry point is documented and error handling/logging is robust. Add Bats tests for this functionality.",
+    "status": "not-started",
+    "category": "ProjectV2 Automation",
+    "subtasks": [
+      "Review current product_dev_project.sh for repo linking logic.",
+      "Refactor helper to use explicit arguments for project number/org/repo.",
+      "Add error handling and logging for failed GraphQL mutations.",
+      "Create CLI entry point with usage documentation.",
+      "Write Bats tests for success and failure cases.",
+      "Update README with usage examples."
+    ],
+    "acceptance_criteria": [
+      "Function links a repo to ProjectV2 and logs success/failure.",
+      "CLI entry is documented and tested.",
+      "Bats tests pass in CI."
+    ],
+    "prompt_examples": [
+      "How do I refactor the repo linking helper to accept explicit arguments?",
+      "Show a Bats test for repo linking error handling.",
+      "What’s the best way to log GraphQL mutation errors in bash?"
+    ]
+  },
+  {
+    "id": 4,
+    "title": "Automate team linking to project",
+    "description": "Implement and test a helper function in product_dev_project.sh to link teams to a GitHub ProjectV2 using the linkProjectV2ToTeam GraphQL mutation. Standardize CLI entry point, document usage, and add Bats tests. Validate error handling and logging.",
+    "status": "not-started",
+    "category": "ProjectV2 Automation",
+    "subtasks": [
+      "Review current product_dev_project.sh for team linking logic.",
+      "Refactor helper to use explicit arguments for project number/org/team.",
+      "Add error handling and logging for failed GraphQL mutations.",
+      "Create CLI entry point with usage documentation.",
+      "Write Bats tests for success and failure cases.",
+      "Update README with usage examples."
+    ],
+    "acceptance_criteria": [
+      "Function links a team to ProjectV2 and logs success/failure.",
+      "CLI entry is documented and tested.",
+      "Bats tests pass in CI."
+    ],
+    "prompt_examples": [
+      "How do I refactor the team linking helper to accept explicit arguments?",
+      "Show a Bats test for team linking error handling.",
+      "What’s the best way to log GraphQL mutation errors in bash?"
+    ]
+  },
+  {
+    "id": 5,
+    "title": "Automate project/field/item/status updates",
+    "description": "Create update helpers for project, fields, items, and status in product_dev_project.sh using GraphQL mutations (updateProjectV2, updateProjectV2Field, updateProjectV2ItemFieldValue, updateProjectV2StatusUpdate). Ensure modularity, CLI entry points, and comprehensive Bats test coverage.",
+    "status": "not-started",
+    "category": "ProjectV2 Automation",
+    "subtasks": [
+      "Design modular update helpers for each mutation.",
+      "Implement CLI entry points for each update action.",
+      "Add error handling and logging.",
+      "Write Bats tests for all update scenarios.",
+      "Document update helpers in README."
+    ],
+    "acceptance_criteria": [
+      "All update helpers are modular and documented.",
+      "CLI entry points are tested and documented.",
+      "Bats tests cover all update scenarios."
+    ],
+    "prompt_examples": [
+      "How do I modularize update helpers for ProjectV2 mutations?",
+      "Show a Bats test for field update error handling.",
+      "What’s the best way to structure CLI entry points for updates?"
+    ]
+  },
+  {
+    "id": 6,
+    "title": "Document automation features",
+    "description": "Update scripts/README.md to document all new script capabilities, CLI usage, helper functions, and automation scenarios. Include examples, error handling notes, and test coverage details. Ensure markdownlint compliance.",
+    "status": "not-started",
+    "category": "Documentation",
+    "subtasks": [
+      "List all helper functions and CLI entry points.",
+      "Add usage examples for each automation feature.",
+      "Document error handling and test coverage.",
+      "Ensure markdownlint compliance.",
+      "Cross-reference CodeRabbit and Copilot instructions."
+    ],
+    "acceptance_criteria": [
+      "README documents all automation features and usage.",
+      "Examples and error handling notes are included.",
+      "Markdownlint passes for README."
+    ],
+    "prompt_examples": [
+      "How do I document CLI usage for a new helper function?",
+      "Show an example README section for automation features.",
+      "What’s the best way to cross-reference instructions in documentation?"
+    ]
+  },
+  {
+    "id": 7,
+    "title": "Refactor Copilot & CodeRabbit instructions",
+    "description": "Update Copilot custom instructions and CodeRabbit .yml to specifically understand this repo's scripts, add future-proof prompt examples, and define chat modes relevant to this repo. Cross-reference instruction sets and document how they interact for automation, review, and governance.",
+    "status": "not-started",
+    "category": "AI/Automation Instructions",
+    "subtasks": [
+      "Review and update Copilot custom instructions for repo context.",
+      "Add prompt examples for common automation tasks.",
+      "Define chat modes for shell, workflow, docs, and Playwright.",
+      "Update CodeRabbit .yml with path-specific review rules.",
+      "Document instruction set interactions in README."
+    ],
+    "acceptance_criteria": [
+      "Copilot and CodeRabbit instructions are repo-aware and cross-referenced.",
+      "Prompt examples and chat modes are documented.",
+      "README explains instruction set interactions."
+    ],
+    "prompt_examples": [
+      "How do I add a chat mode for Playwright automation?",
+      "Show a prompt example for shell script review.",
+      "What’s the best way to cross-link Copilot and CodeRabbit instructions?"
+    ]
+  },
+  {
+    "id": 8,
+    "title": "Release & changelog instructions integration",
+    "description": "Expand Copilot and CodeRabbit instructions to include release and changelog automation, customer-facing changelog guidance, and best practices for using verified Marketplace actions and workflow_call. Reference changelog and release workflows in documentation and instructions.",
+    "status": "not-started",
+    "category": "Release & Changelog Automation",
+    "subtasks": [
+      "Update instructions to reference changelog and release workflows.",
+      "Add customer-facing changelog guidance.",
+      "Document best practices for workflow_call and verified actions.",
+      "Cross-link changelog/release automation in README and instructions."
+    ],
+    "acceptance_criteria": [
+      "Instructions reference changelog/release automation and best practices.",
+      "Customer-facing changelog guidance is documented.",
+      "Verified actions and workflow_call usage are explained."
+    ],
+    "prompt_examples": [
+      "How do I document changelog automation for contributors?",
+      "Show best practices for using workflow_call in GitHub Actions.",
+      "What’s the best way to recommend verified Marketplace actions?"
+    ]
+  },
+  {
+    "id": 9,
+    "title": "Playwright Copilot & MCP server automation",
+    "description": "Write Playwright-specific Copilot instructions for this repo, including MCP server auto-activation and restart logic. Ensure Playwright MCP and GitHub MCP servers are always running via workflow steps or process manager. Document setup, restart logic, and integration in README and instruction files.",
+    "status": "not-started",
+    "category": "Testing & MCP Automation",
+    "subtasks": [
+      "Draft Playwright Copilot instructions for repo context.",
+      "Add MCP server auto-activation and restart logic.",
+      "Update workflows to ensure MCP servers are always running.",
+      "Document MCP server setup and integration in README."
+    ],
+    "acceptance_criteria": [
+      "Playwright Copilot instructions are repo-specific and documented.",
+      "MCP servers are auto-activated and restarted as needed.",
+      "README covers MCP server setup and integration."
+    ],
+    "prompt_examples": [
+      "How do I ensure Playwright MCP server is always running in CI?",
+      "Show a workflow step for MCP server auto-restart.",
+      "What’s the best way to document MCP server setup for contributors?"
+    ]
+  },
+  {
+    "id": 10,
+    "title": "Resolve remaining linting and test coverage issues",
+    "description": "Review all shell scripts, markdown, and workflow files for unresolved linting errors (ShellCheck, markdownlint, ESLint, Prettier). Fix any outstanding issues, update CI workflows, and ensure all scripts and docs pass linting and tests. Document linting process and status checks in README.",
+    "status": "not-started",
+    "category": "Code Quality",
+    "subtasks": [
+      "Run all linting tools and review error output.",
+      "Fix outstanding linting issues in scripts, markdown, and workflows.",
+      "Update CI workflows to enforce linting and test coverage.",
+      "Document linting process and status checks in README."
+    ],
+    "acceptance_criteria": [
+      "All scripts and docs pass linting and tests in CI.",
+      "Linting process and status checks are documented in README."
+    ],
+    "prompt_examples": [
+      "How do I fix ShellCheck errors in a script?",
+      "Show a markdownlint config for documentation files.",
+      "What’s the best way to enforce linting in CI workflows?"
+    ]
+  }
+]
