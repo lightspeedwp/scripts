@@ -88,34 +88,38 @@ jobs:
             cp CHANGELOG.md CHANGELOG.md.bak
             
             # Create new changelog with proper format
-            cat > CHANGELOG.md << EOF
-# Changelog
-
-All notable changes to this project will be documented in this file.
-
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
-and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
-
-## [${VERSION#v}] - ${DATE}
-
-### Added
-- Initial release of LightSpeed WP automation scripts repository
-- GitHub Projects field management scripts and fixtures
-- Comprehensive documentation and governance files
-- Automated testing infrastructure with Bats
-- GitHub Actions workflows for CI/CD
-- Shell script linting and validation
-
-### Changed
-- Restructured repository for better organization
-- Updated documentation for release process
-
-### Fixed
-- Resolved GitHub Copilot API failures
-- Fixed test path mismatches
-- Corrected workflow configurations
-
-EOF
+            cat > CHANGELOG.md << 'CHANGELOG_EOF'
+          # Changelog
+          
+          All notable changes to this project will be documented in this file.
+          
+          The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+          and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+          
+          ## [0.1.0] - 2024-10-11
+          
+          ### Added
+          - Initial release of LightSpeed WP automation scripts repository
+          - GitHub Projects field management scripts and fixtures
+          - Comprehensive documentation and governance files
+          - Automated testing infrastructure with Bats
+          - GitHub Actions workflows for CI/CD
+          - Shell script linting and validation
+          
+          ### Changed
+          - Restructured repository for better organization
+          - Updated documentation for release process
+          
+          ### Fixed
+          - Resolved GitHub Copilot API failures
+          - Fixed test path mismatches
+          - Corrected workflow configurations
+          
+          CHANGELOG_EOF
+            
+            # Replace version placeholder with actual version
+            sed -i "s/## \[0\.1\.0\]/## [${VERSION#v}]/g" CHANGELOG.md
+            sed -i "s/2024-10-11/${DATE}/g" CHANGELOG.md
           fi
       
       - name: Commit version updates

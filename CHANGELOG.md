@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- Comprehensive CI/CD workflow automation
+- Badge automation for branch-specific status tracking  
+- Enhanced test coverage with multiple test suites
+- ShellCheck integration for code quality
+
+### Fixed
+- Script shebang compatibility across different systems
+- Test path resolution issues
+
 ## [0.1.0] - 2024-10-11
 
 ### Added
