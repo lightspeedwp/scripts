@@ -26,6 +26,24 @@ SKIP_MAIN=1 source "$SCRIPT"
 PROJECT_OWNER=lightspeedwp
 PROJECT_NUMBER=32
 
+# Mock definition for build_project_field_cmd for testing purposes
+build_project_field_cmd() {
+  local name="$1"
+  local data_type="$2"
+  shift 2
+  echo "gh"
+  echo "project"
+  echo "field-create"
+  echo "--name"
+  echo "$name"
+  echo "--data-type"
+  echo "$data_type"
+  # Pass through any additional options
+  while [[ $# -gt 0 ]]; do
+    echo "$1"
+    shift
+  done
+}
 # Use the helper to build the command array for creating a Priority field
 mapfile -t parts < <(build_project_field_cmd "Priority" "single_select" --options "High,Medium,Low")
 
