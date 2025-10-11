@@ -1,0 +1,45 @@
+{
+    "name": "scripts",
+    "version": "1.0.0",
+    "description": "This script sets up GitHub Projects fields used by the projects for the Tour Operator plugin and the ASNZ client. It uses the GitHub CLI (`gh`) and requires the authenticated token to include GitHub Projects scopes.",
+    "main": "index.js",
+    "directories": {
+        "doc": "docs",
+        "test": "tests"
+    },
+    "scripts": {
+        "lint:md": "markdownlint '**/*.md'",
+        "test": "echo 'Error: no test specified' && exit 1",
+        "lint:sh": "find scripts -name '*.sh' -exec shellcheck {} +",
+        "lint:js": "eslint .",
+        "format": "prettier --write .",
+        "audit": "npm audit",
+        "fund": "npm fund"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/lightspeedwp/scripts.git"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "type": "module",
+    "bugs": {
+        "url": "https://github.com/lightspeedwp/scripts/issues"
+    },
+    "homepage": "https://github.com/lightspeedwp/scripts#readme",
+    "devDependencies": {
+        "@eslint/js": "^9.37.0",
+        "@playwright/test": "^1.56.0",
+        "@typescript-eslint/eslint-plugin": "^8.46.0",
+        "@typescript-eslint/parser": "^8.46.0",
+        "all-contributors-cli": "^3.1.1",
+        "eslint": "^9.37.0",
+        "eslint-config-prettier": "^10.1.8",
+        "eslint-plugin-prettier": "^5.5.4",
+        "markdownlint-cli": "^0.45.0",
+        "playwright": "^1.56.0",
+        "prettier": "^3.6.2",
+        "shellcheck": "^4.1.0"
+    }
+}

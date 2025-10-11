@@ -1,0 +1,4 @@
+# ShellCheck configuration for scripts repo
+# See: https://github.com/koalaman/shellcheck/wiki/Directive
+# Example: disable SC1091 (source not found)
+disable=SC1091
