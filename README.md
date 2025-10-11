@@ -22,7 +22,7 @@
   </a>
   <a href="https://github.com/lightspeedwp/scripts/actions/workflows/shellcheck.yml">
   <a href="https://github.com/lightspeedwp/scripts/actions/workflows/release.yml">
-    <img src="https://github.com/lightspeedwp/scripts/actions/workflows/release.yml/badge.svg?branch=main" alt="Release Automation" />
+    <img src="https://github.com/lightspeedwp/scripts/actions/workflows/release.yml/badge.svg?branch=develop" alt="Development Status" />
   </a>
 
 
