@@ -1,0 +1,20 @@
+# Issue labeler configuration
+# Format: Regular expression matching issue body and/or title = label name
+
+# Type labels
+"\\bfeat(ure)?\\b|\\badd\\b|\\bnew\\b": "enhancement"
+"\\bbug\\b|\\bfix\\b|\\bissue\\b|\\berror\\b|\\bfail(ed|ure)?\\b|\\bcrash(es|ed)?\\b": "bug"
+"\\bdoc(s|umentation)?\\b": "documentation"
+"\\brefactor\\b|\\bclean(up)?\\b|\\brestructure\\b": "refactor"
+"\\btest(s|ing)?\\b": "test"
+
+# Component labels
+"\\bscript\\b|\\bbash\\b|\\bsh\\b": "scripts"
+"\\bworkflow\\b|\\baction\\b|\\bgithub action\\b": "workflow"
+"\\bproject\\b|\\bprojects?\\b|\\bGitHub project\\b": "project"
+"\\bclient\\b|\\bdelivery\\b|\\bclient delivery\\b": "client-delivery"
+"\\bproduct\\b|\\bproduct development\\b": "product-development"
+
+# Priority labels (if explicitly mentioned)
+"\\bhigh priority\\b|\\burgent\\b|\\bcritical\\b": "priority:high"
+"\\blow priority\\b|\\bnice to have\\b": "priority:low"

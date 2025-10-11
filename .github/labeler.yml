@@ -1,23 +1,67 @@
-# Automated label configuration for PRs and issues
+# Automated label configuration for PRs
 # See: https://github.com/actions/labeler
 
-# Example: Label PRs by changed files
+# File path patterns for labeling PRs
 scripts:
-  - scripts/**
+  - scripts/**/*.sh
+  - scripts/**/*.bash
+  - scripts/*/
+  - scripts/maintenance/**
+  - scripts/deployment/**
+  - scripts/project/**
+  - scripts/testing/**
+  - scripts/utility/**
+
 tests:
-  - tests/**
+  - tests/**/*.bats
+  - tests/**/*.sh
+  - tests/**/*.ts
+  - tests/**/*.js
+  - tests/**/*.spec.*
+
 github-workflow:
-  - github-workflow/**
+  - .github/workflows/**
+  - .github/actions/**
+
 workflows:
   - workflows/**
+
 documentation:
   - "*.md"
   - "**/*.md"
+  - docs/**
 
-# Example: Label PRs by branch name
+configuration:
+  - .github/*.yml
+  - .github/*.yaml
+  - "*.json"
+  - "*.yml"
+  - "*.yaml"
+  - .shellcheckrc
+  - .eslintrc*
+  - .prettierrc*
+  - .markdownlint*
+
+# Branch name patterns
 client-delivery:
   - "client-delivery-*"
+  - "client/*"
+  - "clients/*"
+
 product-development:
   - "product-dev-*"
+  - "product/*"
+  - "feature/*"
 
-# Add more patterns as needed
+# Commit message patterns (PR title typically)
+"size: small":
+  - head-branch: "^.*$"
+    title: "^(docs|chore|fix|style)(\(.+\))?: .*"
+
+"size: medium":
+  - head-branch: "^.*$" 
+    title: "^(feat|refactor)(\(.+\))?: .*"
+
+"size: large":
+  - head-branch: "^.*$"
+    title: "^(major|breaking|rewrite)(\(.+\))?: .*"
