@@ -5,6 +5,7 @@ You are a Python developer working on LightSpeed WP automation tools. Follow our
 ## Core Principles
 
 ### Script Structure
+
 ```python
 #!/usr/bin/env python3
 """
@@ -39,13 +40,13 @@ def main() -> int:
     try:
         args = parse_arguments()
         configure_logging(args.verbose)
-        
+
         # Main logic here
         result = process_workflow(args)
-        
+
         logger.info("Workflow completed successfully")
         return 0
-        
+
     except WorkflowError as e:
         logger.error(f"Workflow error: {e}")
         return 1
@@ -59,6 +60,7 @@ if __name__ == "__main__":
 ```
 
 ### Error Handling
+
 ```python
 import sys
 import traceback
@@ -66,7 +68,7 @@ from typing import Optional
 
 class WorkflowError(Exception):
     """Base exception for workflow errors."""
-    
+
     def __init__(self, message: str, exit_code: int = 1):
         super().__init__(message)
         self.exit_code = exit_code
@@ -89,6 +91,7 @@ def handle_error(error: Exception, context: Optional[str] = None) -> None:
 ## GitHub API Integration
 
 ### PyGithub Patterns
+
 ```python
 import os
 from github import Github, GithubException
@@ -99,36 +102,36 @@ def get_github_client() -> Github:
     token = os.getenv('GITHUB_TOKEN')
     if not token:
         raise WorkflowError("GITHUB_TOKEN environment variable required")
-    
+
     return Github(token)
 
 
 def create_pull_request(
-    repo_name: str, 
-    title: str, 
-    body: str, 
-    head: str, 
+    repo_name: str,
+    title: str,
+    body: str,
+    head: str,
     base: str = "main"
 ) -> Dict:
     """Create a pull request with error handling."""
     try:
         github = get_github_client()
         repo = github.get_repo(repo_name)
-        
+
         pr = repo.create_pull(
             title=title,
             body=body,
             head=head,
             base=base
         )
-        
+
         logger.info(f"Created PR #{pr.number}: {title}")
         return {
             "number": pr.number,
             "url": pr.html_url,
             "title": title
         }
-        
+
     except GithubException as e:
         raise WorkflowError(f"Failed to create PR: {e.data.get('message', str(e))}")
 
@@ -138,7 +141,7 @@ def update_repository_labels(repo_name: str, labels: List[Dict]) -> List[Dict]:
     github = get_github_client()
     repo = github.get_repo(repo_name)
     results = []
-    
+
     for label_data in labels:
         try:
             # Try to get existing label
@@ -168,20 +171,21 @@ def update_repository_labels(repo_name: str, labels: List[Dict]) -> List[Dict]:
                     })
                 else:
                     raise
-                    
+
         except GithubException as e:
             results.append({
                 'name': label_data['name'],
                 'status': 'failed',
                 'error': str(e)
             })
-    
+
     return results
 ```
 
 ## Configuration Management
 
 ### Environment and CLI Arguments
+
 ```python
 import argparse
 import os
@@ -203,7 +207,7 @@ class Config:
         github_token = os.getenv('GITHUB_TOKEN')
         if not github_token:
             raise WorkflowError("GITHUB_TOKEN environment variable required")
-        
+
         return cls(
             github_token=github_token,
             org_name=args.org_name or os.getenv('ORG_NAME', 'lightspeedwp'),
@@ -219,35 +223,36 @@ def parse_arguments() -> argparse.Namespace:
         description="LightSpeed WP workflow automation",
         formatter_class=argparse.RawDescriptionHelpFormatter
     )
-    
+
     parser.add_argument(
         '--dry-run',
         action='store_true',
         help='Preview changes without executing'
     )
-    
+
     parser.add_argument(
         '-v', '--verbose',
         action='store_true',
         help='Show detailed output'
     )
-    
+
     parser.add_argument(
         '--org-name',
         help='GitHub organization name'
     )
-    
+
     parser.add_argument(
         '-c', '--config-file',
         help='Configuration file path'
     )
-    
+
     return parser.parse_args()
 ```
 
 ## File Operations
 
 ### Safe File Handling
+
 ```python
 import json
 import yaml
@@ -257,10 +262,10 @@ from typing import Any, Dict, Union
 def read_json_file(file_path: Union[str, Path]) -> Dict[str, Any]:
     """Read and parse JSON file with error handling."""
     path = Path(file_path)
-    
+
     if not path.exists():
         raise WorkflowError(f"File not found: {path}")
-    
+
     try:
         with path.open('r', encoding='utf-8') as f:
             return json.load(f)
@@ -270,18 +275,18 @@ def read_json_file(file_path: Union[str, Path]) -> Dict[str, Any]:
         raise WorkflowError(f"Failed to read {path}: {e}")
 
 
-def write_json_file(file_path: Union[str, Path], data: Dict[str, Any], 
+def write_json_file(file_path: Union[str, Path], data: Dict[str, Any],
                    indent: int = 2) -> None:
     """Write data to JSON file with error handling."""
     path = Path(file_path)
-    
+
     try:
         # Create parent directories if needed
         path.parent.mkdir(parents=True, exist_ok=True)
-        
+
         with path.open('w', encoding='utf-8') as f:
             json.dump(data, f, indent=indent, ensure_ascii=False)
-        
+
         logger.info(f"Written: {path}")
     except Exception as e:
         raise WorkflowError(f"Failed to write {path}: {e}")
@@ -290,15 +295,15 @@ def write_json_file(file_path: Union[str, Path], data: Dict[str, Any],
 def create_backup(file_path: Union[str, Path]) -> Path:
     """Create a backup of the file with timestamp."""
     from datetime import datetime
-    
+
     path = Path(file_path)
-    
+
     if not path.exists():
         raise WorkflowError(f"Cannot backup non-existent file: {path}")
-    
+
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     backup_path = path.with_suffix(f".backup.{timestamp}{path.suffix}")
-    
+
     try:
         backup_path.write_bytes(path.read_bytes())
         logger.info(f"Backup created: {backup_path}")
@@ -310,6 +315,7 @@ def create_backup(file_path: Union[str, Path]) -> Path:
 ## Testing Patterns
 
 ### Pytest Structure
+
 ```python
 # tests/test_workflow_script.py
 import pytest
@@ -321,47 +327,47 @@ from workflow_script import process_workflow, WorkflowError, Config
 
 class TestWorkflowScript:
     """Test cases for workflow script."""
-    
+
     def setup_method(self):
         """Set up test environment."""
         self.config = Config(
             github_token="fake-token",
             dry_run=True
         )
-    
+
     def test_config_from_env_missing_token(self, monkeypatch):
         """Test config creation fails without GitHub token."""
         monkeypatch.delenv("GITHUB_TOKEN", raising=False)
-        
+
         args = Mock(
             org_name=None,
             dry_run=False,
             verbose=False,
             config_file=None
         )
-        
+
         with pytest.raises(WorkflowError, match="GITHUB_TOKEN.*required"):
             Config.from_env_and_args(args)
-    
+
     @patch('workflow_script.get_github_client')
     def test_process_workflow_success(self, mock_github):
         """Test successful workflow processing."""
         mock_client = Mock()
         mock_github.return_value = mock_client
-        
+
         result = process_workflow(self.config)
-        
+
         assert result is not None
         mock_github.assert_called_once()
-    
+
     def test_file_operations(self, tmp_path):
         """Test file reading and writing."""
         test_file = tmp_path / "test.json"
         test_data = {"key": "value"}
-        
+
         write_json_file(test_file, test_data)
         result = read_json_file(test_file)
-        
+
         assert result == test_data
 
 
@@ -377,6 +383,7 @@ def mock_github_repo():
 ```
 
 ### Test Configuration
+
 ```python
 # conftest.py
 import pytest
@@ -397,16 +404,17 @@ def temp_config_file(tmp_path):
         "org_name": "test-org",
         "repositories": ["repo1", "repo2"]
     }
-    
+
     with config_file.open('w') as f:
         json.dump(config_data, f)
-    
+
     return config_file
 ```
 
 ## Logging and Monitoring
 
 ### Structured Logging
+
 ```python
 import logging
 import json
@@ -415,7 +423,7 @@ from typing import Any, Dict
 
 class JsonFormatter(logging.Formatter):
     """JSON formatter for structured logging."""
-    
+
     def format(self, record: logging.LogRecord) -> str:
         log_data = {
             'timestamp': datetime.utcnow().isoformat(),
@@ -423,26 +431,27 @@ class JsonFormatter(logging.Formatter):
             'message': record.getMessage(),
             'logger': record.name
         }
-        
+
         if record.exc_info:
             log_data['exception'] = self.formatException(record.exc_info)
-        
+
         return json.dumps(log_data)
 
 
 def configure_logging(verbose: bool = False) -> None:
     """Configure logging with appropriate level and format."""
     level = logging.DEBUG if verbose else logging.INFO
-    
+
     handler = logging.StreamHandler()
     handler.setFormatter(JsonFormatter())
-    
+
     root_logger = logging.getLogger()
     root_logger.setLevel(level)
     root_logger.addHandler(handler)
 ```
 
 ### Progress Tracking
+
 ```python
 from tqdm import tqdm
 from typing import Iterable, TypeVar, Callable
@@ -456,7 +465,7 @@ def process_with_progress(
 ) -> List[Any]:
     """Process items with progress bar."""
     results = []
-    
+
     for item in tqdm(items, desc=description):
         try:
             result = processor(item)
@@ -464,13 +473,14 @@ def process_with_progress(
         except Exception as e:
             logger.error(f"Failed to process {item}: {e}")
             results.append(None)
-    
+
     return results
 ```
 
 ## Performance and Best Practices
 
 ### Async Operations
+
 ```python
 import asyncio
 import aiohttp
@@ -486,9 +496,9 @@ async def fetch_repository_data(
         'Authorization': f'token {token}',
         'Accept': 'application/vnd.github.v3+json'
     }
-    
+
     url = f"https://api.github.com/repos/{repo_name}"
-    
+
     async with session.get(url, headers=headers) as response:
         if response.status == 200:
             return await response.json()
@@ -506,11 +516,12 @@ async def process_repositories_async(
             fetch_repository_data(session, repo, token)
             for repo in repo_names
         ]
-        
+
         return await asyncio.gather(*tasks, return_exceptions=True)
 ```
 
 ### Caching
+
 ```python
 from functools import lru_cache
 import time
@@ -518,11 +529,11 @@ from typing import Any, Callable, Dict
 
 class TimedCache:
     """Simple time-based cache implementation."""
-    
+
     def __init__(self, ttl_seconds: int = 300):
         self.ttl = ttl_seconds
         self._cache: Dict[str, Dict[str, Any]] = {}
-    
+
     def get(self, key: str) -> Any:
         if key in self._cache:
             if time.time() - self._cache[key]['timestamp'] < self.ttl:
@@ -530,7 +541,7 @@ class TimedCache:
             else:
                 del self._cache[key]
         return None
-    
+
     def set(self, key: str, value: Any) -> None:
         self._cache[key] = {
             'value': value,
@@ -541,20 +552,20 @@ class TimedCache:
 def cached_github_call(cache_key: str):
     """Decorator for caching GitHub API calls."""
     cache = TimedCache(ttl_seconds=300)  # 5 minutes
-    
+
     def decorator(func: Callable) -> Callable:
         def wrapper(*args, **kwargs):
             key = f"{cache_key}:{hash(str(args) + str(kwargs))}"
-            
+
             result = cache.get(key)
             if result is not None:
                 logger.debug(f"Cache hit for {key}")
                 return result
-            
+
             result = func(*args, **kwargs)
             cache.set(key, result)
             return result
-        
+
         return wrapper
     return decorator
 ```
@@ -562,6 +573,7 @@ def cached_github_call(cache_key: str):
 ## Integration with LightSpeed Workflow
 
 ### Requirements File
+
 ```text
 # requirements.txt
 PyGithub>=1.58.0
@@ -580,6 +592,7 @@ mypy>=0.991
 ```
 
 ### Setup Configuration
+
 ```python
 # setup.py or pyproject.toml configuration
 from setuptools import setup, find_packages

@@ -4,7 +4,6 @@ about: Suggest a new automation script or workflow enhancement
 title: '[FEATURE] '
 labels: ['enhancement']
 assignees: ''
-
 ---
 
 **Is your feature request related to a problem? Please describe.**
@@ -15,6 +14,7 @@ A clear and concise description of what you want to happen.
 
 **Script/Workflow type**
 What type of automation would this be?
+
 - [ ] Deployment script
 - [ ] Maintenance script
 - [ ] Utility script
@@ -26,6 +26,7 @@ What type of automation would this be?
 A clear and concise description of any alternative solutions or features you've considered.
 
 **Implementation considerations**
+
 - Would this be a new script or modification to existing one?
 - What inputs/parameters would be needed?
 - What external dependencies might be required?

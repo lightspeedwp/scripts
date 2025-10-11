@@ -9,11 +9,13 @@ All members, contributors, and leaders pledge to make participation in our proje
 ## Our Standards
 
 Examples of positive behavior:
+
 - Welcoming and inclusive language
 - Respectful of viewpoints
 - Gracefully accepting constructive criticism
 
 Unacceptable behavior:
+
 - Insults, trolling, harassment
 
 ## Enforcement

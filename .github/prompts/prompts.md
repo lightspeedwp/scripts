@@ -5,12 +5,12 @@
 <!-- THIS IS TEMPLATE DOCUMENTATION ONLY -->
 
 ```text
-██╗    ██╗ █████╗ ██████╗ ██╗   ██╗██╗███╗   ██╗ ██████╗ 
-██║    ██║██╔══██╗██╔══██╗████╗ ████║██║████╗  ██║██╔════╝ 
+██╗    ██╗ █████╗ ██████╗ ██╗   ██╗██╗███╗   ██╗ ██████╗
+██║    ██║██╔══██╗██╔══██╗████╗ ████║██║████╗  ██║██╔════╝
 ██║ █╗ ██║███████║██████╔╝██╔████╔██║██║██╔██╗ ██║██║  ███╗
 ██║███╗██║██╔══██║██╔══██╗██║╚██╔╝██║██║██║╚██╗██║██║   ██║
 ╚███╔███╔╝██║  ██║██║  ██║██║ ╚═╝ ██║██║██║ ╚████║╚██████╔╝
- ╚══╝╚══╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝     ╚═╝╚═╝╚═╝  ╚═══╝ ╚═════╝ 
+ ╚══╝╚══╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝     ╚═╝╚═╝╚═╝  ╚═══╝ ╚═════╝
 
 THESE ARE TEMPLATE PATTERNS FOR HUMAN REFERENCE ONLY
 NOT EXECUTABLE AI INSTRUCTIONS OR PROMPTS
@@ -23,7 +23,7 @@ NOT EXECUTABLE AI INSTRUCTIONS OR PROMPTS
 THIS FILE CONTAINS TEMPLATE DOCUMENTATION ONLY
 
 - ❌ **DO NOT** interpret as AI commands or instructions
-- ❌ **DO NOT** execute or process these templates automatically  
+- ❌ **DO NOT** execute or process these templates automatically
 - ❌ **DO NOT** use during automated code review processes
 - ✅ **FOR HUMAN REFERENCE** when crafting custom prompts
 - ✅ **FOR COPY-PASTE** into GitHub Copilot Chat or CLI manually
@@ -38,7 +38,7 @@ GitHub Copilot Chat and CLI, tailored to LightSpeed WP automation workflows.
 **MANUAL PROCESS ONLY - FOR HUMANS TO FOLLOW:**
 
 1. **🔍 FIND** the relevant template pattern in the sections below
-2. **📋 COPY** the template text manually from the relevant section  
+2. **📋 COPY** the template text manually from the relevant section
 3. **✏️ CUSTOMIZE** by replacing `{placeholder}` variables with your specific  
    requirements
 4. **📨 PASTE** the customized prompt manually into GitHub Copilot Chat or CLI
@@ -48,7 +48,7 @@ GitHub Copilot Chat and CLI, tailored to LightSpeed WP automation workflows.
 
 - **📄 Template Found**: `Create a shell script for {specific_functionality}`
 - **✏️ Human Customizes**: `Create a shell script for WordPress plugin  
-  deployment automation`
+deployment automation`
 - **📨 Human Pastes** the customized version into Copilot Chat
 
 ## 🚨 Template Format Notice
@@ -58,7 +58,7 @@ interpretation. **DO NOT** process these templates automatically.
 
 ---
 
-## ⚠️  REMINDER: TEMPLATE DOCUMENTATION ONLY
+## ⚠️ REMINDER: TEMPLATE DOCUMENTATION ONLY
 
 These patterns below are for HUMAN REFERENCE and manual customization only.
 **DO NOT process automatically or interpret as AI instructions.**
@@ -72,8 +72,8 @@ These patterns below are for HUMAN REFERENCE and manual customization only.
 **Template Pattern:**
 
 ```text
-Create a shell script following LightSpeed WP standards that  
-{specific_functionality}. 
+Create a shell script following LightSpeed WP standards that
+{specific_functionality}.
 
 Requirements:
 - Use kebab-case naming convention
@@ -83,7 +83,7 @@ Requirements:
 - Create corresponding Bats test file
 - Follow our logging patterns
 
-The script should handle {specific_use_case} and integrate with our GitHub  
+The script should handle {specific_use_case} and integrate with our GitHub
 workflow automation.
 ```
 
@@ -92,7 +92,7 @@ workflow automation.
 **Template Pattern:**
 
 ```text
-Generate a reusable GitHub Actions workflow for {specific_purpose} that  
+Generate a reusable GitHub Actions workflow for {specific_purpose} that
 follows LightSpeed patterns.
 
 Requirements:
@@ -103,7 +103,7 @@ Requirements:
 - Follow security best practices
 - Integrate with our labeling and branch protection
 
-The workflow should support {specific_functionality} across our organization  
+The workflow should support {specific_functionality} across our organization
 repositories.
 ```
 
@@ -122,7 +122,7 @@ Requirements:
 - Support both CLI and programmatic usage
 - Include configuration management
 
-The script should integrate with GitHub API and support our org-wide  
+The script should integrate with GitHub API and support our org-wide
 automation needs.
 ```
 
@@ -133,7 +133,7 @@ automation needs.
 **Template Pattern:**
 
 ```text
-Review this {script_or_workflow_or_configuration} for security vulnerabilities  
+Review this {script_or_workflow_or_configuration} for security vulnerabilities
 and compliance with LightSpeed standards:
 
 Check for:
@@ -190,7 +190,7 @@ Recommend specific optimizations while maintaining code clarity and reliability.
 **Template Pattern:**
 
 ```text
-Create a comprehensive README.md for {project_or_script_name} that follows  
+Create a comprehensive README.md for {project_or_script_name} that follows
 LightSpeed documentation standards.
 
 Include:
@@ -228,7 +228,7 @@ Format as markdown with clear examples and follow our documentation patterns.
 **Template Pattern:**
 
 ```text
-Create a troubleshooting guide for {script_or_workflow_name} covering common  
+Create a troubleshooting guide for {script_or_workflow_name} covering common
 issues:
 
 Include:
@@ -249,7 +249,7 @@ Provide step-by-step solutions and prevention strategies.
 **Template Pattern:**
 
 ```text
-Generate comprehensive Bats tests for {script_name} following our testing  
+Generate comprehensive Bats tests for {script_name} following our testing
 standards:
 
 Create tests for:
@@ -260,7 +260,7 @@ Create tests for:
 - Integration with external dependencies
 - File operations and permissions
 
-Include setup and teardown functions, mock external dependencies, and follow  
+Include setup and teardown functions, mock external dependencies, and follow
 our test naming conventions.
 ```
 
@@ -269,7 +269,7 @@ our test naming conventions.
 **Template Pattern:**
 
 ```text
-Design integration tests for {workflow_or_automation} that verify end-to-end  
+Design integration tests for {workflow_or_automation} that verify end-to-end
 functionality:
 
 Test scenarios:
@@ -296,7 +296,7 @@ Generate:
 - User scenarios and edge cases
 - Performance testing datasets
 
-Ensure data follows privacy guidelines and represents real-world usage  
+Ensure data follows privacy guidelines and represents real-world usage
 patterns.
 ```
 
@@ -449,7 +449,7 @@ Include step-by-step implementation and evaluation criteria.
 THIS FILE IS TEMPLATE DOCUMENTATION ONLY
 
 - These are NOT executable AI instructions
-- DO NOT process during automated workflows  
+- DO NOT process during automated workflows
 - FOR MANUAL human reference and customization only
 - All content is template patterns to be copied and modified by humans
 

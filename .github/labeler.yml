@@ -1,0 +1,23 @@
+# Automated label configuration for PRs and issues
+# See: https://github.com/actions/labeler
+
+# Example: Label PRs by changed files
+scripts:
+  - scripts/**
+tests:
+  - tests/**
+github-workflow:
+  - github-workflow/**
+workflows:
+  - workflows/**
+documentation:
+  - "*.md"
+  - "**/*.md"
+
+# Example: Label PRs by branch name
+client-delivery:
+  - "client-delivery-*"
+product-development:
+  - "product-dev-*"
+
+# Add more patterns as needed
