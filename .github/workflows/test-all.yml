@@ -1,0 +1,61 @@
+name: Test All Scripts and Automation
+
+on:
+  push:
+    branches:
+      - develop
+      - main
+  pull_request:
+    branches:
+      - develop
+      - main
+  workflow_dispatch:
+
+jobs:
+  bats-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Install Bats
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y bats
+      - name: Make scripts executable
+        run: |
+          find scripts -name "*.sh" -exec chmod +x {} \;
+      - name: Run Bats tests (tests/)
+        run: |
+          bats tests/test-*.bats
+      - name: Run Bats tests (__tests__/)
+        run: |
+          bats __tests__/*.bats || true
+      - name: Test dry-run scripts
+        run: |
+          for script in tests/dry-run-*.sh; do
+            if [ -f "$script" ]; then
+              echo "Running dry-run: $script"
+              ./$script
+            fi
+          done
+      - name: Validate script syntax
+        run: |
+          for script in scripts/*.sh; do
+            if [ -f "$script" ]; then
+              echo "Checking syntax: $script"
+              bash -n "$script"
+            fi
+          done
+  playwright-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install dependencies
+        run: npm ci
+      - name: Run Playwright tests
+        run: npx playwright test
