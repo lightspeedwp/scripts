@@ -97,10 +97,8 @@ See the automation workflow and utility scripts for usage details and integratio
 
 For update-projects.sh usage, flags, testing, and code comment standards, see [update-projects/README.update-projects.md](../update-projects/README.update-projects.md).
 
-\n## Unified Project, Issue, and PR Automation Strategy
-\n## Advanced Project Automation Scripts
 
-
+## Advanced Project Automation Scripts
 `product_dev_project.sh` and related scripts automate GitHub ProjectV2 provisioning, field management, item/issue linking, and governance. Features include:
 
 - Create/update projects, fields, items, and status
