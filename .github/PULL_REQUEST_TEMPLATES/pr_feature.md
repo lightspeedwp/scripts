@@ -1,3 +1,12 @@
+---
+name: "Feature PR"
+about: "New features or enhancements"
+title: "feat: {short summary}"
+labels: ["status:needs-review", "area:feature"]
+---
+
+# Feature Pull Request
+
 > This repository enforces changelog, release, and label automation for all PRs and issues.  
 > See the organisation-wide [Automation Governance & Release Strategy](https://github.com/lightspeedwp/.github/blob/main/AUTOMATION_GOVERNANCE.md) for contributor rules.
 
@@ -15,25 +24,25 @@ Closes #
 Required for release automation.
 Format: Keep a Changelog.
 Categories: Added, Changed, Fixed, Removed.
-User-facing notes only. Internal-only PRs (rare) may use the `skip-changelog` label.
+User-facing notes only. Internal-only PRs (rare) may use the skip-changelog label.
 Example:
-### Changed
-- Bump WooCommerce tested version to 8.1.
+### Added
+- Express PayPal checkout for cart and order. (Closes #123, @author)
 ### Fixed
-- Correct VAT rounding on order totals in EU regions. (Fixes #456)
+- Resolved checkout validation for NL postcodes. (Fixes #456)
 -->
 
 ### Added
-- _Describe the addition_
+- [placeholder]
 
 ### Changed
-- _Describe the change_
+- [placeholder]
 
 ### Fixed
-- _Describe the fix_
+- [placeholder]
 
 ### Removed
-- _Describe the removal_
+- [placeholder]
 
 <!--
 If no user-facing changelog entry is needed, apply the skip-changelog label to this PR.
