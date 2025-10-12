@@ -1,26 +1,40 @@
 # Agents Directory & Registry
 
-This repository currently does not include any dedicated agent implementations or an `./github/agents/` folder. All agent logic is handled via automation scripts, Copilot instructions, and workflow integrations documented elsewhere.
+This repository contains AI and automation agents to assist with GitHub project management and issue workflow automation.
 
 ## Purpose
 
-This file serves as a placeholder and registry for future agent implementations, including:
+This file serves as a registry for agent implementations in the repository, including:
 - Custom GitHub Copilot agents
-- CodeRabbit review agents
+- Issue management automation agents
 - Workflow automation agents
 - MCP server agents
 - Any other AI or automation agents
 
-## Current State
+## Current Agents
 
-- **No agents are present in the root or `./github/agents/` directory.**
-- All agent-related logic is managed via:
-  - [Copilot instructions](.github/copilot-instructions.md)
-  - [Custom instructions](.github/custom-instructions.md)
-  - [Prompts](.github/prompts/prompts.md)
-  - [Chat modes](.github/chatmodes/chatmodes.md)
-  - [Automation scripts](scripts/)
-  - [Workflows](.github/workflows/)
+### issue-type-agent
+
+- **Purpose:** Automatically analyzes GitHub issues and assigns appropriate issue types in GitHub Projects
+- **Location:** .github/agents/issue-type-agent.js
+- **Integration:** GitHub Actions (.github/workflows/auto-issue-type.yml)
+- **Usage:** Automatically runs when issues are opened or reopened
+- **Functionality:**
+  - Analyzes issue content, title, and labels
+  - Determines appropriate issue type (Bug, Feature, Task, etc.)
+  - Updates GitHub ProjectsV2 issue type field
+  - Adds issues to relevant projects if not already added
+
+## Additional Automation Logic
+
+Additional agent-related logic is managed via:
+
+- [Copilot instructions](.github/copilot-instructions.md)
+- [Custom instructions](.github/custom-instructions.md)
+- [Prompts](.github/prompts/prompts.md)
+- [Chat modes](.github/chatmodes/chatmodes.md)
+- [Automation scripts](scripts/)
+- [Workflows](.github/workflows/)
 
 ## How to Add Agents
 

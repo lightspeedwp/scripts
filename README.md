@@ -129,9 +129,21 @@ npx playwright test
 ### Key Automation Features
 - MCP/Playwright server auto-activation and restart
 - GitHub ProjectV2 automation (create, update, link, field/item/status management)
+- Automatic issue type assignment for GitHub Projects
 - Contributor recognition automation
 - Badge and changelog update automation
 - Stricter linting and test enforcement via CodeRabbit and CI
+
+### Automation Agents
+
+The repository includes specialized automation agents that help with various tasks:
+
+- **Issue Type Agent**: Automatically categorizes GitHub issues in Projects based on content analysis
+  - Location: `.github/agents/issue-type-agent.js`
+  - Triggered by: Issues being opened or reopened
+  - Functionality: Analyzes issue content and sets appropriate issue type in GitHub Projects
+
+For more information on available agents, see [AGENTS.md](AGENTS.md).
 
 ### CLI Usage Examples
 
