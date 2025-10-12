@@ -26,7 +26,7 @@ github-workflow:
 workflows:
   - workflows/**
 
-documentation:
+area:documentation:
   - "*.md"
   - "**/*.md"
   - docs/**
@@ -41,6 +41,35 @@ configuration:
   - .eslintrc*
   - .prettierrc*
   - .markdownlint*
+
+# Language labels
+lang:js:
+  - "**/*.js"
+  - "**/*.jsx"
+  - "**/*.ts"
+  - "**/*.tsx"
+  - package.json
+  - package-lock.json
+  - tsconfig.json
+  - .eslintrc*
+  
+lang:php:
+  - "**/*.php"
+  - composer.json
+  - composer.lock
+  - phpunit.xml*
+  
+lang:css:
+  - "**/*.css"
+  - "**/*.scss"
+  - "**/*.sass"
+  - "**/*.less"
+  
+lang:bash:
+  - "**/*.sh"
+  - "**/*.bash"
+  - .bashrc
+  - .bash_profile
 
 # Branch name patterns
 client-delivery:

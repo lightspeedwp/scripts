@@ -15,6 +15,19 @@ DRY_RUN="${DRY_RUN:-true}"
 STRICT_PRUNE="${STRICT_PRUNE:-false}"
 PROTECT_REGEX="${PROTECT_REGEX:-}"
 ONLY="${ONLY:-}"
+
+# Mapping for common non-standard labels to standardized versions
+declare -A LABEL_MAPPINGS=(
+  ["php"]="lang:php"
+  ["js"]="lang:js"
+  ["javascript"]="lang:js"
+  ["css"]="lang:css"
+  ["bash"]="lang:bash"
+  ["shell"]="lang:bash"
+  ["python"]="lang:python"
+  ["documentation"]="area:documentation"
+  ["docs"]="area:documentation"
+)
 # ----------------------------------------
 
 tmpdir="$(mktemp -d)"
@@ -78,6 +91,31 @@ for repo in "${REPOS[@]}"; do
     if [[ -n "$PROTECT_REGEX" ]] && [[ "$ex" =~ $PROTECT_REGEX ]]; then
       echo "  keeping protected: $ex"
       continue
+    fi
+    
+    # Check if this label has a standardized version
+    if [[ -n "${LABEL_MAPPINGS[$ex]:-}" ]]; then
+      standardized="${LABEL_MAPPINGS[$ex]}"
+      if grep -Fxq "$standardized" "$tmpdir/canonical.txt"; then
+        if [[ "$DRY_RUN" == "true" ]]; then
+          echo "  would migrate: $ex → $standardized"
+        else
+          # Get issues with this label
+          tmpfile="$tmpdir/issues_$ex.json"
+          gh api "repos/$ORG/$repo/issues?labels=$(uri "$ex")&state=all&per_page=100" --paginate > "$tmpfile"
+          
+          # Add standardized label to those issues
+          jq -r '.[].number' "$tmpfile" | while read -r issue_num; do
+            gh api --method POST "repos/$ORG/$repo/issues/$issue_num/labels" -f "labels[]=$standardized"
+            echo "  added $standardized to issue #$issue_num"
+          done
+          
+          # Delete the non-standard label
+          gh api --silent --method DELETE "repos/$ORG/$repo/labels/$(uri "$ex")" || true
+          echo "  migrated: $ex → $standardized"
+        fi
+        continue
+      fi
     fi
 
     if [[ "$STRICT_PRUNE" == "true" ]]; then

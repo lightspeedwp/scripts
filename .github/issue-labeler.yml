@@ -6,7 +6,7 @@ enhancement:
   - '\bfeat(ure)?\b|\badd\b|\bnew\b'
 bug:
   - '\bbug\b|\bfix\b|\bissue\b|\berror\b|\bfail(ed|ure)?\b|\bcrash(es|ed)?\b'
-documentation:
+area:documentation:
   - '\bdoc(s|umentation)?\b'
 refactor:
   - '\brefactor\b|\bclean(up)?\b|\brestructure\b'
