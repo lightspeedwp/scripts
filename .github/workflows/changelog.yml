@@ -58,3 +58,8 @@ jobs:
           fi
           
           echo "✅ Changelog format looks good"
+
+      - name: Validate changelog links (PR/Issue/Commit)
+        run: |
+          chmod +x scripts/maintenance/validate-changelog-links.sh
+          scripts/maintenance/validate-changelog-links.sh
