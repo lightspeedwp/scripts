@@ -1,9 +1,9 @@
 ---
 
-name: "Feature PR"
-about: "New features or enhancements"
-title: "feat: {short summary}"
-labels: ["status:needs-review", "area:feature"]
+name: "Feature PR"  
+about: "New features or enhancements"  
+title: "feat: {short summary}"  
+labels: ["status:needs-review", "area:feature"]  
 
 ---
 
@@ -26,7 +26,7 @@ Closes #
 Required for release automation.
 Format: Keep a Changelog.
 Categories: Added, Changed, Fixed, Removed.
-User-facing notes only. Internal-only PRs (rare) may use the skip-changelog label.
+User-facing notes only. Internal-only PRs (rare) may use the `skip-changelog` label.
 Example:
 ### Added
 - Express PayPal checkout for cart and order. (Closes #123, @author)
@@ -35,15 +35,19 @@ Example:
 -->
 
 ### Added
+
 - [placeholder]
 
 ### Changed
+
 - [placeholder]
 
 ### Fixed
+
 - [placeholder]
 
 ### Removed
+
 - [placeholder]
 
 <!--

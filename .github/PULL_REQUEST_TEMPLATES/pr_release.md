@@ -1,9 +1,9 @@
 ---
 
-name: "Release PR"
-about: "Release new features or enhancements"
-title: "release: {short summary}"
-labels: ["status:needs-review", "area:release"]
+name: "Release PR"  
+about: "Release new features or enhancements"  
+title: "release: {short summary}"  
+labels: ["status:needs-review", "area:release"]  
 
 ---
 
@@ -28,7 +28,7 @@ Includes:
 Required for release automation.
 Format: Keep a Changelog.
 Categories: Added, Changed, Fixed, Removed.
-User-facing notes only. Internal-only PRs (rare) may use the skip-changelog label.
+User-facing notes only. Internal-only PRs (rare) may use the `skip-changelog` label.
 Example:
 ### Added
 - New VAT support for EU regions.
@@ -37,15 +37,19 @@ Example:
 -->
 
 ### Added
+
 - [placeholder]
 
 ### Changed
+
 - [placeholder]
 
 ### Fixed
+
 - [placeholder]
 
 ### Removed
+
 - [placeholder]
 
 <!--

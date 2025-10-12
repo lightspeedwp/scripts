@@ -1,9 +1,9 @@
 ---
 
-name: "Build/CI PR"
-about: "Pipelines, linting, packaging, or release automation"
-title: "build(ci): {short summary}"
-labels: ["status:needs-review", "area:ci"]
+name: "Build/CI PR"  
+about: "Pipelines, linting, packaging, or release automation"  
+title: "build(ci): {short summary}"  
+labels: ["status:needs-review", "area:ci"]  
 
 ---
 
@@ -51,15 +51,19 @@ Example:
 -->
 
 ### Added
+
 - [placeholder]
 
 ### Changed
+
 - [placeholder]
 
 ### Fixed
+
 - [placeholder]
 
 ### Removed
+
 - [placeholder]
 
 <!--
@@ -67,6 +71,8 @@ If no user-facing changelog entry is needed, apply the skip-changelog label to t
 -->
 
 ---
+
+
 ### Checklist (Global DoD / PR)
 
 - [ ] All AC met and demonstrated

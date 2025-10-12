@@ -1,16 +1,11 @@
 ---
 
-name: "Dependencies/Maintenance PR"
-about: "Routine upkeep: dependency bumps, lint/format, low-risk hygiene"
-title: "chore(deps): {packages}"
-labels: ["status:needs-review", "area:dependencies"]
+name: "Dependencies/Maintenance PR"  
+about: "Routine upkeep: dependency bumps, lint/format, low-risk hygiene"  
+title: "chore(deps): {packages}"  
+labels: ["status:needs-review", "area:dependencies"]  
 
 ---
-
-## Dependencies/Maintenance Pull Request
-
-> This repository enforces changelog, release, and label automation for all PRs and issues.  
-> See the organisation-wide [Automation Governance & Release Strategy](https://github.com/lightspeedwp/.github/blob/main/AUTOMATION_GOVERNANCE.md) for required rules.
 
 # Dependencies/Maintenance Pull Request
 
@@ -54,15 +49,19 @@ Example:
 -->
 
 ### Added
+
 - [placeholder]
 
 ### Changed
+
 - [placeholder]
 
 ### Fixed
+
 - [placeholder]
 
 ### Removed
+
 - [placeholder]
 
 <!--
@@ -70,6 +69,8 @@ If no user-facing changelog entry is needed, apply the skip-changelog label to t
 -->
 
 ---
+
+
 ### Checklist (Global DoD / PR)
 
 - [ ] All AC met and demonstrated

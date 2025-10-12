@@ -35,16 +35,20 @@ Example:
 -->
 
 ### Added
-- _Describe the addition_
+
+- [placeholder]
 
 ### Changed
-- _Describe the change_
+
+- [placeholder]
 
 ### Fixed
-- _Describe the fix_
+
+- [placeholder]
 
 ### Removed
-- _Describe the removal_
+
+- [placeholder]
 
 <!--
 If no user-facing changelog entry is needed, apply the skip-changelog label to this PR.

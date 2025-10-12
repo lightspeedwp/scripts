@@ -1,9 +1,9 @@
 ---
 
-name: "Hotfix PR"
-about: "Critical fixes for production issues"
-title: "fix: {short summary}"
-labels: ["status:needs-review", "area:hotfix"]
+name: "Hotfix PR"  
+about: "Critical fixes for production issues"  
+title: "fix: {short summary}"  
+labels: ["status:needs-review", "area:hotfix"]  
 
 ---
 
@@ -32,22 +32,26 @@ Summarise the incident or bug and the root cause (add links if needed).
 Required for release automation.
 Format: Keep a Changelog.
 Categories: Added, Changed, Fixed, Removed.
-User-facing notes only. Internal-only PRs (rare) may use the skip-changelog label.
+User-facing notes only. Internal-only PRs (rare) may use the `skip-changelog` label.
 Example:
 ### Fixed
 - Checkout fails when shipping method changes on mobile. (Fixes #456)
 -->
 
 ### Added
+
 - [placeholder]
 
 ### Changed
+
 - [placeholder]
 
 ### Fixed
+
 - [placeholder]
 
 ### Removed
+
 - [placeholder]
 
 <!--

@@ -1,9 +1,9 @@
 ---
 
-name: "Refactor PR"
-about: "Internal code improvement; no external behaviour change"
-title: "refactor: {scope}"
-labels: ["status:needs-review"]
+name: "Refactor PR"  
+about: "Internal code improvement; no external behaviour change"  
+title: "refactor: {scope}"  
+labels: ["status:needs-review"]  
 
 ---
 
@@ -62,15 +62,19 @@ Example:
 -->
 
 ### Added
+
 - [placeholder]
 
 ### Changed
+
 - [placeholder]
 
 ### Fixed
+
 - [placeholder]
 
 ### Removed
+
 - [placeholder]
 
 <!--
@@ -78,6 +82,8 @@ If no user-facing changelog entry is needed, apply the skip-changelog label to t
 -->
 
 ---
+
+
 ### Checklist (Global DoD / PR)
 
 - [ ] All AC met and demonstrated

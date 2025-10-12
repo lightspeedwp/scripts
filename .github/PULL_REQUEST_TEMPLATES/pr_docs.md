@@ -1,9 +1,9 @@
 ---
 
-name: "Docs-only PR"
-about: "Documentation updates: READMEs, guides, contributor docs"
-title: "docs: {short summary}"
-labels: ["status:needs-review", "lang:md"]
+name: "Docs-only PR"  
+about: "Documentation updates: READMEs, guides, contributor docs"  
+title: "docs: {short summary}"  
+labels: ["status:needs-review", "lang:md"]  
 
 ---
 
@@ -50,15 +50,19 @@ Example:
 -->
 
 ### Added
+
 - [placeholder]
 
 ### Changed
+
 - [placeholder]
 
 ### Fixed
+
 - [placeholder]
 
 ### Removed
+
 - [placeholder]
 
 <!--
@@ -66,6 +70,8 @@ If no user-facing changelog entry is needed, apply the skip-changelog label to t
 -->
 
 ---
+
+
 ### Checklist (Global DoD / PR)
 
 - [ ] All AC met and demonstrated
