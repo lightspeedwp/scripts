@@ -27,8 +27,8 @@ jobs:
             secret-name: ${{ secrets.SECRET_NAME }}
 ```
 
-\n## Workflow Categories
-\n## Integration with Project Automation Scripts
+## Workflow Categories
+## Integration with Project Automation Scripts
 
 Workflows are tightly integrated with scripts like `product_dev_project.sh` to automate project provisioning, field sync, and governance. Status checks and merge requirements are enforced via CodeRabbit and CI.
 
