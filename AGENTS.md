@@ -32,6 +32,25 @@ This file serves as a registry for agent implementations in the repository, incl
   - Integrates with PR and issue templates
   - Follows the standard branch naming conventions when modified
 
+### label-standardization-agent
+
+- **Purpose:** Enforces standardized labels across repositories, preventing redundant labels
+- **Location:** .github/agents/label-standardization-agent.js
+- **Integration:** GitHub Actions (.github/workflows/label-standardization.yml)
+- **Usage:** Runs weekly and can be triggered manually via workflow_dispatch
+- **Standards:** Aligned with org-wide-labels-v1-11.md and standard prefixes
+- **Functionality:**
+  - Detects non-standard labels with standard equivalents (e.g., "php" vs "lang:php")
+  - Migrates issues/PRs from non-standard to standard labels
+  - Removes redundant non-standard labels after migration
+  - Supports dry-run mode for testing before applying changes
+- **Definition of Done:**
+  - Successfully standardizes all labels according to organization conventions
+  - Properly migrates issues/PRs to use standard labels
+  - Provides clear logging and summary reports
+  - Integrates with existing label workflows
+  - Documents behavior in .github/docs/label-standardization.md
+
 ## Additional Automation Logic
 
 Additional agent-related logic is managed via:

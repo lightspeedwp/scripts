@@ -18,7 +18,29 @@ To prevent duplicate labels like `php` when we already have `lang:php`:
 
 1. All labeler configurations use the standard prefixed versions
 2. The `prune-labels.sh` script automatically migrates non-standard labels to their standard versions
-3. A weekly GitHub Action enforces these standards organization-wide
+3. The `label-standardization-agent` automatically enforces these standards via a weekly GitHub Action
+
+## Label Standardization Agent
+
+The Label Standardization Agent (`label-standardization-agent.js`) enforces consistent label naming by:
+
+1. Identifying non-standard labels with standard equivalents (e.g., "php" vs "lang:php")
+2. Migrating all issues and PRs from non-standard to standard labels
+3. Removing redundant non-standard labels after migration
+
+### Agent Features
+
+- **Automatic Migration**: Transfers all issues/PRs from non-standard to standard labels
+- **Cleanup**: Removes redundant non-standard labels after migration
+- **Dry Run**: Supports a preview mode to see changes without applying them
+- **Standard Mappings**: Includes mappings for common languages and areas
+
+### Automated Execution
+
+The agent runs automatically through a GitHub Action:
+
+- Scheduled weekly (Monday at 1 AM UTC)
+- Can be manually triggered via workflow dispatch with dry-run option
 
 ## Manual Enforcement
 
