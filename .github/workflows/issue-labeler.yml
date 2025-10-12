@@ -19,3 +19,4 @@ jobs:
         configuration-path: .github/issue-labeler.yml
         not-before: 2025-10-01T00:00:00Z
         enable-versioned-regex: 0
+        include-title: 1
