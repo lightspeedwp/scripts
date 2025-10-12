@@ -56,12 +56,12 @@ product-development:
 # Commit message patterns (PR title typically)
 "size: small":
   - head-branch: "^.*$"
-    title: "^(docs|chore|fix|style)(\(.+\))?: .*"
+    title: "^(docs|chore|fix|style)(\\(.+\\))?: .*"
 
 "size: medium":
   - head-branch: "^.*$" 
-    title: "^(feat|refactor)(\(.+\))?: .*"
+    title: "^(feat|refactor)(\\(.+\\))?: .*"
 
 "size: large":
   - head-branch: "^.*$"
-    title: "^(major|breaking|rewrite)(\(.+\))?: .*"
+    title: "^(major|breaking|rewrite)(\\(.+\\))?: .*"
