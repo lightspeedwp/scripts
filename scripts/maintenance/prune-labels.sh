@@ -1,10 +1,16 @@
-#!/opt/homebrew/bin/bash
-set -euo pipefail
-# prune-labels.sh - conservative, REST-only label sync + optional prune
+
+#!/bin/bash
 #
+# Script Name: prune-labels.sh
+# Description: Conservative, REST-only label sync and optional prune for GitHub repositories.
 # Usage:
-#  DRY_RUN=true ./prune-labels.sh        # default; shows what would happen
-#  DRY_RUN=false STRICT_PRUNE=true ./prune-labels.sh  # actually delete non-canonical
+#   DRY_RUN=true ./prune-labels.sh        # default; shows what would happen
+#   DRY_RUN=false STRICT_PRUNE=true ./prune-labels.sh  # actually delete non-canonical labels
+# Author: LightSpeed WP Team
+# Date: 2025-10-12
+#
+set -euo pipefail
+
 # --- config (override with env vars) ---
 ORG="lightspeedwp"
 CANON_REPO=".github"
@@ -13,9 +19,24 @@ DRY_RUN="${DRY_RUN:-true}"
 STRICT_PRUNE="${STRICT_PRUNE:-false}"
 PROTECT_REGEX="${PROTECT_REGEX:-}"
 ONLY="${ONLY:-}"
+
+# Mapping for common non-standard labels to standardized versions
+declare -A LABEL_MAPPINGS=(
+  ["php"]="lang:php"
+  ["js"]="lang:js"
+  ["javascript"]="lang:js"
+  ["css"]="lang:css"
+  ["bash"]="lang:bash"
+  ["shell"]="lang:bash"
+  ["python"]="lang:python"
+  ["documentation"]="area:documentation"
+  ["docs"]="area:documentation"
+)
 # ----------------------------------------
+
 tmpdir="$(mktemp -d)"
 trap 'rm -rf "$tmpdir"' EXIT
+
 uri() { jq -rn --arg s "$1" '$s|@uri'; }
 
 echo "Fetching canonical labels from $ORG/$CANON_REPO:$LABELS_PATH ..."
@@ -28,7 +49,7 @@ jq -r '.[].name' "$tmpdir/labels.json" > "$tmpdir/canonical.txt"
 
 # Repo list
 if [[ -n "$ONLY" ]]; then
-  mapfile -t REPOS < <(printf "%s\n" "$ONLY")
+  mapfile -t REPOS < <(printf "%s\n" $ONLY)
 else
   mapfile -t REPOS < <(gh repo list "$ORG" --archived=false --source --limit 1000 --json name -q '.[].name')
 fi
@@ -74,6 +95,31 @@ for repo in "${REPOS[@]}"; do
     if [[ -n "$PROTECT_REGEX" ]] && [[ "$ex" =~ $PROTECT_REGEX ]]; then
       echo "  keeping protected: $ex"
       continue
+    fi
+    
+    # Check if this label has a standardized version
+    if [[ -n "${LABEL_MAPPINGS[$ex]:-}" ]]; then
+      standardized="${LABEL_MAPPINGS[$ex]}"
+      if grep -Fxq "$standardized" "$tmpdir/canonical.txt"; then
+        if [[ "$DRY_RUN" == "true" ]]; then
+          echo "  would migrate: $ex → $standardized"
+        else
+          # Get issues with this label
+          tmpfile="$tmpdir/issues_$ex.json"
+          gh api "repos/$ORG/$repo/issues?labels=$(uri "$ex")&state=all&per_page=100" --paginate > "$tmpfile"
+          
+          # Add standardized label to those issues
+          jq -r '.[].number' "$tmpfile" | while read -r issue_num; do
+            gh api --method POST "repos/$ORG/$repo/issues/$issue_num/labels" -f "labels[]=$standardized"
+            echo "  added $standardized to issue #$issue_num"
+          done
+          
+          # Delete the non-standard label
+          gh api --silent --method DELETE "repos/$ORG/$repo/labels/$(uri "$ex")" || true
+          echo "  migrated: $ex → $standardized"
+        fi
+        continue
+      fi
     fi
 
     if [[ "$STRICT_PRUNE" == "true" ]]; then

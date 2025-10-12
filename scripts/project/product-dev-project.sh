@@ -1,22 +1,26 @@
 #!/usr/bin/env bash
-# LightSpeed product-development project bootstrapper
 #
-# Provisions a GitHub ProjectV2 for internal product development and supports all automatable ProjectV2 actions:
-# - Create or update a project
-# - Add standard fields and options
-# - Add draft issues
-# - Link repositories and teams
-# - Update project item fields (label, issue type, status)
-# Usage examples:
-#   ./product_dev_project.sh <org> <product-name> [project-number]
-#   ./product_dev_project.sh add-draft-issue <project-number> <org> <title> <body>
-#   ./product_dev_project.sh link-repo <project-number> <org> <repo-owner> <repo-name>
-#   ./product_dev_project.sh link-team <org> <team-slug> [project-number]
-#   ./product_dev_project.sh update-label <item-id> <label-id>
-#   ./product_dev_project.sh update-issue-type <item-id> <type-id>
+# Script Name: product-dev-project.sh
+# Description: Bootstrap and manage GitHub ProjectV2 for internal product development. Supports all automatable ProjectV2 actions:
+#   - Create or update a project
+#   - Add standard fields and options (Status, Issue Type, Priority, Area, Theme, Milestone, Size, Time, Start Date, Deadline, Environment)
+#   - Add draft issues
+#   - Link repositories and teams
+#   - Update project item fields (label, issue type, status)
+# Usage:
+#   ./product-dev-project.sh <org> <product-name> [project-number]
+#   ./product-dev-project.sh add-draft-issue <project-number> <org> <title> <body>
+#   ./product-dev-project.sh link-repo <project-number> <org> <repo-owner> <repo-name>
+#   ./product-dev-project.sh link-team <org> <team-slug> [project-number]
+#   ./product-dev-project.sh update-label <item-id> <label-id>
+#   ./product-dev-project.sh update-issue-type <item-id> <type-id>
+# Dependencies: gh CLI, jq
+# Author: LightSpeed WP Team
+# Date: 2025-10-12
 #
-# Requires: gh CLI, jq
+
 set -euo pipefail
+
 # Logging helpers
 log_info() {
   echo "[INFO] $(date '+%Y-%m-%d %H:%M:%S'): $*" >&2
@@ -24,6 +28,7 @@ log_info() {
 log_error() {
   echo "[ERROR] $(date '+%Y-%m-%d %H:%M:%S'): $*" >&2
 }
+
 # Dry-run support
 DRY_RUN="${DRY_RUN:-false}"
 run_cmd() {

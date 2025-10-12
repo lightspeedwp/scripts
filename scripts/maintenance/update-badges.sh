@@ -1,4 +1,12 @@
+
 #!/bin/bash
+#
+# Script Name: update-badges.sh
+# Description: Updates workflow badges in README.md for all workflows in the repository.
+# Usage: ./update-badges.sh
+# Author: LightSpeed WP Team
+# Date: 2025-10-12
+#
 set -euo pipefail
 
 REPO="lightspeedwp/scripts"

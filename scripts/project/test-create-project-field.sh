@@ -1,5 +1,12 @@
+
 #!/usr/bin/env bash
-# Simple test to verify build_project_field_cmd and dry-run output
+#
+# Script Name: test-create-project-field.sh
+# Description: Test to verify build_project_field_cmd and dry-run output for project field creation.
+# Usage: ./test-create-project-field.sh
+# Author: LightSpeed WP Team
+# Date: 2025-10-12
+#
 set -euo pipefail
 
 SCRIPT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
@@ -19,7 +26,7 @@ mapfile -t parts < <(build_project_field_cmd "Priority" "single_select" --option
 
 echo "Command parts:"
 for p in "${parts[@]}"; do
-  echo "- $p"
+  echo "$p"
 done
 
 # Ensure the expected tokens are present (portable grep usage)
