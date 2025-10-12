@@ -19,11 +19,18 @@ This file serves as a registry for agent implementations in the repository, incl
 - **Location:** .github/agents/issue-type-agent.js
 - **Integration:** GitHub Actions (.github/workflows/auto-issue-type.yml)
 - **Usage:** Automatically runs when issues are opened or reopened
+- **Standards:** Aligned with org-wide-issue-types-v1-9.md and project templates
 - **Functionality:**
-  - Analyzes issue content, title, and labels
-  - Determines appropriate issue type (Bug, Feature, Task, etc.)
+  - Analyzes issue template metadata, content, title, and labels
+  - Determines appropriate issue type using the standardized types (Bug, Feature, Task, Epic, Story, etc.)
   - Updates GitHub ProjectsV2 issue type field
   - Adds issues to relevant projects if not already added
+- **Definition of Done:**
+  - Correctly identifies all standard issue types per org-wide standards
+  - Prioritizes template metadata over content analysis
+  - Documents behavior in .github/docs/auto-issue-type.md
+  - Integrates with PR and issue templates
+  - Follows the standard branch naming conventions when modified
 
 ## Additional Automation Logic
 

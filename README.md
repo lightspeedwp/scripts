@@ -138,10 +138,11 @@ npx playwright test
 
 The repository includes specialized automation agents that help with various tasks:
 
-- **Issue Type Agent**: Automatically categorizes GitHub issues in Projects based on content analysis
-  - Location: `.github/agents/issue-type-agent.js`
+- **Issue Type Agent**: Automatically categorizes GitHub issues in Projects based on template metadata and content analysis
+  - Location: `.github/agents/issue-type-agent.js` and `.github/workflows/auto-issue-type.yml`
   - Triggered by: Issues being opened or reopened
-  - Functionality: Analyzes issue content and sets appropriate issue type in GitHub Projects
+  - Functionality: Analyzes issue template metadata, content, and sets appropriate issue type in GitHub Projects
+  - Standards: Follows org-wide-issue-types-v1-9.md specifications
 
 For more information on available agents, see [AGENTS.md](AGENTS.md).
 

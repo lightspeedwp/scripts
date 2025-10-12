@@ -89,18 +89,46 @@ async function run() {
 
 /**
  * Determines the issue type based on content analysis
+ * Aligns with org-wide-issue-types-v1-9.md standards
  */
 async function determineIssueType(issue) {
   const title = issue.title.toLowerCase();
   const body = (issue.body || '').toLowerCase();
   const content = `${title} ${body}`;
   
-  // Define type detection patterns
+  // Check for issue template type field first (most reliable source)
+  if (issue.body && issue.body.includes("type:")) {
+    const typeMatch = issue.body.match(/type:\s*['"]([^'"]+)['"]/);
+    if (typeMatch && typeMatch[1]) {
+      const templateType = typeMatch[1].toLowerCase();
+      // Map template type to standardized type
+      switch (templateType) {
+        case 'bug': return 'Bug';
+        case 'feature': return 'Feature';
+        case 'enhancement': return 'Feature';
+        case 'documentation': return 'Documentation';
+        case 'task': return 'Task';
+        case 'refactor': return 'Refactor';
+        case 'ux': return 'Design';
+        case 'question': return 'Task';
+        case 'performance': return 'Improvement';
+        case 'integration': return 'Story';
+      }
+    }
+  }
+  
+  // Define comprehensive type detection patterns per org standards
   const patterns = {
-    bug: ['bug', 'fix', 'error', 'crash', 'problem', 'not working', 'broken'],
+    bug: ['bug', 'fix', 'error', 'crash', 'problem', 'not working', 'broken', 'issue', 'defect'],
     feature: ['feature', 'enhancement', 'add', 'new', 'implement', 'request'],
-    task: ['task', 'chore', 'update', 'upgrade', 'maintenance', 'cleanup', 'refactor'],
-    docs: ['docs', 'documentation', 'readme', 'guide', 'tutorial']
+    task: ['task', 'chore', 'update', 'upgrade', 'maintenance', 'cleanup'],
+    docs: ['docs', 'documentation', 'readme', 'guide', 'tutorial'],
+    epic: ['epic', 'initiative', 'theme', 'milestone'],
+    story: ['story', 'user story', 'as a user', 'scenario'],
+    design: ['design', 'ui', 'ux', 'user experience', 'interface'],
+    refactor: ['refactor', 'rewrite', 'restructure', 'reimplement', 'rearchitect'],
+    improvement: ['improvement', 'optimize', 'performance', 'speed up', 'efficiency'],
+    build: ['build', 'ci', 'pipeline', 'workflow', 'github action', 'automation']
   };
   
   // Check for explicit type labels already on the issue
@@ -111,6 +139,12 @@ async function determineIssueType(issue) {
       if (labelName.includes('feature')) return 'Feature';
       if (labelName.includes('documentation')) return 'Documentation';
       if (labelName.includes('task')) return 'Task';
+      if (labelName.includes('epic')) return 'Epic';
+      if (labelName.includes('story')) return 'Story';
+      if (labelName.includes('design') || labelName.includes('ux')) return 'Design';
+      if (labelName.includes('refactor')) return 'Refactor';
+      if (labelName.includes('improvement')) return 'Improvement';
+      if (labelName.includes('build') || labelName.includes('ci')) return 'Build';
     }
   }
   
@@ -123,6 +157,12 @@ async function determineIssueType(issue) {
         case 'feature': return 'Feature';
         case 'docs': return 'Documentation';
         case 'task': return 'Task';
+        case 'epic': return 'Epic';
+        case 'story': return 'Story';
+        case 'design': return 'Design';
+        case 'refactor': return 'Refactor';
+        case 'improvement': return 'Improvement';
+        case 'build': return 'Build';
         default: return 'Task';  // Default fallback
       }
     }
