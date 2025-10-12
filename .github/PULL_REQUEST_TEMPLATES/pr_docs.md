@@ -1,8 +1,10 @@
 ---
+
 name: "Docs-only PR"
 about: "Documentation updates: READMEs, guides, contributor docs"
 title: "docs: {short summary}"
 labels: ["status:needs-review", "lang:md"]
+
 ---
 
 # Documentation Pull Request

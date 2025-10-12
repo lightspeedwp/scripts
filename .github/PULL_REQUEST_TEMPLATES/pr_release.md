@@ -1,8 +1,10 @@
 ---
+
 name: "Release PR"
 about: "Release new features or enhancements"
 title: "release: {short summary}"
 labels: ["status:needs-review", "area:release"]
+
 ---
 
 # Release Pull Request

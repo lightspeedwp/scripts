@@ -1,3 +1,14 @@
+---
+
+name: "Pull Request"  
+about: "General changes, refactors, and maintenance"  
+title: "PR: {short summary}"  
+labels: ["status:needs-review"]  
+
+---
+
+# Pull Request
+
 > This repository enforces changelog, release, and label automation for all PRs and issues.  
 > See the organisation-wide [Automation Governance & Release Strategy](https://github.com/lightspeedwp/.github/blob/main/AUTOMATION_GOVERNANCE.md) for contributor rules.
 

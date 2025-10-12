@@ -1,8 +1,10 @@
 ---
+
 name: "Bugfix PR"
 about: "Fix a defect/regression with clear repro, fix, and verification"
 title: "fix: {short summary}"
 labels: ["status:needs-review"]
+
 ---
 
 # Bugfix Pull Request
