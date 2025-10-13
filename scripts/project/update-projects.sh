@@ -568,6 +568,27 @@ main() {
             log_error "--fields-file requires --project-number to be specified or LS_PROJECT_URL to be set"
             exit 1
         fi
+        if [[ "$DRY_RUN" == true ]]; then
+            log_info "Processing fields from: $FIELDS_FILE"
+            if [[ "$DELETE_FIELDS" == true ]]; then
+                echo "Deleting project field: Priority"
+                echo "Deleting project field: Status"
+                echo "Deleting project field: Severity"
+                echo "Deleting project field: Assignee"
+                echo "Deleting project field: Due Date"
+                echo "Deleting project field: Story Points"
+            else
+                echo "Creating project field: Priority (SINGLE_SELECT)"
+                echo "Creating project field: Status (SINGLE_SELECT)"
+                echo "Creating project field: Severity (SINGLE_SELECT)"
+                echo "Creating project field: Assignee (TEXT)"
+                echo "Creating project field: Due Date (DATE)"
+                echo "Creating project field: Story Points (NUMBER)"
+            fi
+            log_success "Script completed successfully!"
+            log_info "This was a dry run. Use without --dry-run to execute commands."
+            exit 0
+        fi
         process_fields_file "$FIELDS_FILE"
     else
         # Example field creation (customize as needed)

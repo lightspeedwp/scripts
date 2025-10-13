@@ -1,3 +1,10 @@
+# Show help/usage if --help is passed
+if [[ "$1" == "--help" ]]; then
+  echo "test-create-project-field.sh: Test for project field command helpers."
+  echo "Usage: $0 [--help]"
+  echo "  --help    Show this help message."
+  exit 0
+fi
 
 #!/usr/bin/env bash
 #

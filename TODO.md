@@ -2,6 +2,111 @@
 
 # Lightspeed Automation TODO List
 
+## 🚨 Project Scripts & Field Automation — EXTREME DETAIL ROADMAP
+This section documents, step-by-step, the actions required to fully update, refactor, and test the GitHub Project automation scripts and field CSVs for both client delivery and product development projects.
+
+1. **Field Specification Extraction**
+  - Review `client-delivery-field-specs-v1-1.md` and `product-development-field-specs-v1-1.md`.
+  - Create a master list of all required fields for each project type, including:
+    - Field name
+    - Field type (single_select, number, date, text, etc.)
+    - Options (for single_select fields)
+    - Color codes (for options, if specified)
+    - Applicability (client, product, or both)
+    - Any default values or required logic
+
+2. **CSV File Creation/Extension**
+  - Update `fields.csv` to include all fields for both project types, using the format: `name,type,options(optional)`
+  - If needed, create separate CSVs for client and product fields, or add a column for project type.
+  - Ensure all single-select options and colors are included and sorted as per documentation (e.g., numeric prefixes for Size).
+  - Update `additional-fields.csv` with any extra fields not present in the main CSV.
+
+3. **Script Refactoring**
+  - **A. update-projects.sh**
+    - Validate that the script reads all fields from the CSV(s).
+    - Ensure it can create, update, and delete all field types and options.
+    - Add logic to handle color codes for single-select options.
+    - Add support for new fields (from specs) if not already present.
+    - Ensure dry-run and live modes work for all field operations.
+  - **B. client-delivery-project.sh**
+    - Refactor to read field definitions from the CSV, or extend hardcoded logic to support all required fields.
+    - Ensure all fields from the client delivery spec are created with correct options and colors.
+    - Add error handling for missing or invalid field definitions.
+    - Document any limitations or manual steps required.
+  - **C. product-dev-project.sh**
+    - Refactor to read field definitions from the CSV, or extend hardcoded logic to support all required fields.
+    - Ensure all fields from the product development spec are created with correct options and colors.
+    - Add error handling for missing or invalid field definitions.
+    - Document any limitations or manual steps required.
+
+4. **Test Suite Expansion**
+  - Review all Bats tests in project-scripts.
+  - Add tests to validate creation of every required field for both project types.
+  - Add tests for CSV-driven field creation, including edge cases (missing options, invalid types).
+  - Add tests for dry-run and live modes.
+  - Add tests for error handling and help output.
+  - Ensure tests cover both field creation and update logic.
+
+5. **Documentation Updates**
+  - Update `README.md` to document:
+    - All new fields and options
+    - CSV format and usage
+    - Script CLI usage and examples
+    - Error handling and limitations
+    - Test coverage and how to run tests
+  - Update any related automation or workflow documentation.
+
+6. **Validation & QA**
+  - Run all scripts in dry-run mode to verify output and field creation logic.
+  - Run all scripts in live mode (on a test project) to verify actual field creation and updates.
+  - Validate that all fields appear in GitHub Projects as expected, with correct options and colors.
+  - Review logs and error messages for clarity and completeness.
+
+7. **Governance & Integration**
+  - Ensure all changes align with org-wide automation, branching, and labeling standards.
+  - Update Copilot and CodeRabbit instructions to reflect new field automation logic.
+  - Document integration points with other automation scripts and workflows.
+
+**This section must be kept up-to-date as work progresses. Each step should be checked off only when fully complete and validated.**
+
+---
+
+### Credential Management & Security Best Practices
+
+The script does not embed any hardcoded credentials directly in its source code. Instead, it reads sensitive values (such as `LS_APP_ID`, `LS_APP_PRIVATE_KEY`, `GH_TOKEN`, and `LS_PROJECT_URL`) from environment variables, which is the recommended best practice for security.
+
+**Key points:**
+
+- No secrets, tokens, or private keys are present in the script itself.
+- The script warns users to set credentials via environment variables, not in the code.
+- The README now includes a security warning about hardcoded credentials and instructs users to avoid embedding secrets in source code.
+
+**Summary:**
+The script follows best practices for credential management and does not risk unauthorized access by embedding credentials in the source code. Always ensure environment variables are set securely and never commit secrets to version control.
+
+---
+
+### Script Consolidation & Workflow Recommendations
+
+Here’s a concise analysis of your situation:
+
+- `client-delivery-project.sh` and `product-dev-project.sh` are both specialized bootstrap scripts for creating and configuring GitHub Projects, but each is tailored for a specific use case (client delivery vs. internal product development). They hardcode field sets, options, and some workflow logic for their respective scenarios.
+- `update-projects.sh` is a general-purpose, extensible script. It supports CSV-driven field management, dry-run, authentication, and can be adapted for any project type. It’s designed for maintainability and future extensibility.
+
+**Do you need all three scripts?**
+
+- If your workflow requires distinct field sets, naming conventions, or automation logic for client delivery vs. product development, keeping the specialized scripts may help onboarding and clarity for non-technical users.
+- If you want a single, flexible automation tool, `update-projects.sh` is sufficient. It can be configured via CSVs to handle both use cases and more, reducing duplication and maintenance overhead.
+
+**Recommendation:**
+
+- Use `update-projects.sh` as your main automation tool.
+- Archive or refactor the specialized scripts to be thin wrappers or documentation examples, unless you have strong reasons to keep them (e.g., non-technical users, legacy automation, or frequent one-off bootstrapping).
+
+Let me know if you want a migration plan, wrapper script examples, or help updating your CSVs and documentation for a unified workflow.
+
+# Lightspeed Automation TODO List
+
 Welcome! This file is your master roadmap for automating, refactoring, and documenting the scripts repository. It starts with a high-level plan of action, followed by a detailed, themed checklist. Use this to coordinate work, prioritize improvements, and ensure best practices across the organization.
 
 

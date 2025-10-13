@@ -1,51 +1,38 @@
 #!/bin/bash
 
-# Test runner for update-projects.sh script
-# Requires bats-core to be installed
 
-set -euo pipefail  # Exit on error, unset variable, or failed pipe
+# Batch test runner for all Bats files in tests/project-scripts/
+# Logs results to logs/bats-project-scripts-YYYYMMDD-HHMMSS.log
 
-# Get the directory containing this script
+set -euo pipefail
+
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
+LOG_DIR="$REPO_ROOT/logs"
+LOG_FILE="$LOG_DIR/bats-project-scripts-$(date +%Y%m%d-%H%M%S).log"
+TEST_DIR="$REPO_ROOT/tests/project-scripts"
 
-# ANSI color codes for output formatting
-RED='\033[0;31m'    # Red for errors
-GREEN='\033[0;32m'  # Green for success
-YELLOW='\033[0;33m' # Yellow for warnings/info
-BLUE='\033[0;34m'   # Blue for info
-NC='\033[0m'        # No Color (reset)
+mkdir -p "$LOG_DIR"
 
-# Info log function: prints informational messages in blue
-log_info() {
-    echo -e "${BLUE}[INFO]${NC} $1"
-}
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+BLUE='\033[0;34m'
+NC='\033[0m'
 
-# Success log function: prints success messages in green
-log_success() {
-    echo -e "${GREEN}[SUCCESS]${NC} $1"
-}
+log_info()    { echo -e "${BLUE}[INFO]${NC} $1"; }
+log_success() { echo -e "${GREEN}[SUCCESS]${NC} $1"; }
+log_error()   { echo -e "${RED}[ERROR]${NC} $1" >&2; }
 
-# Error log function: prints error messages in red to stderr
-log_error() {
-    echo -e "${RED}[ERROR]${NC} $1" >&2
-}
-
-# Check if bats-core is installed and available in PATH
 if ! command -v bats &> /dev/null; then
     log_error "bats is not installed. Please install bats-core first."
-    log_info "Visit: https://github.com/bats-core/bats-core"
-    log_info "Or install with: git clone https://github.com/bats-core/bats-core.git && cd bats-core && ./install.sh ~/.local"
     exit 1
 fi
 
-# Announce start of test run
-log_info "Running tests for update-projects.sh..."
+log_info "Running all Bats tests in $TEST_DIR..."
+for test in "$TEST_DIR"/*.bats; do
+    log_info "Running $test..."
+    bats "$test" | tee -a "$LOG_FILE"
+    echo "" | tee -a "$LOG_FILE"
+done
 
-# Run the Bats test suite for update-projects.sh
-# If all tests pass, print success; otherwise, print error and exit with failure
-if bats "$SCRIPT_DIR/test-update-projects.bats"; then
-    log_success "All tests passed!"
-else
-    log_error "Some tests failed!"
-    exit 1
-fi
+log_success "All test results are logged in $LOG_FILE"
