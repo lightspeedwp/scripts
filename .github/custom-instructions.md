@@ -10,17 +10,39 @@ This is the central automation scripts repository for LightSpeed WP organization
 
 ### Core Instructions
 
-- [/.github/instructions/contributor-types.md](./instructions/contributor-types.md) - Role-specific guidance for different contributor types
-- [/.github/instructions/shell-script-copilot.md](./instructions/shell-script-copilot.md) - Shell scripting standards and patterns
-- [/.github/instructions/markdown-copilot.md](./instructions/markdown-copilot.md) - Documentation and markdown standards
+The `.github/instructions/` directory contains specialized guidance files that provide context-aware assistance for different aspects of the LightSpeed WP automation workflow. Each file follows the standard format: "You are a [role]. Follow our [framework/patterns] to [type of task]. Avoid [practices or tools] unless specified."
 
-### Language-Specific Instructions
+#### Foundation Files
 
+- **[contributor-types.md](./instructions/contributor-types.md)** - Defines role-specific guidance for different contributor types (developers, maintainers, reviewers, documentation writers). Provides context switching for Copilot based on contributor expertise level and responsibilities.
 
+- **[coding-standards.md](./instructions/coding-standards.md)** - Establishes organization-wide coding standards that apply across all languages and frameworks. Covers general principles like naming conventions, error handling, security practices, and code review requirements.
 
-### Chat Modes
+- **[documentation-standards.md](./instructions/documentation-standards.md)** - Comprehensive documentation guidelines covering technical writing, API documentation, README structures, and accessibility requirements. Aligns with markdown standards but extends to broader documentation practices.
 
-- [/.github/chatmodes/chatmodes.md](./chatmodes/chatmodes.md) - Scenario-based chatmodes for different development contexts
+#### Language-Specific Instructions
+
+- **[shell-script-copilot.md](./instructions/shell-script-copilot.md)** - Comprehensive shell scripting standards and patterns including Bash best practices, error handling with `set -euo pipefail`, script header requirements, and integration with LightSpeed automation workflows.
+
+- **[js-copilot.md](./instructions/js-copilot.md)** - JavaScript and Node.js development standards covering ES6+ practices, npm workflow integration, testing with Jest, linting with ESLint, and GitHub Actions workflow automation.
+
+- **[python-copilot.md](./instructions/python-copilot.md)** - Python scripting standards for automation tasks including type hints, pytest testing, virtual environments, dependency management, and integration with organizational workflows.
+
+- **[markdown-copilot.md](./instructions/markdown-copilot.md)** - Markdown and documentation standards focusing on accessibility, consistent formatting, cross-referencing, and integration with automated documentation workflows.
+
+- **[playwright-copilot.md](./instructions/playwright-copilot.md)** - Playwright-specific testing standards and MCP server automation guidance for browser testing, test organization, and CI/CD integration.
+
+#### Testing & Quality Assurance
+
+- **[bats-tests-and-runner-scripts.md](./instructions/bats-tests-and-runner-scripts.md)** - Comprehensive Bats testing framework guidance covering test structure, runner script patterns, coverage requirements, and CI/CD integration for shell script testing.
+
+- **[shell-script-header-and-docs.md](./instructions/shell-script-header-and-docs.md)** - Detailed requirements for shell script documentation including mandatory header components, inline documentation patterns, function documentation, and usage examples.
+
+### Chat Modes & Prompts
+
+- **[chatmodes.md](./chatmodes/chatmodes.md)** - Scenario-based chat modes for different development contexts including shell script development, GitHub Actions workflows, documentation contribution, code review, and problem diagnosis.
+
+- **[prompts.md](./prompts/prompts.md)** - Reusable prompt templates for Copilot Chat and CLI covering code generation, review, documentation, testing, automation, and learning scenarios.
 
 ## LightSpeed Framework Integration
 

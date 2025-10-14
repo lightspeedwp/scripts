@@ -444,6 +444,459 @@ Include step-by-step implementation and evaluation criteria.
 
 ## 🛑 FINAL WARNING
 
+## Advanced Automation Prompts
+
+### Infrastructure as Code Prompts
+
+#### Terraform Module Creation
+
+**Template Pattern:**
+
+```text
+Create a Terraform module for {infrastructure_component} following LightSpeed WP
+infrastructure standards.
+
+Requirements:
+- Use modular design with clear input/output variables
+- Include comprehensive variable validation and descriptions
+- Follow AWS/cloud provider security best practices
+- Include automated testing with Terratest or similar
+- Document usage examples and integration patterns
+- Support multiple environments (dev/staging/prod)
+
+The module should handle {specific_infrastructure_needs} and integrate with
+our existing {related_infrastructure_components}.
+```
+
+#### Infrastructure Security Review
+
+**Template Pattern:**
+
+```text
+Review this infrastructure configuration for security vulnerabilities and
+compliance with {compliance_framework}:
+
+Analyze:
+- Network security and access controls
+- Data encryption at rest and in transit
+- IAM policies and least privilege principles
+- Resource configurations and hardening
+- Monitoring and logging capabilities
+- Compliance with organizational security policies
+
+Provide specific recommendations with remediation steps and security impact
+assessment.
+```
+
+### Database Management Prompts
+
+#### Database Migration Strategy
+
+**Template Pattern:**
+
+```text
+Design a database migration strategy for {migration_scenario} following
+LightSpeed WP database management standards.
+
+Consider:
+- Zero-downtime migration requirements
+- Data integrity and consistency validation
+- Rollback procedures and safety mechanisms
+- Performance impact during migration
+- Testing strategies for migration validation
+- Documentation for operational procedures
+
+Include specific steps, timing estimates, and risk mitigation strategies.
+```
+
+#### Database Performance Optimization
+
+**Template Pattern:**
+
+```text
+Analyze and optimize database performance for {application_type} with
+{specific_performance_issues}.
+
+Focus on:
+- Query optimization and index strategies
+- Schema design improvements
+- Caching layer implementation
+- Connection pooling and resource management
+- Monitoring and alerting setup
+- Capacity planning recommendations
+
+Provide before/after performance metrics and implementation guidance.
+```
+
+### API Integration Prompts
+
+#### RESTful API Design
+
+**Template Pattern:**
+
+```text
+Design a RESTful API for {business_domain} following LightSpeed WP API
+standards and best practices.
+
+Include:
+- Resource modeling and URL structure
+- HTTP methods and status code usage
+- Authentication and authorization patterns
+- Request/response schemas with validation
+- Error handling and messaging standards
+- Rate limiting and throttling strategies
+- Documentation with OpenAPI specification
+
+Consider integration with {existing_systems} and scalability requirements.
+```
+
+#### Webhook Implementation
+
+**Template Pattern:**
+
+```text
+Implement webhook processing for {event_type} events from {external_service}
+following our integration standards.
+
+Requirements:
+- Secure webhook validation and signature verification
+- Idempotent event processing with deduplication
+- Error handling and retry mechanisms
+- Event ordering and dependency management
+- Monitoring and alerting for webhook failures
+- Testing strategies including event simulation
+
+Include security considerations and operational procedures.
+```
+
+### Quality Assurance Prompts
+
+#### Test Strategy Development
+
+**Template Pattern:**
+
+```text
+Develop a comprehensive testing strategy for {application_type} covering
+{testing_scope} following LightSpeed QA standards.
+
+Include:
+- Test pyramid structure (unit, integration, E2E)
+- WordPress-specific testing approaches
+- Accessibility and performance testing
+- Security testing and vulnerability assessment
+- Browser compatibility and device testing
+- Continuous integration test automation
+
+Provide test coverage targets, tooling recommendations, and implementation
+timeline.
+```
+
+#### Automated Testing Implementation
+
+**Template Pattern:**
+
+```text
+Implement automated tests for {functionality} using {testing_framework}
+following our testing standards.
+
+Cover:
+- Happy path scenarios with expected behavior
+- Error conditions and edge cases
+- Integration points and external dependencies
+- Performance and load testing scenarios
+- Security testing including input validation
+- Accessibility compliance testing
+
+Include test data management, mocking strategies, and CI/CD integration.
+```
+
+### DevOps and Deployment Prompts
+
+#### CI/CD Pipeline Design
+
+**Template Pattern:**
+
+```text
+Design a CI/CD pipeline for {project_type} following LightSpeed DevOps
+practices and deployment standards.
+
+Pipeline should include:
+- Source code quality gates (linting, security scanning)
+- Automated testing with quality thresholds
+- Build and artifact management
+- Multi-environment deployment strategy
+- Database migration handling
+- Rollback capabilities and procedures
+- Monitoring and alerting integration
+
+Consider {specific_deployment_requirements} and compliance needs.
+```
+
+#### Deployment Strategy Planning
+
+**Template Pattern:**
+
+```text
+Plan a deployment strategy for {application} to {environment} with
+{availability_requirements}.
+
+Address:
+- Deployment methodology (blue-green, canary, rolling)
+- Infrastructure provisioning and scaling
+- Database migration coordination
+- Service dependency management
+- Health checks and validation procedures
+- Rollback triggers and procedures
+- Communication and change management
+
+Include timeline, risk assessment, and success criteria.
+```
+
+### Monitoring and Observability Prompts
+
+#### Monitoring Strategy Design
+
+**Template Pattern:**
+
+```text
+Design a monitoring strategy for {system_type} following SRE best practices
+and LightSpeed observability standards.
+
+Implement:
+- Application performance monitoring (APM)
+- Infrastructure and resource monitoring
+- User experience and synthetic monitoring
+- Log aggregation and analysis
+- Alerting with appropriate escalation
+- SLA/SLI/SLO definition and tracking
+
+Include dashboard design, alert tuning, and incident response integration.
+```
+
+#### Incident Response Procedures
+
+**Template Pattern:**
+
+```text
+Create incident response procedures for {service_type} covering
+{incident_scenarios}.
+
+Procedures should include:
+- Incident classification and severity levels
+- Escalation paths and communication protocols
+- Investigation and troubleshooting guides
+- Recovery and rollback procedures
+- Post-incident review and improvement process
+- Documentation and knowledge management
+
+Consider integration with {monitoring_tools} and {communication_platforms}.
+```
+
+### Security and Compliance Prompts
+
+#### Security Assessment
+
+**Template Pattern:**
+
+```text
+Conduct a security assessment for {application_component} following
+{security_framework} and LightSpeed security standards.
+
+Evaluate:
+- Authentication and authorization mechanisms
+- Input validation and output encoding
+- Data protection and privacy controls
+- Network security and communication protocols
+- Logging and monitoring for security events
+- Vulnerability management processes
+
+Provide risk ratings, remediation priorities, and implementation guidance.
+```
+
+#### Compliance Implementation
+
+**Template Pattern:**
+
+```text
+Implement {compliance_requirement} controls for {system_scope} ensuring
+regulatory compliance and audit readiness.
+
+Address:
+- Control framework mapping and implementation
+- Evidence collection and documentation procedures
+- Automated compliance monitoring and reporting
+- Risk assessment and mitigation strategies
+- Training and awareness requirements
+- Audit preparation and response procedures
+
+Include compliance verification testing and ongoing monitoring processes.
+```
+
+### Client and Stakeholder Communication Prompts
+
+#### Technical Documentation
+
+**Template Pattern:**
+
+```text
+Create technical documentation for {system_component} targeting
+{audience_type} with {technical_expertise_level}.
+
+Documentation should cover:
+- Architecture overview and design decisions
+- Installation and configuration procedures
+- Usage examples and integration patterns
+- Troubleshooting guides and FAQ
+- API reference and code examples
+- Security considerations and best practices
+
+Follow LightSpeed documentation standards with clear structure and
+accessibility compliance.
+```
+
+#### Stakeholder Reporting
+
+**Template Pattern:**
+
+```text
+Prepare a {report_type} report for {stakeholder_group} covering
+{reporting_period} and focusing on {key_metrics}.
+
+Include:
+- Executive summary with key achievements and challenges
+- Quantitative metrics with trend analysis
+- Risk assessment and mitigation status
+- Resource utilization and capacity planning
+- Upcoming initiatives and timeline
+- Budget and cost optimization opportunities
+
+Present findings with clear visualizations and actionable recommendations.
+```
+
+### Performance and Optimization Prompts
+
+#### Performance Analysis
+
+**Template Pattern:**
+
+```text
+Analyze performance bottlenecks in {system_component} and develop
+optimization strategies following performance engineering best practices.
+
+Investigate:
+- Application performance profiling and metrics
+- Database query optimization and indexing
+- Caching strategies and implementation
+- Resource utilization and scaling patterns
+- Frontend optimization and user experience
+- Infrastructure performance and capacity
+
+Provide specific optimization recommendations with expected impact and
+implementation effort.
+```
+
+#### Capacity Planning
+
+**Template Pattern:**
+
+```text
+Develop capacity planning strategy for {service} anticipating {growth_scenario}
+and ensuring {performance_requirements}.
+
+Plan for:
+- Traffic growth patterns and seasonal variations
+- Resource scaling strategies (horizontal vs vertical)
+- Database capacity and performance requirements
+- Infrastructure cost optimization
+- Monitoring and alerting for capacity thresholds
+- Automated scaling policies and procedures
+
+Include forecasting models, scaling triggers, and budget considerations.
+```
+
+## Specialized WordPress Prompts
+
+### WordPress Development
+
+#### Theme Development
+
+**Template Pattern:**
+
+```text
+Create a custom WordPress theme for {project_requirements} following
+WordPress coding standards and accessibility guidelines.
+
+Features:
+- Responsive design with {design_framework}
+- Accessibility compliance (WCAG 2.1 AA)
+- Performance optimization and Core Web Vitals
+- Custom post types and field integration
+- SEO optimization and structured data
+- Security best practices implementation
+
+Include theme documentation, customization guides, and testing procedures.
+```
+
+#### Plugin Development
+
+**Template Pattern:**
+
+```text
+Develop a WordPress plugin for {functionality} following WordPress plugin
+development standards and security best practices.
+
+Implementation:
+- Secure coding practices with input validation
+- WordPress hooks and filter integration
+- Database schema and upgrade procedures
+- Admin interface and user experience
+- REST API endpoints (if applicable)
+- Internationalization and localization support
+
+Include plugin testing, documentation, and distribution preparation.
+```
+
+### WordPress Operations
+
+#### Site Migration
+
+**Template Pattern:**
+
+```text
+Plan WordPress site migration from {source_environment} to {target_environment}
+ensuring zero data loss and minimal downtime.
+
+Migration process:
+- Content and database export/import procedures
+- File system synchronization and validation
+- URL and domain update procedures
+- Plugin and theme compatibility verification
+- Performance testing and optimization
+- DNS cutover and rollback procedures
+
+Include timeline, risk mitigation, and post-migration validation steps.
+```
+
+#### Security Hardening
+
+**Template Pattern:**
+
+```text
+Implement WordPress security hardening for {site_type} following OWASP
+guidelines and WordPress security best practices.
+
+Hardening measures:
+- User access controls and role management
+- Plugin and theme security review
+- Database security and configuration
+- File system permissions and protection
+- Security monitoring and logging
+- Backup and recovery procedures
+
+Include security testing, vulnerability assessment, and ongoing maintenance
+procedures.
+```
+
 ### ⚠️ FINAL WARNING
 
 THIS FILE IS TEMPLATE DOCUMENTATION ONLY
