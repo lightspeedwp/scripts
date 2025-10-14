@@ -207,12 +207,11 @@ test.describe('Update Projects Script', () => {
     test('handles edge case: invalid field type', async () => {
         // Simulate invalid field type in CSV
         // This is a stub: in real test, mock CSV with bad type
-        const output = runScript(UPDATE_SCRIPT, [
-            '--fields-file',
-            'fixtures/additional-fields.csv',
-            '--dry-run',
-            'MOCK_INVALID_TYPE=true',
-        ]);
+        const output = runScript(
+            UPDATE_SCRIPT,
+            ['--fields-file', 'fixtures/additional-fields.csv', '--dry-run'],
+            { MOCK_INVALID_TYPE: 'true' }
+        );
         expect(output).toMatch(/Invalid field type/);
     });
 
