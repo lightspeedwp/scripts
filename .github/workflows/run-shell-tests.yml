@@ -13,7 +13,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
       - name: Set up Bats
-        uses: bats-core/bats-action@v1
+        uses: bats-core/bats-action@master
       - name: Run Bats tests
         run: |
           bats __tests__/*.bats
