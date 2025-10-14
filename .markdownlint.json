@@ -1,5 +1,5 @@
 {
-  "default": true,
-  "MD013": false, // Disable line length rule
-  "MD033": false  // Allow inline HTML
+    "default": true,
+    "MD013": false, // Disable line length rule
+    "MD033": false // Allow inline HTML
 }

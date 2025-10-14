@@ -1,10 +1,8 @@
 ---
-
-name: "Build/CI PR"  
-about: "Pipelines, linting, packaging, or release automation"  
-title: "build(ci): {short summary}"  
-labels: ["status:needs-review", "area:ci"]  
-
+name: 'Build/CI PR'
+about: 'Pipelines, linting, packaging, or release automation'
+title: 'build(ci): {short summary}'
+labels: ['status:needs-review', 'area:ci']
 ---
 
 # Build/CI Pull Request
@@ -71,7 +69,6 @@ If no user-facing changelog entry is needed, apply the skip-changelog label to t
 -->
 
 ---
-
 
 ### Checklist (Global DoD / PR)
 

@@ -4,3 +4,6 @@ build/
 playwright-report/
 coverage/
 *.log
+*.yml
+*.yaml
+# Prettier has issues with YAML formatting in workflows

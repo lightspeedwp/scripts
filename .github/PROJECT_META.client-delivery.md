@@ -4,11 +4,11 @@
 
 ## Quick Start
 
-1) **Create Project** → Name `Client – {ClientName}`; Description with scope + contract link.
-2) **Add fields**: Status (Backlog, **To‑do**, In progress, In review, In QA, Done), Issue Type (Epic, Story, Task, Bug, Chore, Design, Research), Priority, Area, Theme, **Size (single‑select)**, Start Date, Deadline, **Milestone (iteration)**, Environment, Parent Issue, Sub‑issues Progress, Time (hours). Optional: Iteration.
-3) **Automations**: Auto‑add → Backlog; On Assignee → In progress; On linked PR → In review; On `status:needs-qa` → In QA; On close/merge → Done.
-4) **Pin views**: Board — Team Flow (group by Assignee), Backlog — Table, **QA Gate**, **UAT (Client)**, Roadmap, Blocked, Epics (Tracking) — Table/Roadmap.
-5) **Intake hygiene**: Create **Intake** view (`Status = Backlog` AND missing Assignee/Priority/Issue Type) and clear it weekly.
+1. **Create Project** → Name `Client – {ClientName}`; Description with scope + contract link.
+2. **Add fields**: Status (Backlog, **To‑do**, In progress, In review, In QA, Done), Issue Type (Epic, Story, Task, Bug, Chore, Design, Research), Priority, Area, Theme, **Size (single‑select)**, Start Date, Deadline, **Milestone (iteration)**, Environment, Parent Issue, Sub‑issues Progress, Time (hours). Optional: Iteration.
+3. **Automations**: Auto‑add → Backlog; On Assignee → In progress; On linked PR → In review; On `status:needs-qa` → In QA; On close/merge → Done.
+4. **Pin views**: Board — Team Flow (group by Assignee), Backlog — Table, **QA Gate**, **UAT (Client)**, Roadmap, Blocked, Epics (Tracking) — Table/Roadmap.
+5. **Intake hygiene**: Create **Intake** view (`Status = Backlog` AND missing Assignee/Priority/Issue Type) and clear it weekly.
 
 ## Status
 

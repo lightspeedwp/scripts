@@ -1,51 +1,51 @@
-name: "Label Standardization Enforcement"
+name: 'Label Standardization Enforcement'
 
 on:
-  schedule:
-    # Run weekly on Sunday at 2:15 AM UTC
-    - cron: '15 2 * * 0'
-  # Allow manual runs
-  workflow_dispatch:
-    inputs:
-      repo:
-        description: 'Specific repo to sync (leave blank for all)'
-        required: false
-        default: ''
-      dry_run:
-        description: 'Dry run mode (true/false)'
-        required: false
-        default: 'true'
-      strict_prune:
-        description: 'Strictly prune non-standard labels (true/false)'
-        required: false
-        default: 'false'
+    schedule:
+        # Run weekly on Sunday at 2:15 AM UTC
+        - cron: '15 2 * * 0'
+    # Allow manual runs
+    workflow_dispatch:
+        inputs:
+            repo:
+                description: 'Specific repo to sync (leave blank for all)'
+                required: false
+                default: ''
+            dry_run:
+                description: 'Dry run mode (true/false)'
+                required: false
+                default: 'true'
+            strict_prune:
+                description: 'Strictly prune non-standard labels (true/false)'
+                required: false
+                default: 'false'
 
 permissions:
-  contents: read
-  issues: write
-  pull-requests: write
+    contents: read
+    issues: write
+    pull-requests: write
 
 jobs:
-  enforce-label-standards:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v3
-        
-      - name: Set up GitHub CLI
-        run: |
-          gh --version
-        env:
-          GH_TOKEN: ${{ secrets.ORGANIZATION_PAT }}
-          
-      - name: Run Label Enforcement Script
-        run: |
-          chmod +x ./scripts/prune-labels.sh
-          ./scripts/prune-labels.sh
-        env:
-          GITHUB_TOKEN: ${{ secrets.ORGANIZATION_PAT }}
-          DRY_RUN: ${{ github.event.inputs.dry_run || 'true' }}
-          STRICT_PRUNE: ${{ github.event.inputs.strict_prune || 'false' }}
-          ONLY: ${{ github.event.inputs.repo }}
-          # Protect patterns we don't want to automatically delete
-          PROTECT_REGEX: '^(WIP|wontfix|duplicate|good-first-issue|help-wanted)$'
+    enforce-label-standards:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout Repository
+              uses: actions/checkout@v3
+
+            - name: Set up GitHub CLI
+              run: |
+                  gh --version
+              env:
+                  GH_TOKEN: ${{ secrets.ORGANIZATION_PAT }}
+
+            - name: Run Label Enforcement Script
+              run: |
+                  chmod +x ./scripts/prune-labels.sh
+                  ./scripts/prune-labels.sh
+              env:
+                  GITHUB_TOKEN: ${{ secrets.ORGANIZATION_PAT }}
+                  DRY_RUN: ${{ github.event.inputs.dry_run || 'true' }}
+                  STRICT_PRUNE: ${{ github.event.inputs.strict_prune || 'false' }}
+                  ONLY: ${{ github.event.inputs.repo }}
+                  # Protect patterns we don't want to automatically delete
+                  PROTECT_REGEX: '^(WIP|wontfix|duplicate|good-first-issue|help-wanted)$'

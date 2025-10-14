@@ -3,94 +3,94 @@
 
 # File path patterns for labeling PRs
 scripts:
-  - scripts/**/*.sh
-  - scripts/**/*.bash
-  - scripts/*/
-  - scripts/maintenance/**
-  - scripts/deployment/**
-  - scripts/project/**
-  - scripts/testing/**
-  - scripts/utility/**
+    - scripts/**/*.sh
+    - scripts/**/*.bash
+    - scripts/*/
+    - scripts/maintenance/**
+    - scripts/deployment/**
+    - scripts/project/**
+    - scripts/testing/**
+    - scripts/utility/**
 
 tests:
-  - tests/**/*.bats
-  - tests/**/*.sh
-  - tests/**/*.ts
-  - tests/**/*.js
-  - tests/**/*.spec.*
+    - tests/**/*.bats
+    - tests/**/*.sh
+    - tests/**/*.ts
+    - tests/**/*.js
+    - tests/**/*.spec.*
 
 github-workflow:
-  - .github/workflows/**
-  - .github/actions/**
+    - .github/workflows/**
+    - .github/actions/**
 
 workflows:
-  - workflows/**
+    - workflows/**
 
 area:documentation:
-  - "*.md"
-  - "**/*.md"
-  - docs/**
+    - '*.md'
+    - '**/*.md'
+    - docs/**
 
 configuration:
-  - .github/*.yml
-  - .github/*.yaml
-  - "*.json"
-  - "*.yml"
-  - "*.yaml"
-  - .shellcheckrc
-  - .eslintrc*
-  - .prettierrc*
-  - .markdownlint*
+    - .github/*.yml
+    - .github/*.yaml
+    - '*.json'
+    - '*.yml'
+    - '*.yaml'
+    - .shellcheckrc
+    - .eslintrc*
+    - .prettierrc*
+    - .markdownlint*
 
 # Language labels
 lang:js:
-  - "**/*.js"
-  - "**/*.jsx"
-  - "**/*.ts"
-  - "**/*.tsx"
-  - package.json
-  - package-lock.json
-  - tsconfig.json
-  - .eslintrc*
-  
+    - '**/*.js'
+    - '**/*.jsx'
+    - '**/*.ts'
+    - '**/*.tsx'
+    - package.json
+    - package-lock.json
+    - tsconfig.json
+    - .eslintrc*
+
 lang:php:
-  - "**/*.php"
-  - composer.json
-  - composer.lock
-  - phpunit.xml*
-  
+    - '**/*.php'
+    - composer.json
+    - composer.lock
+    - phpunit.xml*
+
 lang:css:
-  - "**/*.css"
-  - "**/*.scss"
-  - "**/*.sass"
-  - "**/*.less"
-  
+    - '**/*.css'
+    - '**/*.scss'
+    - '**/*.sass'
+    - '**/*.less'
+
 lang:bash:
-  - "**/*.sh"
-  - "**/*.bash"
-  - .bashrc
-  - .bash_profile
+    - '**/*.sh'
+    - '**/*.bash'
+    - .bashrc
+    - .bash_profile
 
 # Branch name patterns
 client-delivery:
-  - "client-delivery-*"
-  - "client/*"
-  - "clients/*"
+    - 'client-delivery-*'
+    - 'client/*'
+    - 'clients/*'
 
 product-development:
-  - "product-dev-*"
-  - "product/*"
-  - "feature/*"
+    - 'product-dev-*'
+    - 'product/*'
+    - 'feature/*'
 
 # Commit message patterns (PR title typically)
-"size: small":
-  - head-branch: "^.*$"
-    title: "^(docs|chore|fix|style)(\\(.+\\))?: .*"
+'size: small':
+    - head-branch: '^.*$'
+      title: "^(docs|chore|fix|style)(\\(.+\\))?: .*"
 
-"size: medium":
-  - head-branch: "^.*$" 
-    title: "^(feat|refactor)(\\(.+\\))?: .*"
+'size: medium':
+    - head-branch: '^.*$'
+      title: "^(feat|refactor)(\\(.+\\))?: .*"
 
-"size: large":
-  - head-branch: "^.*$"
-    title: "^(major|breaking|rewrite)(\\(.+\\))?: .*"
+'size: large':
+    - head-branch: '^.*$'
+      title: "^(major|breaking|rewrite)(\\(.+\\))?: .*"

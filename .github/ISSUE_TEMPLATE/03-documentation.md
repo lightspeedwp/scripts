@@ -23,7 +23,7 @@ Describe what documentation needs to be created, updated, or improved.
 - [ ] Setup/installation instructions
 - [ ] Troubleshooting guides
 - [ ] API documentation
-- [ ] Other: _____
+- [ ] Other: **\_**
 
 ## Proposed Changes
 
@@ -42,7 +42,7 @@ Who is this documentation for?
 - [ ] DevOps engineers
 - [ ] Project maintainers
 - [ ] End users
-- [ ] Other: _____
+- [ ] Other: **\_**
 
 ## Additional Context
 
@@ -54,7 +54,7 @@ Add any other context about the documentation request here.
 
 ### Changed
 
-- 
+-
 
 ## Definition of Ready (DoR) Checklist
 

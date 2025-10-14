@@ -11,9 +11,9 @@ Automatically **add issues/PRs to the org Project** and keep Project **fields in
 - **Triggers** on issue and PR events.
 - **Adds the item** to the org Project using `LS_PROJECT_URL`.
 - **Derives** and writes Project fields:
-  - **Status** from `status:*` labels (closed/merged → `Done`; default **Backlog**).
-  - **Priority** from `priority:*` labels.
-  - **Type** from **PR head branch** (see PR labels).
+    - **Status** from `status:*` labels (closed/merged → `Done`; default **Backlog**).
+    - **Priority** from `priority:*` labels.
+    - **Type** from **PR head branch** (see PR labels).
 
 ## Setup requirements
 

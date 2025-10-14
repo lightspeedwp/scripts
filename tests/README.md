@@ -1,15 +1,15 @@
-
 # Tests Directory
 
 This directory contains test harnesses using Bats (Bash Automated Testing System) and dry-run scripts for validation.
- [![License: ISC](https://img.shields.io/badge/License-ISC-blue.svg)](https://opensource.org/licenses/ISC)
- [![Build Status](https://github.com/lightspeedwp/scripts/actions/workflows/run-tests.yml/badge.svg?branch=develop)](https://github.com/lightspeedwp/scripts/actions/workflows/run-tests.yml)
- [![Playwright Tests](https://github.com/lightspeedwp/scripts/actions/workflows/playwright.yml/badge.svg?branch=develop)](https://github.com/lightspeedwp/scripts/actions/workflows/playwright.yml)
- [![Lint Status](https://github.com/lightspeedwp/scripts/actions/workflows/lint.yml/badge.svg?branch=develop)](https://github.com/lightspeedwp/scripts/actions/workflows/lint.yml)
+[![License: ISC](https://img.shields.io/badge/License-ISC-blue.svg)](https://opensource.org/licenses/ISC)
+[![Build Status](https://github.com/lightspeedwp/scripts/actions/workflows/run-tests.yml/badge.svg?branch=develop)](https://github.com/lightspeedwp/scripts/actions/workflows/run-tests.yml)
+[![Playwright Tests](https://github.com/lightspeedwp/scripts/actions/workflows/playwright.yml/badge.svg?branch=develop)](https://github.com/lightspeedwp/scripts/actions/workflows/playwright.yml)
+[![Lint Status](https://github.com/lightspeedwp/scripts/actions/workflows/lint.yml/badge.svg?branch=develop)](https://github.com/lightspeedwp/scripts/actions/workflows/lint.yml)
 
 ## CodeRabbit Review Automation
 
 All tests in this directory are reviewed automatically by CodeRabbit for:
+
 - Comprehensive coverage of scripts and automation features
 - Error handling and edge case testing
 - Integration with CI workflows and status checks
@@ -102,8 +102,8 @@ Playwright tests use the `@playwright/test` framework:
 import { test, expect } from '@playwright/test';
 
 test('homepage loads', async ({ page }) => {
-  await page.goto('https://example.com');
-  await expect(page).toHaveTitle(/Example Domain/);
+    await page.goto('https://example.com');
+    await expect(page).toHaveTitle(/Example Domain/);
 });
 ```
 
@@ -154,6 +154,7 @@ Dry-run tests that validate configuration and setup without making changes.
 Common testing utilities are available in `test-helper.bash` for reuse across test files.
 
 ## Release Automation & Changelog Management
+
 \n## Changelog Automation & Governance
 
 Changelog entries are required for all PRs and are enforced by CodeRabbit and CI workflows. Automated release processes generate and update changelogs from commit history, with manual fallback as needed.
@@ -177,15 +178,19 @@ See `.github/workflows/release.yml` for details.
 
 ```md
 ### Added
+
 - Short description of new features or scripts
 
 ### Changed
+
 - Short description of changes or improvements
 
 ### Fixed
+
 - Short description of bug fixes
 
 ### Security
+
 - Short description of security updates
 ```
 

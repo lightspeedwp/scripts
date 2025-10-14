@@ -4,11 +4,11 @@
 
 ## Quick Start
 
-1) **Create Project** → Name `Product – {ProductName}`; Description with objective + README/roadmap link.
-2) **Add fields**: Status (Backlog, **Ready**, In progress, In review, In QA, Done), Issue Type (Epic, Feature, Story, Task, Bug, Refactor, Design, Research, Chore), Priority, **Milestone/Release (vX.Y.Z)**, Area, Theme, **Size (single‑select)**, Start Date, Deadline, Environment, Parent Epic, Sub‑issues Progress, Time (hours). Optional: Iteration (Sprint).
-3) **Automations**: Auto‑add → Backlog; On Assignee → In progress; On linked PR → In review; On `status:needs-qa` → In QA; On close/merge → Done.
-4) **Release scaffolding**: Create Milestone `vX.Y.Z`; add scoped Features/Stories; pin **Release Gate — vX.Y.Z** view.
-5) **Pin views**: Release Gate, Tech Debt, Roadmap, Backlog — Table, Epics — Table/Roadmap/Board, Epic drill‑down (group by Parent Epic).
+1. **Create Project** → Name `Product – {ProductName}`; Description with objective + README/roadmap link.
+2. **Add fields**: Status (Backlog, **Ready**, In progress, In review, In QA, Done), Issue Type (Epic, Feature, Story, Task, Bug, Refactor, Design, Research, Chore), Priority, **Milestone/Release (vX.Y.Z)**, Area, Theme, **Size (single‑select)**, Start Date, Deadline, Environment, Parent Epic, Sub‑issues Progress, Time (hours). Optional: Iteration (Sprint).
+3. **Automations**: Auto‑add → Backlog; On Assignee → In progress; On linked PR → In review; On `status:needs-qa` → In QA; On close/merge → Done.
+4. **Release scaffolding**: Create Milestone `vX.Y.Z`; add scoped Features/Stories; pin **Release Gate — vX.Y.Z** view.
+5. **Pin views**: Release Gate, Tech Debt, Roadmap, Backlog — Table, Epics — Table/Roadmap/Board, Epic drill‑down (group by Parent Epic).
 
 ## Status
 

@@ -1,4 +1,3 @@
-
 # client-delivery-project.sh
 
 Provision and manage a GitHub ProjectV2 for client delivery engagements using Scrumban-style statuses and standardized fields.
@@ -47,25 +46,25 @@ This script automates the creation and update of a GitHub Project for client del
 
 ## Standard Fields Created
 
-| Field Name      | Type         | Options/Notes                                   |
-|-----------------|--------------|------------------------------------------------|
-| Theme           | Single-select| Design System, Platform, ...                    |
-| Area            | Single-select| Frontend, Backend, ...                          |
-| Priority        | Single-select| High, Medium, Low                              |
-| Severity        | Single-select| Blocker, Critical, Major, Minor, Trivial        |
-| Size            | Single-select| XS, S, M, L, XL                                 |
-| Phase           | Single-select| Discovery, Build, QA, Launch, ...               |
-| Release type    | Single-select| Major, Minor, Patch                             |
-| Environment     | Single-select| Production, Staging, QA, ...                    |
-| Status          | Single-select| Todo, In Progress, Done, Blocked, ...           |
-| Issue Type      | Single-select| Bug, Feature, Chore, ...                        |
-| Milestone       | Single-select| (custom per project)                            |
-| Story Points    | Number       | (for estimation)                                |
-| Estimate        | Number       | (for time/cost)                                 |
-| Due Date        | Date         | (deadline)                                      |
-| Start Date      | Date         | (kickoff)                                       |
-| Deadline        | Date         | (final deadline)                                |
-| Assignee        | Text         | (person responsible)                            |
+| Field Name   | Type          | Options/Notes                            |
+| ------------ | ------------- | ---------------------------------------- |
+| Theme        | Single-select | Design System, Platform, ...             |
+| Area         | Single-select | Frontend, Backend, ...                   |
+| Priority     | Single-select | High, Medium, Low                        |
+| Severity     | Single-select | Blocker, Critical, Major, Minor, Trivial |
+| Size         | Single-select | XS, S, M, L, XL                          |
+| Phase        | Single-select | Discovery, Build, QA, Launch, ...        |
+| Release type | Single-select | Major, Minor, Patch                      |
+| Environment  | Single-select | Production, Staging, QA, ...             |
+| Status       | Single-select | Todo, In Progress, Done, Blocked, ...    |
+| Issue Type   | Single-select | Bug, Feature, Chore, ...                 |
+| Milestone    | Single-select | (custom per project)                     |
+| Story Points | Number        | (for estimation)                         |
+| Estimate     | Number        | (for time/cost)                          |
+| Due Date     | Date          | (deadline)                               |
+| Start Date   | Date          | (kickoff)                                |
+| Deadline     | Date          | (final deadline)                         |
+| Assignee     | Text          | (person responsible)                     |
 
 See [field spec doc](../docs/update-projects/client-delivery-field-specs-v1-1.md) for authoritative options, descriptions, and colors.
 

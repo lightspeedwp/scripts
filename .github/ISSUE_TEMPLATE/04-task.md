@@ -28,15 +28,15 @@ Why does this task need to be done? What value does it provide?
 - [ ] Maintenance
 - [ ] Infrastructure
 - [ ] Testing
-- [ ] Other: _____
+- [ ] Other: **\_**
 
 ## Requirements
 
 List specific requirements for completing this task.
 
-1. 
-2. 
-3. 
+1.
+2.
+3.
 
 ## Success Criteria
 
@@ -52,7 +52,7 @@ Links to documentation, related issues, or context that might be helpful.
 
 ### Changed
 
-- 
+-
 
 ## Definition of Ready (DoR) Checklist
 

@@ -14,16 +14,18 @@ This file provides workspace-specific instructions for GitHub Copilot and CodeRa
 - [Chat Modes](./chatmodes/chatmodes.md): Scenario-based development contexts
 
 <!-- INSTRUCTIONS-TABLE-START -->
-| File | Purpose |
-|------|---------|
-| [.github/copilot-instructions.md](.github/copilot-instructions.md) | Main Copilot & CodeRabbit integration, file index, and standards cross-reference |
-| [.github/custom-instructions.md](.github/custom-instructions.md) | Copilot custom instructions, role-based configuration |
-| [.github/prompts/prompts.md](.github/prompts/prompts.md) | Reusable prompt templates for Copilot Chat/CLI |
-| [.github/chatmodes/chatmodes.md](.github/chatmodes/chatmodes.md) | Scenario-based chat modes for development contexts |
-| [.github/instructions/contributor-types.md](.github/instructions/contributor-types.md) | Role-specific contributor standards and prompts |
-| [.github/instructions/shell-script-copilot.md](.github/instructions/shell-script-copilot.md) | Shell script automation standards and patterns |
-| [.github/instructions/markdown-copilot.md](.github/instructions/markdown-copilot.md) | Markdown/documentation standards and accessibility |
-| [.github/instructions/js-copilot.md](.github/instructions/js-copilot.md) | JavaScript/Node.js workflow standards |
-| [.github/instructions/python-copilot.md](.github/instructions/python-copilot.md) | Python scripting standards |
-| [.github/instructions/playwright-copilot.md](.github/instructions/playwright-copilot.md) | Playwright-specific Copilot instructions and MCP server automation |
+
+| File                                                                                         | Purpose                                                                          |
+| -------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
+| [.github/copilot-instructions.md](.github/copilot-instructions.md)                           | Main Copilot & CodeRabbit integration, file index, and standards cross-reference |
+| [.github/custom-instructions.md](.github/custom-instructions.md)                             | Copilot custom instructions, role-based configuration                            |
+| [.github/prompts/prompts.md](.github/prompts/prompts.md)                                     | Reusable prompt templates for Copilot Chat/CLI                                   |
+| [.github/chatmodes/chatmodes.md](.github/chatmodes/chatmodes.md)                             | Scenario-based chat modes for development contexts                               |
+| [.github/instructions/contributor-types.md](.github/instructions/contributor-types.md)       | Role-specific contributor standards and prompts                                  |
+| [.github/instructions/shell-script-copilot.md](.github/instructions/shell-script-copilot.md) | Shell script automation standards and patterns                                   |
+| [.github/instructions/markdown-copilot.md](.github/instructions/markdown-copilot.md)         | Markdown/documentation standards and accessibility                               |
+| [.github/instructions/js-copilot.md](.github/instructions/js-copilot.md)                     | JavaScript/Node.js workflow standards                                            |
+| [.github/instructions/python-copilot.md](.github/instructions/python-copilot.md)             | Python scripting standards                                                       |
+| [.github/instructions/playwright-copilot.md](.github/instructions/playwright-copilot.md)     | Playwright-specific Copilot instructions and MCP server automation               |
+
 <!-- INSTRUCTIONS-TABLE-END -->

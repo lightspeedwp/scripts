@@ -1,4 +1,3 @@
-
 # Project Script Test Suite
 
 This folder contains comprehensive [Bats](https://github.com/bats-core/bats-core) test suites for all GitHub Project automation scripts in `scripts/project/`. These tests ensure robust, spec-compliant automation for both client delivery and product development workflows, covering argument parsing, field creation, authentication, dry-run, idempotency, and error handling.
@@ -7,14 +6,14 @@ This folder contains comprehensive [Bats](https://github.com/bats-core/bats-core
 
 ## Test Files Overview
 
-| Test File                                 | Purpose                                                                                       |
-|-------------------------------------------|-----------------------------------------------------------------------------------------------|
-| `test-client-delivery-project.bats`       | Tests `client-delivery-project.sh` for argument handling, help output, dry-run, field creation, idempotency, env overrides, and error handling |
-| `test-client-delivery-project-auth.bats`  | Tests authentication logic for `client-delivery-project.sh` (gh CLI presence, auth, scopes)    |
-| `test-product_dev_project.bats`           | Tests `product-dev-project.sh` for CLI commands, dry-run, field creation, idempotency, env overrides, and error handling |
-| `test-product-dev-project-auth.bats`      | Tests authentication logic for `product-dev-project.sh` (gh CLI presence, auth, scopes)        |
-| `test-create-project-field.bats`          | Tests helper logic for field command construction and dry-run output in project scripts        |
-| `test-update-projects.bats`               | Tests `update-projects.sh` for field management, CSV-driven creation, options, dry-run, deletion, and error handling |
+| Test File                                | Purpose                                                                                                                                        |
+| ---------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| `test-client-delivery-project.bats`      | Tests `client-delivery-project.sh` for argument handling, help output, dry-run, field creation, idempotency, env overrides, and error handling |
+| `test-client-delivery-project-auth.bats` | Tests authentication logic for `client-delivery-project.sh` (gh CLI presence, auth, scopes)                                                    |
+| `test-product_dev_project.bats`          | Tests `product-dev-project.sh` for CLI commands, dry-run, field creation, idempotency, env overrides, and error handling                       |
+| `test-product-dev-project-auth.bats`     | Tests authentication logic for `product-dev-project.sh` (gh CLI presence, auth, scopes)                                                        |
+| `test-create-project-field.bats`         | Tests helper logic for field command construction and dry-run output in project scripts                                                        |
+| `test-update-projects.bats`              | Tests `update-projects.sh` for field management, CSV-driven creation, options, dry-run, deletion, and error handling                           |
 
 ---
 

@@ -3,30 +3,30 @@
 
 # Type labels
 enhancement:
-  - '\bfeat(ure)?\b|\badd\b|\bnew\b'
+    - '\bfeat(ure)?\b|\badd\b|\bnew\b'
 bug:
-  - '\bbug\b|\bfix\b|\bissue\b|\berror\b|\bfail(ed|ure)?\b|\bcrash(es|ed)?\b'
+    - '\bbug\b|\bfix\b|\bissue\b|\berror\b|\bfail(ed|ure)?\b|\bcrash(es|ed)?\b'
 area:documentation:
-  - '\bdoc(s|umentation)?\b'
+    - '\bdoc(s|umentation)?\b'
 refactor:
-  - '\brefactor\b|\bclean(up)?\b|\brestructure\b'
+    - '\brefactor\b|\bclean(up)?\b|\brestructure\b'
 test:
-  - '\btest(s|ing)?\b'
+    - '\btest(s|ing)?\b'
 
 # Component labels
 scripts:
-  - '\bscript\b|\bbash\b|\bsh\b'
+    - '\bscript\b|\bbash\b|\bsh\b'
 workflow:
-  - '\bworkflow\b|\baction\b|\bgithub action\b'
+    - '\bworkflow\b|\baction\b|\bgithub action\b'
 project:
-  - '\bproject\b|\bprojects?\b|\bGitHub project\b'
+    - '\bproject\b|\bprojects?\b|\bGitHub project\b'
 client-delivery:
-  - '\bclient\b|\bdelivery\b|\bclient delivery\b'
+    - '\bclient\b|\bdelivery\b|\bclient delivery\b'
 product-development:
-  - '\bproduct\b|\bproduct development\b'
+    - '\bproduct\b|\bproduct development\b'
 
 # Priority labels (if explicitly mentioned)
 priority:high:
-  - '\bhigh priority\b|\burgent\b|\bcritical\b'
+    - '\bhigh priority\b|\burgent\b|\bcritical\b'
 priority:low:
-  - '\blow priority\b|\bnice to have\b'
+    - '\blow priority\b|\bnice to have\b'

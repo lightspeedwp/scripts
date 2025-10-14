@@ -49,8 +49,6 @@ All instructions follow the pattern: "You are a [role]. Follow our [framework/pa
 └── LIGHTSPEED_AUTOMATION_HANDBOOK.md  # Organization-wide documentation
 ```
 
-
-
 ## Usage Guidelines
 
 1. **For Contributors**: Reference the appropriate instruction file based on your role and task. Use chat modes from [chatmodes/chatmodes.md](../chatmodes/chatmodes.md) for context-specific guidance. Scripts must follow repo standards: kebab-case naming, header comments, error handling (`set -euo pipefail`), and Bats test coverage.

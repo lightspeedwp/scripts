@@ -5,6 +5,7 @@ This repository contains AI and automation agents to assist with GitHub project 
 ## Purpose
 
 This file serves as a registry for agent implementations in the repository, including:
+
 - Custom GitHub Copilot agents
 - Issue management automation agents
 - Workflow automation agents
@@ -21,16 +22,16 @@ This file serves as a registry for agent implementations in the repository, incl
 - **Usage:** Automatically runs when issues are opened or reopened
 - **Standards:** Aligned with org-wide-issue-types-v1-9.md and project templates
 - **Functionality:**
-  - Analyzes issue template metadata, content, title, and labels
-  - Determines appropriate issue type using the standardized types (Bug, Feature, Task, Epic, Story, etc.)
-  - Updates GitHub ProjectsV2 issue type field
-  - Adds issues to relevant projects if not already added
+    - Analyzes issue template metadata, content, title, and labels
+    - Determines appropriate issue type using the standardized types (Bug, Feature, Task, Epic, Story, etc.)
+    - Updates GitHub ProjectsV2 issue type field
+    - Adds issues to relevant projects if not already added
 - **Definition of Done:**
-  - Correctly identifies all standard issue types per org-wide standards
-  - Prioritizes template metadata over content analysis
-  - Documents behavior in .github/docs/auto-issue-type.md
-  - Integrates with PR and issue templates
-  - Follows the standard branch naming conventions when modified
+    - Correctly identifies all standard issue types per org-wide standards
+    - Prioritizes template metadata over content analysis
+    - Documents behavior in .github/docs/auto-issue-type.md
+    - Integrates with PR and issue templates
+    - Follows the standard branch naming conventions when modified
 
 ### label-standardization-agent
 
@@ -40,16 +41,16 @@ This file serves as a registry for agent implementations in the repository, incl
 - **Usage:** Runs weekly and can be triggered manually via workflow_dispatch
 - **Standards:** Aligned with org-wide-labels-v1-11.md and standard prefixes
 - **Functionality:**
-  - Detects non-standard labels with standard equivalents (e.g., "php" vs "lang:php")
-  - Migrates issues/PRs from non-standard to standard labels
-  - Removes redundant non-standard labels after migration
-  - Supports dry-run mode for testing before applying changes
+    - Detects non-standard labels with standard equivalents (e.g., "php" vs "lang:php")
+    - Migrates issues/PRs from non-standard to standard labels
+    - Removes redundant non-standard labels after migration
+    - Supports dry-run mode for testing before applying changes
 - **Definition of Done:**
-  - Successfully standardizes all labels according to organization conventions
-  - Properly migrates issues/PRs to use standard labels
-  - Provides clear logging and summary reports
-  - Integrates with existing label workflows
-  - Documents behavior in .github/docs/label-standardization.md
+    - Successfully standardizes all labels according to organization conventions
+    - Properly migrates issues/PRs to use standard labels
+    - Provides clear logging and summary reports
+    - Integrates with existing label workflows
+    - Documents behavior in .github/docs/label-standardization.md
 
 ## Additional Automation Logic
 
@@ -67,16 +68,17 @@ Additional agent-related logic is managed via:
 1. Create a new folder: `./github/agents/`
 2. Add agent implementation files (e.g., `copilot-agent.js`, `review-agent.py`)
 3. Document each agent in this file:
-   - Name
-   - Purpose
-   - Integration points
-   - Usage instructions
-   - Maintenance notes
+    - Name
+    - Purpose
+    - Integration points
+    - Usage instructions
+    - Maintenance notes
 
 ## Example Entry (for future agents)
 
 ```markdown
 ### copilot-swe-agent
+
 - **Purpose:** Automates code suggestions and review for SWE tasks
 - **Location:** .github/agents/copilot-swe-agent.js
 - **Integration:** GitHub Actions, Copilot Chat, CodeRabbit

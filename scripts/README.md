@@ -1,7 +1,4 @@
-
-
 # Scripts Directory Structure
-
 
 This directory contains all automation scripts for LightSpeed WP, organized by function for clarity and maintainability. **All scripts are now located in their respective subfolders; no executable scripts remain in the root.**
 
@@ -9,29 +6,29 @@ This directory contains all automation scripts for LightSpeed WP, organized by f
 
 Scripts are grouped as follows:
 
-| Subfolder      | Purpose                                                      |
-|---------------|--------------------------------------------------------------|
+| Subfolder      | Purpose                                                                                       |
+| -------------- | --------------------------------------------------------------------------------------------- |
 | `deployment/`  | Deployment automation scripts (e.g., client delivery, dry-run validation, example deployment) |
-| `project/`     | Project management and update scripts (e.g., product/project setup, field updates) |
-| `maintenance/` | Maintenance and label management scripts (e.g., prune/update/sync labels) |
-| `testing/`     | Test harnesses, validation scripts, Playwright/Bats tests, test runners |
-| `utility/`     | Utility functions and server startup scripts (shared helpers, MCP server) |
-| `dry-run/`     | Dry-run scripts for safe validation of deployment/configuration |
-| `packages/`    | Package management and related resources                     |
+| `project/`     | Project management and update scripts (e.g., product/project setup, field updates)            |
+| `maintenance/` | Maintenance and label management scripts (e.g., prune/update/sync labels)                     |
+| `testing/`     | Test harnesses, validation scripts, Playwright/Bats tests, test runners                       |
+| `utility/`     | Utility functions and server startup scripts (shared helpers, MCP server)                     |
+| `dry-run/`     | Dry-run scripts for safe validation of deployment/configuration                               |
+| `packages/`    | Package management and related resources                                                      |
 
 Refer to each subfolder for specific scripts and usage instructions. The root README provides an overview and links to documentation, standards, and contribution guidelines.
 
 ## Subfolders Overview
 
-| Subfolder      | Purpose                                                      |
-|---------------|--------------------------------------------------------------|
-| `deployment/`  | Deployment automation scripts (e.g., client delivery, dry-run validation) |
+| Subfolder      | Purpose                                                                    |
+| -------------- | -------------------------------------------------------------------------- |
+| `deployment/`  | Deployment automation scripts (e.g., client delivery, dry-run validation)  |
 | `project/`     | Project management and update scripts (e.g., project setup, field updates) |
-| `maintenance/` | Maintenance and label management scripts (e.g., prune/update labels) |
-| `testing/`     | Test harnesses, validation scripts, and Playwright/Bats tests |
-| `utility/`     | Utility functions and server startup scripts (shared helpers) |
-| `dry-run/`     | Dry-run scripts for safe validation of deployment/configuration |
-| `packages/`    | Package management and related resources                     |
+| `maintenance/` | Maintenance and label management scripts (e.g., prune/update labels)       |
+| `testing/`     | Test harnesses, validation scripts, and Playwright/Bats tests              |
+| `utility/`     | Utility functions and server startup scripts (shared helpers)              |
+| `dry-run/`     | Dry-run scripts for safe validation of deployment/configuration            |
+| `packages/`    | Package management and related resources                                   |
 
 ## How to Use
 
@@ -49,18 +46,17 @@ Refer to each subfolder for specific scripts and usage instructions. The root RE
 - **Dry-run**: Safe validation scripts
 - **Packages**: Package management
 
-
 ## Playwright MCP Server Automation
 
 This repo includes automation to ensure Playwright MCP and GitHub MCP servers are always running for reliable testing and automation. Key features:
 
 - **Copilot instructions** for Playwright and MCP server management in `.github/instructions/playwright-copilot.md`.
 - **Server startup and health scripts** in `scripts/utility/`:
-  - `start-mcp-server.sh`: Starts MCP server if not running
-  - `check-mcp-server-health.sh`: Checks health and restarts MCP server if needed
+    - `start-mcp-server.sh`: Starts MCP server if not running
+    - `check-mcp-server-health.sh`: Checks health and restarts MCP server if needed
 - **GitHub Actions workflow** in `.github/workflows/playwright-mcp-server.yml`:
-  - Starts MCP server, runs health check, and executes Playwright tests
-  - Auto-restarts MCP server if stopped
+    - Starts MCP server, runs health check, and executes Playwright tests
+    - Auto-restarts MCP server if stopped
 - **Playwright tests** in `scripts/testing/playwright-mcp-server.spec.ts` validate MCP server health endpoint
 
 ### Setup & Integration
@@ -97,8 +93,8 @@ See the automation workflow and utility scripts for usage details and integratio
 
 For update-projects.sh usage, flags, testing, and code comment standards, see [update-projects/README.update-projects.md](../update-projects/README.update-projects.md).
 
-
 ## Advanced Project Automation Scripts
+
 `product_dev_project.sh` and related scripts automate GitHub ProjectV2 provisioning, field management, item/issue linking, and governance. Features include:
 
 - Create/update projects, fields, items, and status
@@ -106,7 +102,6 @@ For update-projects.sh usage, flags, testing, and code comment standards, see [u
 - Modular helper functions for GraphQL and CLI integration
 - Full alignment with org-wide meta/template files and governance standards
 - Bats test coverage and error handling
-
 
 See usage examples in this README and [LIGHTSPEED_AUTOMATION_HANDBOOK.md](../LIGHTSPEED_AUTOMATION_HANDBOOK.md).
 
@@ -157,7 +152,6 @@ This repository integrates advanced GitHub Project automation, issue/PR labeling
 
 #### Extending Automation
 
-
 You can extend the script to automate:
 
 - Project updates (`updateProjectV2`)
@@ -170,17 +164,17 @@ Refer to the [GitHub GraphQL API documentation for mutation details](https://doc
 #### Example Workflow
 
 1. Create a new project:
-  `./product_dev_project.sh lightspeedwp "Internal Automation & Docs"`
+   `./product_dev_project.sh lightspeedwp "Internal Automation & Docs"`
 2. Add a draft issue:
-  `./product_dev_project.sh add-draft-issue "Initial Planning" "Kickoff meeting and requirements gathering."`
+   `./product_dev_project.sh add-draft-issue "Initial Planning" "Kickoff meeting and requirements gathering."`
 3. Link a repository:
-  `./product_dev_project.sh link-repo lightspeedwp scripts`
+   `./product_dev_project.sh link-repo lightspeedwp scripts`
 4. Link a team:
-  `./product_dev_project.sh link-team lightspeedwp devops`
+   `./product_dev_project.sh link-team lightspeedwp devops`
 5. Update a label for a project item:
-  `./product_dev_project.sh update-label <item-id> <label-id>`
+   `./product_dev_project.sh update-label <item-id> <label-id>`
 6. Update issue type for a project item:
-  `./product_dev_project.sh update-issue-type <item-id> <type-id>`
+   `./product_dev_project.sh update-issue-type <item-id> <type-id>`
 
 ---
 

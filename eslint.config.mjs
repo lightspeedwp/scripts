@@ -8,39 +8,39 @@ import tseslint from '@typescript-eslint/eslint-plugin';
 import tsParser from '@typescript-eslint/parser';
 
 export default [
-  js.configs.recommended,
-  prettierConfig,
-  {
-    plugins: {
-      prettier: prettierPlugin,
-      '@typescript-eslint': tseslint,
+    js.configs.recommended,
+    prettierConfig,
+    {
+        plugins: {
+            prettier: prettierPlugin,
+            '@typescript-eslint': tseslint,
+        },
+        files: ['**/*.ts'],
+        languageOptions: {
+            ecmaVersion: 'latest',
+            sourceType: 'module',
+            parser: tsParser,
+        },
+        rules: {
+            'no-unused-vars': 'warn',
+            'no-console': 'off',
+            'prettier/prettier': 'error',
+            '@typescript-eslint/no-unused-vars': 'warn',
+        },
     },
-    files: ['**/*.ts'],
-    languageOptions: {
-      ecmaVersion: 'latest',
-      sourceType: 'module',
-      parser: tsParser,
+    {
+        plugins: {
+            prettier: prettierPlugin,
+        },
+        files: ['**/*.js'],
+        languageOptions: {
+            ecmaVersion: 'latest',
+            sourceType: 'module',
+        },
+        rules: {
+            'no-unused-vars': 'warn',
+            'no-console': 'off',
+            'prettier/prettier': 'error',
+        },
     },
-    rules: {
-      'no-unused-vars': 'warn',
-      'no-console': 'off',
-      'prettier/prettier': 'error',
-      '@typescript-eslint/no-unused-vars': 'warn',
-    },
-  },
-  {
-    plugins: {
-      prettier: prettierPlugin,
-    },
-    files: ['**/*.js'],
-    languageOptions: {
-      ecmaVersion: 'latest',
-      sourceType: 'module',
-    },
-    rules: {
-      'no-unused-vars': 'warn',
-      'no-console': 'off',
-      'prettier/prettier': 'error',
-    },
-  },
 ];

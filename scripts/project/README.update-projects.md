@@ -1,5 +1,3 @@
-
-
 # update-projects.sh
 
 This script automates the creation, update, and deletion of GitHub Project fields for LightSpeed WP projects using the GitHub CLI (`gh`). It supports both interactive and non-interactive usage, CSV-driven field management, dry-run mode, and advanced authentication options.
@@ -11,30 +9,30 @@ This script automates the creation, update, and deletion of GitHub Project field
 - Enables strict error handling (`set -euo pipefail`).
 - Defines colorized logging functions for clear output.
 
-2.**Argument Parsing**
+    2.**Argument Parsing**
 
 - Parses command-line options to determine project owner, project number, field CSV file, dry-run mode, and other behaviors.
 - Example: `--fields-file <path>` specifies a CSV of fields to create or delete.
 
-3.**Authentication & Scopes**
+    3.**Authentication & Scopes**
 
 - Checks for the GitHub CLI and verifies authentication.
 - Supports GitHub App authentication via environment variables.
 - Validates required scopes (`repo`, `project`, `read:org`, `read:user`) and can auto-refresh them interactively if needed.
 
-4.**Project Detection**
+    4.**Project Detection**
 
 - Auto-detects project owner and number from environment variables, git remote, or authenticated user.
 - Can parse these from `LS_PROJECT_URL` if set.
 
-5.**Field Management**
+    5.**Field Management**
 
 - Reads field definitions from a CSV file (see format below).
 - For each field, either creates or deletes (archives) it using the GitHub CLI.
 - Supports single-select, number, date, and text field types.
 - In dry-run mode, prints the commands instead of executing them.
 
-6.**Execution Flow**
+    6.**Execution Flow**
 
 - Runs all checks and processes fields as specified.
 - If no CSV is provided, creates example fields for demonstration.
@@ -82,15 +80,15 @@ gh auth refresh -s repo,project,read:org,read:user
 
 ## Flags & Options
 
-| Option                | Description                                                                 |
-|-----------------------|-----------------------------------------------------------------------------|
-| `--project-owner <org>`   | Override project owner (default: auto-detect from repo or LS_PROJECT_URL)   |
-| `--project-number <num>`  | Override project number (default: auto-detect from LS_PROJECT_URL)          |
-| `--fields-file <path>`    | CSV file of fields to create (see format below)                             |
-| `--delete-fields`         | Delete (archive) fields listed in CSV instead of creating them              |
-| `--auto-refresh`          | Interactively refresh GitHub CLI scopes if needed                           |
-| `--dry-run`               | Print commands instead of executing them                                    |
-| `--help`                  | Show this help message                                                      |
+| Option                   | Description                                                               |
+| ------------------------ | ------------------------------------------------------------------------- |
+| `--project-owner <org>`  | Override project owner (default: auto-detect from repo or LS_PROJECT_URL) |
+| `--project-number <num>` | Override project number (default: auto-detect from LS_PROJECT_URL)        |
+| `--fields-file <path>`   | CSV file of fields to create (see format below)                           |
+| `--delete-fields`        | Delete (archive) fields listed in CSV instead of creating them            |
+| `--auto-refresh`         | Interactively refresh GitHub CLI scopes if needed                         |
+| `--dry-run`              | Print commands instead of executing them                                  |
+| `--help`                 | Show this help message                                                    |
 
 ## CSV Format for Field Creation
 
@@ -219,15 +217,15 @@ gh auth refresh -s repo,project,read:org,read:user
 
 ## Flags & Options
 
-| Option                | Description                                                                 |
-|-----------------------|-----------------------------------------------------------------------------|
-| `--project-owner <org>`   | Override project owner (default: auto-detect from repo or LS_PROJECT_URL)   |
-| `--project-number <num>`  | Override project number (default: auto-detect from LS_PROJECT_URL)          |
-| `--fields-file <path>`    | CSV file of fields to create (see format below)                             |
-| `--delete-fields`         | Delete (archive) fields listed in CSV instead of creating them              |
-| `--auto-refresh`          | Interactively refresh GitHub CLI scopes if needed                           |
-| `--dry-run`               | Print commands instead of executing them                                    |
-| `--help`                  | Show this help message                                                      |
+| Option                   | Description                                                               |
+| ------------------------ | ------------------------------------------------------------------------- |
+| `--project-owner <org>`  | Override project owner (default: auto-detect from repo or LS_PROJECT_URL) |
+| `--project-number <num>` | Override project number (default: auto-detect from LS_PROJECT_URL)        |
+| `--fields-file <path>`   | CSV file of fields to create (see format below)                           |
+| `--delete-fields`        | Delete (archive) fields listed in CSV instead of creating them            |
+| `--auto-refresh`         | Interactively refresh GitHub CLI scopes if needed                         |
+| `--dry-run`              | Print commands instead of executing them                                  |
+| `--help`                 | Show this help message                                                    |
 
 ## CSV Format for Field Creation
 
@@ -242,6 +240,7 @@ Assignee,text,
 Due Date,date,
 Story Points,number,
 ```
+
 - Lines starting with `#` are ignored.
 - For single-select fields, list options separated by commas after the type.
 - For number, date, or text fields, leave the options column empty.

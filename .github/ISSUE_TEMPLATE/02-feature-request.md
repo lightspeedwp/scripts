@@ -33,7 +33,7 @@ What type of automation would this be?
 - [ ] GitHub Actions workflow
 - [ ] Test harness
 - [ ] Documentation improvement
-- [ ] Other: _____
+- [ ] Other: **\_**
 
 ## Implementation considerations
 
