@@ -1,9 +1,16 @@
-#!/usr/bin/env bats
-
-load test_helper
+#
+# Script Name: test-standardize-logging.bats
+# Description: Bats tests for standardize-logging.sh utility script.
+# Requirements: bats-core, test-helper.bash
+# Usage: bats test-standardize-logging.bats
+# Options: None
+# Github Author: @lightspeedwp / @ashleyshaw
+# Date: 14-10-2025
+#
+load '../test-helper.bash'
 
 SCRIPT_PATH="${BATS_TEST_DIRNAME}/../scripts/utility/standardize-logging.sh"
-TEST_SCRIPT_PATH="${BATS_TEST_DIRNAME}/fixtures/test-script.sh"
+TEST_SCRIPT_PATH="${BATS_TEST_DIRNAME}/tests/utility/run-tests.sh"
 
 setup() {
     # Create test directory

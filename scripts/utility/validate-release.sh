@@ -1,13 +1,38 @@
 #!/bin/bash
 
-set -euo pipefail
-
-# 
+#
 # Script Name: validate-release.sh
 # Description: Validates that the repository is ready for release
-# Usage: ./validate-release.sh [--version VERSION]
-# Author: LightSpeed WP Team
 #
+# Version: v0.1.0
+# Date: 2025-10-14
+# Author: LightSpeedWP
+# Github Contributors: @lightspeedwp / @ashleyshaw
+# Author URI: https://lightspeedwp.agency/
+# License: GPL v3 or later
+# License URI: https://www.gnu.org/licenses/gpl-3.0.html
+#
+# Requirements:
+#   - bash (version 4 or later)
+#   - jq (for JSON parsing)
+#   - yq installed (for YAML processing)
+#   - python3 with PyYAML (for YAML validation)
+#   - bats-core (for test validation)
+#   - curl installed
+#
+# Usage: ./update-release.sh [--version VERSION]
+#
+# Options:
+#   --version VERSION      Expected version (default: 0.1.0)
+#   --verbose, -v          Enable verbose output
+#   --help, -h             Show this help message
+#
+# Note:
+#   - This script is intended to be run from the root of the repository.
+#   - It checks for version consistency, workflow validity, test coverage, and documentation completeness.
+#
+
+set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
@@ -61,9 +86,9 @@ log_error() {
 
 check_version_files() {
     log_info "Checking version consistency..."
-    
+
     local version_found=false
-    
+
     # Check VERSION file
     if [[ -f "$PROJECT_ROOT/VERSION" ]]; then
         local version_file_content
@@ -75,7 +100,7 @@ check_version_files() {
         fi
         version_found=true
     fi
-    
+
     # Check package.json
     if [[ -f "$PROJECT_ROOT/package.json" ]] && command -v jq >/dev/null 2>&1; then
         local package_version
@@ -87,7 +112,7 @@ check_version_files() {
         fi
         version_found=true
     fi
-    
+
     if [[ "$version_found" == false ]]; then
         log_warning "No version files found (VERSION or package.json)"
     fi
@@ -95,13 +120,13 @@ check_version_files() {
 
 check_workflows() {
     log_info "Validating GitHub Actions workflows..."
-    
+
     local workflow_dir="$PROJECT_ROOT/.github/workflows"
     if [[ ! -d "$workflow_dir" ]]; then
         log_error "No .github/workflows directory found"
         return
     fi
-    
+
     # Check for essential workflows
     local required_workflows=("release.yml" "test.yml" "lint.yml")
     for workflow in "${required_workflows[@]}"; do
@@ -111,7 +136,7 @@ check_workflows() {
             log_error "Missing required workflow: $workflow"
         fi
     done
-    
+
     # Validate YAML syntax
     if command -v python3 >/dev/null 2>&1; then
         for workflow_file in "$workflow_dir"/*.yml "$workflow_dir"/*.yaml; do
@@ -130,13 +155,13 @@ check_workflows() {
 
 check_tests() {
     log_info "Checking test coverage and status..."
-    
+
     local test_dir="$PROJECT_ROOT/tests"
     if [[ ! -d "$test_dir" ]]; then
         log_error "No tests directory found"
         return
     fi
-    
+
     # Count test files
     local bats_files
     bats_files=$(find "$test_dir" -name "*.bats" | wc -l)
@@ -145,11 +170,11 @@ check_tests() {
     else
         log_warning "No bats test files found"
     fi
-    
+
     # Check if bats is available for running tests
     if command -v bats >/dev/null 2>&1; then
         log_success "Bats testing framework available"
-        
+
         # Run a quick test to see if tests execute
         if [[ "$VERBOSE" == true ]]; then
             log_info "Running test validation..."
@@ -166,7 +191,7 @@ check_tests() {
 
 check_documentation() {
     log_info "Checking documentation completeness..."
-    
+
     local required_docs=("README.md" "CHANGELOG.md" "CONTRIBUTING.md")
     for doc in "${required_docs[@]}"; do
         if [[ -f "$PROJECT_ROOT/$doc" ]]; then
@@ -175,7 +200,7 @@ check_documentation() {
             log_error "Missing documentation: $doc"
         fi
     done
-    
+
     # Check changelog format
     if [[ -f "$PROJECT_ROOT/CHANGELOG.md" ]]; then
         if grep -q "## \[$EXPECTED_VERSION\]" "$PROJECT_ROOT/CHANGELOG.md"; then
@@ -208,26 +233,26 @@ main() {
                 ;;
         esac
     done
-    
+
     echo "🚀 Validating release readiness for version $EXPECTED_VERSION"
     echo
-    
+
     check_version_files
     echo
-    check_workflows  
+    check_workflows
     echo
     check_tests
     echo
     check_documentation
     echo
-    
+
     if [[ "$EXIT_CODE" -eq 0 ]]; then
         echo "🎉 Repository appears ready for release!"
         echo "   Run 'git push origin main' to trigger the release workflow"
     else
         echo "💥 Release validation failed. Please fix the issues above."
     fi
-    
+
     exit $EXIT_CODE
 }
 

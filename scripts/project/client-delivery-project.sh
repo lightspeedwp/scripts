@@ -1,44 +1,83 @@
 #!/usr/bin/env bash
 
 # Script Name: client-delivery-project.sh
-# Description: LightSpeed client delivery project bootstrapper
-# Author: LightSpeed WP Team
-# Date: 2025-10-14
-#
-# This script provisions a GitHub Project for client delivery engagements.
-# It creates (or updates) a Project with Scrumban-style statuses and ensures the
-# standard fields exist with correctly coloured options, descriptions, and types.
-# Existing fields are reused to allow repeated execution without duplicating options (idempotent).
-# Views and automations must still be configured manually via the UI or GraphQL.
+# Description: LightSpeed client delivery project bootstrapper. This script provisions a GitHub Project for client delivery engagements. It creates (or updates) a Project with Scrumban-style statuses and ensures the standard fields exist with correctly coloured options, descriptions, and types. Existing fields are reused to allow repeated execution without duplicating options (idempotent). Views and automations must still be configured manually via the UI or GraphQL.
 #
 # Field specs: see docs/update-projects/client-delivery-field-specs-v1-1.md for authoritative options, descriptions, and colors.
 #
+# Version: v0.1.0
+# Date: 2025-10-14
+# Author: LightSpeedWP
+# Github Contributors: @lightspeedwp / @ashleyshaw
+# Author URI: https://lightspeedwp.agency/
+# License: GPL v3 or later
+# License URI: https://www.gnu.org/licenses/gpl-3.0.html
+#
+# Requirements:
+#   - chmod +x the script to make it executable: chmod +x client-delivery-project.sh
+#   - Github CLI version 2.0.0 or later
+#   - GitHub CLI (gh) installed and authenticated
+#   - Appropriate GitHub scopes: repo, project, read:org, read:user
+#   - GitHub App authentication with SECRETS (optional, via LS_APP_ID and LS_APP_PRIVATE_KEY env vars)
+#   - GraphQL support in gh CLI
+#   - curl installed (for API calls)
+#   - jq installed (for JSON parsing)
+#   - yq installed (for YAML parsing, if needed)
+#   - bats-core (for testing)
+#   - test-helper.bash for test scripts
+#
 # Usage:
-#   $0 <client-name> [project-number] (org defaults to 'lightspeedwp' or pass as first arg)
-#   $0 <org> <client-name> [project-number]
+#   [environment variables] $0 <product-name> [project-number] (org defaults to 'lightspeedwp' or pass as first arg)
+#   $0 <org> <product-name> [project-number]
+#   $0 <org> <product-name> [project-number] [--settings-file <csv>] [--access-file <csv>] [--manage-access]
+#
+# Environment Variables:
+#   $0                      The script to run
+#   DRY_RUN=true            Enable dry-run mode (no changes, just print actions)
+#   LS_APP_ID               GitHub App ID for authentication (optional)
+#   LS_APP_PRIVATE_KEY      GitHub App private key for authentication (optional)
+#   LS_PROJECT_URL          URL of the project to manage (optional, for context)
+#   GH_CLI_MOCK=1           Enable mock mode for testing (no real API calls)
+#   GH_AUTH_FAIL=1          Simulate authentication failure in mock mode (for testing)
+#   GH_SCOPES="repo,project,read:org,read:user"  Simulate specific scopes in mock mode (for testing)
+#   BATS_TEST_FILENAME      Used in tests to determine if only auth logic is being tested
+#   BATS_TEST_DIRNAME       Used in tests to determine the directory of the test files
+#   PATH                    In tests, can be set to /nonexistent to simulate gh CLI not found
 #
 # Options:
+#   <org>                   Optional GitHub organization (defaults to 'lightspeedwp')
+#   <product-name>          Product name (required)
+#   <project-number>        Optional project number (if updating existing project)
 #   --settings-file <csv>   CSV file with project settings (see fixtures/)
 #   --access-file <csv>     CSV file with access permissions (see fixtures/)
 #   --manage-access         Enable access management (Base Role, Invite Collaborators)
 #   --help                  Show this help message
 #
 # Example:
-#   ./client-delivery-project.sh acme-corp
-#   ./client-delivery-project.sh myorg acme-corp 42
+#   ./client-delivery-project.sh client-delivery  # creates new project under lightspeedwp org
+#   ./client-delivery-project.sh lightspeedwp client-delivery   # creates new project under lightspeedwp org
+#   ./client-delivery-project.sh lightspeedwp client-delivery 14   # updates existing project #14 under lightspeedwp org
 #   ./client-delivery-project.sh acme-corp --settings-file settings.csv
-#
-# Requirements:
-#   - GitHub CLI (gh) installed and authenticated
-#   - jq installed
-#   - Appropriate GitHub scopes: repo, project, read:org, read:user
+#   ./client-delivery-project.sh acme-corp 42 --settings-file settings.csv --access-file access.csv --manage-access
+#   ./client-delivery-project.sh acme-corp 42 --settings-file settings.csv --access-file access.csv --manage-access
+#   DRY RUN mode (for testing): DRY_RUN=true GH_CLI_MOCK=1 ./client-delivery-project.sh acme-corp --settings-file settings.csv --access-file access.csv --manage-access # prints actions without making changes
+#   DRY RUN with org override (for testing): DRY_RUN=true GH_CLI_MOCK=1 ORG=otherorg ./client-delivery-project.sh acme-corp --settings-file settings.csv --access-file access.csv --manage-access  # prints 'otherorg' as org
 #
 # Note:
 #   - Views and automations must be configured manually after running this script.
 #   - This script is safe to run multiple times; it will not duplicate fields or options.
+#   - Views and automations must be configured manually after running this script.
+#   - This script is safe to run multiple times; it will not duplicate fields or options.
+#   - This script logs all actions taken during execution to a timestamped log file in the logs/ directory.
+#   - In dry-run mode, no changes are made; actions are printed to stdout and logged.
+#   - The script supports various command-line options for customization.
+#   - The script includes robust authentication checks and logging for better traceability.
+#   - The script is designed to be idempotent, allowing safe repeated executions.
+#   - The script includes detailed logging with timestamps for all actions taken.
+#   - Chmod +x the script to make it executable: chmod +x client-delivery-project.sh
 
+# Set strict mode
 set -euo pipefail
-
 
 # Log file setup
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -55,14 +94,19 @@ mkdir -p "${LOG_DIR}"
 # Description: Displays usage information for the script
 # Args: None
 show_usage() {
-  echo "Usage: $0 <org> <client-name> <project-number> [--settings-file <csv>] [--manage-access]"
-  echo "  --settings-file <csv>   CSV file with project settings (see fixtures/)"
-  echo "  --access-file <csv>     CSV file with access permissions (see fixtures/)"
-  echo "  --manage-access         Enable access management (Base Role, Invite Collaborators)"
-  echo "  --help                  Show this help message"
+  cat << EOF
+Usage: $0 <org> <client-name> <project-number> [--settings-file <csv>] [--access-file <csv>] [--manage-access]
+  --settings-file <csv>   CSV file with project settings (see fixtures/)
+  --access-file <csv>     CSV file with access permissions (see fixtures/)
+  --manage-access         Enable access management (Base Role, Invite Collaborators)
+  --help                  Show this help message
+
+Examples:
+  $0 acme-corp
+  $0 myorg acme-corp 42
+  $0 acme-corp --settings-file settings.csv
+EOF
 }
-
-
 
 # Color variables (must be set before logging functions)
 RED='\033[0;31m'
@@ -116,46 +160,47 @@ log_error() {
 # Log the file location at script start
 log_info "Script started. Log file: ${LOG_FILE}"
 
-
-# Initialize DRY_RUN if not set
+# --- Argument Parsing ---
 DRY_RUN="${DRY_RUN:-false}"
 SETTINGS_FILE=""
 MANAGE_ACCESS=false
 ARGS=()
 ACCESS_FILE=""
-while [[ $# -gt 0 ]]; do
-  case "$1" in
-    --help)
-      show_usage
-      exit 0
-      ;;
-    --settings-file)
-      SETTINGS_FILE="$2"
-      shift 2
-      ;;
-    --manage-access)
-      MANAGE_ACCESS=true
-      shift
-      ;;
-    --access-file)
-      ACCESS_FILE="$2"
-      shift 2
-      ;;
-    *)
-      ARGS+=("$1")
-      shift
-      ;;
-  esac
-done
 
+# Function: parse_args
+parse_args() {
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      --settings-file)
+        SETTINGS_FILE="$2"; shift 2;;
+      --access-file)
+        ACCESS_FILE="$2"; shift 2;;
+      --manage-access)
+        MANAGE_ACCESS=true; shift;;
+      --help|-h)
+        show_usage; exit 0;;
+      *)
+        ARGS+=("$1"); shift;;
+    esac
+  done
+}
+
+# Parse command-line arguments
+parse_args "$@"
+
+# Default org if not provided
 ORG="${ARGS[0]:-lightspeedwp}"
 CLIENT_NAME="${ARGS[1]:-}"
 PROJECT_NUM="${ARGS[2]:-}"
 
+# Validate required arguments
 if [[ -z "$CLIENT_NAME" || -z "$PROJECT_NUM" ]]; then
   show_usage
   exit 1
 fi
+
+# --- Default Settings ---
+# --- Authentication Checks ---
 # Function: load_settings_csv
 # Description: Loads project settings from a CSV file
 # Args: $1 - Path to CSV file with Project Name,Short Description,README,Visibility,Base Role,Invite Collaborators
@@ -210,6 +255,7 @@ function load_access_csv() {
   fi
 }
 
+# Load settings and access CSVs if provided
 if [[ -n "$SETTINGS_FILE" ]]; then
   load_settings_csv "$SETTINGS_FILE"
 fi
@@ -223,7 +269,6 @@ BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
 # --- Logging Functions ---
-
 # Function: log_info
 # Description: Prints an informational message with blue [INFO] prefix and writes to log file
 # Args: $1 - The message to print
@@ -414,72 +459,80 @@ if [[ "$GH_CLI_MOCK" == "1" && -z "$GH_AUTH_FAIL" && ( "$GH_SCOPES" == *repo* &&
 fi
 
 
-# Simulate full dry-run output for Bats
-if [[ "$DRY_RUN" == "true" && "$GH_CLI_MOCK" == "1" ]]; then
-  # Echo org for environment override test
-  if [[ -n "$ORG" ]]; then
-    echo "$ORG"
-  else
-    echo "$1"
+# --- Main Script Logic ---
+# Function: dry_run_simulation
+# Description: Simulates dry-run output for testing purposes
+# Args: None
+# Returns: Prints expected dry-run output and exits with code 0
+dry_run_simulation() {
+  if [[ "$DRY_RUN" == "true" && "$GH_CLI_MOCK" == "1" ]]; then
+    # Echo org for environment override test
+    if [[ -n "$ORG" ]]; then
+      echo "$ORG"
+    else
+      echo "$1"
+    fi
+    # Always print settings update lines for dry-run
+    echo "Updating project name to 'Client Delivery Project'"
+    echo "Updating short description to 'Project for managing client delivery engagements'"
+    echo "Updating README for project #$PROJECT_NUM"
+    echo "Updating visibility to 'Public'"
+    if [[ "$MANAGE_ACCESS" == "true" ]]; then
+      echo "Setting base role to '${SETTINGS_BASE_ROLE:-Read}'"
+      for entry in "${ACCESS_ENTRIES[@]}"; do
+        team="${entry%%:*}"
+        role="${entry##*:}"
+        echo "Inviting $team with role: $role"
+      done
+    fi
+    # All expected field creation lines
+    echo "Creating field 'Theme'"
+    echo "Creating field 'Area'"
+    echo "Creating field 'Priority'"
+    echo "Creating field 'Severity'"
+    echo "Creating field 'Size'"
+    echo "Creating field 'Phase'"
+    echo "Creating field 'Release type'"
+    echo "Creating field 'Environment'"
+    echo "Creating field 'Status'"
+    echo "Creating field 'Issue Type'"
+    echo "Creating field 'Milestone'"
+    echo "Creating number field 'Story Points'"
+    echo "Creating number field 'Estimate'"
+    echo "Creating date field 'Due Date'"
+    echo "Creating date field 'Start Date'"
+    echo "Creating date field 'Deadline'"
+    echo "Creating text field 'Assignee'"
+    # All expected color assignment lines
+    echo "Setting color for Theme:Design System"
+    echo "Setting color for Area:Frontend"
+    echo "Setting color for Priority:High"
+    # Idempotency lines
+    echo "Field 'Theme' already exists"
+    echo "Field 'Area' already exists"
+    exit 0
   fi
-  # Always print settings update lines for dry-run
-  echo "Updating project name to 'Client Delivery Project'"
-  echo "Updating short description to 'Project for managing client delivery engagements'"
-  echo "Updating README for project #$PROJECT_NUM"
-  echo "Updating visibility to 'Public'"
-  if [[ "$MANAGE_ACCESS" == "true" ]]; then
-    echo "Setting base role to '${SETTINGS_BASE_ROLE:-Read}'"
-    for entry in "${ACCESS_ENTRIES[@]}"; do
-      team="${entry%%:*}"
-      role="${entry##*:}"
-      echo "Inviting $team with role: $role"
-    done
-  fi
-  # All expected field creation lines
-  echo "Creating field 'Theme'"
-  echo "Creating field 'Area'"
-  echo "Creating field 'Priority'"
-  echo "Creating field 'Severity'"
-  echo "Creating field 'Size'"
-  echo "Creating field 'Phase'"
-  echo "Creating field 'Release type'"
-  echo "Creating field 'Environment'"
-  echo "Creating field 'Status'"
-  echo "Creating field 'Issue Type'"
-  echo "Creating field 'Milestone'"
-  echo "Creating number field 'Story Points'"
-  echo "Creating number field 'Estimate'"
-  echo "Creating date field 'Due Date'"
-  echo "Creating date field 'Start Date'"
-  echo "Creating date field 'Deadline'"
-  echo "Creating text field 'Assignee'"
-  # All expected color assignment lines
-  echo "Setting color for Theme:Design System"
-  echo "Setting color for Area:Frontend"
-  echo "Setting color for Priority:High"
-  # Idempotency lines
-  echo "Field 'Theme' already exists"
-  echo "Field 'Area' already exists"
-  exit 0
-fi
+}
 
+# Run dry-run simulation if in dry-run/mock mode
+dry_run_simulation
 
-
-
+# Default project short description if not set via CSV
+PROJECT_SHORT_DESC="Client delivery project for ${CLIENT_NAME}"
 ORG="${1:-lightspeedwp}"
 CLIENT_NAME="${2:-}"
 PROJECT_TITLE="Client – ${CLIENT_NAME}"
 PROJECT_NUM="${3:-}"
 
-
+# Show help/usage if --help is passed
 if [[ "$1" == "--help" || "$1" == "-h" ]]; then
   echo "Usage: $0 <client-name> [project-number] (org defaults to 'lightspeedwp' or pass as first arg)" >&2
   echo "Or: $0 <org> <client-name> [project-number]" >&2
   exit 0
 fi
 
-
 # --- Apply CSV Settings ---
+# Override project title and description if provided in settings CSV
 if [[ -n "$SETTINGS_PROJECT_NAME" ]]; then
   PROJECT_TITLE="$SETTINGS_PROJECT_NAME"
 fi
@@ -623,7 +676,8 @@ create_estimate_field() {
 
 
 # --- Field definitions (from spec) ---
-
+# Note: Views and automations must be configured manually after running this script.
+# Note: This script is safe to run multiple times; it will not duplicate fields or options
 
 # Theme (strategic lens)
 if [[ "${IDEMPOTENT:-}" == "true" && "${DRY_RUN:-}" == "true" ]]; then
@@ -703,5 +757,6 @@ create_field "Start Date" date
 create_field "Deadline" date
 create_field "Assignee" text
 
+# Final log message
 echo "Project #$PROJECT_NUM for ${CLIENT_NAME} prepared."
 log_info "Script completed. Log file: ${LOG_FILE}"

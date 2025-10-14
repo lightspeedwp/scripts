@@ -1,5 +1,23 @@
 #!/usr/bin/env bats
-load '../../tests/test-helper.bash'
+#
+# Test Name: test-client-delivery-project-auth.bats
+# Description: Authentication and scope validation tests for client-delivery-project.sh
+# Version: v0.1.0
+# Date: 14-10-2025
+# Author: LightSpeedWP
+# Author URI: https://lightspeedwp.agency/
+# License: GPL v3 or later
+# License URI: https://www.gnu.org/licenses/gpl-3.0.html
+# Github Author: @lightspeedwp / @ashleyshaw
+# Requirements:
+#    - bats-core
+#    - test-helper.bash
+# Usage:
+#    - bats test-client-delivery-project-auth.bats
+# Test Scope: GitHub CLI authentication, required scopes, error handling.
+
+# Load test helpers
+load '../test-helper.bash'
 
 setup() {
   export GH_CLI_MOCK=1

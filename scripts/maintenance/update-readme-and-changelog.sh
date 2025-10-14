@@ -1,12 +1,25 @@
 
 #!/bin/bash
-#
+
 # Script Name: update-readme-and-changelog.sh
 # Description: Updates README.md with table of contents, contributors, workflow badges, and regenerates CHANGELOG.md.
-# Usage: ./update-readme-and-changelog.sh
-# Author: LightSpeed WP Team
-# Date: 2025-10-12
 #
+# Version: v0.1.0
+# Date: 2025-10-14 
+# Author: LightSpeedWP
+# Github Contributors: @lightspeedwp / @ashleyshaw
+# Author URI: https://lightspeedwp.agency/
+# License: GPL v3 or later
+# License URI: https://www.gnu.org/licenses/gpl-3.0.html
+# 
+# Requirements: 
+# Usage: ./update-readme-and-changelog.sh
+#
+# Options: 
+#
+# Github Author: @lightspeedwp / @ashleyshaw
+# Date: 14-10-2025
+
 set -euo pipefail
 
 # Find and print all README files in the repo

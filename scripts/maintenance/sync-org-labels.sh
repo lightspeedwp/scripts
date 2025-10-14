@@ -1,14 +1,45 @@
 
 #!/bin/bash
-#
+
 # Script Name: sync-org-labels.sh
-# Description: Synchronizes GitHub repository labels with canonical org-wide definitions.
-# Usage:
+# Description: Synchronizes organization labels across repositories to match org-wide standards.
+#
+# Version: v0.1.0
+# Date: 2025-10-14
+# Author: LightSpeedWP
+# Github Contributors: @lightspeedwp / @ashleyshaw
+# Author URI: https://lightspeedwp.agency/
+# License: GPL v3 or later
+# License URI: https://www.gnu.org/licenses/gpl-3.0.html
+#
+# Requirements:
+#   - GitHub CLI (gh) installed and authenticated
+#   - GitHub token with necessary scopes
+#   - Appropriate GitHub scopes: repo, project, read:org, read:user
+#   - jq installed (for JSON processing)
+#   - yq installed (for YAML processing)
+#   - bats-core
+#   - curl installed
+#
+# Usage: ./sync-org-labels.sh [options]
 #   DRY_RUN=true ./sync-org-labels.sh      # preview label sync
 #   PRUNE=true ./sync-org-labels.sh        # delete non-canonical labels
-# Author: LightSpeed WP Team
-# Date: 2025-10-12
 #
+# Options:
+#   --dry-run               {copilot to complete description}
+#   --verbose               {copilot to complete}
+#   --help                  Show this help message
+#
+# Examples:
+#   DRY_RUN=true ./sync-org-labels.sh
+#   PRUNE=true ./sync-org-labels.sh
+#   ONLY="repo1 repo2" ./sync-org-labels.sh
+#   DRY_RUN=true PRUNE=true ONLY="repo1 repo2" ./sync-org-labels.sh
+#
+# Github Author: @lightspeedwp / @ashleyshaw
+# Date: 14-10-2025
+
+
 set -euo pipefail
 
 # --- config ---

@@ -2,9 +2,30 @@
 #
 # Script Name: standardize-logging.sh
 # Description: Adds or updates standardized logging to script files
-# Usage: ./standardize-logging.sh [--dry-run] [--verbose] [script_file]
-# Author: LightSpeed WP Team
 #
+# Version: v0.1.0
+# Date: 2025-10-14
+# Author: LightSpeedWP
+# Github Contributors: @lightspeedwp / @ashleyshaw
+# Author URI: https://lightspeedwp.agency/
+# License: GPL v3 or later
+# License URI: https://www.gnu.org/licenses/gpl-3.0.html
+#
+# Usage: ./standardize-logging.sh [--dry-run] [--verbose] [script_file]
+#
+# Requirements:
+#   - Bash (version 4.0 or later)
+#   - Core utilities (awk, sed, grep, etc.)
+#
+# Usage: ./standardize-logging.sh
+#
+# Options:
+#   --dry-run      Preview changes without applying them
+#   --verbose      Show detailed debug information
+#   --help         Show this help message
+#
+# Note:
+# - This script modifies other scripts to include standardized logging.
 
 set -euo pipefail
 

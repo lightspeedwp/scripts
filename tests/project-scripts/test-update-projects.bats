@@ -1,14 +1,30 @@
 #!/usr/bin/env bats
 
 # Test suite for update-projects.sh script
-# Requires bats-core to be installed
+# Description: Tests argument parsing, help output, and basic functionality.
+# Version: v0.1.0
+# Date: 14-10-2025
+# Author: LightSpeedWP
+# Author URI: https://lightspeedwp.agency/
+# License: GPL v3 or later
+# License URI: https://www.gnu.org/licenses/gpl-3.0.html
+# Github Author: @lightspeedwp / @ashleyshaw
+# Requirements:
+#    - bats-core
+#    - test-helper.bash
+# Usage:
+#    - bats test-update-projects.bats
+# Test Scope: Tests argument parsing, help output, and basic functionality without requiring actual GitHub CLI interaction.
+
+# Load test helpers
+load '../test-helper.bash'
 
 setup() {
     # Get the directory containing this test file
     DIR="$( cd "$( dirname "$BATS_TEST_FILENAME" )" >/dev/null 2>&1 && pwd )"
         # Path to the script being tested (relative to repo root)
         SCRIPT="../../scripts/project/update-projects.sh"
-    
+
     # Ensure script exists and is executable
     [ -f "$SCRIPT" ]
     [ -x "$SCRIPT" ]
@@ -50,7 +66,7 @@ setup() {
 
 @test "script accepts --project-number option" {
     run "$SCRIPT" --project-number 123 --dry-run
-    # Should not show unknown option error  
+    # Should not show unknown option error
     [[ "$output" != *"Unknown option: --project-number"* ]]
 }
 
@@ -94,7 +110,7 @@ setup() {
 
 @test "script has colorized output functions" {
     grep -q "log_info()" "$SCRIPT"
-    grep -q "log_success()" "$SCRIPT" 
+    grep -q "log_success()" "$SCRIPT"
     grep -q "log_warning()" "$SCRIPT"
     grep -q "log_error()" "$SCRIPT"
 }

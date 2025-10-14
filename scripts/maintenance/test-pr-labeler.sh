@@ -1,8 +1,7 @@
-
 #!/bin/bash
 
-# Script Name: find-readmes.sh
-# Description: Finds all README files in the repository.
+# Script Name: test-pr-labeler.sh
+# Description: Simple test script to verify PR labeler workflow
 #
 # Version: v0.1.0
 # Date: 2025-10-14
@@ -13,14 +12,13 @@
 # License URI: https://www.gnu.org/licenses/gpl-3.0.html
 #
 # Requirements: Requires bats-core to be installed.
-# Usage: ./find-readmes.sh [options]
+# Usage: ./test-pr-labeler.sh
 # Options:
 #   --help                  Show this help message
 #
-# Github Author: @lightspeedwp / @ashleyshaw
-# Date: 2025-10-14
 
 set -euo pipefail
 
-# Find all README files in the repo
-find . -type f -iname 'README*.md'
+echo "This is a test script to verify PR labeler workflow"
+echo "PR should be labeled with 'scripts' automatically"
+exit 0

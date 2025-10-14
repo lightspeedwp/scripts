@@ -1,6 +1,23 @@
 #!/usr/bin/env bats
+#
+# Test Name: test-run-tests.bats
+# Description: Test suite for run-tests.sh project test runner
+# Version: v0.1.0
+# Date: 14-10-2025
+# Author: LightSpeedWP
+# Author URI: https://lightspeedwp.agency/
+# License: GPL v3 or later
+# License URI: https://www.gnu.org/licenses/gpl-3.0.html
+# Github Author: @lightspeedwp / @ashleyshaw
+# Requirements:
+#    - bats-core
+#    - test-helper.bash
+# Usage:
+#    - bats test-run-tests.bats
+# Test Scope: Script validation, CLI invocation, bats references.
 
-# Test suite for run-tests.sh script
+# Load test helpers
+load '../test-helper.bash'
 
 setup() {
     # Get the directory containing this test file

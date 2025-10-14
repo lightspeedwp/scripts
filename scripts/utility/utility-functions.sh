@@ -2,11 +2,33 @@
 #
 # Script Name: utility-functions.sh
 # Description: Common utility functions for LightSpeed WP automation scripts
-# Usage: source ./utility-functions.sh
-# Author: LightSpeed WP Team
-# Date: 2024-01-01
 #
-# Color codes for output formatting
+# Version: v0.1.0
+# Date: 2025-10-14
+# Author: LightSpeedWP
+# Github Contributors: @lightspeedwp / @ashleyshaw
+# Author URI: https://lightspeedwp.agency/
+# License: GPL v3 or later
+# License URI: https://www.gnu.org/licenses/gpl-3.0.html
+#
+# Requirements:
+#   - Bash (version 4.0 or later)
+#   - Core utilities (awk, sed, grep, etc.)
+#
+# Usage: source ./utility-functions.sh [options]
+#
+# Options:
+#   --help                  Show this help message
+#
+# Examples:
+#   source ./utility-functions.sh --help
+#
+# Note:
+#   - This script is intended to be sourced, not executed directly.
+#
+
+set -euo pipefail
+
 readonly COLOR_RED='\033[0;31m'
 readonly COLOR_GREEN='\033[0;32m'
 readonly COLOR_YELLOW='\033[1;33m'
@@ -58,19 +80,19 @@ command_exists() {
 # Check if required commands are available
 check_dependencies() {
     local missing_deps=()
-    
+
     for cmd in "$@"; do
         if ! command_exists "$cmd"; then
             missing_deps+=("$cmd")
         fi
     done
-    
+
     if [ ${#missing_deps[@]} -gt 0 ]; then
         log_error "Missing required dependencies: ${missing_deps[*]}"
         log_info "Please install the missing dependencies and try again"
         return 1
     fi
-    
+
     return 0
 }
 
@@ -78,7 +100,7 @@ check_dependencies() {
 confirm() {
     local prompt="${1:-Are you sure?}"
     local default="${2:-n}"
-    
+
     # If not running interactively, use default response
     if [ ! -t 0 ]; then
         case "${default,,}" in
@@ -96,7 +118,7 @@ confirm() {
     while true; do
         read -p "$prompt [y/N]: " -r response
         response=${response:-$default}
-        
+
         case "$response" in
             [Yy]|[Yy][Ee][Ss])
                 return 0
@@ -115,16 +137,16 @@ confirm() {
 backup_file() {
     local file="$1"
     local backup_dir="${2:-./backups}"
-    
+
     if [ ! -f "$file" ]; then
         log_error "File does not exist: $file"
         return 1
     fi
-    
+
     mkdir -p "$backup_dir"
     local backup_file
     backup_file="${backup_dir}/$(basename "$file").$(date +%Y%m%d_%H%M%S).bak"
-    
+
     if cp "$file" "$backup_file"; then
         log_success "Backup created: $backup_file"
         echo "$backup_file"
@@ -140,19 +162,19 @@ retry() {
     shift
     local attempt=1
     local delay=1
-    
+
     while [ "$attempt" -le "$max_attempts" ]; do
         if "$@"; then
             return 0
         fi
-        
+
         log_warn "Attempt $attempt/$max_attempts failed. Retrying in ${delay}s..."
         sleep $delay
-        
+
         attempt=$((attempt + 1))
         delay=$((delay * 2))
     done
-    
+
     log_error "Command failed after $max_attempts attempts"
     return 1
 }
@@ -166,7 +188,7 @@ get_script_dir() {
 validate_url() {
     local url="$1"
     local url_regex='^https?://[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}(/.*)?$'
-    
+
     if [[ "$url" =~ $url_regex ]]; then
         return 0
     else

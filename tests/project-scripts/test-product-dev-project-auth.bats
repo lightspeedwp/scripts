@@ -1,5 +1,16 @@
 #!/usr/bin/env bats
-load '../../tests/test-helper.bash'
+#
+# Test Name: test-product-dev-project-auth.bats
+# Description: Authentication and scope validation tests for product-dev-project.sh
+# Requirements:
+#    - bats-core
+#    - test-helper.bash
+# Usage:
+#    - bats test-product-dev-project-auth.bats
+# Test Scope: GitHub CLI authentication, required scopes, error handling.
+
+# Load test helpers
+load '../test-helper.bash'
 
 setup() {
   export GH_CLI_MOCK=1
@@ -13,7 +24,7 @@ teardown() {
   PATH="/nonexistent:$PATH"
   run ../../scripts/project/product-dev-project.sh lightspeedwp testproduct 99
   [ "$status" -eq 1 ]
-  [[ "$output" =~ "GitHub CLI (gh) is not installed" ]]
+  [[ $output =~ GitHub\ CLI\ \(gh\)\ is\ not\ installed ]]
 }
 
 @test "errors if not authenticated with gh CLI" {

@@ -1,7 +1,31 @@
 
 #!/usr/bin/env bats
-load '../../tests/test-helper.bash'
+#
+# Test Name: test-client-delivery-project.bats
+# Description: End-to-end and edge case tests for client-delivery-project.sh
+# Requirements: bats-core, test-helper.bash
+# Usage: bats test-client-delivery-project.bats
+# Test Scope: CLI usage, dry-run, field creation, error handling
+# Options: None
+# Github Author: @lightspeedwp / @ashleyshaw
+# Date: 14-10-2025
+#
+#
+# Test Name: test-client-delivery-project.bats
+# Description: End-to-end and edge case tests for client-delivery-project.sh
+# Version: v0.1.0
+# Date: 14-10-2025
+# Author: LightSpeedWP
+# Author URI: https://lightspeedwp.agency/
+# License: GPL v3 or later
+# License URI: https://www.gnu.org/licenses/gpl-3.0.html
+# Github Author: @lightspeedwp / @ashleyshaw
+# Requirements: bats-core, test-helper.bash
+# Usage: bats test-client-delivery-project.bats
+# Test Scope: CLI usage, dry-run, field creation, error handling.
 
+# Load test helpers
+load '../test-helper.bash'
 
 setup() {
   export GH_CLI_MOCK=1

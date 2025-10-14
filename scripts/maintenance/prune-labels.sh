@@ -1,14 +1,27 @@
 
 #!/bin/bash
-#
+
 # Script Name: prune-labels.sh
 # Description: Conservative, REST-only label sync and optional prune for GitHub repositories.
-# Usage:
-#   DRY_RUN=true ./prune-labels.sh        # default; shows what would happen
-#   DRY_RUN=false STRICT_PRUNE=true ./prune-labels.sh  # actually delete non-canonical labels
-# Author: LightSpeed WP Team
-# Date: 2025-10-12
 #
+# Version: v0.1.0
+# Date: 2025-10-14 
+# Author: LightSpeedWP
+# Github Contributors: @lightspeedwp / @ashleyshaw
+# Author URI: https://lightspeedwp.agency/
+# License: GPL v3 or later
+# License URI: https://www.gnu.org/licenses/gpl-3.0.html
+# 
+# Requirements: 
+#
+# Usage: [DRY_RUN boolean] [STRICT_PRUNE boolean] ./prune-labels.sh [options]
+#   DRY_RUN=true ./prune-labels.sh                     # default; shows what would happen
+#   DRY_RUN=false STRICT_PRUNE=true ./prune-labels.sh  # actually delete non-canonical labels
+#
+# Options: 
+#   --help                  Show this help message
+#
+
 set -euo pipefail
 
 # --- config (override with env vars) ---

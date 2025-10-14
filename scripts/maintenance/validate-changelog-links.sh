@@ -1,9 +1,25 @@
 #!/bin/bash
+
 # Script Name: validate-changelog-links.sh
 # Description: Validates that all changelog entries under [Unreleased] include a linked PR, Issue, or Commit
+#
+# Version: v0.1.0
+# Date: 2025-10-14 
+# Author: LightSpeedWP
+# Github Contributors: @lightspeedwp / @ashleyshaw
+# Author URI: https://lightspeedwp.agency/
+# License: GPL v3 or later
+# License URI: https://www.gnu.org/licenses/gpl-3.0.html
+# 
+# Requirements: CHANGELOG.md in the root of repo
+# 
 # Usage: ./validate-changelog-links.sh
-# Author: LightSpeed WP Team
-# Date: 2025-10-12
+#
+# Options: 
+#
+#
+# Note:
+#   - 
 
 set -euo pipefail
 

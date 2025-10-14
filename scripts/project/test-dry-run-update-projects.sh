@@ -1,6 +1,42 @@
 #!/usr/bin/env bash
-# Test: Dry-run harness for update-projects.sh
-# This script runs update-projects.sh in dry-run mode and verifies that key commands are printed for both projects.
+
+# Script Name: test-dry-run-update-projects.sh
+# Description: Smoke test for update-projects.sh in dry-run mode.
+#
+# Version: v0.1.0
+# Date: 2025-10-14
+# Author: LightSpeedWP
+# Github Contributors: @lightspeedwp / @ashleyshaw
+# Author URI: https://lightspeedwp.agency/
+# License: GPL v3 or later
+# License URI: https://www.gnu.org/licenses/gpl-3.0.html
+#
+# Requirements:
+#   - GitHub CLI (gh) installed and authenticated
+#   - jq installed
+#   - Appropriate GitHub scopes: repo, project, read:org, read:user
+#
+# Requirements:
+#   - update-projects.sh must be in the scripts/project/ directory
+#   - This script is intended to be run in a test environment and does not perform actual API calls.
+#   - It is primarily used to validate that the dry-run output contains expected commands.
+#   - Ensure the script is executable: chmod +x test-dry-run-update-projects.sh
+#   - This script does not modify any resources; it only simulates the update process.
+#
+# Usage: ./test-dry-run-update-projects.sh
+#
+# Options:
+#   --help                  Show this help message
+#
+# Note:
+#   - This script logs all actions taken during the dry-run for later inspection.
+#   - It is recommended to run this script in a controlled test environment.
+#   - The script checks for the presence of key dry-run commands to ensure correctness.
+#   - Adjust the project numbers and owner as needed for your test setup.
+#   - Ensure that the GitHub CLI is properly configured and authenticated before running this script.
+#   - This script runs a dry-run harness for update-projects.sh in dry-run mode and verifies that key commands are printed for both projects.
+
+# Set strict mode
 set -euo pipefail
 
 # Get the directory containing this test file
