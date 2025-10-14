@@ -191,7 +191,7 @@ if ! command -v bats &> /dev/null; then
 fi
 
 log_info "Running all utility Bats tests..."
-TEST_DIR="$REPO_ROOT/scripts/tests/utility"
+TEST_DIR="$REPO_ROOT/tests/utility"
 if [[ ! -d "$TEST_DIR" ]]; then
     log_error "Test directory not found: $TEST_DIR"
     exit 1
