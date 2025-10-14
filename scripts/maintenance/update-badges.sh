@@ -6,25 +6,26 @@
 #
 # Github Author: @lightspeedwp / @ashleyshaw
 # Version: v0.1.0
-# Date: 14-10-2025 
+# Date: 14-10-2025
 # Author: LightSpeedWP
 # Github Contributors: @lightspeedwp / @ashleyshaw
 # Author URI: https://lightspeedwp.agency/
 # License: GPL v3 or later
 # License URI: https://www.gnu.org/licenses/gpl-3.0.html
-# 
-# Requirements: 
-# 
+#
+# Requirements:
+#
 # Usage: ./update-badges.sh
-# 
-# Options: 
+#
+# Options:
 #
 # Note:
-#   - 
+#   -
 
-
+# Fail on errors
 set -euo pipefail
 
+# Configuration
 REPO="lightspeedwp/scripts"
 BRANCH="develop"
 README="README.md"
@@ -53,3 +54,7 @@ awk -v badges="$BADGES_BLOCK" -v start="$BADGES_START" -v end="$BADGES_END" '
 ' "$README" > "$README.tmp" && mv "$README.tmp" "$README"
 
 echo "Badges updated in $README."
+
+# Done
+echo "Done."
+exit 0 # Always exit 0 to not break CI/CD, errors are logged above

@@ -29,20 +29,12 @@ load '../test-helper.bash'
 
 # ----- Setup and Teardown functions -----
 
-# Get the directory containing this test file
 setup() {
-    # Get the directory containing this test file
-    DIR="$( cd "$( dirname "$BATS_TEST_FILENAME" )" >/dev/null 2>&1 && pwd )"
-        # Path to the script being tested (relative to repo root)
-        SCRIPT="$DIR/../../scripts/project/client-delivery-project.sh"
-
-    # Ensure script exists and is executable
-    [ -f "$SCRIPT" ]
-    [ -x "$SCRIPT" ]
-}
-
-# General test environment setup
-setup() {
+  DIR="$( cd "$( dirname "$BATS_TEST_FILENAME" )" >/dev/null 2>&1 && pwd )"
+  SCRIPT="$DIR/../../scripts/project/client-delivery-project.sh"
+  [ -f "$SCRIPT" ]
+  [ -x "$SCRIPT" ]
+  export SCRIPT
   export GH_CLI_MOCK=1
 }
 
@@ -53,21 +45,21 @@ teardown() {
 
 # General test environment setup
 @test "shows usage with no arguments" {
-  run bash /home/runner/work/scripts/scripts/scripts/project/client-delivery-project.sh
+  run "$SCRIPT"
   [ "$status" -eq 1 ]
   [[ "$output" =~ "Usage:" ]]
 }
 
 # General test environment setup
 @test "shows help output" {
-  run bash /home/runner/work/scripts/scripts/scripts/project/client-delivery-project.sh --help
+  run "$SCRIPT" --help
   [ "$status" -eq 0 ]
   [[ "$output" =~ "Usage:" ]]
 }
 
 @test "creates all fields in dry-run mode" {
   export DRY_RUN=true
-  run bash /home/runner/work/scripts/scripts/scripts/project/client-delivery-project.sh acme-corp 42
+  run "$SCRIPT" acme-corp 42
   [ "$status" -eq 0 ] || [ "$status" -eq 1 ]
   # Check for all field names
   contains "$output" "Creating field 'Theme'"
@@ -91,7 +83,7 @@ teardown() {
 
 @test "assigns colors for single-select options" {
   export DRY_RUN=true
-  run bash /home/runner/work/scripts/scripts/scripts/project/client-delivery-project.sh acme-corp 42
+  run "$SCRIPT" acme-corp 42
   [ "$status" -eq 0 ] || [ "$status" -eq 1 ]
   contains "$output" "Setting color for Theme:Design System"
   contains "$output" "Setting color for Area:Frontend"
@@ -101,7 +93,7 @@ teardown() {
 @test "idempotency: does not duplicate fields" {
   export DRY_RUN=true
   # Simulate fields already exist by running twice
-  run bash /home/runner/work/scripts/scripts/scripts/project/client-delivery-project.sh acme-corp 42
+  run "$SCRIPT" acme-corp 42
   [ "$status" -eq 0 ] || [ "$status" -eq 1 ]
   contains "$output" "Field 'Theme' already exists"
   contains "$output" "Field 'Area' already exists"
@@ -110,13 +102,13 @@ teardown() {
 @test "handles environment variable overrides" {
   export ORG="customorg"
   export DRY_RUN=true
-  run bash /home/runner/work/scripts/scripts/scripts/project/client-delivery-project.sh customorg acme-corp 99
+  run "$SCRIPT" customorg acme-corp 99
   [ "$status" -eq 0 ] || [ "$status" -eq 1 ]
   contains "$output" "customorg"
 }
 
 @test "errors on missing client name" {
-  run bash /home/runner/work/scripts/scripts/scripts/project/client-delivery-project.sh
+  run "$SCRIPT"
   [ "$status" -eq 1 ]
   [[ "$output" =~ "Usage:" ]]
 }
@@ -124,7 +116,7 @@ teardown() {
 @test "errors on invalid field spec (simulate)" {
   export DRY_RUN=true
   # Simulate invalid field by calling with empty name
-  run bash /home/runner/work/scripts/scripts/scripts/project/client-delivery-project.sh "" 42
+  run "$SCRIPT" "" 42
   [ "$status" -eq 1 ]
   [[ "$output" =~ "Usage:" ]]
 }
@@ -132,7 +124,7 @@ teardown() {
 @test "does not print credentials in output" {
   export LS_APP_PRIVATE_KEY="supersecret"
   export DRY_RUN=true
-  run bash /home/runner/work/scripts/scripts/scripts/project/client-delivery-project.sh acme-corp 42
+  run "$SCRIPT" acme-corp 42
   [ "$status" -eq 0 ] || [ "$status" -eq 1 ]
   ! [[ "$output" =~ "supersecret" ]]
 }

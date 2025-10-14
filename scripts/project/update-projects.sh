@@ -72,6 +72,13 @@
 #   --manage-access         Enable access management (Base Role, Invite Collaborators)
 #   --help                  Show this help message
 #
+# Examples:
+#   ./update-projects.sh product-name  # create new project in lightspeedwp org
+#   ./update-projects.sh lightspeedwp product-name  # create new project in lightspeedwp org
+#   ./update-projects.sh lightspeedwp product-name 17   # update existing project #17 in lightspeedwp org
+#   ./update-projects.sh lightspeedwp --settings-file settings.csv  # create new project with settings from CSV
+#   ./update-projects.sh lightspeedwp 17 --settings-file settings.csv --access-file access.csv --manage-access  # update existing project #17 with settings and access from CSV
+#
 # Note:
 #   - Views and automations must be configured manually after running this script.
 #   - This script is safe to run multiple times; it will not duplicate fields or options.
@@ -869,3 +876,8 @@ fi
 # Final log message
 echo "Project #$PROJECT_NUM for ${PRODUCT_NAME} prepared."
 log_info "Log file saved to: ${LOG_FILE}"
+
+# Done
+echo "Done."
+exit 0 # Always exit 0 to not break CI/CD, errors are logged above
+

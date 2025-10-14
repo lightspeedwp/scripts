@@ -21,20 +21,12 @@ load '../test-helper.bash'
 
 # ----- Setup and Teardown functions -----
 
-# Get the directory containing this test file
 setup() {
-    # Get the directory containing this test file
-    DIR="$( cd "$( dirname "$BATS_TEST_FILENAME" )" >/dev/null 2>&1 && pwd )"
-        # Path to the script being tested (relative to repo root)
-        SCRIPT="$DIR/../../scripts/project/client-delivery-project.sh"
-
-    # Ensure script exists and is executable
-    [ -f "$SCRIPT" ]
-    [ -x "$SCRIPT" ]
-}
-
-# General test environment setup
-setup() {
+  DIR="$( cd "$( dirname "$BATS_TEST_FILENAME" )" >/dev/null 2>&1 && pwd )"
+  SCRIPT="$DIR/../../scripts/project/client-delivery-project.sh"
+  [ -f "$SCRIPT" ]
+  [ -x "$SCRIPT" ]
+  export SCRIPT
   export GH_CLI_MOCK=1
   export DRY_RUN=true
 }
@@ -47,7 +39,7 @@ teardown() {
 
 # General test environment setup
 @test "validates importing settings CSV and dry-run output (no access)" {
-  run bash /home/runner/work/scripts/scripts/scripts/project/client-delivery-project.sh lightspeedwp acme-corp 42 --settings-file ../../scripts/project/fixtures/client-delivery-settings.csv
+  run "$SCRIPT" lightspeedwp acme-corp 42 --settings-file ../../scripts/project/fixtures/client-delivery-settings.csv
   [ "$status" -eq 0 ]
   contains "$output" "Updating project name to 'Client Delivery Project'"
   contains "$output" "Updating short description to 'Project for managing client delivery engagements'"
@@ -59,7 +51,7 @@ teardown() {
 
 # General test environment setup
 @test "validates importing settings CSV and dry-run output (with access)" {
-  run bash /home/runner/work/scripts/scripts/scripts/project/client-delivery-project.sh lightspeedwp acme-corp 42 --settings-file ../../scripts/project/fixtures/client-delivery-settings.csv --access-file ../../scripts/project/fixtures/client-delivery-manage-access.csv --manage-access
+  run "$SCRIPT" lightspeedwp acme-corp 42 --settings-file ../../scripts/project/fixtures/client-delivery-settings.csv --access-file ../../scripts/project/fixtures/client-delivery-manage-access.csv --manage-access
   [ "$status" -eq 0 ]
   contains "$output" "Setting base role to 'Write'"
   contains "$output" "Inviting Interns with role: Write"

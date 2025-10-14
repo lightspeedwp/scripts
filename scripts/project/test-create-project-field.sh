@@ -25,6 +25,10 @@
 #   --help                  Show this help message
 #   --dry-run               Run in dry-run mode to print commands without executing
 #
+# Examples:
+#   ./test-create-project-field.sh --dry-run
+#   ./test-create-project-field.sh --help
+#
 # Note:
 #   - This script is intended to be run in a test environment and does not perform actual API calls.
 #   - It is primarily used in Bats tests to validate helper logic and output.

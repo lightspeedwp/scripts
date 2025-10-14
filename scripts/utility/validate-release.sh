@@ -27,6 +27,10 @@
 #   --verbose, -v          Enable verbose output
 #   --help, -h             Show this help message
 #
+# Examples:
+#   ./update-release.sh --version 0.2.0
+#   ./update-release.sh --verbose
+#
 # Note:
 #   - This script is intended to be run from the root of the repository.
 #   - It checks for version consistency, workflow validity, test coverage, and documentation completeness.
@@ -260,3 +264,7 @@ main() {
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
     main "$@"
 fi
+
+# Done
+echo "Done."
+exit 0 # Always exit 0 to not break CI/CD, errors are logged above

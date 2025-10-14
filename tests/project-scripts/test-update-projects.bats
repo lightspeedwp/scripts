@@ -22,8 +22,11 @@ load '../test-helper.bash'
 setup() {
     # Get the directory containing this test file
     DIR="$( cd "$( dirname "$BATS_TEST_FILENAME" )" >/dev/null 2>&1 && pwd )"
-        # Path to the script being tested (relative to repo root)
-        SCRIPT="$DIR/../../scripts/project/update-projects.sh"
+    SCRIPT="$DIR/../../scripts/project/update-projects.sh"
+
+    # Debug output
+    echo "DEBUG: DIR is $DIR" >&2
+    echo "DEBUG: SCRIPT is $SCRIPT" >&2
 
     # Ensure script exists and is executable
     [ -f "$SCRIPT" ]
@@ -31,7 +34,7 @@ setup() {
 }
 
 @test "script shows help with --help flag" {
-    run bash /home/runner/work/scripts/scripts/scripts/project/update-projects.sh --help
+    run "$SCRIPT" --help
     [ "$status" -eq 0 ]
     [[ "$output" == *"GitHub Projects Field Update Script"* ]]
     [[ "$output" == *"Usage:"* ]]
@@ -39,13 +42,13 @@ setup() {
 }
 
 @test "script shows help with -h flag" {
-    run bash /home/runner/work/scripts/scripts/scripts/project/update-projects.sh -h
+    run "$SCRIPT" -h
     [ "$status" -eq 0 ]
     [[ "$output" == *"GitHub Projects Field Update Script"* ]]
 }
 
 @test "script fails with unknown option" {
-    run bash /home/runner/work/scripts/scripts/scripts/project/update-projects.sh --unknown-option
+    run "$SCRIPT" --unknown-option
     [ "$status" -eq 1 ]
     [[ "$output" == *"Unknown option: --unknown-option"* ]]
 }
@@ -53,25 +56,25 @@ setup() {
 @test "script accepts --dry-run flag" {
     # This test will likely fail due to GitHub CLI not being available
     # but it tests argument parsing
-    run bash /home/runner/work/scripts/scripts/scripts/project/update-projects.sh --dry-run
+    run "$SCRIPT" --dry-run
     # Script may fail due to missing gh CLI, but should accept the argument
     [[ "$output" != *"Unknown option: --dry-run"* ]]
 }
 
 @test "script accepts --project-owner option" {
-    run bash /home/runner/work/scripts/scripts/scripts/project/update-projects.sh --project-owner testorg --dry-run
+    run "$SCRIPT" --project-owner testorg --dry-run
     # Should not show unknown option error
     [[ "$output" != *"Unknown option: --project-owner"* ]]
 }
 
 @test "script accepts --project-number option" {
-    run bash /home/runner/work/scripts/scripts/scripts/project/update-projects.sh --project-number 123 --dry-run
+    run "$SCRIPT" --project-number 123 --dry-run
     # Should not show unknown option error
     [[ "$output" != *"Unknown option: --project-number"* ]]
 }
 
 @test "script accepts --auto-refresh flag" {
-    run bash /home/runner/work/scripts/scripts/scripts/project/update-projects.sh --auto-refresh --dry-run
+    run "$SCRIPT" --auto-refresh --dry-run
     # Should not show unknown option error
     [[ "$output" != *"Unknown option: --auto-refresh"* ]]
 }
@@ -134,20 +137,20 @@ setup() {
 }
 
 @test "script supports --fields-file option" {
-    run bash /home/runner/work/scripts/scripts/scripts/project/update-projects.sh --fields-file "$DIR/fixtures/fields.csv" --project-owner example --project-number 1 --dry-run
+    run "$SCRIPT" --fields-file "$DIR/fixtures/fields.csv" --project-owner example --project-number 1 --dry-run
     [ "$status" -eq 0 ] || true
     [[ "$output" == *"Processing fields from"* ]]
     [[ "$output" == *"Priority"* ]]
 }
 
 @test "script requires --project-number with --fields-file" {
-    run bash /home/runner/work/scripts/scripts/scripts/project/update-projects.sh --fields-file "$DIR/fixtures/fields.csv" --project-owner example --dry-run
+    run "$SCRIPT" --fields-file "$DIR/fixtures/fields.csv" --project-owner example --dry-run
     [ "$status" -ne 0 ]
     [[ "$output" == *"requires --project-number"* ]]
 }
 
 @test "script supports --delete-fields option" {
-    run bash /home/runner/work/scripts/scripts/scripts/project/update-projects.sh --fields-file "$DIR/fixtures/fields.csv" --project-owner example --project-number 1 --delete-fields --dry-run
+    run "$SCRIPT" --fields-file "$DIR/fixtures/fields.csv" --project-owner example --project-number 1 --delete-fields --dry-run
     [[ "$output" == *"Processing fields from"* ]]
     # Deletion path will attempt gh; in dry-run it still prints field names
     [[ "$output" == *"Deleting project field"* || "$output" == *"Field 'Priority' not found"* || "$output" == *"Failed to list fields"* ]]

@@ -21,25 +21,21 @@ load '../test-helper.bash'
 
 # ----- Setup and Teardown functions -----
 
-# Get the directory containing this test file
 setup() {
-    # Get the directory containing this test file
-    DIR="$( cd "$( dirname "$BATS_TEST_FILENAME" )" >/dev/null 2>&1 && pwd )"
-        # Path to the script being tested (relative to repo root)
-        SCRIPT="$DIR/../../scripts/project/test-create-project-field.sh"
-
-    # Ensure script exists and is executable
-    [ -f "$SCRIPT" ]
-    [ -x "$SCRIPT" ]
+  DIR="$( cd "$( dirname "$BATS_TEST_FILENAME" )" >/dev/null 2>&1 && pwd )"
+  SCRIPT="$DIR/../../scripts/project/test-create-project-field.sh"
+  [ -f "$SCRIPT" ]
+  [ -x "$SCRIPT" ]
+  export SCRIPT
 }
 
 @test "test-create-project-field.sh runs with no arguments" {
-  run bash /home/runner/work/scripts/scripts/scripts/project/test-create-project-field.sh
+  run "$SCRIPT"
   [ "$status" -eq 0 ] || [ "$status" -eq 1 ]
 }
 
 @test "test-create-project-field.sh shows help" {
-  run bash /home/runner/work/scripts/scripts/scripts/project/test-create-project-field.sh --help
+  run "$SCRIPT" --help
   [ "$status" -eq 0 ]
   [[ "$output" =~ "help" || "$output" =~ "usage" ]]
 }

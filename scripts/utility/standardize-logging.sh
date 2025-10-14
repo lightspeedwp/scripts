@@ -11,22 +11,28 @@
 # License: GPL v3 or later
 # License URI: https://www.gnu.org/licenses/gpl-3.0.html
 #
-# Usage: ./standardize-logging.sh [--dry-run] [--verbose] [script_file]
-#
 # Requirements:
 #   - Bash (version 4.0 or later)
 #   - Core utilities (awk, sed, grep, etc.)
 #
-# Usage: ./standardize-logging.sh
+# Usage: ./standardize-logging.sh [--dry-run] [--verbose] [script_file]
 #
 # Options:
 #   --dry-run      Preview changes without applying them
 #   --verbose      Show detailed debug information
 #   --help         Show this help message
+#   script_file    Specific script file to update (default: all scripts in scripts directory)
+#
+# Examples:
+#   ./standardize-logging.sh                # Update all scripts in the scripts directory
+#   ./standardize-logging.sh --help         # Show help message
+#   ./standardize-logging.sh --dry-run ../project/update-projects.sh    # Preview changes to a specific script
+#   ./standardize-logging.sh --verbose      # Show detailed debug information
 #
 # Note:
 # - This script modifies other scripts to include standardized logging.
 
+# Strict mode
 set -euo pipefail
 
 # Global variables
@@ -35,6 +41,7 @@ SCRIPT_NAME="$(basename "${BASH_SOURCE[0]}" .sh)"
 LOG_DIR="${SCRIPT_DIR}/../logs"
 LOG_FILE="${LOG_DIR}/${SCRIPT_NAME}.log"
 
+# Readonly variables
 readonly SCRIPT_DIR
 readonly SCRIPT_NAME
 readonly LOG_DIR
@@ -62,6 +69,7 @@ function log_info() {
     echo "[INFO] ${timestamp}: $*" >> "${LOG_FILE}"
 }
 
+# Logging function
 function log_warn() {
     local timestamp
     timestamp=$(date "+%Y-%m-%d %H:%M:%S")
@@ -69,6 +77,7 @@ function log_warn() {
     echo "[WARNING] ${timestamp}: $*" >> "${LOG_FILE}"
 }
 
+# Logging function
 function log_error() {
     local timestamp
     timestamp=$(date "+%Y-%m-%d %H:%M:%S")
@@ -76,6 +85,7 @@ function log_error() {
     echo "[ERROR] ${timestamp}: $*" >> "${LOG_FILE}"
 }
 
+# Logging function
 function log_debug() {
     if [[ "${VERBOSE}" == "true" ]]; then
         local timestamp
@@ -85,6 +95,7 @@ function log_debug() {
     fi
 }
 
+# Show help message
 function show_help() {
     cat << EOF
 Usage: ${0} [OPTIONS] [SCRIPT_FILE]
@@ -103,6 +114,7 @@ Example:
 EOF
 }
 
+# Parse command-line arguments
 function parse_arguments() {
     while [[ $# -gt 0 ]]; do
         case "$1" in
@@ -131,6 +143,7 @@ function parse_arguments() {
     done
 }
 
+# Generates the logging code to be inserted
 function generate_logging_code() {
     cat << 'EOF'
 # Global variables for logging
@@ -191,13 +204,17 @@ function log_debug() {
 EOF
 }
 
+# Update a single script file
 function update_script_file() {
     local script_file="$1"
     local temp_file
     temp_file=$(mktemp)
 
+    # Debugging information
+    log_debug "Updating script file: ${script_file}"
     log_info "Processing ${script_file}"
 
+    # Check if file exists
     if [[ ! -f "${script_file}" ]]; then
         log_error "File not found: ${script_file}"
         return 1
@@ -229,8 +246,10 @@ function update_script_file() {
         insert_line=1
     fi
 
+    # Insert logging code
     log_debug "Inserting logging code at line ${insert_line}"
 
+    # Handle dry run
     if [[ "${DRY_RUN}" == "true" ]]; then
         log_info "[DRY RUN] Would update ${script_file} at line ${insert_line}"
         return 0
@@ -251,14 +270,17 @@ function update_script_file() {
     # Replace the original file
     mv "${temp_file}" "${script_file}"
 
+    # Log the update
     log_info "Updated ${script_file} with standardized logging"
 }
 
 function scan_directory() {
     local dir="$1"
 
+    # Debugging information
     log_debug "Scanning directory: ${dir}"
 
+    # Find all shell scripts and update them
     find "${dir}" -type f -name "*.sh" | while read -r script_file; do
         update_script_file "${script_file}"
     done
@@ -268,18 +290,27 @@ function scan_directory() {
 function main() {
     parse_arguments "$@"
 
+    # Initialize logging
     log_info "Starting standardized logging setup"
+    # Create log directory if it doesn't exist
     log_debug "Dry Run: ${DRY_RUN}, Verbose: ${VERBOSE}"
 
+    # Process specific script file if provided
     if [[ -n "${SCRIPT_FILE:-}" ]]; then
         update_script_file "${SCRIPT_FILE}"
+    # Process all script directories
     else
         # Process all script directories
         scan_directory "${SCRIPT_DIR}/.."
     fi
 
+    # Finalize logging setup
     log_info "Standardized logging setup complete"
 }
 
 # Execute main function
 main "$@"
+
+# Done
+echo "Done."
+exit 0 # Always exit 0 to not break CI/CD, errors are logged above

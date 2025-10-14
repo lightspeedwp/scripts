@@ -13,8 +13,11 @@
 #
 # Requirements:
 #   - GitHub CLI (gh) installed and authenticated
-#   - jq installed
 #   - Appropriate GitHub scopes: repo, project, read:org, read:user
+#   - jq installed (for JSON parsing)
+#   - yq installed (if using YAML settings)
+#   - Bash 4.0 or later
+#   - update-projects.sh must be in the scripts/project/ directory
 #
 # Requirements:
 #   - update-projects.sh must be in the scripts/project/ directory
@@ -23,10 +26,18 @@
 #   - Ensure the script is executable: chmod +x test-dry-run-update-projects.sh
 #   - This script does not modify any resources; it only simulates the update process.
 #
-# Usage: ./test-dry-run-update-projects.sh
+# Usage: ./test-dry-run-update-projects.sh [options]
 #
 # Options:
 #   --help                  Show this help message
+#   --dry-run               Run in dry-run mode to print commands without executing
+#
+# Examples:
+#   ./test-dry-run-update-projects.sh --dry-run
+#   ./test-dry-run-update-projects.sh --dry-run --project-owner lightspeedwp --project-a 17 --project-b 14
+#   ./test-dry-run-update-projects.sh --dry-run --settings-file settings.csv
+#   ./test-dry-run-update-projects.sh --dry-run --auto-refresh 5
+#   ./test-dry-run-update-projects.sh --help
 #
 # Note:
 #   - This script logs all actions taken during the dry-run for later inspection.

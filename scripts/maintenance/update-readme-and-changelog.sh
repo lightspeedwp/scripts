@@ -5,21 +5,22 @@
 # Description: Updates README.md with table of contents, contributors, workflow badges, and regenerates CHANGELOG.md.
 #
 # Version: v0.1.0
-# Date: 2025-10-14 
+# Date: 2025-10-14
 # Author: LightSpeedWP
 # Github Contributors: @lightspeedwp / @ashleyshaw
 # Author URI: https://lightspeedwp.agency/
 # License: GPL v3 or later
 # License URI: https://www.gnu.org/licenses/gpl-3.0.html
-# 
-# Requirements: 
+#
+# Requirements:
 # Usage: ./update-readme-and-changelog.sh
 #
-# Options: 
+# Options:
 #
 # Github Author: @lightspeedwp / @ashleyshaw
 # Date: 14-10-2025
 
+# Fail on errors
 set -euo pipefail
 
 # Find and print all README files in the repo
@@ -136,3 +137,7 @@ if ! git diff --cached --quiet; then
 else
   echo "No changes to commit."
 fi
+
+# Done
+echo "Done."
+exit 0 # Always exit 0 to not break CI/CD, errors are logged above

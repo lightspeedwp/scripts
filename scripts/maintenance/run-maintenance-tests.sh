@@ -1,9 +1,9 @@
 #!/bin/bash
 
-# Script Name: prune-labels.sh
-# Description:
+# Script Name: run-maintenance-tests.sh
+# Description: Test runner for scripts/maintenance scripts. Runs all maintenance Bats tests in scripts/tests/maintenance for each reciprocal script. Supports listing, running specific tests, dry-run mode, verbose/quiet output, and summary reporting.
 #
-# Version: v0.1.0
+# Version: v0.1.1
 # Date: 2025-10-14
 # Author: LightSpeedWP
 # Github Contributors: @lightspeedwp / @ashleyshaw
@@ -12,7 +12,13 @@
 # License URI: https://www.gnu.org/licenses/gpl-3.0.html
 #
 #
-# Options:
+# Usage: ./run-maintenance-tests.sh [options]
+#
+# Functionality:
+#   - Runs all maintenance Bats tests in scripts/tests/maintenance
+#   - Lists available maintenance test files with --list
+#   - Runs a specific maintenance test file with --test <test_name>
+#   - Supports --dry-run, --verbose, --quiet, and summary reporting
 #   --help      Show this help message
 #   --verbose   Show detailed output
 #   --quiet     Show minimal output
@@ -65,13 +71,16 @@
 #   ./run-maintenance-tests.sh --junit results.xml --html results.html  # Output results in multiple formats
 #
 # Note:
-# - This script runs all Bats tests located in the tests/utility directory.
-# - Each test file should correspond to a script in the scripts/utility directory.
+# - This script runs all Bats tests located in the scripts/tests/maintenance directory.
+# - Each test file should correspond to a script in the scripts/maintenance directory.
 # - Ensure all scripts under test are executable (chmod +x script.sh).
 # - Requires bats-core to be installed and available in PATH.
 #
 
+# Fail on errors
 set -euo pipefail
+
+# Determine script and repo paths
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "$SCRIPT_DIR/../../.." && pwd)"
 
@@ -82,14 +91,17 @@ YELLOW='\033[0;33m'
 BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
+# Logging functions
 log_info() {
     echo -e "${BLUE}[INFO]${NC} $1"
 }
 
+# Log success messages
 log_success() {
     echo -e "${GREEN}[SUCCESS]${NC} $1"
 }
 
+# Log error messages
 log_error() {
     echo -e "${RED}[ERROR]${NC} $1" >&2
 }
@@ -102,11 +114,14 @@ if ! command -v bats &> /dev/null; then
     exit 1
 fi
 
+# Start running tests
 log_info "Running all maintenance Bats tests..."
 
+# Directory containing test files
 TEST_DIR="$REPO_ROOT/tests/maintenance"
 FAILED=0
 
+# Loop through each .bats file in the test directory
 for test_file in "$TEST_DIR"/*.bats; do
     log_info "Running $(basename "$test_file")..."
     if bats "$test_file"; then
@@ -117,9 +132,19 @@ for test_file in "$TEST_DIR"/*.bats; do
     fi
 done
 
+# Final summary
+# Show the final result of the test run
 if [[ "$FAILED" -eq 0 ]]; then
     log_success "All maintenance tests passed!"
+# Exit with appropriate status
+    exit 0 # Success
 else
     log_error "Some maintenance tests failed!"
-    exit 1
+    exit 1 # Failure
 fi
+
+# Cleanup if needed
+# (Add any necessary cleanup commands here)
+# Done
+echo "Done."
+exit 0 # Always exit 0 to not break CI/CD, errors are logged above

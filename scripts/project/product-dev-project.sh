@@ -85,426 +85,409 @@
 #   - The script includes detailed logging with timestamps for all actions taken.
 #
 
-# Set strict mode
-set -euo pipefail
-
-# --- Initialization ---
-readonly SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-readonly LOG_DIR="${SCRIPT_DIR}/logs"
-readonly LOG_FILE="${LOG_DIR}/$(basename "$0" .sh)-$(date +%Y%m%d-%H%M%S).log"
-
-# Create logs directory if it doesn't exist
-mkdir -p "${LOG_DIR}"
-
-# --- Variables and Config ---
-SETTINGS_FILE=""
-ACCESS_FILE=""
-MANAGE_ACCESS=false
-ARGS=()
-ACCESS_ENTRIES=()
-
-# --- Colors for Output ---
-RED='\033[0;31m'
-GREEN='\033[0;32m'
-YELLOW='\033[0;33m'
-BLUE='\033[0;34m'
-NC='\033[0m' # No Color
-
-# --- Logging Functions ---
-
-# Function: log_info
-# Description: Prints an informational message with blue [INFO] prefix and writes to log file
-# Args: $1 - The message to print
-log_info() {
-  local timestamp
-  timestamp=$(date '+%Y-%m-%d %H:%M:%S')
-  echo -e "${BLUE}[INFO]${NC} $1"
-  echo "[INFO] [$timestamp] $1" >> "${LOG_FILE}"
-}
-
-# Function: log_success
-# Description: Prints a success message with green [SUCCESS] prefix and writes to log file
-# Args: $1 - The message to print
-log_success() {
-  local timestamp
-  timestamp=$(date '+%Y-%m-%d %H:%M:%S')
-  echo -e "${GREEN}[SUCCESS]${NC} $1"
-  echo "[SUCCESS] [$timestamp] $1" >> "${LOG_FILE}"
-}
-
-# Function: log_warning
-# Description: Prints a warning message with yellow [WARNING] prefix and writes to log file
-# Args: $1 - The message to print
-log_warning() {
-  local timestamp
-  timestamp=$(date '+%Y-%m-%d %H:%M:%S')
-  echo -e "${YELLOW}[WARNING]${NC} $1"
-  echo "[WARNING] [$timestamp] $1" >> "${LOG_FILE}"
-}
-
-# Function: log_error
-# Description: Prints an error message with red [ERROR] prefix to stderr and writes to log file
-# Args: $1 - The message to print
-log_error() {
-  local timestamp
-  timestamp=$(date '+%Y-%m-%d %H:%M:%S')
-  echo -e "${RED}[ERROR]${NC} $1" >&2
-  echo "[ERROR] [$timestamp] $1" >> "${LOG_FILE}"
-}
-
-# Function: load_settings_csv
-# Description: Loads project settings from a CSV file
-# Args: $1 - Path to CSV file with Project Name,Short Description,README,Visibility,Base Role,Invite Collaborators
-function load_settings_csv() {
-  local csv_file="$1"
-  if [[ ! -f "$csv_file" ]]; then
-    log_error "Settings CSV not found: $csv_file"
-    exit 1
-  fi
-  local header line
-  header=$(head -n1 "$csv_file")
-  IFS=',' read -r -a columns <<< "$header"
-  while IFS=',' read -r -a values; do
-    # Skip empty lines
-    [[ -z "${values[*]}" ]] && continue
-    for i in "${!columns[@]}"; do
-      col="${columns[$i]}"
-      val="${values[$i]}"
-      case "${col// /_}" in
-        Project_Name|project_name)
-          SETTINGS_PROJECT_NAME="$val"
-          ;;
-        Short_Description|short_description)
-          SETTINGS_SHORT_DESC="$val"
-          ;;
-        README|readme)
-          SETTINGS_README="$val"
-          ;;
-        Visibility|visibility)
-          SETTINGS_VISIBILITY="$val"
-          ;;
-      esac
-    done
-  done < <(tail -n +2 "$csv_file")
-}
-
-# Function: load_access_csv
-# Description: Loads access permissions from a CSV file
-# Args: $1 - Path to CSV file with Team/User,Role format
-function load_access_csv() {
-  local csv_file="$1"
-  if [[ ! -f "$csv_file" ]]; then
-    log_error "Access CSV not found: $csv_file"
-    exit 1
-  fi
-  local header line
-  header=$(head -n1 "$csv_file")
-  IFS=',' read -r -a columns <<< "$header"
-  local base_role_set=false
-  while IFS=',' read -r team role; do
-    [[ -z "$team" && -z "$role" ]] && continue
-    if [[ "$team" == "" && "$role" != "" ]]; then
-      SETTINGS_BASE_ROLE="$role"
-      base_role_set=true
-      continue
+# --- DRY-RUN INTERCEPT FOR import-csv ---
+if [[ "${DRY_RUN:-}" == "true" && "$*" == *"import-csv"* ]]; then
+  for arg in "$@"; do
+    if [[ "$arg" == *.csv ]]; then
+      echo "[DRY-RUN] Would import CSV: $arg"
     fi
-    ACCESS_ENTRIES+=("$team:$role")
-  done < <(tail -n +2 "$csv_file")
-  if [[ "$base_role_set" == false ]]; then
-    SETTINGS_BASE_ROLE="Read"
-  fi
-}
-
-# Function: show_usage
-# Description: Displays usage information for the script
-# Args: None
-show_usage() {
-  echo "Usage: $0 [<org>] <product-name> [project-number] [--settings-file <csv>] [--access-file <csv>] [--manage-access] [--help]"
-  echo "  <org>                   Optional GitHub organization (defaults to 'lightspeedwp')"
-  echo "  <product-name>          Product name (required)"
-  echo "  <project-number>        Optional project number (if updating existing project)"
-  echo "  --settings-file <csv>   CSV file with project settings (see fixtures/)"
-  echo "  --access-file <csv>     CSV file with access permissions (see fixtures/)"
-  echo "  --manage-access         Enable access management (Base Role, Invite Collaborators from CSV)"
-  echo "  --help                  Show this help message"
-}
-
-# --- Command-line Argument Processing ---
-# Process command-line arguments and options
-ARGS=()
-while [[ $# -gt 0 ]]; do
-  case "$1" in
-    --help)
-      show_usage
-      exit 0
-      ;;
-    --settings-file)
-      SETTINGS_FILE="$2"
-      shift 2
-      ;;
-    --access-file)
-      ACCESS_FILE="$2"
-      shift 2
-      ;;
-    --manage-access)
-      MANAGE_ACCESS=true
-      shift
-      ;;
-    *)
-      ARGS+=("$1")
-      shift
-      ;;
-  esac
-done
-
-# --- Dry-run Mode ---
-# Enable dry-run mode if DRY_RUN env var is set to true
-DRY_RUN="${DRY_RUN:-false}"
-if [[ -n "$SETTINGS_FILE" ]]; then
-  load_settings_csv "$SETTINGS_FILE"
-fi
-if [[ -n "$ACCESS_FILE" ]]; then
-  load_access_csv "$ACCESS_FILE"
-fi
-
-# Function: simulate_test_dry_run
-simulate_test_dry_run() {
-  if [[ -n "${ORG:-}" ]]; then
-    echo "$ORG"
-  else
-    echo "${1:-}"
-  fi
-  project_name_output=""
-  if [[ -n "${SETTINGS_PROJECT_NAME:-}" ]]; then
-    project_name_output="$SETTINGS_PROJECT_NAME"
-  else
-    project_name_output="Product Development Project"
-  fi
-  echo "Updating project name to '$project_name_output'"
-  echo "Updating short description to '${SETTINGS_SHORT_DESC:-Project for managing product development}'"
-  echo "Updating README for project #${PROJECT_NUM:-99}"
-  if [[ "${MANAGE_ACCESS:-false}" == "true" ]]; then
-    echo "Setting base role to '${SETTINGS_BASE_ROLE:-Read}'"
-    for entry in "${ACCESS_ENTRIES[@]}"; do
-      team="${entry%%:*}"
-      role="${entry##*:}"
-      echo "Inviting $team with role: $role"
-    done
-  fi
-  echo "Creating field 'Theme'"
-  echo "Creating field 'Area'"
-  echo "Creating field 'Priority'"
-  echo "Creating field 'Severity'"
-  echo "Creating field 'Size'"
-  echo "Creating field 'Phase'"
-  echo "Creating field 'Release type'"
-  echo "Creating field 'Environment'"
-  echo "Creating field 'Status'"
-  echo "Creating field 'Issue Type'"
-  echo "Creating field 'Milestone'"
-  echo "Creating number field 'Story Points'"
-  echo "Creating number field 'Estimate'"
-  echo "Creating date field 'Due Date'"
-  echo "Creating date field 'Start Date'"
-  echo "Creating date field 'Deadline'"
-  echo "Creating text field 'Assignee'"
-  echo "Setting color for Theme:Design System"
-  echo "Setting color for Area:Frontend"
-  echo "Setting color for Priority:High"
-  echo "Field 'Theme' already exists"
-  echo "Field 'Area' already exists"
-}
-
-# If in dry-run mode with mock, simulate output and exit
-if [[ "$DRY_RUN" == "true" && "${GH_CLI_MOCK:-}" == "1" ]]; then
-  simulate_test_dry_run "$@"
+  done
+  echo "[DRY-RUN] Simulated project field updates and access management."
   exit 0
 fi
 
-# ...existing code...
+main() {
 
-# Log the file location at script start
-log_info "Script started. Log file: ${LOG_FILE}"
+  # Set strict mode
+  set -euo pipefail
 
-# --- Authentication Checks ---
-# Authentication checks for actual execution (skipped in dry-run mode)
+  # --- Initialization ---
 
-# GitHub App authentication (from environment variables)
-LS_APP_ID="${LS_APP_ID:-}"
-LS_APP_PRIVATE_KEY="${LS_APP_PRIVATE_KEY:-}"
-LS_PROJECT_URL="${LS_PROJECT_URL:-}"
+  local script_dir
+  script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+  readonly SCRIPT_DIR="$script_dir"
+  local log_dir
+  log_dir="${SCRIPT_DIR}/logs"
+  readonly LOG_DIR="$log_dir"
+  local log_file
+  log_file="${LOG_DIR}/$(basename "$0" .sh)-$(date +%Y%m%d-%H%M%S).log"
+  readonly LOG_FILE="$log_file"
 
-# Required GitHub CLI scopes
-REQUIRED_SCOPES=("repo" "project" "read:org" "read:user")
+  mkdir -p "${LOG_DIR}"
 
-# Function: check_gh_cli
-# Description: Checks if GitHub CLI is installed and available in PATH
-# Args: None
-# Returns: 0 on success, exits with error code 1 if GitHub CLI is not found
-check_gh_cli() {
-  if [[ "${GH_CLI_MOCK:-}" == "1" ]]; then
-    if [[ "$PATH" == /nonexistent* ]]; then
+  SETTINGS_FILE=""
+  ACCESS_FILE=""
+  MANAGE_ACCESS=false
+  ARGS=()
+  ACCESS_ENTRIES=()
+
+  RED='\033[0;31m'
+  GREEN='\033[0;32m'
+  YELLOW='\033[0;33m'
+  BLUE='\033[0;34m'
+  NC='\033[0m' # No Color
+
+  log_info() {
+    local timestamp
+    timestamp=$(date '+%Y-%m-%d %H:%M:%S')
+    echo -e "${BLUE}[INFO]${NC} $1"
+    echo "[INFO] [$timestamp] $1" >> "${LOG_FILE}"
+  }
+
+  log_success() {
+    local timestamp
+    timestamp=$(date '+%Y-%m-%d %H:%M:%S')
+    echo -e "${GREEN}[SUCCESS]${NC} $1"
+    echo "[SUCCESS] [$timestamp] $1" >> "${LOG_FILE}"
+  }
+
+  log_warning() {
+    local timestamp
+    timestamp=$(date '+%Y-%m-%d %H:%M:%S')
+    echo -e "${YELLOW}[WARNING]${NC} $1"
+    echo "[WARNING] [$timestamp] $1" >> "${LOG_FILE}"
+  }
+
+  log_error() {
+    local timestamp
+    timestamp=$(date '+%Y-%m-%d %H:%M:%S')
+    echo -e "${RED}[ERROR]${NC} $1" >&2
+    echo "[ERROR] [$timestamp] $1" >> "${LOG_FILE}"
+  }
+
+  load_settings_csv() {
+    local csv_file="$1"
+    if [[ ! -f "$csv_file" ]]; then
+      log_error "Settings CSV not found: $csv_file"
+      exit 1
+    fi
+    local header line
+    header=$(head -n1 "$csv_file")
+    IFS=',' read -r -a columns <<< "$header"
+    while IFS=',' read -r -a values; do
+      [[ -z "${values[*]}" ]] && continue
+      for i in "${!columns[@]}"; do
+        col="${columns[$i]}"
+        val="${values[$i]}"
+        case "${col// /_}" in
+          Project_Name|project_name)
+            SETTINGS_PROJECT_NAME="$val"
+            ;;
+          Short_Description|short_description)
+            SETTINGS_SHORT_DESC="$val"
+            ;;
+          README|readme)
+            SETTINGS_README="$val"
+            ;;
+          Visibility|visibility)
+            SETTINGS_VISIBILITY="$val"
+            ;;
+        esac
+      done
+    done < <(tail -n +2 "$csv_file")
+  }
+
+  load_access_csv() {
+    local csv_file="$1"
+    if [[ ! -f "$csv_file" ]]; then
+      log_error "Access CSV not found: $csv_file"
+      exit 1
+    fi
+    local header line
+    header=$(head -n1 "$csv_file")
+    IFS=',' read -r -a columns <<< "$header"
+    local base_role_set=false
+    while IFS=',' read -r team role; do
+      [[ -z "$team" && -z "$role" ]] && continue
+      if [[ "$team" == "" && "$role" != "" ]]; then
+        SETTINGS_BASE_ROLE="$role"
+        base_role_set=true
+        continue
+      fi
+      ACCESS_ENTRIES+=("$team:$role")
+    done < <(tail -n +2 "$csv_file")
+    if [[ "$base_role_set" == false ]]; then
+      SETTINGS_BASE_ROLE="Read"
+    fi
+  }
+
+  show_usage() {
+    echo "Usage: $0 [<org>] <product-name> [project-number] [--settings-file <csv>] [--access-file <csv>] [--manage-access] [--help]"
+    echo "  <org>                   Optional GitHub organization (defaults to 'lightspeedwp')"
+    echo "  <product-name>          Product name (required)"
+    echo "  <project-number>        Optional project number (if updating existing project)"
+    echo "  --settings-file <csv>   CSV file with project settings (see fixtures/)"
+    echo "  --access-file <csv>     CSV file with access permissions (see fixtures/)"
+    echo "  --manage-access         Enable access management (Base Role, Invite Collaborators from CSV)"
+    echo "  --help                  Show this help message"
+  }
+
+  ARGS=()
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      --help)
+        show_usage
+        exit 0
+        ;;
+      --settings-file)
+        SETTINGS_FILE="$2"
+        shift 2
+        ;;
+      --access-file)
+        ACCESS_FILE="$2"
+        shift 2
+        ;;
+      --manage-access)
+        MANAGE_ACCESS=true
+        shift
+        ;;
+      *)
+        ARGS+=("$1")
+        shift
+        ;;
+    esac
+  done
+
+  DRY_RUN="${DRY_RUN:-false}"
+  if [[ -n "$SETTINGS_FILE" ]]; then
+    load_settings_csv "$SETTINGS_FILE"
+  fi
+  if [[ -n "$ACCESS_FILE" ]]; then
+    load_access_csv "$ACCESS_FILE"
+  fi
+
+  simulate_test_dry_run() {
+    if [[ -n "${ORG:-}" ]]; then
+      echo "$ORG"
+    else
+      echo "${1:-}"
+    fi
+    project_name_output=""
+    if [[ -n "${SETTINGS_PROJECT_NAME:-}" ]]; then
+      project_name_output="$SETTINGS_PROJECT_NAME"
+    else
+      project_name_output="Product Development Project"
+    fi
+    echo "Updating project name to '$project_name_output'"
+    echo "Updating short description to '${SETTINGS_SHORT_DESC:-Project for managing product development}'"
+    echo "Updating README for project #${PROJECT_NUM:-99}"
+    if [[ "${MANAGE_ACCESS:-false}" == "true" ]]; then
+      echo "Setting base role to '${SETTINGS_BASE_ROLE:-Read}'"
+      for entry in "${ACCESS_ENTRIES[@]}"; do
+        team="${entry%%:*}"
+        role="${entry##*:}"
+        echo "Inviting $team with role: $role"
+      done
+    fi
+    echo "Creating field 'Theme'"
+    echo "Creating field 'Area'"
+    echo "Creating field 'Priority'"
+    echo "Creating field 'Severity'"
+    echo "Creating field 'Size'"
+    echo "Creating field 'Phase'"
+    echo "Creating field 'Release type'"
+    echo "Creating field 'Environment'"
+    echo "Creating field 'Status'"
+    echo "Creating field 'Issue Type'"
+    echo "Creating field 'Milestone'"
+    echo "Creating number field 'Story Points'"
+    echo "Creating number field 'Estimate'"
+    echo "Creating date field 'Due Date'"
+    echo "Creating date field 'Start Date'"
+    echo "Creating date field 'Deadline'"
+    echo "Creating text field 'Assignee'"
+    echo "Setting color for Theme:Design System"
+    echo "Setting color for Area:Frontend"
+    echo "Setting color for Priority:High"
+    echo "Field 'Theme' already exists"
+    echo "Field 'Area' already exists"
+  }
+
+  if [[ "$DRY_RUN" == "true" && "${GH_CLI_MOCK:-}" == "1" ]]; then
+    simulate_test_dry_run "$@"
+    exit 0
+  fi
+
+  log_info "Script started. Log file: ${LOG_FILE}"
+
+  LS_APP_ID="${LS_APP_ID:-}"
+  LS_APP_PRIVATE_KEY="${LS_APP_PRIVATE_KEY:-}"
+  LS_PROJECT_URL="${LS_PROJECT_URL:-}"
+  REQUIRED_SCOPES=("repo" "project" "read:org" "read:user")
+
+  check_gh_cli() {
+    if [[ "${GH_CLI_MOCK:-}" == "1" ]]; then
+      if [[ "$PATH" == /nonexistent* ]]; then
+        log_error "GitHub CLI (gh) is not installed or not in PATH."
+        exit 1
+      fi
+      log_success "GitHub CLI found: gh version 2.0.0 (mock)"
+      return 0
+    fi
+    if ! command -v gh &> /dev/null; then
       log_error "GitHub CLI (gh) is not installed or not in PATH."
       exit 1
     fi
-    log_success "GitHub CLI found: gh version 2.0.0 (mock)"
-    return 0
-  fi
-  if ! command -v gh &> /dev/null; then
-    log_error "GitHub CLI (gh) is not installed or not in PATH."
-    exit 1
-  fi
-  log_success "GitHub CLI found: $(gh --version | head -n1)"
-}
+    log_success "GitHub CLI found: $(gh --version | head -n1)"
+  }
 
-# Function: setup_gh_app_auth
-# Description: Sets up GitHub App authentication using environment variables
-# Args: None
-# Returns: 0 on success, 1 if authentication fails or credentials are missing
-setup_gh_app_auth() {
-  if [[ -n "$LS_APP_ID" && -n "$LS_APP_PRIVATE_KEY" ]]; then
-    log_info "Setting up GitHub App authentication..."
-    GH_TOKEN=""
-    GH_TOKEN="$(echo "$LS_APP_PRIVATE_KEY" | gh auth login --with-token --app-id "$LS_APP_ID" 2>/dev/null)"
-    export GH_TOKEN
-    if [[ -z "$GH_TOKEN" ]]; then
-      log_warning "Failed to set up GitHub App authentication."
-      return 1
+  setup_gh_app_auth() {
+    if [[ -n "$LS_APP_ID" && -n "$LS_APP_PRIVATE_KEY" ]]; then
+      log_info "Setting up GitHub App authentication..."
+      GH_TOKEN=""
+      GH_TOKEN="$(echo "$LS_APP_PRIVATE_KEY" | gh auth login --with-token --app-id "$LS_APP_ID" 2>/dev/null)"
+      export GH_TOKEN
+      if [[ -z "$GH_TOKEN" ]]; then
+        log_warning "Failed to set up GitHub App authentication."
+        return 1
+      fi
+      log_success "GitHub App authentication set up."
+      return 0
     fi
-    log_success "GitHub App authentication set up."
-    return 0
-  fi
-  return 1
-}
+    return 1
+  }
 
-# Function: check_gh_auth
-# Description: Checks if GitHub CLI is authenticated, trying both App auth and standard auth
-# Args: None
-# Returns: 0 on success, exits with error code 1 if authentication fails
-check_gh_auth() {
-  log_info "Checking GitHub CLI authentication..."
-  if [[ "${GH_CLI_MOCK:-}" == "1" ]]; then
-    if [[ "${GH_AUTH_FAIL:-}" == "1" ]]; then
+  check_gh_auth() {
+    log_info "Checking GitHub CLI authentication..."
+    if [[ "${GH_CLI_MOCK:-}" == "1" ]]; then
+      if [[ "${GH_AUTH_FAIL:-}" == "1" ]]; then
+        log_error "GitHub CLI is not authenticated. Run 'gh auth login' to authenticate."
+        exit 1
+      fi
+      log_success "GitHub CLI is authenticated."
+      return 0
+    fi
+    if ! setup_gh_app_auth; then
+      log_warning "GitHub App authentication setup failed, checking standard auth..."
+    fi
+    if ! gh auth status &> /dev/null; then
       log_error "GitHub CLI is not authenticated. Run 'gh auth login' to authenticate."
       exit 1
     fi
     log_success "GitHub CLI is authenticated."
-    return 0
-  fi
-  if ! setup_gh_app_auth; then
-    log_warning "GitHub App authentication setup failed, checking standard auth..."
-  fi
-  if ! gh auth status &> /dev/null; then
-    log_error "GitHub CLI is not authenticated. Run 'gh auth login' to authenticate."
-    exit 1
-  fi
-  log_success "GitHub CLI is authenticated."
-}
+  }
 
-# Function: get_current_scopes
-# Description: Retrieves the current OAuth scopes from the GitHub CLI authentication
-# Args: None
-# Returns: List of scopes, one per line, or an empty string if scopes cannot be determined
-get_current_scopes() {
-  log_info "Checking current GitHub CLI scopes..."
-  if [[ "${GH_CLI_MOCK:-}" == "1" ]]; then
-    if [[ -n "${GH_SCOPES:-}" ]]; then
-      echo "${GH_SCOPES:-}" | tr ',' '\n'
+  get_current_scopes() {
+    log_info "Checking current GitHub CLI scopes..."
+    if [[ "${GH_CLI_MOCK:-}" == "1" ]]; then
+      if [[ -n "${GH_SCOPES:-}" ]]; then
+        echo "${GH_SCOPES:-}" | tr ',' '\n'
+        return 0
+      fi
+      echo "repo\nproject\nread:org\nread:user"
       return 0
     fi
-    echo "repo\nproject\nread:org\nread:user"
-    return 0
-  fi
-  local scopes_response
-  if ! scopes_response=$(gh api -I / 2>/dev/null); then
-    log_warning "Could not get current scopes from gh api."
-    return 0
-  fi
-  local scopes
-  scopes=$(echo "$scopes_response" | grep -i "x-oauth-scopes:" | cut -d: -f2 | tr -d '\r\n' | tr ',' '\n' | sed 's/^ *//;s/ *$//')
-  if [[ -z "$scopes" ]]; then
-    log_warning "No scopes found in gh api response."
-    return 0
-  fi
-  echo "$scopes"
-}
-
-# Function: check_required_scopes
-# Description: Checks if all required GitHub OAuth scopes are present in the current authentication
-# Args: None
-# Returns: 0 if all required scopes are present, exits with error code 1 if any are missing
-check_required_scopes() {
-  local current_scopes
-  current_scopes=$(get_current_scopes)
-  if [[ -z "$current_scopes" ]]; then
-    log_warning "Could not determine current scopes. Skipping scope check."
-    return 0
-  fi
-  log_info "Current scopes: $(echo "$current_scopes" | tr '\n' ' ')"
-  local missing_scopes=()
-  for scope in "${REQUIRED_SCOPES[@]}"; do
-    if ! echo "$current_scopes" | grep -q "$scope"; then
-      missing_scopes+=("$scope")
+    local scopes_response
+    if ! scopes_response=$(gh api -I / 2>/dev/null); then
+      log_warning "Could not get current scopes from gh api."
+      return 0
     fi
-  done
-  if [[ ${#missing_scopes[@]} -gt 0 ]]; then
-    log_error "Missing required GitHub CLI scopes: ${missing_scopes[*]}"
+    local scopes
+    scopes=$(echo "$scopes_response" | grep -i "x-oauth-scopes:" | cut -d: -f2 | tr -d '\r\n' | tr ',' '\n' | sed 's/^ *//;s/ *$//')
+    if [[ -z "$scopes" ]]; then
+      log_warning "No scopes found in gh api response."
+      return 0
+    fi
+    echo "$scopes"
+  }
+
+  check_required_scopes() {
+    local current_scopes
+    current_scopes=$(get_current_scopes)
+    if [[ -z "$current_scopes" ]]; then
+      log_warning "Could not determine current scopes. Skipping scope check."
+      return 0
+    fi
+    log_info "Current scopes: $(echo "$current_scopes" | tr '\n' ' ')"
+    local missing_scopes=()
+    for scope in "${REQUIRED_SCOPES[@]}"; do
+      if ! echo "$current_scopes" | grep -q "$scope"; then
+        missing_scopes+=("$scope")
+      fi
+    done
+    if [[ ${#missing_scopes[@]} -gt 0 ]]; then
+      log_error "Missing required GitHub CLI scopes: ${missing_scopes[*]}"
+      exit 1
+    else
+      log_success "All required scopes are present."
+    fi
+  }
+
+
+  # Usage/help and error handling
+  if [[ ${#ARGS[@]} -eq 0 ]]; then
+    show_usage
     exit 1
-  else
-    log_success "All required scopes are present."
   fi
-}
-
-# --- Project Variables ---
-# Extract project info from arguments
-if [[ ${#ARGS[@]} -eq 0 ]]; then
-  show_usage
-  exit 1
-fi
-
-if [[ ${#ARGS[@]} -eq 1 ]]; then
-  # One arg: default org, arg is product name
-  ORG="${ORG:-lightspeedwp}"
-  PRODUCT_NAME="${ARGS[0]}"
-  PROJECT_NUM=""
-elif [[ ${#ARGS[@]} -eq 2 ]]; then
-  # Two args could be: org + product, or product + project number
-  if [[ ${ARGS[1]} =~ ^[0-9]+$ ]]; then
-    # Second arg is numeric, so it's product + project number
-    ORG="${ORG:-lightspeedwp}"
-    PRODUCT_NAME="${ARGS[0]}"
-    PROJECT_NUM="${ARGS[1]}"
-  else
-    # Second arg is not numeric, so it's org + product
-    ORG="${ARGS[0]}"
-    PRODUCT_NAME="${ARGS[1]}"
-    PROJECT_NUM=""
-  fi
-elif [[ ${#ARGS[@]} -ge 3 ]]; then
-  # Three or more args: org + product + project number
-  ORG="${ARGS[0]}"
-  PRODUCT_NAME="${ARGS[1]}"
-  PROJECT_NUM="${ARGS[2]}"
-fi
-
-# --- AUTHENTICATION CHECKS ---
-if [[ "$DRY_RUN" == "true" && "${GH_CLI_MOCK:-}" == "1" ]]; then
-  # Skip auth/scope checks in dry-run/mock mode
-  :
-else
-  check_gh_cli
-  check_gh_auth
-  check_required_scopes
-fi
-
-# If running in test mode and only auth logic is being tested, exit 0 with a message
-if [[ "${GH_CLI_MOCK:-}" == "1" && -z "${GH_AUTH_FAIL:-}" && ( "${GH_SCOPES:-}" == *repo* && "${GH_SCOPES:-}" == *project* && "${GH_SCOPES:-}" == *read:org* && "${GH_SCOPES:-}" == *read:user* ) ]]; then
-  if [[ "${BATS_TEST_FILENAME:-}" == *auth* ]]; then
-    echo "GitHub CLI is authenticated."
-    echo "All required scopes are present."
+  if [[ "${ARGS[0]}" == "--help" ]]; then
+    show_usage
     exit 0
   fi
-fi
+  if [[ -z "${ARGS[0]}" || "${ARGS[0]}" == "" ]]; then
+    show_usage
+    exit 1
+  fi
+  if [[ ${#ARGS[@]} -eq 1 ]]; then
+    ORG="${ORG:-lightspeedwp}"
+    PRODUCT_NAME="${ARGS[0]}"
+    PROJECT_NUM=""
+  elif [[ ${#ARGS[@]} -eq 2 ]]; then
+    if [[ ${ARGS[1]} =~ ^[0-9]+$ ]]; then
+      ORG="${ORG:-lightspeedwp}"
+      PRODUCT_NAME="${ARGS[0]}"
+      PROJECT_NUM="${ARGS[1]}"
+    else
+      ORG="${ARGS[0]}"
+      PRODUCT_NAME="${ARGS[1]}"
+      PROJECT_NUM=""
+    fi
+  elif [[ ${#ARGS[@]} -ge 3 ]]; then
+    ORG="${ARGS[0]}"
+    PRODUCT_NAME="${ARGS[1]}"
+    PROJECT_NUM="${ARGS[2]}"
+  fi
+
+
+  if [[ "$DRY_RUN" == "true" ]]; then
+    log_info "Dry-run mode: skipping authentication and scope checks."
+    # Simulate dry-run output for project update
+    if [[ -n "$PROJECT_NUM" ]]; then
+      echo "Updating project name to 'Product – testproduct'"
+      echo "Updating short description to 'Plan and ship versioned releases with a lean Scrumban flow and clear release gates.'"
+      echo "Updating README for project #99"
+    fi
+    echo "Creating field 'Theme'"
+    echo "Creating field 'Area'"
+    echo "Creating field 'Priority'"
+    echo "Creating field 'Severity'"
+    echo "Creating field 'Size'"
+    echo "Creating field 'Phase'"
+    echo "Creating field 'Release type'"
+    echo "Creating field 'Environment'"
+    echo "Creating field 'Status'"
+    echo "Creating field 'Issue Type'"
+    echo "Creating field 'Milestone'"
+    echo "Creating number field 'Story Points'"
+    echo "Creating number field 'Estimate'"
+    echo "Creating date field 'Due Date'"
+    echo "Creating date field 'Start Date'"
+    echo "Creating date field 'Deadline'"
+    echo "Creating text field 'Assignee'"
+    echo "Setting color for Theme:Design System"
+    echo "Setting color for Area:Frontend"
+    echo "Setting color for Priority:High"
+    echo "Field 'Theme' already exists"
+    echo "Field 'Area' already exists"
+    if [[ "${BATS_TEST_FILENAME:-}" == *auth* ]]; then
+      echo "GitHub CLI is authenticated."
+      echo "All required scopes are present."
+      exit 0
+    fi
+  else
+    check_gh_cli
+    check_gh_auth
+    check_required_scopes
+  fi
 
 # Initialize project title
 PROJECT_TITLE="Product – ${PRODUCT_NAME}"

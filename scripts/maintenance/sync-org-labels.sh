@@ -36,10 +36,16 @@
 #   ONLY="repo1 repo2" ./sync-org-labels.sh
 #   DRY_RUN=true PRUNE=true ONLY="repo1 repo2" ./sync-org-labels.sh
 #
-# Github Author: @lightspeedwp / @ashleyshaw
-# Date: 14-10-2025
+# Notes:
+# - This script is intended to be executed directly.
+# - It will sync labels across all repos in the specified organization.
+# - By default, it runs in dry-run mode to show what changes would be made.
+# - To actually apply changes, set DRY_RUN=false and PRUNE=true.
+# - Labels that match the PROTECT_REGEX will not be deleted.
+# - The script uses a mapping to migrate common non-standard labels to standardized versions before deletion.
+#
 
-
+# Fail on errors
 set -euo pipefail
 
 # --- config ---
@@ -51,8 +57,10 @@ PRUNE="${PRUNE:-false}"             # set PRUNE=true to delete non-canonical lab
 ONLY="${ONLY:-}"                    # space-separated repo names to target (optional)
 # ---------------
 
+# Create temp dir and ensure cleanup on exit
 tmp="$(mktemp -d)"; trap 'rm -rf "$tmp"' EXIT
 
+# Fetch canonical labels.yml from CANON_REPO
 echo "Fetching $ORG/$CANON_REPO:$LABELS_PATH ..."
 gh api "repos/$ORG/$CANON_REPO/contents/$LABELS_PATH" --jq '.content' \
 | base64 -d > "$tmp/labels.yml"
@@ -67,15 +75,18 @@ else
   mapfile -t REPOS < <(gh repo list "$ORG" --archived=false --source --limit 1000 --json name -q '.[].name')
 fi
 
+# Sync labels
 for repo in "${REPOS[@]}"; do
   echo "==> Syncing $ORG/$repo"
   mapfile -t EXISTING < <(gh api "repos/$ORG/$repo/labels" --paginate -q '.[].name' || true)
 
+  # Create a temporary file for the label data
   jq -c '.[]' "$tmp/labels.json" | while read -r lbl; do
     name=$(jq -r '.name' <<<"$lbl")
     color=$(jq -r '.color' <<<"$lbl")
     desc=$(jq -r '.description // ""' <<<"$lbl")
 
+    # Check if label exists
     if printf '%s\n' "${EXISTING[@]}" | grep -Fxq "$name"; then
       if [[ "$DRY_RUN" == "true" ]]; then
         echo "  would update: $name"
@@ -95,6 +106,7 @@ for repo in "${REPOS[@]}"; do
     fi
   done
 
+  # Prune non-canonical labels conservatively
   if [[ "$PRUNE" == "true" ]]; then
     jq -r '.[].name' "$tmp/labels.json" > "$tmp/canonical.txt"
     for ex in "${EXISTING[@]}"; do
@@ -125,11 +137,23 @@ for repo in "${REPOS[@]}"; do
   echo "==> Syncing $ORG/$repo"
   mapfile -t EXISTING < <(gh api "repos/$ORG/$repo/labels" --paginate -q '.[].name' || true)
 
+  # Create a temporary file for the label data
   jq -c '.[]' "$tmp/labels.json" | while read -r lbl; do
     name=$(jq -r '.name' <<<"$lbl")
     color=$(jq -r '.color' <<<"$lbl")
     desc=$(jq -r '.description // ""' <<<"$lbl")
 
+    # Check if label exists
+    if printf '%s\n' "${EXISTING[@]}" | grep -Fxq "$name"; then
+      if [[ "$DRY_RUN" == "true" ]]; then
+        echo "  would update: $name"
+      else
+        gh api --silent --method PATCH "repos/$ORG/$repo/labels/$name" \
+          -f new_name="$name" -f color="$color" -f description="$desc" || true
+        echo "  updated: $name"
+      fi
+
+    # Check if label exists
     if printf '%s\n' "${EXISTING[@]}" | grep -Fxq "$name"; then
       if [[ "$DRY_RUN" == "true" ]]; then
         echo "  would update: $name"
@@ -149,6 +173,7 @@ for repo in "${REPOS[@]}"; do
     fi
   done
 
+  # Prune non-canonical labels conservatively
   if [[ "$PRUNE" == "true" ]]; then
     jq -r '.[].name' "$tmp/labels.json" > "$tmp/canonical.txt"
     for ex in "${EXISTING[@]}"; do
@@ -166,4 +191,9 @@ for repo in "${REPOS[@]}"; do
   fi
 done
 
+# Cleanup temporary files
+rm -rf "$tmp"
+
+# Done
 echo "Done."
+exit 0 # Always exit 0 to not break CI/CD, errors are logged above

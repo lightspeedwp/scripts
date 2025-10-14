@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Test runner for scripts/deployment scripts
-# Runs all Bats tests in tests/deployment for each reciprocal script
+# Runs all deployment Bats tests in scripts/tests/deployment for each reciprocal script. Supports listing, running specific tests, dry-run mode, verbose/quiet output, and summary reporting.
 #
 # Version: v0.1.0
 # Date: 2025-10-14
@@ -11,8 +11,20 @@
 # License: GPL v3 or later
 # License URI: https://www.gnu.org/licenses/gpl-3.0.html
 #
-# Requirements: Requires bats-core to be installed.
+# Requirements:
+#   - bats-core
+#   - bash
+#   - jq (optional, for JSON output)
+#   - yq (optional, for YAML output)
+#   - grep
+#   - curl (optional, for downloading dependencies)
 # Usage: ./run-deployment-tests.sh [options]
+#
+# Functionality:
+#   - Runs all deployment Bats tests in scripts/tests/deployment
+#   - Lists available deployment test files with --list
+#   - Runs a specific deployment test file with --test <test_name>
+#   - Supports --dry-run, --verbose, --quiet, and summary reporting
 # Options:
 #   --help                  Show this help message
 #   --test <test_name>      Run a specific test file (without .bats extension)
@@ -72,13 +84,18 @@
 #   ./run-deployment-tests.sh --check-deps
 #   ./run-deployment-tests.sh --dry-run
 #
-# Notes:
-#  - Customize this script to fit your deployment needs.
-#  - Ensure you have the necessary permissions and configurations for deployment.
-#
+# Note:
+# - This script runs all Bats tests located in the scripts/tests/deployment directory.
+# - Each test file should correspond to a script in the scripts/deployment directory.
+# - Ensure all scripts under test are executable (chmod +x script.sh).
+# - Requires bats-core to be installed and available in PATH.
 
+# Set strict mode
 set -euo pipefail
+
+# Determine script and repository root directories
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# Get the repository root directory
 REPO_ROOT="$(cd "$SCRIPT_DIR/../../.." && pwd)"
 
 # Colors for output
@@ -88,14 +105,17 @@ YELLOW='\033[0;33m'
 BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
+# Logging functions
 log_info() {
     echo -e "${BLUE}[INFO]${NC} $1"
 }
 
+# Log success messages
 log_success() {
     echo -e "${GREEN}[SUCCESS]${NC} $1"
 }
 
+# Log error messages
 log_error() {
     echo -e "${RED}[ERROR]${NC} $1" >&2
 }
@@ -125,6 +145,7 @@ done
 
 if [[ "$FAILED" -eq 0 ]]; then
     log_success "All deployment tests passed!"
+    exit 0
 else
     log_error "Some deployment tests failed!"
     exit 1

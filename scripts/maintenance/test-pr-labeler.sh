@@ -17,8 +17,13 @@
 #   --help                  Show this help message
 #
 
+# Fail on errors
 set -euo pipefail
 
+# Simple output to verify the script runs
 echo "This is a test script to verify PR labeler workflow"
 echo "PR should be labeled with 'scripts' automatically"
-exit 0
+
+# Done
+echo "Done."
+exit 0 # Always exit 0 to not break CI/CD, errors are logged above

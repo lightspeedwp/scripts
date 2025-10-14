@@ -1,8 +1,7 @@
 #!/bin/bash
 
 # Test runner for scripts/project scripts
-# Runs all Bats tests in tests/project-scripts for each reciprocal script
-# Requires bats-core to be installed
+# Runs all project Bats tests in scripts/tests/project-scripts for each reciprocal script. Supports listing, running specific tests, dry-run mode, verbose/quiet output, and summary reporting.
 #
 # Requirements:
 #   - bats-core
@@ -35,6 +34,15 @@
 #   --json <file>  Output results in JSON format to specified file
 #   --summary  Show a summary of test results
 #   --detailed  Show detailed output for each test
+#   --silent  Suppress all output except errors
+#   --no-fail-fast  Continue running tests even if some fail
+#   --fail-fast  Stop running tests on the first failure
+#   --test <test_name>  Run a specific test by name (without .bats extension)
+#   --script <script_name>  Run tests for a specific script (without .sh extension)
+#   --all  Run all tests (default behavior)
+#   --only-failed  Run only tests that failed in the last run
+#   --list  List all test files
+#   --list-scripts  List all scripts under test
 #   --list-tests  List all individual tests in the test files
 #   --list-suites  List all test suites (test files)
 #   --list-tags  List all tags used in tests
@@ -67,8 +75,8 @@
 #   ./run-project-tests.sh --junit results.xml --html results.html  # Output results in multiple formats
 #
 # Note:
-# - This script runs all Bats tests located in the tests/project directory.
-# - Each test file should correspond to a script in the scripts/project-scripts directory.
+# - This script runs all Bats tests located in the scripts/tests/project-scripts directory.
+# - Each test file should correspond to a script in the scripts/project directory.
 # - Ensure all scripts under test are executable (chmod +x script.sh).
 # - Requires bats-core to be installed and available in PATH.
 #
@@ -124,6 +132,7 @@ done
 
 if [[ "$FAILED" -eq 0 ]]; then
     log_success "All project tests passed!"
+    exit 0
 else
     log_error "Some project tests failed!"
     exit 1

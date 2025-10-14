@@ -7,12 +7,12 @@ setup() {
     # Get the directory containing this test file
     DIR="$( cd "$( dirname "$BATS_TEST_FILENAME" )" >/dev/null 2>&1 && pwd )"
     # Path to the script being tested
-    SCRIPT="$DIR/../scripts/validate-release.sh"
-    
+    SCRIPT="$DIR/../../scripts/scripts/validate-release.sh"
+
     # Create temporary test directory
     TEST_TEMP_DIR="${BATS_TEST_TMPDIR}/validate-release-test-$$"
     mkdir -p "$TEST_TEMP_DIR"
-    
+
     # Ensure script exists and is executable
     [ -f "$SCRIPT" ]
     [ -x "$SCRIPT" ]
@@ -353,7 +353,7 @@ teardown() {
     grep -q "CHANGELOG" "$SCRIPT" || skip "Changelog validation not found"
 }
 
-@test "script validates semantic versioning" {
+@test "script validates semantic versioning (feature test)" {
     grep -q "version\|semver" "$SCRIPT"
 }
 

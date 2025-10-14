@@ -3,7 +3,7 @@
 load '../../tests/test-helper.bash'
 
 @test "update-readme-and-changelog.sh exists and is executable" {
-  [ -x "${BATS_TEST_DIRNAME}/../scripts/update-readme-and-changelog.sh" ]
+  [ -x "${BATS_TEST_DIRNAME}/../../scripts/scripts/update-readme-and-changelog.sh" ]
 }
 
 @test "update-readme-and-changelog.sh runs without error" {
