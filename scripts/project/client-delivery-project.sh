@@ -194,7 +194,7 @@ CLIENT_NAME="${ARGS[1]:-}"
 PROJECT_NUM="${ARGS[2]:-}"
 
 # Validate required arguments
-if [[ -z "$CLIENT_NAME" || -z "$PROJECT_NUM" ]]; then
+if [[ -z "$CLIENT_NAME" ]]; then
   show_usage
   exit 1
 fi

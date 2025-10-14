@@ -269,13 +269,13 @@ fi
 
 # Function: simulate_test_dry_run
 simulate_test_dry_run() {
-  if [[ -n "$ORG" ]]; then
+  if [[ -n "${ORG:-}" ]]; then
     echo "$ORG"
   else
-    echo "$1"
+    echo "${1:-}"
   fi
   project_name_output=""
-  if [[ -n "$SETTINGS_PROJECT_NAME" ]]; then
+  if [[ -n "${SETTINGS_PROJECT_NAME:-}" ]]; then
     project_name_output="$SETTINGS_PROJECT_NAME"
   else
     project_name_output="Product Development Project"
@@ -283,7 +283,7 @@ simulate_test_dry_run() {
   echo "Updating project name to '$project_name_output'"
   echo "Updating short description to '${SETTINGS_SHORT_DESC:-Project for managing product development}'"
   echo "Updating README for project #${PROJECT_NUM:-99}"
-  if [[ "$MANAGE_ACCESS" == "true" ]]; then
+  if [[ "${MANAGE_ACCESS:-false}" == "true" ]]; then
     echo "Setting base role to '${SETTINGS_BASE_ROLE:-Read}'"
     for entry in "${ACCESS_ENTRIES[@]}"; do
       team="${entry%%:*}"
