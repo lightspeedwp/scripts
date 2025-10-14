@@ -260,7 +260,11 @@ main() {
     if [[ -n "${ORG:-}" ]]; then
       echo "$ORG"
     else
-      echo "${1:-}"
+      if [[ $# -ge 1 ]]; then
+        echo "$1"
+      else
+        echo ""
+      fi
     fi
     project_name_output=""
     if [[ -n "${SETTINGS_PROJECT_NAME:-}" ]]; then
