@@ -9,7 +9,7 @@
         "test:playwright": "npx playwright test",
         "test:dry-run": "find tests/ -name 'dry-run-*.sh' -exec {} \\; || echo 'Note: No dry-run tests found'",
         "lint:md": "npx markdownlint '**/*.md'",
-        "lint:sh": "find scripts -name '*.sh' -exec /usr/bin/shellcheck {} \\;",
+        "lint:sh": "find scripts -name '*.sh' -exec shellcheck {} \\;",
         "lint:js": "npx eslint .",
         "format": "npx prettier --write .",
         "lint": "npm run lint:md && npm run lint:sh && npm run lint:js",
