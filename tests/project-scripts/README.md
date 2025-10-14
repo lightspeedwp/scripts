@@ -1,6 +1,7 @@
 
 # Project Script Test Suite
 
+[![License: GPL v3 or later](https://img.shields.io/badge/License-GPL%20v3%20or%20later-blue.svg)](https://www.gnu.org/licenses/gpl-3.0.html)
 
 This folder contains comprehensive [Bats](https://github.com/bats-core/bats-core) test suites for all GitHub Project automation scripts in `scripts/project/`. These tests ensure robust, spec-compliant automation for both client delivery and product development workflows, covering:
 
@@ -144,3 +145,7 @@ bats test-client-delivery-project.bats
 ---
 
 **All project automation scripts must have corresponding, up-to-date tests in this folder.**
+
+## Contributing
+
+Please see [CONTRIBUTING.md](../../CONTRIBUTING.md) for details.

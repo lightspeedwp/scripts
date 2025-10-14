@@ -106,7 +106,7 @@
     "subtasks": [
       "Review and update Copilot custom instructions for repo context.",
       "Add prompt examples for common automation tasks.",
-      "Define chat modes for shell, workflow, docs, and Playwright.",
+      "Define chat modes for shell, workflow, and docs.",
       "Update CodeRabbit .yml with path-specific review rules.",
       "Document instruction set interactions in README."
     ],
@@ -146,23 +146,23 @@
   },
   {
     "id": 9,
-    "title": "Playwright Copilot & MCP server automation",
-    "description": "Write Playwright-specific Copilot instructions for this repo, including MCP server auto-activation and restart logic. Ensure Playwright MCP and GitHub MCP servers are always running via workflow steps or process manager. Document setup, restart logic, and integration in README and instruction files.",
+    "title": "Copilot & MCP server automation",
+    "description": "Write Copilot instructions for this repo, including MCP server auto-activation and restart logic. Ensure GitHub MCP servers are always running via workflow steps or process manager. Document setup, restart logic, and integration in README and instruction files.",
     "status": "not-started",
     "category": "Testing & MCP Automation",
     "subtasks": [
-      "Draft Playwright Copilot instructions for repo context.",
+      "Draft Copilot instructions for repo context.",
       "Add MCP server auto-activation and restart logic.",
       "Update workflows to ensure MCP servers are always running.",
       "Document MCP server setup and integration in README."
     ],
     "acceptance_criteria": [
-      "Playwright Copilot instructions are repo-specific and documented.",
+      "Copilot instructions are repo-specific and documented.",
       "MCP servers are auto-activated and restarted as needed.",
       "README covers MCP server setup and integration."
     ],
     "prompt_examples": [
-      "How do I ensure Playwright MCP server is always running in CI?",
+      "How do I ensure MCP server is always running in CI?",
       "Show a workflow step for MCP server auto-restart.",
       "What’s the best way to document MCP server setup for contributors?"
     ]

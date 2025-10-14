@@ -201,6 +201,8 @@ function parse_arguments() {
 # Generates the logging code to be inserted
 function generate_logging_code() {
     cat << 'EOF'
+# Standardized logging - LightSpeed WP
+#
 # Global variables for logging
 SCRIPT_NAME="$(basename "${BASH_SOURCE[0]}" .sh)"
 LOG_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/../logs"
@@ -289,8 +291,8 @@ function update_script_file() {
     fi
 
     # Check if logging is already set up
-    if grep -q "LOG_FILE=" "${script_file}"; then
-        log_debug "Logging already set up in ${script_file}"
+    if grep -q "Standardized logging" "${script_file}"; then
+        log_warn "Logging already set up in ${script_file}. Skipping."
         return 0
     fi
 

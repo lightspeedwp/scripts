@@ -23,7 +23,7 @@ create_temp_file() {
     local content="$1"
     local filename="${2:-test-file}"
     local temp_file="${TEST_TEMP_DIR}/${filename}"
-    
+
     echo "$content" > "$temp_file"
     echo "$temp_file"
 }
@@ -33,12 +33,12 @@ mock_command() {
     local command_name="$1"
     local mock_behavior="$2"
     local mock_script="${TEST_TEMP_DIR}/mock-${command_name}"
-    
+
     cat << EOF > "$mock_script"
 #!/bin/bash
 $mock_behavior
 EOF
-    
+
     chmod +x "$mock_script"
     export PATH="${TEST_TEMP_DIR}:$PATH"
 }
@@ -59,12 +59,12 @@ not_contains() {
 assert_file_contains() {
     local file="$1"
     local expected_content="$2"
-    
+
     [ -f "$file" ] || {
         echo "File $file does not exist"
         return 1
     }
-    
+
     grep -q "$expected_content" "$file" || {
         echo "File $file does not contain expected content: $expected_content"
         echo "Actual content:"

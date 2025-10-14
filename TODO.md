@@ -124,7 +124,7 @@ Welcome! This file is your master roadmap for automating, refactoring, and docum
 
 ## High-Level Plan of Action
 
-1. **Automate MCP/Playwright and GitHub MCP servers**: Ensure these servers are always running and integrated with repo workflows for reliable automation.
+1. **Automate MCP and GitHub MCP servers**: Ensure these servers are always running and integrated with repo workflows for reliable automation.
 2. **Refactor Copilot & CodeRabbit instructions**: Update and align instructions for smarter automation, review, and governance.
 3. **Refactor GitHub project scripts**: Modularize and extend scripts for ProjectV2 automation, including all major actions and helpers.
 4. **Resume automation and documentation improvements**: Continue with reliability, documentation, and feature enhancements.
@@ -136,9 +136,9 @@ Welcome! This file is your master roadmap for automating, refactoring, and docum
 ## Priority Order
 
 
-- [ ] Playwright Copilot & MCP server automation
+- [ ] Copilot & MCP server automation
 
-  - Write Playwright-specific Copilot instructions for this repo, including MCP server auto-activation and restart logic. Ensure Playwright MCP and GitHub MCP servers are always running via workflow steps or process manager. Document setup, restart logic, and integration in README and instruction files.
+  - Write Copilot-specific instructions for this repo, including MCP server auto-activation and restart logic. Ensure GitHub MCP servers are always running via workflow steps or process manager. Document setup, restart logic, and integration in README and instruction files.
 
 - [ ] Refactor Copilot & CodeRabbit instructions
 
@@ -154,7 +154,7 @@ Welcome! This file is your master roadmap for automating, refactoring, and docum
 
 - [ ] Add tests for new features
 
-  - Add and expand Bats/Playwright tests for any new or refactored scripts and features.
+  - Add and expand Bats tests for any new or refactored scripts and features.
 
 ---
 

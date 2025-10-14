@@ -20,10 +20,11 @@
 load ../test-helper.bash
 
 setup() {
-  # Get the directory containing this test file
-  DIR="$( cd "$( dirname "$BATS_TEST_FILENAME" )" >/dev/null 2>&1 && pwd )"
+  # Get the root directory of the repository
+  local REPO_ROOT
+  REPO_ROOT="$(cd "$(dirname "$BATS_TEST_FILENAME")/../.." && pwd)"
   # Path to the script being tested
-  SCRIPT="$DIR/../scripts/maintenance/find-readmes.sh"
+  SCRIPT="$REPO_ROOT/scripts/maintenance/find-readmes.sh"
 
   # Ensure script exists and is executable
   [ -f "$SCRIPT" ]

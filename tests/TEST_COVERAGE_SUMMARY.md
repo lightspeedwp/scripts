@@ -553,7 +553,7 @@ These tests follow a comprehensive approach:
 
 Consider adding tests for:
 - `scripts/deployment/` scripts
-- `scripts/testing/` Playwright automation
+- `scripts/testing/` automation
 - `scripts/utility/` MCP server scripts
 - Integration tests for complete workflows
 - End-to-end GitHub API interaction tests (with mocking)
