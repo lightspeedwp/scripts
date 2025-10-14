@@ -316,7 +316,7 @@ simulate_test_dry_run() {
 }
 
 # If in dry-run mode with mock, simulate output and exit
-if [[ "$DRY_RUN" == "true" && "$GH_CLI_MOCK" == "1" ]]; then
+if [[ "$DRY_RUN" == "true" && "${GH_CLI_MOCK:-}" == "1" ]]; then
   simulate_test_dry_run "$@"
   exit 0
 fi
@@ -342,7 +342,7 @@ REQUIRED_SCOPES=("repo" "project" "read:org" "read:user")
 # Args: None
 # Returns: 0 on success, exits with error code 1 if GitHub CLI is not found
 check_gh_cli() {
-  if [[ "$GH_CLI_MOCK" == "1" ]]; then
+  if [[ "${GH_CLI_MOCK:-}" == "1" ]]; then
     if [[ "$PATH" == /nonexistent* ]]; then
       log_error "GitHub CLI (gh) is not installed or not in PATH."
       exit 1
@@ -383,8 +383,8 @@ setup_gh_app_auth() {
 # Returns: 0 on success, exits with error code 1 if authentication fails
 check_gh_auth() {
   log_info "Checking GitHub CLI authentication..."
-  if [[ "$GH_CLI_MOCK" == "1" ]]; then
-    if [[ "$GH_AUTH_FAIL" == "1" ]]; then
+  if [[ "${GH_CLI_MOCK:-}" == "1" ]]; then
+    if [[ "${GH_AUTH_FAIL:-}" == "1" ]]; then
       log_error "GitHub CLI is not authenticated. Run 'gh auth login' to authenticate."
       exit 1
     fi
@@ -407,9 +407,9 @@ check_gh_auth() {
 # Returns: List of scopes, one per line, or an empty string if scopes cannot be determined
 get_current_scopes() {
   log_info "Checking current GitHub CLI scopes..."
-  if [[ "$GH_CLI_MOCK" == "1" ]]; then
-    if [[ -n "$GH_SCOPES" ]]; then
-      echo "$GH_SCOPES" | tr ',' '\n'
+  if [[ "${GH_CLI_MOCK:-}" == "1" ]]; then
+    if [[ -n "${GH_SCOPES:-}" ]]; then
+      echo "${GH_SCOPES:-}" | tr ',' '\n'
       return 0
     fi
     echo "repo\nproject\nread:org\nread:user"
@@ -455,25 +455,6 @@ check_required_scopes() {
   fi
 }
 
-# --- AUTHENTICATION CHECKS ---
-  if [[ "$DRY_RUN" == "true" && "$GH_CLI_MOCK" == "1" ]]; then
-    # Skip auth/scope checks in dry-run/mock mode
-    :
-  else
-    check_gh_cli
-    check_gh_auth
-    check_required_scopes
-  fi
-
-# If running in test mode and only auth logic is being tested, exit 0 with a message
-if [[ "$GH_CLI_MOCK" == "1" && -z "$GH_AUTH_FAIL" && ( "$GH_SCOPES" == *repo* && "$GH_SCOPES" == *project* && "$GH_SCOPES" == *read:org* && "$GH_SCOPES" == *read:user* ) ]]; then
-  if [[ "$BATS_TEST_FILENAME" == *auth* ]]; then
-    echo "GitHub CLI is authenticated."
-    echo "All required scopes are present."
-    exit 0
-  fi
-fi
-
 # --- Project Variables ---
 # Extract project info from arguments
 if [[ ${#ARGS[@]} -eq 0 ]]; then
@@ -504,6 +485,25 @@ elif [[ ${#ARGS[@]} -ge 3 ]]; then
   ORG="${ARGS[0]}"
   PRODUCT_NAME="${ARGS[1]}"
   PROJECT_NUM="${ARGS[2]}"
+fi
+
+# --- AUTHENTICATION CHECKS ---
+if [[ "$DRY_RUN" == "true" && "${GH_CLI_MOCK:-}" == "1" ]]; then
+  # Skip auth/scope checks in dry-run/mock mode
+  :
+else
+  check_gh_cli
+  check_gh_auth
+  check_required_scopes
+fi
+
+# If running in test mode and only auth logic is being tested, exit 0 with a message
+if [[ "${GH_CLI_MOCK:-}" == "1" && -z "${GH_AUTH_FAIL:-}" && ( "${GH_SCOPES:-}" == *repo* && "${GH_SCOPES:-}" == *project* && "${GH_SCOPES:-}" == *read:org* && "${GH_SCOPES:-}" == *read:user* ) ]]; then
+  if [[ "${BATS_TEST_FILENAME:-}" == *auth* ]]; then
+    echo "GitHub CLI is authenticated."
+    echo "All required scopes are present."
+    exit 0
+  fi
 fi
 
 # Initialize project title
