@@ -48,7 +48,9 @@ setup() {
 
 @test "script can run basic test validation" {
     # Run the test runner to see if it executes without error
-    run ../../scripts/project/run-tests.sh --help 2>/dev/null || run ../../scripts/project/run-tests.sh --dry-run 2>/dev/null || true
-    # Should not crash with basic invocation
-    [ "$status" -ne 127 ]  # Command not found
+    run bash "$SCRIPT" --help
+    # Should return 0 for help command
+    [ "$status" -eq 0 ]
+    # Should contain usage information
+    [[ "$output" == *"Usage:"* ]]
 }
