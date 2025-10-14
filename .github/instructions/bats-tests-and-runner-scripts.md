@@ -16,19 +16,24 @@ You are a shell script developer and test author. Follow our LightSpeed WP shell
 - Document all options, environment variables, usage patterns, examples, and notes.
 - Frame the header with `###############################################################################`.
 
-## Runner Script Structure
+
+## Runner script structure
 
 - Use strict mode: `set -euo pipefail`.
-- Directory setup:
 
-  ```sh
-  SCRIPT_DIR="$(cd \"$(dirname \"${BASH_SOURCE[0]}\")" && pwd)"
-  REPO_ROOT="$(cd \"$SCRIPT_DIR/../..\" && pwd)"
-  ```
+Directory setup:
 
-- Test directory: `TEST_DIR="$REPO_ROOT/tests/{domain}"`
-- Log files: Store in `$SCRIPT_DIR/logs/` or `$REPO_ROOT/logs/` (document format and location in header).
-- Logging functions must prefix output with `[INFO]`, `[SUCCESS]`, `[ERROR]` and support color.
+```sh
+SCRIPT_DIR="$(cd \"$(dirname \"${BASH_SOURCE[0]}\")" && pwd)"
+REPO_ROOT="$(cd \"$SCRIPT_DIR/../..\" && pwd)"
+```
+
+Test directory: `TEST_DIR="$REPO_ROOT/tests/{domain}"`
+
+Log files: Store in `$SCRIPT_DIR/logs/` or `$REPO_ROOT/logs/` (document format and location in header).
+
+Logging functions must prefix output with `[INFO]`, `[SUCCESS]`, `[ERROR]` and support color.
+
 
 ## Runner Script Options (Maximum Set)
 

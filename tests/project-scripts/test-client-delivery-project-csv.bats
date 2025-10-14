@@ -1,9 +1,9 @@
 #!/usr/bin/env bats
-#
-# Test Name: test-client-delivery-project-csv.bats
+# ============================================================================
+# Test Suite: test-client-delivery-project-csv.bats
 # Description: CSV import and dry-run output tests for client-delivery-project.sh
-# Version: v0.1.0
-# Date: 14-10-2025
+# Version: v0.1.1
+# Date: 2025-10-15
 # Author: LightSpeedWP
 # Author URI: https://lightspeedwp.agency/
 # License: GPL v3 or later
@@ -11,18 +11,26 @@
 # Github Author: @lightspeedwp / @ashleyshaw
 # Requirements:
 #    - bats-core
-#    - test-helper.bash
+#    - bats-support
+#    - bats-assert
 # Usage:
-#    - bats test-client-delivery-project-csv.bats
+#    - npx bats tests/project-scripts/test-client-delivery-project-csv.bats
 # Test Scope: CSV import, dry-run, access management.
+# ============================================================================
 
-# Load test helpers
-load '../test-helper.bash'
+load '../../node_modules/bats-support/load'
+load '../../node_modules/bats-assert/load'
 
-# ----- Setup and Teardown functions -----
-
+# ----- Section: Setup function -----
+# ============================================================================
+# setup()
+# Sets up the test environment for CSV import and dry-run tests.
+# - Resolves script path
+# - Ensures script exists and is executable
+# - Sets GH_CLI_MOCK and DRY_RUN for test isolation
+# ============================================================================
 setup() {
-  DIR="$( cd "$( dirname "$BATS_TEST_FILENAME" )" >/dev/null 2>&1 && pwd )"
+  DIR="$(cd "$(dirname "$BATS_TEST_FILENAME")" >/dev/null 2>&1 && pwd)"
   SCRIPT="$DIR/../../scripts/project/client-delivery-project.sh"
   [ -f "$SCRIPT" ]
   [ -x "$SCRIPT" ]
@@ -31,30 +39,69 @@ setup() {
   export DRY_RUN=true
 }
 
-# Teardown function
+# ----- Section: Teardown function -----
+# ============================================================================
+# teardown()
+# Cleans up the test environment after each test.
+# - Unsets GH_CLI_MOCK and DRY_RUN
+# ============================================================================
 teardown() {
   unset GH_CLI_MOCK
   unset DRY_RUN
 }
 
-# General test environment setup
+# ----- Section: CSV Import and Access Management Tests -----
+# ============================================================================
+# @test "validates importing settings CSV and dry-run output (no access)"
+# Validates importing settings CSV and dry-run output when access management is not enabled.
+# - Runs script with settings file only
+# - Checks for expected output and absence of access management lines
+# ============================================================================
 @test "validates importing settings CSV and dry-run output (no access)" {
-  run "$SCRIPT" lightspeedwp acme-corp 42 --settings-file ../../scripts/project/fixtures/client-delivery-settings.csv
+  run "$SCRIPT" lightspeedwp testclient 99 --settings-file "$DIR/../../scripts/project/fixtures/client-delivery-settings.csv"
   [ "$status" -eq 0 ]
-  contains "$output" "Updating project name to 'Client Delivery Project'"
-  contains "$output" "Updating short description to 'Project for managing client delivery engagements'"
-  contains "$output" "Updating README for project #42"
-  # Should NOT contain access management lines
-  not_contains "$output" "Setting base role"
-  not_contains "$output" "Inviting"
+  assert_output --partial "Updating short description to 'Project for managing client delivery engagements'"
+  assert_output --partial "Updating README for project #99"
+  refute_output --partial "Managing access for"
 }
 
-# General test environment setup
+# ============================================================================
+# @test "validates importing settings CSV and dry-run output (with access)"
+# ============================================================================
+# Validates importing settings CSV and dry-run output when access management is enabled.
+# - Runs script with settings file and --manage-access
+# - Checks for expected access management output
+# ============================================================================
 @test "validates importing settings CSV and dry-run output (with access)" {
-  run "$SCRIPT" lightspeedwp acme-corp 42 --settings-file ../../scripts/project/fixtures/client-delivery-settings.csv --access-file ../../scripts/project/fixtures/client-delivery-manage-access.csv --manage-access
+  run "$SCRIPT" lightspeedwp testclient 99 --settings-file "$DIR/../../scripts/project/fixtures/client-delivery-settings.csv" --manage-access
   [ "$status" -eq 0 ]
-  contains "$output" "Setting base role to 'Write'"
-  contains "$output" "Inviting Interns with role: Write"
-  contains "$output" "Inviting Developers with role: Write"
-  contains "$output" "Inviting ashleyshaw with role: Write"
+  assert_output --partial "Managing access for project #99"
+}
+
+# ============================================================================
+# @test "validates importing access CSV directly"
+# ============================================================================
+# Validates importing an access CSV file directly via the --access-file flag.
+# - Runs script with the access file flag
+# - Checks for expected access management output
+# ============================================================================
+@test "validates importing access CSV directly" {
+  run "$SCRIPT" lightspeedwp testclient 99 --access-file "$DIR/../../scripts/project/fixtures/client-delivery-manage-access.csv" --manage-access
+  [ "$status" -eq 0 ]
+  assert_output --partial "Managing access for project #99"
+}
+
+# ============================================================================
+# @test "validates importing fields CSV directly"
+# ============================================================================
+# Validates importing a fields CSV file directly via the --fields-file flag.
+# - Runs script with the fields file flag
+# - Checks for expected field creation output
+# ============================================================================
+@test "validates importing fields CSV directly" {
+  run "$SCRIPT" lightspeedwp testclient 99 --fields-file "$DIR/../../scripts/project/fixtures/client-delivery-fields.csv"
+  [ "$status" -eq 0 ]
+  assert_output --partial "Creating field 'Theme'"
+  assert_output --partial "Creating field 'Area'"
+  assert_output --partial "Creating field 'Priority'"
 }

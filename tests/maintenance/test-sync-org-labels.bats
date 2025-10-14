@@ -19,9 +19,26 @@
 # Load test helpers
 load ../test-helper.bash
 
+setup() {
+  # Get the root directory of the repository
+  local REPO_ROOT
+  REPO_ROOT="$(cd "$(dirname "$BATS_TEST_FILENAME")/../.." && pwd)"
+  # Path to the script being tested
+  SCRIPT="$REPO_ROOT/scripts/maintenance/sync-org-labels.sh"
+
+  # Ensure script exists and is executable
+  [ -f "$SCRIPT" ]
+  [ -x "$SCRIPT" ]
+}
+
+# ============================================================================
+# Test Name: sync-org-labels.sh runs in dry-run mode and outputs label sync
+# Test Type: Functional
+# Test Scope: Verifies that the sync-org-labels.sh script runs in dry-run mode and outputs label sync.
+# ============================================================================
 @test "sync-org-labels.sh runs in dry-run mode and outputs label sync" {
 	export DRY_RUN=true
-	run ../../scripts/maintenance/sync-org-labels.sh
+	run "$SCRIPT"
 	[ "$status" -eq 0 ]
 		[[ $output =~ Fetching ]]
 		[[ $output =~ Syncing ]]

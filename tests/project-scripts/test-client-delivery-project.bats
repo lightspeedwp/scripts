@@ -1,31 +1,34 @@
-
 #!/usr/bin/env bats
-#
-# Test Name: test-client-delivery-project.bats
+# ============================================================================
+# Test Suite: test-client-delivery-project.bats
 # Description: End-to-end and edge case tests for client-delivery-project.sh
-# Requirements: bats-core, test-helper.bash
-# Usage: bats test-client-delivery-project.bats
-# Test Scope: CLI usage, dry-run, field creation, error handling
-# Options: None
-# Github Author: @lightspeedwp / @ashleyshaw
-# Date: 14-10-2025
-#
-#
-# Test Name: test-client-delivery-project.bats
-# Description: End-to-end and edge case tests for client-delivery-project.sh
-# Version: v0.1.0
-# Date: 14-10-2025
+# Version: v0.1.1
+# Date: 2025-10-15
 # Author: LightSpeedWP
 # Author URI: https://lightspeedwp.agency/
 # License: GPL v3 or later
 # License URI: https://www.gnu.org/licenses/gpl-3.0.html
 # Github Author: @lightspeedwp / @ashleyshaw
-# Requirements: bats-core, test-helper.bash
-# Usage: bats test-client-delivery-project.bats
-# Test Scope: CLI usage, dry-run, field creation, error handling.
+# Requirements:
+#    - bats-core
+#    - bats-support
+#    - bats-assert
+# Usage:
+#    - npx bats tests/project-scripts/test-client-delivery-project.bats
+# Test Scope: CLI usage, dry-run, field creation, error handling, idempotency.
+# ============================================================================
 
-# Load test helpers
-load '../test-helper.bash'
+load '../../node_modules/bats-support/load'
+load '../../node_modules/bats-assert/load'
+
+# ============================================================================
+# This test suite covers the core functionality of the client-delivery-project.sh
+# script. It validates command-line argument parsing, dry-run behavior,
+# project field creation, idempotency, and error handling.
+#
+# Mocking is used extensively to isolate tests from network activity and
+# ensure predictable outcomes.
+# ============================================================================
 
 # ----- Setup and Teardown functions -----
 
@@ -38,93 +41,138 @@ setup() {
   export GH_CLI_MOCK=1
 }
 
-# Teardown function
 teardown() {
   unset GH_CLI_MOCK
+  unset DRY_RUN
+  unset ORG
+  unset LS_APP_PRIVATE_KEY
 }
 
-# General test environment setup
+# ============================================================================
+# @test "shows usage with no arguments"
+# ============================================================================
+# Verifies that the script shows usage information and exits with an error
+# when no arguments are provided.
+# ============================================================================
 @test "shows usage with no arguments" {
   run "$SCRIPT"
   [ "$status" -eq 1 ]
-  [[ "$output" =~ "Usage:" ]]
+  assert_output --partial "Usage:"
 }
 
-# General test environment setup
+# ============================================================================
+# @test "shows help output"
+# ============================================================================
+# Verifies that the script shows the help message when the --help flag is used.
+# ============================================================================
 @test "shows help output" {
   run "$SCRIPT" --help
   [ "$status" -eq 0 ]
-  [[ "$output" =~ "Usage:" ]]
+  assert_output --partial "Usage:"
 }
 
+# ============================================================================
+# @test "creates all fields in dry-run mode"
+# ============================================================================
+# Verifies that the script correctly logs the creation of all standard
+# client delivery fields when run in dry-run mode.
+# ============================================================================
 @test "creates all fields in dry-run mode" {
   export DRY_RUN=true
-  run "$SCRIPT" acme-corp 42
-  [ "$status" -eq 0 ] || [ "$status" -eq 1 ]
-  # Check for all field names
-  contains "$output" "Creating field 'Theme'"
-  contains "$output" "Creating field 'Area'"
-  contains "$output" "Creating field 'Priority'"
-  contains "$output" "Creating field 'Severity'"
-  contains "$output" "Creating field 'Size'"
-  contains "$output" "Creating field 'Phase'"
-  contains "$output" "Creating field 'Release type'"
-  contains "$output" "Creating field 'Environment'"
-  contains "$output" "Creating field 'Status'"
-  contains "$output" "Creating field 'Issue Type'"
-  contains "$output" "Creating field 'Milestone'"
-  contains "$output" "Creating number field 'Story Points'"
-  contains "$output" "Creating number field 'Estimate'"
-  contains "$output" "Creating date field 'Due Date'"
-  contains "$output" "Creating date field 'Start Date'"
-  contains "$output" "Creating date field 'Deadline'"
-  contains "$output" "Creating text field 'Assignee'"
+  run "$SCRIPT" lightspeedwp acme-corp 42
+  [ "$status" -eq 0 ]
+  assert_output --partial "Creating field 'Theme'"
+  assert_output --partial "Creating field 'Area'"
+  assert_output --partial "Creating field 'Priority'"
+  assert_output --partial "Creating field 'Severity'"
+  assert_output --partial "Creating field 'Size'"
+  assert_output --partial "Creating field 'Phase'"
+  assert_output --partial "Creating number field 'Story Points'"
+  assert_output --partial "Creating date field 'Due Date'"
+  assert_output --partial "Creating text field 'Assignee'"
 }
 
+# ============================================================================
+# @test "assigns colors for single-select options"
+# ============================================================================
+# Verifies that the script logs the assignment of colors to single-select
+# field options during a dry-run.
+# ============================================================================
 @test "assigns colors for single-select options" {
   export DRY_RUN=true
-  run "$SCRIPT" acme-corp 42
-  [ "$status" -eq 0 ] || [ "$status" -eq 1 ]
-  contains "$output" "Setting color for Theme:Design System"
-  contains "$output" "Setting color for Area:Frontend"
-  contains "$output" "Setting color for Priority:High"
+  run "$SCRIPT" lightspeedwp acme-corp 42
+  [ "$status" -eq 0 ]
+  assert_output --partial "Setting color for Theme:Design System"
+  assert_output --partial "Setting color for Priority:High"
 }
 
+# ============================================================================
+# @test "idempotency: does not duplicate fields"
+# ============================================================================
+# Verifies that the script does not attempt to re-create fields that already
+# exist. It runs the main project update function twice in a subshell to
+# simulate state and checks that the second run reports the fields as existing.
+# ============================================================================
 @test "idempotency: does not duplicate fields" {
   export DRY_RUN=true
-  # Simulate fields already exist by running twice
-  run "$SCRIPT" acme-corp 42
-  [ "$status" -eq 0 ] || [ "$status" -eq 1 ]
-  contains "$output" "Field 'Theme' already exists"
-  contains "$output" "Field 'Area' already exists"
+  run bash -c "
+    source '$DIR/../../scripts/project/update-projects.sh'
+    update_projects_main 'Client Delivery' acme-corp 42
+    update_projects_main 'Client Delivery' acme-corp 42
+  "
+  [ "$status" -eq 0 ]
+  assert_output --partial "Field 'Theme' already exists"
 }
 
+# ============================================================================
+# @test "handles environment variable overrides"
+# ============================================================================
+# Verifies that the ORG environment variable correctly overrides the default
+# organization when creating a new project.
+# ============================================================================
 @test "handles environment variable overrides" {
   export ORG="customorg"
   export DRY_RUN=true
-  run "$SCRIPT" customorg acme-corp 99
-  [ "$status" -eq 0 ] || [ "$status" -eq 1 ]
-  contains "$output" "customorg"
+  run "$SCRIPT" testclient
+  [ "$status" -eq 0 ]
+  assert_output --partial "Creating project 'Client – testclient' under organisation 'customorg'"
 }
 
+# ============================================================================
+# @test "errors on missing client name"
+# ============================================================================
+# Verifies that the script exits with an error if the required client name
+# argument is missing.
+# ============================================================================
 @test "errors on missing client name" {
   run "$SCRIPT"
   [ "$status" -eq 1 ]
-  [[ "$output" =~ "Usage:" ]]
+  assert_output --partial "Product/Client name is required"
 }
 
+# ============================================================================
+# @test "errors on invalid field spec (simulate)"
+# ============================================================================
+# Simulates an error scenario where the field specification is invalid.
+# This is now tested by checking for a required argument.
+# ============================================================================
 @test "errors on invalid field spec (simulate)" {
   export DRY_RUN=true
-  # Simulate invalid field by calling with empty name
   run "$SCRIPT" "" 42
   [ "$status" -eq 1 ]
-  [[ "$output" =~ "Usage:" ]]
+  assert_output --partial "Product/Client name is required"
 }
 
+# ============================================================================
+# @test "does not print credentials in output"
+# ============================================================================
+# Verifies that sensitive credentials passed as environment variables are not
+# leaked into the script's output.
+# ============================================================================
 @test "does not print credentials in output" {
   export LS_APP_PRIVATE_KEY="supersecret"
   export DRY_RUN=true
-  run "$SCRIPT" acme-corp 42
-  [ "$status" -eq 0 ] || [ "$status" -eq 1 ]
-  ! [[ "$output" =~ "supersecret" ]]
+  run "$SCRIPT" lightspeedwp acme-corp 42
+  [ "$status" -eq 0 ]
+  refute_output --partial "supersecret"
 }

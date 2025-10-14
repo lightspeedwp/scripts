@@ -77,32 +77,39 @@
 #
 ###############################################################################
 
-# --- DRY-RUN INTERCEPT FOR import-csv ---
-if [[ "${DRY_RUN:-}" == "true" && "$*" == *"import-csv"* ]]; then
-  for arg in "$@"; do
-    if [[ "$arg" == *.csv ]]; then
-      echo "[DRY-RUN] Would import CSV: $arg"
-    fi
-  done
-  echo "[DRY-RUN] Simulated project field updates and access management."
-  exit 0
-fi
+# Set strict mode
+set -euo pipefail
 
-# Source the main script to reuse its functions
+# Source the shared project update script.
+# The SCRIPT_DIR variable is defined within update-projects.sh, so we can locate it.
 # shellcheck source=./update-projects.sh
-source "$SCRIPT_DIR/update-projects.sh"
+source "$(dirname "${BASH_SOURCE[0]}")/update-projects.sh"
 
-###############################################################################
-# Function: main
-# Description: Main function to run the script.
+#
+# --- Main Function ---
+#
+# Description:
+#   Main entry point for the script.
+#   This script is a wrapper around the core 'update-projects.sh' script.
+#   It sets the project type to "Product Development" and passes all command-line
+#   arguments to the core script for processing.
+#
 # Arguments:
-#   $@ - Command-line arguments.
-# Output: Prints messages to stdout and stderr.
-###############################################################################
+#   $@ - All command-line arguments passed to this script.
+#
+# Usage:
+#   See the header of this file for detailed usage instructions.
+#
+# Example:
+#   ./product-dev-project.sh my-product
+#   ./product-dev-project.sh my-org my-product 456 --settings-file settings.csv
+#
 main() {
-    # Pass all arguments to the update-projects.sh script
-    "$SCRIPT_DIR/update-projects.sh" "$@"
+    # Call the main function in update-projects.sh with "Product Development" as the project type
+    # and forward all other arguments.
+    update_projects_main "Product Development" "$@"
 }
 
 # --- SCRIPT EXECUTION ---
+# Execute the main function, passing all script arguments.
 main "$@"

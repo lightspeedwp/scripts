@@ -1,5 +1,6 @@
 # Workflows Directory
 
+[![License: GPL v3 or later](https://img.shields.io/badge/License-GPL%20v3%20or%20later-blue.svg)](https://www.gnu.org/licenses/gpl-3.0.html)
 This directory contains reusable GitHub Actions workflows for the LightSpeed WP organization.
 
 ## Usage
@@ -76,3 +77,7 @@ jobs:
 3. Document all inputs and secrets clearly
 4. Include error handling and logging
 5. Test workflows thoroughly before tagging
+
+## Contributing
+
+Please see [CONTRIBUTING.md](CONTRIBUTING.md) for details.

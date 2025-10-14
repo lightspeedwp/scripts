@@ -41,6 +41,8 @@
     "all-contributors-cli": "^6.26.1",
     "auto-changelog": "^2.4.0",
     "bats": "^1.8.2",
+    "bats-assert": "^2.2.4",
+    "bats-support": "^0.3.0",
     "eslint": "^9.37.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.4",

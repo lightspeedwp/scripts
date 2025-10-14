@@ -1,5 +1,6 @@
 # GitHub Configuration Directory [![Copilot](https://github.com/lightspeedwp/scripts/actions/workflows/copilot-swe-agent/copilot/badge.svg)](https://github.com/lightspeedwp/scripts/actions/workflows/copilot-swe-agent/copilot)
 
+[![License: GPL v3 or later](https://img.shields.io/badge/License-GPL%20v3%20or%20later-blue.svg)](https://www.gnu.org/licenses/gpl-3.0.html)
 This directory contains GitHub-specific templates and configuration files for the LightSpeed WP organization.
 
 ## Contents
@@ -55,3 +56,7 @@ Follow the PR template checklist to ensure quality contributions:
 ## Customization
 
 Templates can be customized for specific needs while maintaining consistency across the organization. Update templates in the `templates/` subdirectory.
+
+## Contributing
+
+Please see [CONTRIBUTING.md](CONTRIBUTING.md) for details.

@@ -28,7 +28,10 @@
 - PRs must update documentation and in-line comments for new features, changes, or fixes
 - Reviewers should verify documentation compliance before approving changes
 
-## Example README Section
+
+
+## Example README section
+
 ```markdown
 # Example Automation Script
 
@@ -36,6 +39,7 @@
 This script automates deployment for WordPress sites.
 
 ## Usage
+
 ```bash
 ./deploy-wordpress-site.sh --env staging
 ```
@@ -52,7 +56,10 @@ This script automates deployment for WordPress sites.
 - v1.0.0: Initial release
 ```
 
-## Example In-line Documentation (Bash)
+
+
+## Example in-line documentation (Bash)
+
 ```bash
 #!/bin/bash
 # Script Name: deploy-wordpress-site.sh
@@ -69,3 +76,4 @@ function deploy_site() {
   # ...existing code...
 }
 ```
+

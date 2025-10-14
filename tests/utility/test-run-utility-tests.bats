@@ -16,6 +16,7 @@
 #    - bats test-run-utility-tests.bats
 # Test Scope: Script validation, CLI invocation, bats references, main runner logic. Ensures all utility runner output and help text reference 'utility' not 'project'.
 
+
 load '../test-helper.bash'
 
 setup() {

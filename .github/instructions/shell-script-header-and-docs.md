@@ -27,22 +27,23 @@ You are a shell script developer. Follow our LightSpeed WP documentation standar
 
 ## Inline Function Documentation Standards
 
-- Every function must be preceded by a comment block in the following format:
 
-  ```sh
-  #############################################################################
-  # Function: <function_name>
-  # Description: <detailed description of what the function does>
-  # Arguments:
-  #   <list each argument, e.g. $1 - Description>
-  # Output: <describe what the function prints, returns, or modifies>
-  ###############################################################################
-  ```
 
-- Do not omit or abbreviate any section. If a function has no arguments or output, state "None".
-- Place the documentation immediately above the function definition.
-- Do not duplicate function documentation. If documentation exists, merge and expand as needed.
-- Use clear, concise language and avoid technical jargon unless necessary.
+
+Every function must be preceded by a comment block in the following format:
+
+```bash
+# Function: function_name
+# Description: ...
+# Arguments: ...
+# Output: ...
+# Notes: ...
+```
+
+Do not omit or abbreviate any section. If a function has no arguments or output, state "None".
+Place the documentation immediately above the function definition.
+Do not duplicate function documentation. If documentation exists, merge and expand as needed.
+Use clear, concise language and avoid technical jargon unless necessary.
 
 ## General Practices
 

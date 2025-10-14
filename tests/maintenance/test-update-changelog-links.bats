@@ -12,7 +12,24 @@
 # Load test helpers
 load ../test-helper.bash
 
+setup() {
+  # Get the root directory of the repository
+  local REPO_ROOT
+  REPO_ROOT="$(cd "$(dirname "$BATS_TEST_FILENAME")/../.." && pwd)"
+  # Path to the script being tested
+  SCRIPT="$REPO_ROOT/scripts/maintenance/validate-changelog-links.sh"
+
+  # Ensure script exists and is executable
+  [ -f "$SCRIPT" ]
+  [ -x "$SCRIPT" ]
+}
+
+# ============================================================================
+# Test Name: validate-changelog-links.sh reports missing links
+# Test Type: Functional
+# Test Scope: Verifies that the validate-changelog-links.sh script reports missing links.
+# ============================================================================
 @test "validate-changelog-links.sh reports missing links" {
-	run ../../scripts/maintenance/validate-changelog-links.sh
+	run "$SCRIPT"
 	[ "$status" -eq 0 ] || [[ $output =~ Missing\ PR/Issue/Commit\ link ]]
 }
