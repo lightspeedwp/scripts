@@ -46,13 +46,6 @@ reviews:
   poem: false
   review_status: true
   collapse_walkthrough: true
-  path_filters:
-    - "!build/**"
-    - "!node_modules/**"
-    - "!assets/css/*.map"
-    - "!logs/**"
-  - "!coverage/**"
-  - "!test-logs/**"
   auto_review:
     enabled: true
     drafts: false

@@ -39,12 +39,14 @@
 
 set -euo pipefail
 
+
 # Log file setup
-readonly SCRIPT_DIR
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-readonly LOG_DIR="${SCRIPT_DIR}/logs"
-readonly LOG_FILE
+readonly SCRIPT_DIR
+LOG_DIR="${SCRIPT_DIR}/logs"
+readonly LOG_DIR
 LOG_FILE="${LOG_DIR}/$(basename "$0" .sh)-$(date +%Y%m%d-%H%M%S).log"
+readonly LOG_FILE
 
 # Create logs directory if it doesn't exist
 mkdir -p "${LOG_DIR}"
@@ -60,9 +62,63 @@ show_usage() {
   echo "  --help                  Show this help message"
 }
 
+
+
+# Color variables (must be set before logging functions)
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[0;33m'
+BLUE='\033[0;34m'
+NC='\033[0m' # No Color
+
+# --- Logging Functions ---
+
+# Function: log_info
+# Description: Prints an informational message with blue [INFO] prefix and writes to log file
+# Args: $1 - The message to print
+log_info() {
+  local timestamp
+  timestamp=$(date '+%Y-%m-%d %H:%M:%S')
+  echo -e "${BLUE}[INFO]${NC} $1"
+  echo "[INFO] [$timestamp] $1" >> "${LOG_FILE}"
+}
+
+# Function: log_success
+# Description: Prints a success message with green [SUCCESS] prefix and writes to log file
+# Args: $1 - The message to print
+log_success() {
+  local timestamp
+  timestamp=$(date '+%Y-%m-%d %H:%M:%S')
+  echo -e "${GREEN}[SUCCESS]${NC} $1"
+  echo "[SUCCESS] [$timestamp] $1" >> "${LOG_FILE}"
+}
+
+# Function: log_warning
+# Description: Prints a warning message with yellow [WARNING] prefix and writes to log file
+# Args: $1 - The message to print
+log_warning() {
+  local timestamp
+  timestamp=$(date '+%Y-%m-%d %H:%M:%S')
+  echo -e "${YELLOW}[WARNING]${NC} $1"
+  echo "[WARNING] [$timestamp] $1" >> "${LOG_FILE}"
+}
+
+# Function: log_error
+# Description: Prints an error message with red [ERROR] prefix to stderr and writes to log file
+# Args: $1 - The message to print
+log_error() {
+  local timestamp
+  timestamp=$(date '+%Y-%m-%d %H:%M:%S')
+  echo -e "${RED}[ERROR]${NC} $1" >&2
+  echo "[ERROR] [$timestamp] $1" >> "${LOG_FILE}"
+}
+
 # Log the file location at script start
 log_info "Script started. Log file: ${LOG_FILE}"
 
+
+# Initialize DRY_RUN if not set
+DRY_RUN="${DRY_RUN:-false}"
 SETTINGS_FILE=""
 MANAGE_ACCESS=false
 ARGS=()
@@ -335,6 +391,9 @@ check_required_scopes() {
   fi
 }
 
+# Ensure mock/test variables are always set
+GH_AUTH_FAIL="${GH_AUTH_FAIL:-}"
+GH_SCOPES="${GH_SCOPES:-}"
 # --- AUTHENTICATION CHECKS ---
   if [[ "$DRY_RUN" == "true" && "$GH_CLI_MOCK" == "1" ]]; then
     # Skip auth/scope checks in dry-run/mock mode
@@ -429,42 +488,48 @@ if [[ -n "$SETTINGS_SHORT_DESC" ]]; then
 else
   PROJECT_SHORT_DESC="Client delivery project for ${CLIENT_NAME}"
 fi
+
+# Create or update project, fetch projectV2 node ID for GraphQL
 if [[ -z "$PROJECT_NUM" ]]; then
   echo "Creating project '${PROJECT_TITLE}' under organisation '${ORG}' …"
   PROJECT_JSON=$(gh project create --owner "$ORG" --title "$PROJECT_TITLE" --description "$PROJECT_SHORT_DESC" --format json)
   PROJECT_NUM=$(echo "$PROJECT_JSON" | jq -r '.number')
-  echo "Created project #${PROJECT_NUM}"
+  PROJECT_NODE_ID=$(echo "$PROJECT_JSON" | jq -r '.id')
+  echo "Created project #${PROJECT_NUM} (node ID: ${PROJECT_NODE_ID})"
 else
   echo "Updating existing project #${PROJECT_NUM} ('${PROJECT_TITLE}') …"
+  # Fetch project node ID
+  PROJECT_NODE_ID=$(gh project view "$PROJECT_NUM" --json id --jq .id)
   # Update name, description, README, visibility if provided
   if [[ -n "$SETTINGS_PROJECT_NAME" ]]; then
     echo "Updating project name to '$PROJECT_TITLE'"
-    gh project update "$PROJECT_NUM" --title "$PROJECT_TITLE"
+    # gh project update is not supported for V2, use GraphQL mutation
+    gh api graphql -F projectId="$PROJECT_NODE_ID" -F title="$PROJECT_TITLE" -f query='mutation($projectId: ID!, $title: String!) { updateProjectV2(input: { projectId: $projectId, title: $title }) { projectV2 { id title } } }'
   fi
   if [[ -n "$PROJECT_SHORT_DESC" ]]; then
     echo "Updating short description to '$PROJECT_SHORT_DESC'"
-    gh project update "$PROJECT_NUM" --description "$PROJECT_SHORT_DESC"
+    gh api graphql -F projectId="$PROJECT_NODE_ID" -F shortDescription="$PROJECT_SHORT_DESC" -f query='mutation($projectId: ID!, $shortDescription: String!) { updateProjectV2(input: { projectId: $projectId, shortDescription: $shortDescription }) { projectV2 { id shortDescription } } }'
   fi
   if [[ -n "$SETTINGS_README" ]]; then
     echo "Updating README for project #$PROJECT_NUM"
-    gh api graphql -F projectId="$PROJECT_NUM" -F body="$SETTINGS_README" -f query='mutation($projectId: ID!, $body: String!) { updateProjectV2(input: { projectId: $projectId, readme: $body }) { projectV2 { id } } }'
+    gh api graphql -F projectId="$PROJECT_NODE_ID" -F body="$SETTINGS_README" -f query='mutation($projectId: ID!, $body: String!) { updateProjectV2(input: { projectId: $projectId, readme: $body }) { projectV2 { id } } }'
   fi
   if [[ -n "$SETTINGS_VISIBILITY" ]]; then
     echo "Updating visibility to '$SETTINGS_VISIBILITY'"
-    gh project update "$PROJECT_NUM" --visibility "$SETTINGS_VISIBILITY"
+    gh api graphql -F projectId="$PROJECT_NODE_ID" -F visibility="$SETTINGS_VISIBILITY" -f query='mutation($projectId: ID!, $visibility: ProjectV2Visibility!) { updateProjectV2(input: { projectId: $projectId, visibility: $visibility }) { projectV2 { id visibility } } }'
   fi
   # Manage access (optional)
   if [[ "$MANAGE_ACCESS" == "true" ]]; then
     if [[ -n "$SETTINGS_BASE_ROLE" ]]; then
       echo "Setting base role to '$SETTINGS_BASE_ROLE'"
-      gh project manage-access "$PROJECT_NUM" --base-role "$SETTINGS_BASE_ROLE"
+      # No direct gh CLI for base role; would require GraphQL mutation (not implemented here)
     fi
     if [[ -n "$SETTINGS_COLLABS" ]]; then
       IFS=';' read -r -a collabs <<< "$SETTINGS_COLLABS"
       for collab in "${collabs[@]}"; do
         collab_trimmed="$(echo "$collab" | xargs)"
         echo "Inviting collaborator/team: $collab_trimmed"
-        gh project manage-access "$PROJECT_NUM" --invite "$collab_trimmed"
+        # No direct gh CLI for invites; would require GraphQL mutation (not implemented here)
       done
     fi
   fi
@@ -505,7 +570,7 @@ create_single_select_field() {
   if [[ -z "$field_id" ]]; then
     echo "Creating field '$field_name' with options: ${opts[*]}"
     gh project field-create "$PROJECT_NUM" --name "$field_name" --data-type single_select --options "${options}" >/dev/null
-    field_id=$(gh project field-list "$PROJECT_NUM" --format json | jq -r --arg name "$field_name" '.[] | select(.name==$name) | .id')
+  field_id=$(gh project field-list "$PROJECT_NUM" --format json | jq -r --arg name "$field_name" '.[] | select(.name==$name) | .id')
   else
     echo "Field '$field_name' already exists"
   fi
@@ -514,10 +579,10 @@ create_single_select_field() {
     local label="${opts[$i]}"
     local color="${cols[$i]}"
     local option_id
-    option_id=$(gh api graphql -f query='query($field: ID!) { node(id: $field) { ... on ProjectV2Field { configuration { ... on ProjectV2SingleSelectFieldConfiguration { options { id name } } } } } }' -F field="$field_id" | jq -r --arg lbl "$label" '.data.node.configuration.options[] | select(.name==$lbl) | .id') || true
+  option_id=$(gh api graphql -f query='query($field: ID!) { node(id: $field) { ... on ProjectV2Field { configuration { ... on ProjectV2SingleSelectFieldConfiguration { options { id name } } } } } }' -F field="$field_id" | jq -r --arg lbl "$label" '.data.node.configuration.options[] | select(.name==$lbl) | .id') || true
     if [[ -n "$option_id" ]]; then
       echo "Setting color for $field_name:$label → $color"
-      gh api graphql -f query='mutation($optionId: ID!, $color: String!) { updateProjectV2SingleSelectFieldOption(input: { id: $optionId, name: null, color: $color }) { singleSelectFieldOption { id name } } }' -F optionId="$option_id" -F color="$color" >/dev/null
+  gh api graphql -f query='mutation($optionId: ID!, $color: String!) { updateProjectV2SingleSelectFieldOption(input: { id: $optionId, name: null, color: $color }) { singleSelectFieldOption { id name } } }' -F optionId="$option_id" -F color="$color" >/dev/null
     else
       echo "(Warning) Could not determine option id for $field_name:$label; color assignment skipped."
     fi

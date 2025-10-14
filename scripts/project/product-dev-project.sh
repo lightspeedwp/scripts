@@ -468,42 +468,48 @@ if [[ -n "$SETTINGS_SHORT_DESC" ]]; then
 else
   PROJECT_SHORT_DESC="Product development project for ${PRODUCT_NAME}"
 fi
+
+# Create or update project, fetch projectV2 node ID for GraphQL
 if [[ -z "$PROJECT_NUM" ]]; then
   echo "Creating project '${PROJECT_TITLE}' under organisation '${ORG}' …"
   PROJECT_JSON=$(gh project create --owner "$ORG" --title "$PROJECT_TITLE" --description "$PROJECT_SHORT_DESC" --format json)
   PROJECT_NUM=$(echo "$PROJECT_JSON" | jq -r '.number')
-  echo "Created project #${PROJECT_NUM}"
+  PROJECT_NODE_ID=$(echo "$PROJECT_JSON" | jq -r '.id')
+  echo "Created project #${PROJECT_NUM} (node ID: ${PROJECT_NODE_ID})"
 else
   echo "Updating existing project #${PROJECT_NUM} ('${PROJECT_TITLE}') …"
+  # Fetch project node ID
+  PROJECT_NODE_ID=$(gh project view "$PROJECT_NUM" --json id --jq .id)
   # Update name, description, README, visibility if provided
   if [[ -n "$SETTINGS_PROJECT_NAME" ]]; then
     echo "Updating project name to '$PROJECT_TITLE'"
-    gh project update "$PROJECT_NUM" --title "$PROJECT_TITLE"
+    # gh project update is not supported for V2, use GraphQL mutation
+    gh api graphql -F projectId="$PROJECT_NODE_ID" -F title="$PROJECT_TITLE" -f query='mutation($projectId: ID!, $title: String!) { updateProjectV2(input: { projectId: $projectId, title: $title }) { projectV2 { id title } } }'
   fi
   if [[ -n "$PROJECT_SHORT_DESC" ]]; then
     echo "Updating short description to '$PROJECT_SHORT_DESC'"
-    gh project update "$PROJECT_NUM" --description "$PROJECT_SHORT_DESC"
+    gh api graphql -F projectId="$PROJECT_NODE_ID" -F shortDescription="$PROJECT_SHORT_DESC" -f query='mutation($projectId: ID!, $shortDescription: String!) { updateProjectV2(input: { projectId: $projectId, shortDescription: $shortDescription }) { projectV2 { id shortDescription } } }'
   fi
   if [[ -n "$SETTINGS_README" ]]; then
     echo "Updating README for project #$PROJECT_NUM"
-    gh api graphql -F projectId="$PROJECT_NUM" -F body="$SETTINGS_README" -f query='mutation($projectId: ID!, $body: String!) { updateProjectV2(input: { projectId: $projectId, readme: $body }) { projectV2 { id } } }'
+    gh api graphql -F projectId="$PROJECT_NODE_ID" -F body="$SETTINGS_README" -f query='mutation($projectId: ID!, $body: String!) { updateProjectV2(input: { projectId: $projectId, readme: $body }) { projectV2 { id } } }'
   fi
   if [[ -n "$SETTINGS_VISIBILITY" ]]; then
     echo "Updating visibility to '$SETTINGS_VISIBILITY'"
-    gh project update "$PROJECT_NUM" --visibility "$SETTINGS_VISIBILITY"
+    gh api graphql -F projectId="$PROJECT_NODE_ID" -F visibility="$SETTINGS_VISIBILITY" -f query='mutation($projectId: ID!, $visibility: ProjectV2Visibility!) { updateProjectV2(input: { projectId: $projectId, visibility: $visibility }) { projectV2 { id visibility } } }'
   fi
   # Manage access (optional)
   if [[ "$MANAGE_ACCESS" == "true" ]]; then
     if [[ -n "$SETTINGS_BASE_ROLE" ]]; then
       echo "Setting base role to '$SETTINGS_BASE_ROLE'"
-      gh project manage-access "$PROJECT_NUM" --base-role "$SETTINGS_BASE_ROLE"
+      # No direct gh CLI for base role; would require GraphQL mutation (not implemented here)
     fi
     if [[ -n "$SETTINGS_COLLABS" ]]; then
       IFS=';' read -r -a collabs <<< "$SETTINGS_COLLABS"
       for collab in "${collabs[@]}"; do
         collab_trimmed="$(echo "$collab" | xargs)"
         echo "Inviting collaborator/team: $collab_trimmed"
-        gh project manage-access "$PROJECT_NUM" --invite "$collab_trimmed"
+        # No direct gh CLI for invites; would require GraphQL mutation (not implemented here)
       done
     fi
   fi

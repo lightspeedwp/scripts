@@ -583,6 +583,8 @@ delete_project_field() {
     local jq_filter
     jq_filter=".[] | select(.name == \"$field_name\") | .id"
     local field_id
+    # Fetch project node ID for GraphQL mutations
+    PROJECT_NODE_ID=$(gh project view "$PROJECT_NUMBER" --json id --jq .id)
     if ! field_id=$(gh project field-list "$PROJECT_OWNER/$PROJECT_NUMBER" --format json --jq "$jq_filter" 2>/dev/null); then
         log_error "Failed to list fields to delete '$field_name'"
         return 1
