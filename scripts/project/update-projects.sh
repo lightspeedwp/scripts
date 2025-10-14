@@ -87,11 +87,11 @@
 set -euo pipefail
 
 # Log file setup
-readonly SCRIPT_DIR
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+readonly SCRIPT_DIR
 readonly LOG_DIR="${SCRIPT_DIR}/logs"
-readonly LOG_FILE
 LOG_FILE="${LOG_DIR}/$(basename "$0" .sh)-$(date +%Y%m%d-%H%M%S).log"
+readonly LOG_FILE
 
 # Create logs directory if it doesn't exist
 mkdir -p "${LOG_DIR}"

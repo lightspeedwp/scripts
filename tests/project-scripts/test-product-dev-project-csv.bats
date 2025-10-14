@@ -40,7 +40,7 @@ teardown() {
 
 
 @test "validates importing settings CSV and dry-run output (no access)" {
-  run ../../scripts/project/product-dev-project.sh lightspeedwp testproduct 99 --settings-file ../../scripts/project/fixtures/product-development-settings.csv
+  run bash /home/runner/work/scripts/scripts/scripts/project/product-dev-project.sh lightspeedwp testproduct 99 --settings-file ../../scripts/project/fixtures/product-development-settings.csv
   [ "$status" -eq 0 ]
   contains "$output" "Updating project name to 'Product Development Project'"
   contains "$output" "Updating short description to 'Project for managing product development'"
@@ -52,7 +52,7 @@ teardown() {
 
 
 @test "validates importing settings CSV and dry-run output (with access)" {
-  run ../../scripts/project/product-dev-project.sh lightspeedwp testproduct 99 --settings-file ../../scripts/project/fixtures/product-development-manage-access.csv --manage-access
+  run bash /home/runner/work/scripts/scripts/scripts/project/product-dev-project.sh lightspeedwp testproduct 99 --settings-file ../../scripts/project/fixtures/product-development-manage-access.csv --manage-access
   [ "$status" -eq 0 ]
   contains "$output" "Setting base role to 'Admin'"
   contains "$output" "Inviting Interns with role: Admin"

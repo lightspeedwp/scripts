@@ -47,7 +47,7 @@ teardown() {
 
 # General test environment setup
 @test "validates importing settings CSV and dry-run output (no access)" {
-  run ../../scripts/project/client-delivery-project.sh lightspeedwp acme-corp 42 --settings-file ../../scripts/project/fixtures/client-delivery-settings.csv
+  run bash /home/runner/work/scripts/scripts/scripts/project/client-delivery-project.sh lightspeedwp acme-corp 42 --settings-file ../../scripts/project/fixtures/client-delivery-settings.csv
   [ "$status" -eq 0 ]
   contains "$output" "Updating project name to 'Client Delivery Project'"
   contains "$output" "Updating short description to 'Project for managing client delivery engagements'"
@@ -59,7 +59,7 @@ teardown() {
 
 # General test environment setup
 @test "validates importing settings CSV and dry-run output (with access)" {
-  run ../../scripts/project/client-delivery-project.sh lightspeedwp acme-corp 42 --settings-file ../../scripts/project/fixtures/client-delivery-settings.csv --access-file ../../scripts/project/fixtures/client-delivery-manage-access.csv --manage-access
+  run bash /home/runner/work/scripts/scripts/scripts/project/client-delivery-project.sh lightspeedwp acme-corp 42 --settings-file ../../scripts/project/fixtures/client-delivery-settings.csv --access-file ../../scripts/project/fixtures/client-delivery-manage-access.csv --manage-access
   [ "$status" -eq 0 ]
   contains "$output" "Setting base role to 'Write'"
   contains "$output" "Inviting Interns with role: Write"

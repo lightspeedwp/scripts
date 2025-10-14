@@ -53,21 +53,21 @@ teardown() {
 
 # General test environment setup
 @test "shows usage with no arguments" {
-  run ../../scripts/project/client-delivery-project.sh
+  run bash /home/runner/work/scripts/scripts/scripts/project/client-delivery-project.sh
   [ "$status" -eq 1 ]
   [[ "$output" =~ "Usage:" ]]
 }
 
 # General test environment setup
 @test "shows help output" {
-  run ../../scripts/project/client-delivery-project.sh --help
+  run bash /home/runner/work/scripts/scripts/scripts/project/client-delivery-project.sh --help
   [ "$status" -eq 0 ]
   [[ "$output" =~ "Usage:" ]]
 }
 
 @test "creates all fields in dry-run mode" {
   export DRY_RUN=true
-  run ../../scripts/project/client-delivery-project.sh acme-corp 42
+  run bash /home/runner/work/scripts/scripts/scripts/project/client-delivery-project.sh acme-corp 42
   [ "$status" -eq 0 ] || [ "$status" -eq 1 ]
   # Check for all field names
   contains "$output" "Creating field 'Theme'"
@@ -91,7 +91,7 @@ teardown() {
 
 @test "assigns colors for single-select options" {
   export DRY_RUN=true
-  run ../../scripts/project/client-delivery-project.sh acme-corp 42
+  run bash /home/runner/work/scripts/scripts/scripts/project/client-delivery-project.sh acme-corp 42
   [ "$status" -eq 0 ] || [ "$status" -eq 1 ]
   contains "$output" "Setting color for Theme:Design System"
   contains "$output" "Setting color for Area:Frontend"
@@ -101,7 +101,7 @@ teardown() {
 @test "idempotency: does not duplicate fields" {
   export DRY_RUN=true
   # Simulate fields already exist by running twice
-  run ../../scripts/project/client-delivery-project.sh acme-corp 42
+  run bash /home/runner/work/scripts/scripts/scripts/project/client-delivery-project.sh acme-corp 42
   [ "$status" -eq 0 ] || [ "$status" -eq 1 ]
   contains "$output" "Field 'Theme' already exists"
   contains "$output" "Field 'Area' already exists"
@@ -110,13 +110,13 @@ teardown() {
 @test "handles environment variable overrides" {
   export ORG="customorg"
   export DRY_RUN=true
-  run ../../scripts/project/client-delivery-project.sh customorg acme-corp 99
+  run bash /home/runner/work/scripts/scripts/scripts/project/client-delivery-project.sh customorg acme-corp 99
   [ "$status" -eq 0 ] || [ "$status" -eq 1 ]
   contains "$output" "customorg"
 }
 
 @test "errors on missing client name" {
-  run ../../scripts/project/client-delivery-project.sh
+  run bash /home/runner/work/scripts/scripts/scripts/project/client-delivery-project.sh
   [ "$status" -eq 1 ]
   [[ "$output" =~ "Usage:" ]]
 }
@@ -124,7 +124,7 @@ teardown() {
 @test "errors on invalid field spec (simulate)" {
   export DRY_RUN=true
   # Simulate invalid field by calling with empty name
-  run ../../scripts/project/client-delivery-project.sh "" 42
+  run bash /home/runner/work/scripts/scripts/scripts/project/client-delivery-project.sh "" 42
   [ "$status" -eq 1 ]
   [[ "$output" =~ "Usage:" ]]
 }
@@ -132,7 +132,7 @@ teardown() {
 @test "does not print credentials in output" {
   export LS_APP_PRIVATE_KEY="supersecret"
   export DRY_RUN=true
-  run ../../scripts/project/client-delivery-project.sh acme-corp 42
+  run bash /home/runner/work/scripts/scripts/scripts/project/client-delivery-project.sh acme-corp 42
   [ "$status" -eq 0 ] || [ "$status" -eq 1 ]
   ! [[ "$output" =~ "supersecret" ]]
 }

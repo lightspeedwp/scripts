@@ -50,13 +50,13 @@ teardown() {
 }
 
 @test "shows usage with no arguments" {
-  run ../../scripts/project/product-dev-project.sh
+  run bash /home/runner/work/scripts/scripts/scripts/project/product-dev-project.sh
   [ "$status" -eq 1 ]
   [[ "$output" =~ "Usage:" ]]
 }
 
 @test "shows help output" {
-  run ../../scripts/project/product-dev-project.sh --help
+  run bash /home/runner/work/scripts/scripts/scripts/project/product-dev-project.sh --help
   [ "$status" -eq 0 ]
   [[ "$output" =~ "Usage:" ]]
 }
@@ -64,28 +64,28 @@ teardown() {
 
 @test "updates project name in dry-run mode" {
   export DRY_RUN=true
-  run ../../scripts/project/product-dev-project.sh lightspeedwp testproduct 99
+  run bash /home/runner/work/scripts/scripts/scripts/project/product-dev-project.sh lightspeedwp testproduct 99
   [ "$status" -eq 0 ] || [ "$status" -eq 1 ]
   contains "$output" "Updating project name to 'Product – testproduct'"
 }
 
 @test "updates short description in dry-run mode" {
   export DRY_RUN=true
-  run ../../scripts/project/product-dev-project.sh lightspeedwp testproduct 99
+  run bash /home/runner/work/scripts/scripts/scripts/project/product-dev-project.sh lightspeedwp testproduct 99
   [ "$status" -eq 0 ] || [ "$status" -eq 1 ]
   contains "$output" "Updating short description to 'Plan and ship versioned releases with a lean Scrumban flow and clear release gates.'"
 }
 
 @test "updates README in dry-run mode" {
   export DRY_RUN=true
-  run ../../scripts/project/product-dev-project.sh lightspeedwp testproduct 99
+  run bash /home/runner/work/scripts/scripts/scripts/project/product-dev-project.sh lightspeedwp testproduct 99
   [ "$status" -eq 0 ] || [ "$status" -eq 1 ]
   contains "$output" "Updating README for project #99"
 }
 
 @test "creates all fields in dry-run mode" {
   export DRY_RUN=true
-  run ../../scripts/project/product-dev-project.sh lightspeedwp testproduct 99
+  run bash /home/runner/work/scripts/scripts/scripts/project/product-dev-project.sh lightspeedwp testproduct 99
   [ "$status" -eq 0 ] || [ "$status" -eq 1 ]
   contains "$output" "Creating field 'Theme'"
   contains "$output" "Creating field 'Area'"
@@ -108,7 +108,7 @@ teardown() {
 
 @test "assigns colors for single-select options" {
   export DRY_RUN=true
-  run ../../scripts/project/product-dev-project.sh lightspeedwp testproduct 99
+  run bash /home/runner/work/scripts/scripts/scripts/project/product-dev-project.sh lightspeedwp testproduct 99
   [ "$status" -eq 0 ] || [ "$status" -eq 1 ]
   contains "$output" "Setting color for Theme:Design System"
   contains "$output" "Setting color for Area:Frontend"
@@ -117,7 +117,7 @@ teardown() {
 
 @test "idempotency: does not duplicate fields" {
   export DRY_RUN=true
-  run ../../scripts/project/product-dev-project.sh lightspeedwp testproduct 99
+  run bash /home/runner/work/scripts/scripts/scripts/project/product-dev-project.sh lightspeedwp testproduct 99
   [ "$status" -eq 0 ] || [ "$status" -eq 1 ]
   contains "$output" "Field 'Theme' already exists"
   contains "$output" "Field 'Area' already exists"
@@ -126,20 +126,20 @@ teardown() {
 @test "handles environment variable overrides" {
   export ORG="customorg"
   export DRY_RUN=true
-  run ../../scripts/project/product-dev-project.sh customorg testproduct 88
+  run bash /home/runner/work/scripts/scripts/scripts/project/product-dev-project.sh customorg testproduct 88
   [ "$status" -eq 0 ] || [ "$status" -eq 1 ]
   contains "$output" "customorg"
 }
 
 @test "errors on missing product name" {
-  run ../../scripts/project/product-dev-project.sh
+  run bash /home/runner/work/scripts/scripts/scripts/project/product-dev-project.sh
   [ "$status" -eq 1 ]
   [[ "$output" =~ "Usage:" ]]
 }
 
 @test "errors on invalid field spec (simulate)" {
   export DRY_RUN=true
-  run ../../scripts/project/product-dev-project.sh "" 99
+  run bash /home/runner/work/scripts/scripts/scripts/project/product-dev-project.sh "" 99
   [ "$status" -eq 1 ]
   [[ "$output" =~ "Usage:" ]]
 }
@@ -147,7 +147,7 @@ teardown() {
 @test "does not print credentials in output" {
   export LS_APP_PRIVATE_KEY="supersecret"
   export DRY_RUN=true
-  run ../../scripts/project/product-dev-project.sh lightspeedwp testproduct 99
+  run bash /home/runner/work/scripts/scripts/scripts/project/product-dev-project.sh lightspeedwp testproduct 99
   [ "$status" -eq 0 ] || [ "$status" -eq 1 ]
   ! [[ "$output" =~ "supersecret" ]]
 }
