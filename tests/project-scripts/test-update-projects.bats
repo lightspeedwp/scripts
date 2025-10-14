@@ -25,8 +25,10 @@ setup() {
     SCRIPT="$DIR/../../scripts/project/update-projects.sh"
 
     # Debug output
-    echo "DEBUG: DIR is $DIR" >&2
-    echo "DEBUG: SCRIPT is $SCRIPT" >&2
+    if [ -n "$DEBUG" ]; then
+        echo "DEBUG: DIR is $DIR" >&2
+        echo "DEBUG: SCRIPT is $SCRIPT" >&2
+    fi
 
     # Ensure script exists and is executable
     [ -f "$SCRIPT" ]
