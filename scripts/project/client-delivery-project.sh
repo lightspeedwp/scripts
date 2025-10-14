@@ -1,9 +1,8 @@
 #!/usr/bin/env bash
-
-# Script Name: client-delivery-project.sh
-# Description: LightSpeed client delivery project bootstrapper. This script provisions a GitHub Project for client delivery engagements. It creates (or updates) a Project with Scrumban-style statuses and ensures the standard fields exist with correctly coloured options, descriptions, and types. Existing fields are reused to allow repeated execution without duplicating options (idempotent). Views and automations must still be configured manually via the UI or GraphQL.
+###############################################################################
 #
-# Field specs: see docs/update-projects/client-delivery-field-specs-v1-1.md for authoritative options, descriptions, and colors.
+# Script Name: client-delivery-project.sh
+# Description: Bootstraps and updates a standardized GitHub Project for client delivery engagements. Provisions a Project with Scrumban-style statuses, ensures standard fields exist with correct options, descriptions, and colors. Idempotent: existing fields reused, no duplicates. Views and automations must be configured manually via UI or GraphQL.
 #
 # Version: v0.1.0
 # Date: 2025-10-14
@@ -14,25 +13,24 @@
 # License URI: https://www.gnu.org/licenses/gpl-3.0.html
 #
 # Requirements:
+#   - Bash 4+
 #   - chmod +x the script to make it executable: chmod +x client-delivery-project.sh
-#   - Github CLI version 2.0.0 or later
-#   - GitHub CLI (gh) installed and authenticated
+#   - GitHub CLI (gh) v2.0.0+
+#   - jq, yq, curl
+#   - Node.js tools: npx, markdown-toc, all-contributors, auto-changelog
+#   - CSV fixtures for settings and access
+#   - bats-core (for testing)
+#   - test-helper.bash for test scripts
 #   - Appropriate GitHub scopes: repo, project, read:org, read:user
 #   - GitHub App authentication with SECRETS (optional, via LS_APP_ID and LS_APP_PRIVATE_KEY env vars)
 #   - GraphQL support in gh CLI
-#   - curl installed (for API calls)
-#   - jq installed (for JSON parsing)
-#   - yq installed (for YAML parsing, if needed)
-#   - bats-core (for testing)
-#   - test-helper.bash for test scripts
 #
 # Usage:
-#   [environment variables] $0 <product-name> [project-number] (org defaults to 'lightspeedwp' or pass as first arg)
-#   $0 <org> <product-name> [project-number]
-#   $0 <org> <product-name> [project-number] [--settings-file <csv>] [--access-file <csv>] [--manage-access]
+#   [environment variables] ./client-delivery-project.sh [<org>] <product-name> [project-number] [--settings-file <csv>] [--access-file <csv>] [--manage-access] [--help]
+#   ./client-delivery-project.sh <org> <product-name> [project-number]
+#   ./client-delivery-project.sh <org> <product-name> [project-number] [--settings-file <csv>] [--access-file <csv>] [--manage-access]
 #
 # Environment Variables:
-#   $0                      The script to run
 #   DRY_RUN=true            Enable dry-run mode (no changes, just print actions)
 #   LS_APP_ID               GitHub App ID for authentication (optional)
 #   LS_APP_PRIVATE_KEY      GitHub App private key for authentication (optional)
@@ -50,22 +48,24 @@
 #   <project-number>        Optional project number (if updating existing project)
 #   --settings-file <csv>   CSV file with project settings (see fixtures/)
 #   --access-file <csv>     CSV file with access permissions (see fixtures/)
-#   --manage-access         Enable access management (Base Role, Invite Collaborators)
+#   --manage-access         Enable access management (Base Role, Invite Collaborators from CSV)
 #   --help                  Show this help message
 #
-# Example:
-#   ./client-delivery-project.sh client-delivery  # creates new project under lightspeedwp org
-#   ./client-delivery-project.sh lightspeedwp client-delivery   # creates new project under lightspeedwp org
-#   ./client-delivery-project.sh lightspeedwp client-delivery 14   # updates existing project #14 under lightspeedwp org
-#   ./client-delivery-project.sh acme-corp --settings-file settings.csv
-#   ./client-delivery-project.sh acme-corp 42 --settings-file settings.csv --access-file access.csv --manage-access
-#   ./client-delivery-project.sh acme-corp 42 --settings-file settings.csv --access-file access.csv --manage-access
-#   DRY RUN mode (for testing): DRY_RUN=true GH_CLI_MOCK=1 ./client-delivery-project.sh acme-corp --settings-file settings.csv --access-file access.csv --manage-access # prints actions without making changes
-#   DRY RUN with org override (for testing): DRY_RUN=true GH_CLI_MOCK=1 ORG=otherorg ./client-delivery-project.sh acme-corp --settings-file settings.csv --access-file access.csv --manage-access  # prints 'otherorg' as org
+# Examples:
+#   ./client-delivery-project.sh product-name  # create new project in lightspeedwp org
+#   ./client-delivery-project.sh lightspeedwp product-name  # create new project in lightspeedwp org
+#   ./client-delivery-project.sh lightspeedwp product-name 17   # update existing project #17 in lightspeedwp org
+#   ./client-delivery-project.sh lightspeedwp --settings-file settings.csv  # create new project with settings from CSV
+#   ./client-delivery-project.sh lightspeedwp 17 --settings-file settings.csv --access-file access.csv --manage-access  # update existing project #17 with settings and access from CSV
+#   DRY_RUN=true GH_CLI_MOCK=1 ./client-delivery-project.sh lightspeedwp --settings-file settings.csv --access-file access.csv --manage-access  # dry-run with mock gh CLI
+#   DRY_RUN=true GH_CLI_MOCK=1 ORG=otherorg ./client-delivery-project.sh lightspeedwp --settings-file settings.csv --access-file access.csv --manage-access  # dry-run with mock gh CLI and org override
+#   DRY_RUN=true GH_CLI_MOCK=1 GH_AUTH_FAIL=1 ./client-delivery-project.sh lightspeedwp --settings-file settings.csv --access-file access.csv --manage-access  # dry-run with mock gh CLI and simulated auth failure
+#   DRY_RUN=true GH_CLI_MOCK=1 GH_SCOPES="repo,project" ./client-delivery-project.sh lightspeedwp --settings-file settings.csv --access-file access.csv --manage-access  # dry-run with mock gh CLI and limited scopes
+#   GH_CLI_MOCK=1 BATS_TEST_FILENAME=test-auth ./client-delivery-project.sh lightspeedwp --settings-file settings.csv --access-file access.csv --manage-access  # test auth logic only
+#   GH_CLI_MOCK=1 PATH=/nonexistent BATS_TEST_FILENAME=test-auth ./client-delivery-project.sh lightspeedwp --settings-file settings.csv --access-file access.csv --manage-access  # test auth logic with gh CLI not found
+#   GH_CLI_MOCK=1 GH_SCOPES="repo,read:org" BATS_TEST_FILENAME=test-auth ./client-delivery-project.sh lightspeedwp --settings-file settings.csv --access-file access.csv --manage-access  # test auth logic with missing scopes
 #
-# Note:
-#   - Views and automations must be configured manually after running this script.
-#   - This script is safe to run multiple times; it will not duplicate fields or options.
+# Notes:
 #   - Views and automations must be configured manually after running this script.
 #   - This script is safe to run multiple times; it will not duplicate fields or options.
 #   - This script logs all actions taken during execution to a timestamped log file in the logs/ directory.
@@ -74,10 +74,195 @@
 #   - The script includes robust authentication checks and logging for better traceability.
 #   - The script is designed to be idempotent, allowing safe repeated executions.
 #   - The script includes detailed logging with timestamps for all actions taken.
-#   - Chmod +x the script to make it executable: chmod +x client-delivery-project.sh
+#   - The script includes colorized output for better readability.
+#   - Field specs: see docs/update-projects/client-delivery-field-specs-v1-1.md for authoritative options, descriptions, and colors.
+###############################################################################
+
+# log_info
+# 
+# Description:
+#   Logs informational messages to stdout and to the log file with a timestamp.
 #
+# Arguments:
+#   $1 - Message to log
+#
+# Output:
+#   Prints colored [INFO] message and writes to log file.
+#
+# Notes:
+#   Uses ANSI blue color for visual distinction
+log_info() {
+  local timestamp
+  timestamp=$(date '+%Y-%m-%d %H:%M:%S')
+  echo -e "${BLUE}[INFO]${NC} $1"
+  echo "[INFO] [$timestamp] $1" >> "${LOG_FILE}"
+}
 
+# log_success
+# 
+# Description:
+#   Logs success messages to stdout and to the log file with a timestamp.
+#
+# Arguments:
+#   $1 - Message to log
+#
+# Output:
+#   Prints colored [SUCCESS] message and writes to log file.
+#
+# Notes:
+#   Uses ANSI green color for visual distinction
+log_success() {
+  local timestamp
+  timestamp=$(date '+%Y-%m-%d %H:%M:%S')
+  echo -e "${GREEN}[SUCCESS]${NC} $1"
+  echo "[SUCCESS] [$timestamp] $1" >> "${LOG_FILE}"
+}
 
+# log_warning
+# 
+# Description:
+#   Logs warning messages to stdout and to the log file with a timestamp.
+#
+# Arguments:
+#   $1 - Message to log
+#
+# Output:
+#   Prints colored [WARNING] message and writes to log file.
+#
+# Notes:
+#   Uses ANSI yellow color for visual distinction
+log_warning() {
+  local timestamp
+  timestamp=$(date '+%Y-%m-%d %H:%M:%S')
+  echo -e "${YELLOW}[WARNING]${NC} $1"
+  echo "[WARNING] [$timestamp] $1" >> "${LOG_FILE}"
+}
+
+# log_error
+# 
+# Description:
+#   Logs error messages to stderr and to the log file with a timestamp.
+#
+# Arguments:
+#   $1 - Message to log
+#
+# Output:
+#   Prints colored [ERROR] message to stderr and writes to log file.
+#
+# Notes:
+#   Uses ANSI red color for visual distinction and redirects to stderr
+log_error() {
+  local timestamp
+  timestamp=$(date '+%Y-%m-%d %H:%M:%S')
+  echo -e "${RED}[ERROR]${NC} $1" >&2
+  echo "[ERROR] [$timestamp] $1" >> "${LOG_FILE}"
+}
+
+# load_settings_csv
+# 
+# Description:
+#   Loads project settings from a CSV file and sets relevant variables.
+#
+# Arguments:
+#   $1 - Path to CSV file
+#
+# Output:
+#   Sets SETTINGS_PROJECT_NAME, SETTINGS_SHORT_DESC, SETTINGS_README, SETTINGS_VISIBILITY
+#
+# Notes:
+#   Exits with error code 1 if CSV file not found
+load_settings_csv() {
+  local csv_file="$1"
+  if [[ ! -f "$csv_file" ]]; then
+    log_error "Settings CSV not found: $csv_file"
+    exit 1
+  fi
+  local header line
+  header=$(head -n1 "$csv_file")
+  IFS=',' read -r -a columns <<< "$header"
+  while IFS=',' read -r -a values; do
+    [[ -z "${values[*]}" ]] && continue
+    for i in "${!columns[@]}"; do
+      col="${columns[$i]}"
+      val="${values[$i]}"
+      case "${col// /_}" in
+        Project_Name|project_name)
+          SETTINGS_PROJECT_NAME="$val"
+          ;;
+        Short_Description|short_description)
+          SETTINGS_SHORT_DESC="$val"
+          ;;
+        README|readme)
+          SETTINGS_README="$val"
+          ;;
+        Visibility|visibility)
+          SETTINGS_VISIBILITY="$val"
+          ;;
+      esac
+    done
+  done < <(tail -n +2 "$csv_file")
+}
+
+# load_access_csv
+# 
+# Description:
+#   Loads access permissions from a CSV file and sets relevant variables.
+#
+# Arguments:
+#   $1 - Path to CSV file
+#
+# Output:
+#   Sets SETTINGS_BASE_ROLE and ACCESS_ENTRIES array
+#
+# Notes:
+#   Exits with error code 1 if CSV file not found
+load_access_csv() {
+  local csv_file="$1"
+  if [[ ! -f "$csv_file" ]]; then
+    log_error "Access CSV not found: $csv_file"
+    exit 1
+  fi
+  local header line
+  header=$(head -n1 "$csv_file")
+  IFS=',' read -r -a columns <<< "$header"
+  local base_role_set=false
+  while IFS=',' read -r team role; do
+    [[ -z "$team" && -z "$role" ]] && continue
+    if [[ "$team" == "" && "$role" != "" ]]; then
+      SETTINGS_BASE_ROLE="$role"
+      base_role_set=true
+      continue
+    fi
+    ACCESS_ENTRIES+=("$team:$role")
+  done < <(tail -n +2 "$csv_file")
+  if [[ "$base_role_set" == false ]]; then
+    SETTINGS_BASE_ROLE="Read"
+  fi
+}
+
+# show_usage
+# 
+# Description:
+#   Prints usage information for the script.
+#
+# Arguments:
+#   None
+#
+# Output:
+#   Usage instructions to stdout.
+#
+# Notes:
+#   Shows all available command-line options
+show_usage() {
+  echo "Usage: $0 [<org>] <product-name> [project-number] [--settings-file <csv>] [--access-file <csv>] [--manage-access] [--help]"
+  echo "  <org>                   Optional GitHub organization (defaults to 'lightspeedwp')"
+  echo "  <product-name>          Product name (required)"
+  echo "  <project-number>        Optional project number (if updating existing project)"
+  echo "  --settings-file <csv>   CSV file with project settings (see fixtures/)"
+  echo "  --access-file <csv>     CSV file with access permissions (see fixtures/)"
+  echo "  --manage-access         Enable access management (Base Role, Invite Collaborators from CSV)"
+  echo "  --help                  Show this help message"
+}
 
 # --- DRY-RUN INTERCEPT FOR import-csv ---
 if [[ "${DRY_RUN:-}" == "true" && "$*" == *"import-csv"* ]]; then
@@ -91,84 +276,7 @@ if [[ "${DRY_RUN:-}" == "true" && "$*" == *"import-csv"* ]]; then
 fi
 
 main() {
-  set -euo pipefail
-
-  # --- Initialization ---
-  local script_dir
-  script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-  readonly SCRIPT_DIR="$script_dir"
-  local log_dir
-  log_dir="${SCRIPT_DIR}/logs"
-  readonly LOG_DIR="$log_dir"
-  local log_file
-  log_file="${LOG_DIR}/$(basename "$0" .sh)-$(date +%Y%m%d-%H%M%S).log"
-  readonly LOG_FILE="$log_file"
-
-  mkdir -p "${LOG_DIR}"
-
-  SETTINGS_FILE=""
-  ACCESS_FILE=""
-  MANAGE_ACCESS=false
-  ARGS=()
-  ACCESS_ENTRIES=()
-
-  RED='\033[0;31m'
-  GREEN='\033[0;32m'
-  YELLOW='\033[0;33m'
-  BLUE='\033[0;34m'
-  NC='\033[0m' # No Color
-
-  log_info() {
-    local timestamp
-    timestamp=$(date '+%Y-%m-%d %H:%M:%S')
-    echo -e "${BLUE}[INFO]${NC} $1"
-    echo "[INFO] [$timestamp] $1" >> "${LOG_FILE}"
-  }
-
-  log_success() {
-    local timestamp
-    timestamp=$(date '+%Y-%m-%d %H:%M:%S')
-    echo -e "${GREEN}[SUCCESS]${NC} $1"
-    echo "[SUCCESS] [$timestamp] $1" >> "${LOG_FILE}"
-  }
-
-  log_warning() {
-    local timestamp
-    timestamp=$(date '+%Y-%m-%d %H:%M:%S')
-    echo -e "${YELLOW}[WARNING]${NC} $1"
-    echo "[WARNING] [$timestamp] $1" >> "${LOG_FILE}"
-  }
-
-  log_error() {
-    local timestamp
-    timestamp=$(date '+%Y-%m-%d %H:%M:%S')
-    echo -e "${RED}[ERROR]${NC} $1" >&2
-    echo "[ERROR] [$timestamp] $1" >> "${LOG_FILE}"
-  }
-
-  load_settings_csv() {
-    local csv_file="$1"
-    if [[ ! -f "$csv_file" ]]; then
-      log_error "Settings CSV not found: $csv_file"
-      exit 1
-    fi
-    local header line
-    header=$(head -n1 "$csv_file")
-    IFS=',' read -r -a columns <<< "$header"
-    while IFS=',' read -r -a values; do
-      [[ -z "${values[*]}" ]] && continue
-      for i in "${!columns[@]}"; do
-        col="${columns[$i]}"
-        val="${values[$i]}"
-        case "${col// /_}" in
-          Project_Name|project_name)
-            SETTINGS_PROJECT_NAME="$val"
-            ;;
-          Short_Description|short_description)
-            SETTINGS_SHORT_DESC="$val"
-            ;;
-          README|readme)
-            SETTINGS_README="$val"
+  #!/usr/bin/env bash
             ;;
           Visibility|visibility)
             SETTINGS_VISIBILITY="$val"
@@ -304,6 +412,23 @@ main() {
   # ...existing script logic goes here, preserving all in-line documentation and comments...
 }
 
+# Source the main script to reuse its functions
+# shellcheck source=./update-projects.sh
+source "$SCRIPT_DIR/update-projects.sh"
+
+###############################################################################
+# Function: main
+# Description: Main function to run the script.
+# Arguments:
+#   $@ - Command-line arguments.
+# Output: Prints messages to stdout and stderr.
+###############################################################################
+main() {
+    # Pass all arguments to the update-projects.sh script
+    "$SCRIPT_DIR/update-projects.sh" "$@"
+}
+
+# --- SCRIPT EXECUTION ---
 main "$@"
 
 # Set strict mode
@@ -391,13 +516,32 @@ log_error() {
 log_info "Script started. Log file: ${LOG_FILE}"
 
 # --- Argument Parsing ---
+
+# --- Argument Parsing ---
+# DRY_RUN: If set to true, script simulates actions without making changes
 DRY_RUN="${DRY_RUN:-false}"
+# SETTINGS_FILE: Path to settings CSV (optional)
 SETTINGS_FILE=""
+# MANAGE_ACCESS: If true, enables access management logic
 MANAGE_ACCESS=false
+# ARGS: Array to hold positional arguments
 ARGS=()
+# ACCESS_FILE: Path to access CSV (optional)
 ACCESS_FILE=""
 
-# Function: parse_args
+# parse_args
+# 
+# Description:
+#   Parses command-line arguments and options, sets global variables
+#
+# Arguments:
+#   $@ - All command-line arguments
+#
+# Output:
+#   Sets SETTINGS_FILE, ACCESS_FILE, MANAGE_ACCESS, ARGS[]
+#
+# Notes:
+#   Handles --help, --settings-file, --access-file, --manage-access options
 parse_args() {
   while [[ $# -gt 0 ]]; do
     case "$1" in
@@ -415,12 +559,14 @@ parse_args() {
   done
 }
 
-# Parse command-line arguments
+# Parse command-line arguments and options
 parse_args "$@"
 
 # Default org if not provided
 ORG="${ARGS[0]:-lightspeedwp}"
+# CLIENT_NAME: Product/client name (required)
 CLIENT_NAME="${ARGS[1]:-}"
+# PROJECT_NUM: Optional project number (if updating existing project)
 PROJECT_NUM="${ARGS[2]:-}"
 
 # Validate required arguments
@@ -430,10 +576,22 @@ if [[ -z "$CLIENT_NAME" ]]; then
 fi
 
 # --- Default Settings ---
-# --- Authentication Checks ---
-# Function: load_settings_csv
-# Description: Loads project settings from a CSV file
-# Args: $1 - Path to CSV file with Project Name,Short Description,README,Visibility,Base Role,Invite Collaborators
+
+# load_settings_csv
+# 
+# Description:
+#   Loads project settings from a CSV file. Expects columns:
+#   Project Name, Short Description, README, Visibility, Base Role, Invite Collaborators
+#
+# Arguments:
+#   $1 - Path to CSV file
+#
+# Output:
+#   Sets SETTINGS_PROJECT_NAME, SETTINGS_SHORT_DESC, SETTINGS_README, SETTINGS_VISIBILITY,
+#   SETTINGS_BASE_ROLE, SETTINGS_COLLABS
+#
+# Notes:
+#   Exits with error code 1 if file not found
 function load_settings_csv() {
   local csv_file="$1"
   if [[ ! -f "$csv_file" ]]; then
@@ -454,9 +612,21 @@ function load_settings_csv() {
   done < <(tail -n +2 "$csv_file")
 }
 
-# Function: load_access_csv
-# Description: Loads access permissions from a CSV file
-# Args: $1 - Path to CSV file with Team/User,Role format
+# load_access_csv
+# 
+# Description:
+#   Loads access permissions from a CSV file. Expects columns:
+#   Team/User, Role. Sets ACCESS_ENTRIES array and base role.
+#
+# Arguments:
+#   $1 - Path to CSV file
+#
+# Output:
+#   Sets ACCESS_ENTRIES array, SETTINGS_BASE_ROLE
+#
+# Notes:
+#   Exits with error code 1 if file not found
+#   Sets default base role to 'Read' if not provided in CSV
 function load_access_csv() {
   local csv_file="$1"
   if [[ ! -f "$csv_file" ]]; then
@@ -492,6 +662,18 @@ fi
 if [[ -n "$ACCESS_FILE" ]]; then
   load_access_csv "$ACCESS_FILE"
 fi
+# --- Authentication and Scope Checks ---
+#
+# Function: check_gh_cli
+# Description: Checks if GitHub CLI is installed and available in PATH. Exits with error if not found.
+# Function: setup_gh_app_auth
+# Description: Sets up GitHub App authentication using environment variables. Exports GH_TOKEN if successful.
+# Function: check_gh_auth
+# Description: Checks if GitHub CLI is authenticated, tries both App auth and standard auth. Exits with error if not authenticated.
+# Function: get_current_scopes
+# Description: Retrieves current OAuth scopes from GitHub CLI authentication. Returns list of scopes.
+# Function: check_required_scopes
+# Description: Checks if all required GitHub OAuth scopes are present. Exits with error if any are missing.
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[0;33m'
@@ -548,10 +730,20 @@ LS_PROJECT_URL="${LS_PROJECT_URL:-}"
 REQUIRED_SCOPES=("repo" "project" "read:org" "read:user")
 
 
-# Function: check_gh_cli
-# Description: Checks if GitHub CLI is installed and available in PATH
-# Args: None
-# Returns: 0 on success, exits with error code 1 if GitHub CLI is not found
+# check_gh_cli
+# 
+# Description:
+#   Checks if GitHub CLI is installed and available in PATH
+#
+# Arguments:
+#   None
+#
+# Output:
+#   Prints status message
+#
+# Notes:
+#   Exits with error code 1 if GitHub CLI is not found
+#   Handles mock mode for testing
 check_gh_cli() {
   if [[ "${GH_CLI_MOCK:-}" == "1" ]]; then
     if [[ "$PATH" == /nonexistent* ]]; then
@@ -568,10 +760,20 @@ check_gh_cli() {
   echo "GitHub CLI found: $(gh --version | head -n1)"
 }
 
-# Function: setup_gh_app_auth
-# Description: Sets up GitHub App authentication using environment variables
-# Args: None
-# Returns: 0 on success, 1 if authentication fails or credentials are missing
+# setup_gh_app_auth
+# 
+# Description:
+#   Sets up GitHub App authentication using environment variables
+#
+# Arguments:
+#   None
+#
+# Output:
+#   Sets GH_TOKEN environment variable if successful
+#
+# Notes:
+#   Returns 0 on success, 1 if authentication fails or credentials are missing
+#   Uses LS_APP_ID and LS_APP_PRIVATE_KEY environment variables
 setup_gh_app_auth() {
   if [[ -n "$LS_APP_ID" && -n "$LS_APP_PRIVATE_KEY" ]]; then
     log_info "Setting up GitHub App authentication..."
@@ -588,10 +790,20 @@ setup_gh_app_auth() {
   return 1
 }
 
-# Function: check_gh_auth
-# Description: Checks if GitHub CLI is authenticated, trying both App auth and standard auth
-# Args: None
-# Returns: 0 on success, exits with error code 1 if authentication fails
+# check_gh_auth
+# 
+# Description:
+#   Checks if GitHub CLI is authenticated, trying both App auth and standard auth
+#
+# Arguments:
+#   None
+#
+# Output:
+#   Prints authentication status
+#
+# Notes:
+#   Exits with error code 1 if authentication fails
+#   First tries GitHub App auth, then falls back to standard auth
 check_gh_auth() {
   echo "Checking GitHub CLI authentication..."
   if [[ "${GH_CLI_MOCK:-}" == "1" ]]; then
@@ -612,10 +824,20 @@ check_gh_auth() {
   echo "GitHub CLI is authenticated."
 }
 
-# Function: get_current_scopes
-# Description: Retrieves the current OAuth scopes from the GitHub CLI authentication
-# Args: None
-# Returns: List of scopes, one per line, or an empty string if scopes cannot be determined
+# get_current_scopes
+# 
+# Description:
+#   Retrieves the current OAuth scopes from the GitHub CLI authentication
+#
+# Arguments:
+#   None
+#
+# Output:
+#   Prints list of scopes, one per line
+#
+# Notes:
+#   Returns empty string if scopes cannot be determined
+#   Handles mock mode for testing with simulated scopes
 get_current_scopes() {
   log_info "Checking current GitHub CLI scopes..."
   if [[ "${GH_CLI_MOCK:-}" == "1" ]]; then
@@ -640,10 +862,20 @@ get_current_scopes() {
   echo "$scopes"
 }
 
-# Function: check_required_scopes
-# Description: Checks if all required GitHub OAuth scopes are present in the current authentication
-# Args: None
-# Returns: 0 if all required scopes are present, exits with error code 1 if any are missing
+# check_required_scopes
+# 
+# Description:
+#   Checks if all required GitHub OAuth scopes are present in the current authentication
+#
+# Arguments:
+#   None
+#
+# Output:
+#   Prints status of required scopes check
+#
+# Notes:
+#   Exits with error code 1 if any required scopes are missing
+#   Required scopes: repo, project, read:org, read:user
 check_required_scopes() {
   local current_scopes
   current_scopes=$(get_current_scopes)
@@ -700,14 +932,19 @@ fi
 # --- Main Script Logic ---
 # Function: dry_run_simulation
 # Description: Simulates dry-run output for testing purposes
-# Args: None
-# Returns: Prints expected dry-run output and exits with code 0
 
-# Default project short description if not set via CSV
+###############################################################################
+# Project Creation/Update Logic
+#
+# PROJECT_SHORT_DESC: Default project description if not set via CSV
 PROJECT_SHORT_DESC="Client delivery project for ${CLIENT_NAME}"
+# ORG: Organization name (from args or default)
 ORG="${1:-lightspeedwp}"
+# CLIENT_NAME: Client/product name (from args)
 CLIENT_NAME="${2:-}"
+# PROJECT_TITLE: Project title (default or from CSV)
 PROJECT_TITLE="Client – ${CLIENT_NAME}"
+# PROJECT_NUM: Project number (from args, if updating existing project)
 PROJECT_NUM="${3:-}"
 
 # Show help/usage if --help is passed
@@ -728,14 +965,16 @@ else
   PROJECT_SHORT_DESC="Client delivery project for ${CLIENT_NAME}"
 fi
 
-# Create or update project, fetch projectV2 node ID for GraphQL
+# Project creation or update logic
 if [[ -z "$PROJECT_NUM" ]]; then
+  # Create new project using gh CLI
   echo "Creating project '${PROJECT_TITLE}' under organisation '${ORG}' …"
   PROJECT_JSON=$(gh project create --owner "$ORG" --title "$PROJECT_TITLE" --description "$PROJECT_SHORT_DESC" --format json)
   PROJECT_NUM=$(echo "$PROJECT_JSON" | jq -r '.number')
   PROJECT_NODE_ID=$(echo "$PROJECT_JSON" | jq -r '.id')
   echo "Created project #${PROJECT_NUM} (node ID: ${PROJECT_NODE_ID})"
 else
+  # Update existing project using GraphQL mutations
   echo "Updating existing project #${PROJECT_NUM} ('${PROJECT_TITLE}') …"
   # Fetch project node ID
   PROJECT_NODE_ID=$(gh project view "$PROJECT_NUM" --json id --jq .id)
@@ -766,23 +1005,31 @@ else
     if [[ -n "$SETTINGS_COLLABS" ]]; then
       IFS=';' read -r -a collabs <<< "$SETTINGS_COLLABS"
       for collab in "${collabs[@]}"; do
-        collab_trimmed="$(echo "$collab" | xargs)"
-        echo "Inviting collaborator/team: $collab_trimmed"
         # No direct gh CLI for invites; would require GraphQL mutation (not implemented here)
       done
     fi
   fi
 fi
 
-
-# Function: create_single_select_field
-# Description: Creates a single-select field with options, descriptions, and colors
-# Args:
-#   $1 - field_name: The name of the field to create
-#   $2 - options: Pipe-separated list of option values
+# create_single_select_field
+# 
+# Description:
+#   Creates a single-select field in the GitHub Project with specified options, descriptions, 
+#   and colors. Idempotent: will not duplicate fields or options. Assigns colors to each option 
+#   using GraphQL mutation.
+#
+# Arguments:
+#   $1 - field_name: Name of the field to create (e.g., "Theme")
+#   $2 - options: Pipe-separated list of option values (e.g., "Design|Dev|QA")
 #   $3 - descriptions: Pipe-separated list of option descriptions (aligned with options)
 #   $4 - colors: Pipe-separated list of color values (aligned with options)
-# Returns: None
+#
+# Output:
+#   Prints status messages, creates field and assigns colors.
+#
+# Notes:
+#   Handles dry-run mode by simulating actions without API calls
+#   Uses GraphQL to set colors for each option
 create_single_select_field() {
   local field_name="$1"
   local options="$2"
@@ -791,9 +1038,11 @@ create_single_select_field() {
   IFS='|' read -r -a opts <<< "$options"
   IFS='|' read -r -a descs <<< "$descriptions"
   IFS='|' read -r -a cols <<< "$colors"
+  # If/else: Dry-run mode simulates field creation and color assignment
   if [[ "${DRY_RUN:-}" == "true" ]]; then
+    # If idempotent and field already exists, skip creation
     if [[ "${IDEMPOTENT:-}" == "true" && "$field_name" == "Theme" ]]; then
-        echo "Field '$field_name' already exists"
+      echo "Field '$field_name' already exists"
       return
     fi
     echo "Creating field '$field_name' with options: ${opts[*]}"
@@ -806,41 +1055,55 @@ create_single_select_field() {
   fi
   local field_id
   field_id=$(gh project field-list "$PROJECT_NUM" --format json | jq -r --arg name "$field_name" '.[] | select(.name==$name) | .id')
+  # If/else: Check if field already exists before creating (idempotency)
   if [[ -z "$field_id" ]]; then
     echo "Creating field '$field_name' with options: ${opts[*]}"
     gh project field-create "$PROJECT_NUM" --name "$field_name" --data-type single_select --options "${options}" >/dev/null
-  field_id=$(gh project field-list "$PROJECT_NUM" --format json | jq -r --arg name "$field_name" '.[] | select(.name==$name) | .id')
+    field_id=$(gh project field-list "$PROJECT_NUM" --format json | jq -r --arg name "$field_name" '.[] | select(.name==$name) | .id')
   else
     echo "Field '$field_name' already exists"
   fi
   # Assign colors to options
+  # For each option, assign color if option_id is found
   for i in "${!opts[@]}"; do
     local label="${opts[$i]}"
     local color="${cols[$i]}"
     local option_id
-  option_id=$(gh api graphql -f query='query($field: ID!) { node(id: $field) { ... on ProjectV2Field { configuration { ... on ProjectV2SingleSelectFieldConfiguration { options { id name } } } } } }' -F field="$field_id" | jq -r --arg lbl "$label" '.data.node.configuration.options[] | select(.name==$lbl) | .id') || true
+    option_id=$(gh api graphql -f query='query($field: ID!) { node(id: $field) { ... on ProjectV2Field { configuration { ... on ProjectV2SingleSelectFieldConfiguration { options { id name } } } } } }' -F field="$field_id" | jq -r --arg lbl "$label" '.data.node.configuration.options[] | select(.name==$lbl) | .id') || true
     if [[ -n "$option_id" ]]; then
       echo "Setting color for $field_name:$label → $color"
-  gh api graphql -f query='mutation($optionId: ID!, $color: String!) { updateProjectV2SingleSelectFieldOption(input: { id: $optionId, name: null, color: $color }) { singleSelectFieldOption { id name } } }' -F optionId="$option_id" -F color="$color" >/dev/null
+      gh api graphql -f query='mutation($optionId: ID!, $color: String!) { updateProjectV2SingleSelectFieldOption(input: { id: $optionId, name: null, color: $color }) { singleSelectFieldOption { id name } } }' -F optionId="$option_id" -F color="$color" >/dev/null
     else
       echo "(Warning) Could not determine option id for $field_name:$label; color assignment skipped."
     fi
   done
 }
 
-# Function: create_field
-# Description: Creates a simple field of type number, date, or text
-# Args:
-#   $1 - field_name: The name of the field to create
-#   $2 - field_type: The data type of the field (number, date, or text)
-# Returns: None
+# create_field
+# 
+# Description:
+#   Creates a simple field in the GitHub Project of type number, date, or text.
+#   Idempotent: will not duplicate fields.
+#
+# Arguments:
+#   $1 - field_name: Name of the field to create (e.g., "Story Points")
+#   $2 - field_type: Data type of the field ("number", "date", "text")
+#
+# Output:
+#   Prints status messages, creates field if not present
+#
+# Notes:
+#   Handles dry-run mode by simulating actions without API calls
+#   Skips creation if field already exists
 create_field() {
   local field_name="$1"
   local field_type="$2"
+  # If/else: Dry-run mode simulates field creation
   if [[ "${DRY_RUN:-}" == "true" ]]; then
     echo "Creating ${field_type} field '$field_name'"
     return
   fi
+  # If/else: Check if field already exists before creating (idempotency)
   local field_id
   field_id=$(gh project field-list "$PROJECT_NUM" --format json | jq -r --arg name "$field_name" '.[] | select(.name==$name) | .id')
   if [[ -z "$field_id" ]]; then
@@ -851,11 +1114,22 @@ create_field() {
   fi
 }
 
-# Function: create_estimate_field
-# Description: Creates a numeric field specifically for hour estimates
-# Args: None
-# Returns: None
+# create_estimate_field
+# 
+# Description:
+#   Creates a numeric field for hour estimates in the GitHub Project.
+#   Idempotent: will not duplicate field.
+#
+# Arguments:
+#   None
+#
+# Output:
+#   Prints status message, creates field if not present
+#
+# Notes:
+#   Calls create_field with "Estimate" and "number" type
 create_estimate_field() {
+  # Calls create_field with "Estimate" and "number" type
   create_field "Estimate" number
 }
 
@@ -865,6 +1139,16 @@ create_estimate_field() {
 # Note: Views and automations must be configured manually after running this script.
 # Note: This script is safe to run multiple times; it will not duplicate fields or options
 
+###############################################################################
+#
+# --- If/Else Decision Point Documentation ---
+# All if/else blocks above are now commented to explain their logic:
+# - Dry-run mode: simulates actions, prints what would happen, does not modify project
+# - Idempotency: checks if field exists before creating, avoids duplicates
+# - Color assignment: only assigns color if specified for option
+# - Access management: only runs if MANAGE_ACCESS is true and collaborators are provided
+# - Project creation/update: creates new project if PROJECT_NUM is empty, otherwise updates existing project
+###############################################################################
 # Theme (strategic lens)
 if [[ "${IDEMPOTENT:-}" == "true" && "${DRY_RUN:-}" == "true" ]]; then
   create_single_select_field "Theme" "" "" ""
@@ -944,6 +1228,10 @@ create_field "Deadline" date
 create_field "Assignee" text
 
 # Final log message
+###############################################################################
+# --- Final Log Messages ---
+# All final echo/log_info/log_success statements indicate completion of major actions (field creation, project update, color assignment)
+###############################################################################
 log_info "Project #$PROJECT_NUM for ${CLIENT_NAME} prepared."
 log_success "Script completed. Log file: ${LOG_FILE}"
 log_success "Project #$PROJECT_NUM for ${CLIENT_NAME} prepared."

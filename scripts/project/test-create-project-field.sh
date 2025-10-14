@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+#!/usr/bin/env bash
+###############################################################################
+#
 # Script Name: test-create-project-field.sh
 # Description: Test script to validate project field command helpers.
 #
@@ -21,6 +24,9 @@
 #
 # Usage: ./test-create-project-field.sh [options]
 #
+# Environment Variables:
+#   None
+#
 # Options:
 #   --help                  Show this help message
 #   --dry-run               Run in dry-run mode to print commands without executing
@@ -29,7 +35,7 @@
 #   ./test-create-project-field.sh --dry-run
 #   ./test-create-project-field.sh --help
 #
-# Note:
+# Notes:
 #   - This script is intended to be run in a test environment and does not perform actual API calls.
 #   - It is primarily used in Bats tests to validate helper logic and output.
 #   - Ensure the script is executable: chmod +x test-create-project-field.sh
@@ -38,6 +44,8 @@
 #   - This script tests the project field command building functionality from update-projects.sh.
 #   - It sources the update-projects.sh script to access helper functions without executing the main logic, then tests that the field creation command is properly constructed.
 #   - It also runs the script in dry-run mode to show the printed commands for inspection.
+#
+###############################################################################
 
 # Set strict mode
 set -euo pipefail
@@ -84,3 +92,30 @@ echo "\nRunning script in dry-run to show printed commands:"
 DRY_RUN=true SKIP_MAIN=1 "$SCRIPT" --dry-run --project-owner testorg --project-number 123
 
 echo "\nTest complete."
+
+###############################################################################
+# Function: main
+# Description: Main function to run tests.
+# Arguments:
+#   $@ - Command-line arguments.
+# Output: Prints test results to stdout.
+###############################################################################
+main() {
+    # Test the build_project_field_cmd function
+    test_build_project_field_cmd
+}
+
+test_build_project_field_cmd() {
+    local field_name="Priority"
+    local field_type="single_select"
+    local options="High,Medium,Low"
+
+    local result=$(build_project_field_cmd "$field_name" "$field_type" --options "$options")
+
+    echo "Command built: $result"
+    if [[ "$result" =~ "gh" ]]; then
+        echo "Test passed: Command contains 'gh'"
+    else
+        echo "Test failed: Command does not contain 'gh'"
+    fi
+}

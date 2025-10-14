@@ -1,5 +1,5 @@
 #!/bin/bash
-
+###############################################################################
 #
 # Script Name: validate-release.sh
 # Description: Validates that the repository is ready for release
@@ -22,6 +22,9 @@
 #
 # Usage: ./update-release.sh [--version VERSION]
 #
+# Environment Variables:
+#   None
+#
 # Options:
 #   --version VERSION      Expected version (default: 0.1.0)
 #   --verbose, -v          Enable verbose output
@@ -31,10 +34,11 @@
 #   ./update-release.sh --version 0.2.0
 #   ./update-release.sh --verbose
 #
-# Note:
+# Notes:
 #   - This script is intended to be run from the root of the repository.
 #   - It checks for version consistency, workflow validity, test coverage, and documentation completeness.
 #
+###############################################################################
 
 set -euo pipefail
 
@@ -46,6 +50,13 @@ EXPECTED_VERSION="0.1.0"
 VERBOSE=false
 EXIT_CODE=0
 
+#############################################################################
+# Function: show_help
+# Description: Displays the help message for the script.
+# Arguments:
+#   None
+# Output: Prints the help message to stdout.
+###############################################################################
 show_help() {
     cat << EOF
 Validate Release Readiness
@@ -71,23 +82,58 @@ Examples:
 EOF
 }
 
+#############################################################################
+# Function: log_info
+# Description: Logs an informational message.
+# Arguments:
+#   $1 - The message to log.
+# Output: Prints the message to stdout.
+###############################################################################
 log_info() {
     echo "ℹ️  $1"
 }
 
+#############################################################################
+# Function: log_success
+# Description: Logs a success message.
+# Arguments:
+#   $1 - The message to log.
+# Output: Prints the message to stdout.
+###############################################################################
 log_success() {
     echo "✅ $1"
 }
 
+#############################################################################
+# Function: log_warning
+# Description: Logs a warning message.
+# Arguments:
+#   $1 - The message to log.
+# Output: Prints the message to stdout.
+###############################################################################
 log_warning() {
     echo "⚠️  $1"
 }
 
+#############################################################################
+# Function: log_error
+# Description: Logs an error message and sets the exit code.
+# Arguments:
+#   $1 - The message to log.
+# Output: Prints the message to stderr.
+###############################################################################
 log_error() {
     echo "❌ $1"
     EXIT_CODE=1
 }
 
+#############################################################################
+# Function: check_version_files
+# Description: Checks for version consistency in various project files.
+# Arguments:
+#   None
+# Output: Logs success or error messages regarding version consistency.
+###############################################################################
 check_version_files() {
     log_info "Checking version consistency..."
 
@@ -122,6 +168,13 @@ check_version_files() {
     fi
 }
 
+#############################################################################
+# Function: check_workflows
+# Description: Validates the GitHub Actions workflow files.
+# Arguments:
+#   None
+# Output: Logs success or error messages regarding workflow validity.
+###############################################################################
 check_workflows() {
     log_info "Validating GitHub Actions workflows..."
 
@@ -157,6 +210,13 @@ check_workflows() {
     fi
 }
 
+#############################################################################
+# Function: check_tests
+# Description: Checks for test coverage and runs tests.
+# Arguments:
+#   None
+# Output: Logs success, warning, or error messages regarding tests.
+###############################################################################
 check_tests() {
     log_info "Checking test coverage and status..."
 
@@ -193,6 +253,13 @@ check_tests() {
     fi
 }
 
+#############################################################################
+# Function: check_documentation
+# Description: Checks for the presence and format of documentation files.
+# Arguments:
+#   None
+# Output: Logs success, warning, or error messages regarding documentation.
+###############################################################################
 check_documentation() {
     log_info "Checking documentation completeness..."
 
@@ -215,6 +282,13 @@ check_documentation() {
     fi
 }
 
+#############################################################################
+# Function: main
+# Description: The main function of the script. Parses arguments and calls other functions to perform validation.
+# Arguments:
+#   $@ - The command-line arguments.
+# Output: Prints validation results and exits with an appropriate code.
+###############################################################################
 main() {
     while [[ $# -gt 0 ]]; do
         case $1 in

@@ -9,8 +9,8 @@
 #
 load '../test-helper.bash'
 
-SCRIPT_PATH="${BATS_TEST_DIRNAME}/../scripts/utility/standardize-logging.sh"
-TEST_SCRIPT_PATH="${BATS_TEST_DIRNAME}/../../scripts/scripts/utility/run-tests.sh"
+SCRIPT_PATH="${BATS_TEST_DIRNAME}/../../scripts/utility/standardize-logging.sh"
+TEST_SCRIPT_PATH="${BATS_TEST_DIRNAME}/fixtures/test-script-for-logging.sh"
 
 setup() {
     # Create test directory

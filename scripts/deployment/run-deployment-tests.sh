@@ -1,7 +1,10 @@
 #!/bin/bash
 
-# Test runner for scripts/deployment scripts
-# Runs all deployment Bats tests in scripts/tests/deployment for each reciprocal script. Supports listing, running specific tests, dry-run mode, verbose/quiet output, and summary reporting.
+#!/bin/bash
+###############################################################################
+#
+# Script Name: run-deployment-tests.sh
+# Description: Test runner for scripts/deployment scripts. Runs all deployment Bats tests in scripts/tests/deployment for each reciprocal script. Supports listing, running specific tests, dry-run mode, verbose/quiet output, and summary reporting.
 #
 # Version: v0.1.0
 # Date: 2025-10-14
@@ -18,13 +21,9 @@
 #   - yq (optional, for YAML output)
 #   - grep
 #   - curl (optional, for downloading dependencies)
+#
 # Usage: ./run-deployment-tests.sh [options]
 #
-# Functionality:
-#   - Runs all deployment Bats tests in scripts/tests/deployment
-#   - Lists available deployment test files with --list
-#   - Runs a specific deployment test file with --test <test_name>
-#   - Supports --dry-run, --verbose, --quiet, and summary reporting
 # Options:
 #   --help                  Show this help message
 #   --test <test_name>      Run a specific test file (without .bats extension)
@@ -61,11 +60,12 @@
 #   --force                 Force execution even if certain checks fail
 #   --skip                  Skip certain tests or checks
 #   --only                  Run only specified tests or checks
-#   --config <file>        Specify a configuration file
-#   --env <key=value>      Set environment variables for the test run
-#   --list-env             List all environment variables set for the test run
-#   --clear-env            Clear all environment variables set for the test run
-#   --help-all             Show help for all options
+#   --config <file>         Specify a configuration file
+#   --env <key=value>       Set environment variables for the test run
+#   --list-env              List all environment variables set for the test run
+#   --clear-env             Clear all environment variables set for the test run
+#   --help-all              Show help for all options
+#
 # Examples:
 #   ./run-deployment-tests.sh --test example-deployment
 #   ./run-deployment-tests.sh --list
@@ -84,19 +84,20 @@
 #   ./run-deployment-tests.sh --check-deps
 #   ./run-deployment-tests.sh --dry-run
 #
-# Note:
-# - This script runs all Bats tests located in the scripts/tests/deployment directory.
-# - Each test file should correspond to a script in the scripts/deployment directory.
-# - Ensure all scripts under test are executable (chmod +x script.sh).
-# - Requires bats-core to be installed and available in PATH.
+# Notes:
+#   - This script runs all Bats tests located in the scripts/tests/deployment directory.
+#   - Each test file should correspond to a script in the scripts/deployment directory.
+#   - Ensure all scripts under test are executable (chmod +x script.sh).
+#   - Requires bats-core to be installed and available in PATH.
+#
+###############################################################################
 
 # Set strict mode
 set -euo pipefail
 
 # Determine script and repository root directories
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-# Get the repository root directory
-REPO_ROOT="$(cd "$SCRIPT_DIR/../../.." && pwd)"
+REPO_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
 
 # Colors for output
 RED='\033[0;31m'
@@ -105,16 +106,37 @@ YELLOW='\033[0;33m'
 BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
+#############################################################################
+# Function: log_info
+# Description: Logs an informational message.
+# Arguments:
+#   $1 - The message to log.
+# Output: Prints the message to stdout.
+###############################################################################
 # Logging functions
 log_info() {
     echo -e "${BLUE}[INFO]${NC} $1"
 }
 
+#############################################################################
+# Function: log_success
+# Description: Logs a success message.
+# Arguments:
+#   $1 - The message to log.
+# Output: Prints the message to stdout.
+###############################################################################
 # Log success messages
 log_success() {
     echo -e "${GREEN}[SUCCESS]${NC} $1"
 }
 
+#############################################################################
+# Function: log_error
+# Description: Logs an error message.
+# Arguments:
+#   $1 - The message to log.
+# Output: Prints the message to stderr.
+###############################################################################
 # Log error messages
 log_error() {
     echo -e "${RED}[ERROR]${NC} $1" >&2
@@ -130,7 +152,7 @@ fi
 
 log_info "Running all deployment Bats tests..."
 
-TEST_DIR="$REPO_ROOT/tests/deployment"
+TEST_DIR="$REPO_ROOT/scripts/tests/deployment"
 FAILED=0
 
 for test_file in "$TEST_DIR"/*.bats; do

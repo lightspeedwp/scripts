@@ -1,8 +1,9 @@
 
 #!/bin/bash
-
+###############################################################################
+#
 # Script Name: prune-labels.sh
-# Description: Conservative, REST-only label sync and optional prune for GitHub repositories.
+# Description: Conservative, REST-only label sync and optional prune for GitHub repositories. Synchronizes repository labels with a canonical source, maps non-standard labels to standard formats, and optionally removes non-standard labels after migration.
 #
 # Version: v0.1.0
 # Date: 2025-10-14
@@ -34,10 +35,9 @@
 #
 # Examples:
 #   DRY_RUN=true ./prune-labels.sh
-#   DRY_RUN=false STRICT_PRUNE=true PROTECT_REGEX="^lang:|^
-#   area:" ./prune-labels.sh
-#   ONLY="repo1 repo2" ./prune-labels.sh  # Only process
-#  ./prune-labels.sh --help
+#   DRY_RUN=false STRICT_PRUNE=true PROTECT_REGEX="^lang:|^area:" ./prune-labels.sh
+#   ONLY="repo1 repo2" ./prune-labels.sh  # Only process specific repos
+#   ./prune-labels.sh --help
 #
 # Notes:
 # - This script is intended to be executed directly.
@@ -46,6 +46,10 @@
 # - To actually apply changes, set DRY_RUN=false and STRICT_PRUNE=true.
 # - Labels that match the PROTECT_REGEX will not be deleted.
 # - The script uses a mapping to migrate common non-standard labels to standardized versions before deletion.
+# - The script produces a detailed log of all actions taken for audit purposes.
+# - Error handling is implemented to prevent partial label migrations.
+#
+###############################################################################
 
 # Fail on errors
 set -euo pipefail
@@ -84,7 +88,16 @@ declare -A LABEL_MAPPINGS=(
 tmpdir="$(mktemp -d)"
 trap 'rm -rf "$tmpdir"' EXIT
 
-# Function to URL-encode strings
+###############################################################################
+# Function: uri
+# Description: URL-encode strings for use in API requests.
+#
+# Arguments:
+#   $1 - The string to encode.
+#
+# Output:
+#   URL-encoded string to stdout.
+###############################################################################
 uri() { jq -rn --arg s "$1" '$s|@uri'; }
 
 # Check dependencies

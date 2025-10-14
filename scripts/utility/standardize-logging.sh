@@ -1,4 +1,5 @@
 #!/bin/bash
+###############################################################################
 #
 # Script Name: standardize-logging.sh
 # Description: Adds or updates standardized logging to script files
@@ -17,6 +18,9 @@
 #
 # Usage: ./standardize-logging.sh [--dry-run] [--verbose] [script_file]
 #
+# Environment Variables:
+#   None
+#
 # Options:
 #   --dry-run      Preview changes without applying them
 #   --verbose      Show detailed debug information
@@ -29,8 +33,10 @@
 #   ./standardize-logging.sh --dry-run ../project/update-projects.sh    # Preview changes to a specific script
 #   ./standardize-logging.sh --verbose      # Show detailed debug information
 #
-# Note:
+# Notes:
 # - This script modifies other scripts to include standardized logging.
+#
+###############################################################################
 
 # Strict mode
 set -euo pipefail
@@ -61,6 +67,13 @@ readonly NC='\033[0m' # No Color
 # Create log directory if it doesn't exist
 mkdir -p "${LOG_DIR}"
 
+#############################################################################
+# Function: log_info
+# Description: Logs an informational message.
+# Arguments:
+#   $* - The message to log.
+# Output: Prints the message to stderr and logs to file.
+###############################################################################
 # Logging functions
 function log_info() {
     local timestamp
@@ -69,6 +82,13 @@ function log_info() {
     echo "[INFO] ${timestamp}: $*" >> "${LOG_FILE}"
 }
 
+#############################################################################
+# Function: log_warn
+# Description: Logs a warning message.
+# Arguments:
+#   $* - The message to log.
+# Output: Prints the message to stderr and logs to file.
+###############################################################################
 # Logging function
 function log_warn() {
     local timestamp
@@ -77,6 +97,13 @@ function log_warn() {
     echo "[WARNING] ${timestamp}: $*" >> "${LOG_FILE}"
 }
 
+#############################################################################
+# Function: log_error
+# Description: Logs an error message.
+# Arguments:
+#   $* - The message to log.
+# Output: Prints the message to stderr and logs to file.
+###############################################################################
 # Logging function
 function log_error() {
     local timestamp
@@ -85,6 +112,13 @@ function log_error() {
     echo "[ERROR] ${timestamp}: $*" >> "${LOG_FILE}"
 }
 
+#############################################################################
+# Function: log_debug
+# Description: Logs a debug message if verbose mode is enabled.
+# Arguments:
+#   $* - The message to log.
+# Output: Prints the message to stderr and logs to file.
+###############################################################################
 # Logging function
 function log_debug() {
     if [[ "${VERBOSE}" == "true" ]]; then
@@ -95,6 +129,13 @@ function log_debug() {
     fi
 }
 
+#############################################################################
+# Function: show_help
+# Description: Displays the help message for the script.
+# Arguments:
+#   None
+# Output: Prints the help message to stdout.
+###############################################################################
 # Show help message
 function show_help() {
     cat << EOF
@@ -114,6 +155,13 @@ Example:
 EOF
 }
 
+#############################################################################
+# Function: parse_arguments
+# Description: Parses command-line arguments.
+# Arguments:
+#   $@ - The command-line arguments.
+# Output: Sets global variables based on arguments.
+###############################################################################
 # Parse command-line arguments
 function parse_arguments() {
     while [[ $# -gt 0 ]]; do
@@ -143,6 +191,13 @@ function parse_arguments() {
     done
 }
 
+#############################################################################
+# Function: generate_logging_code
+# Description: Generates the standard logging code block to be inserted into other scripts.
+# Arguments:
+#   None
+# Output: Prints the logging code block to stdout.
+###############################################################################
 # Generates the logging code to be inserted
 function generate_logging_code() {
     cat << 'EOF'
@@ -204,6 +259,13 @@ function log_debug() {
 EOF
 }
 
+#############################################################################
+# Function: update_script_file
+# Description: Updates a given script file with standardized logging code.
+# Arguments:
+#   $1 - The path to the script file.
+# Output: Modifies the script file in place.
+###############################################################################
 # Update a single script file
 function update_script_file() {
     local script_file="$1"
@@ -274,6 +336,13 @@ function update_script_file() {
     log_info "Updated ${script_file} with standardized logging"
 }
 
+#############################################################################
+# Function: scan_directory
+# Description: Scans a directory for shell scripts and updates them.
+# Arguments:
+#   $1 - The path to the directory.
+# Output: Calls update_script_file for each script found.
+###############################################################################
 function scan_directory() {
     local dir="$1"
 
@@ -286,6 +355,13 @@ function scan_directory() {
     done
 }
 
+#############################################################################
+# Function: main
+# Description: The main function of the script.
+# Arguments:
+#   $@ - The command-line arguments.
+# Output: Orchestrates the script's execution.
+###############################################################################
 # Main function
 function main() {
     parse_arguments "$@"

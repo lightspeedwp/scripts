@@ -80,7 +80,7 @@
 #   ./run-utility-tests.sh --retry 2 --coverage  # Retry failed tests and generate coverage report
 #   ./run-utility-tests.sh --junit results.xml --html results.html  # Output results in multiple formats
 #
-# Note:
+# Notes:
 # - This script runs all Bats tests located in the tests/utility directory.
 # - Each test file should correspond to a script in the scripts/utility directory.
 # - Ensure all scripts under test are executable (chmod +x script.sh).
@@ -92,7 +92,7 @@ set -euo pipefail
 
 # Directories and paths setup - adjust as necessary
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-REPO_ROOT="$(cd "$SCRIPT_DIR/../../.." && pwd)"
+REPO_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
 
 # Colors for output
 RED='\033[0;31m'
@@ -101,16 +101,37 @@ YELLOW='\033[0;33m'
 BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
+#############################################################################
+# Function: log_info
+# Description: Logs an informational message.
+# Arguments:
+#   $1 - The message to log.
+# Output: Prints the message to stdout.
+###############################################################################
 # Logging function
 log_info() {
     echo -e "${BLUE}[INFO]${NC} $1"
 }
 
+#############################################################################
+# Function: log_success
+# Description: Logs a success message.
+# Arguments:
+#   $1 - The message to log.
+# Output: Prints the message to stdout.
+###############################################################################
 # Logging function
 log_success() {
     echo -e "${GREEN}[SUCCESS]${NC} $1"
 }
 
+#############################################################################
+# Function: log_error
+# Description: Logs an error message.
+# Arguments:
+#   $1 - The message to log.
+# Output: Prints the message to stderr.
+###############################################################################
 # Logging function
 log_error() {
     echo -e "${RED}[ERROR]${NC} $1" >&2
@@ -123,6 +144,13 @@ QUIET=false
 LIST=false
 TEST_NAME=""
 
+#############################################################################
+# Function: show_help
+# Description: Displays the help message for the script.
+# Arguments:
+#   None
+# Output: Prints the help message to stdout.
+###############################################################################
 # Show help message
 show_help() {
     cat << EOF
@@ -191,6 +219,7 @@ if ! command -v bats &> /dev/null; then
 fi
 
 log_info "Running all utility Bats tests..."
+TEST_DIR="$REPO_ROOT/tests/utility"
 TEST_DIR="$REPO_ROOT/tests/utility"
 if [[ ! -d "$TEST_DIR" ]]; then
     log_error "Test directory not found: $TEST_DIR"
