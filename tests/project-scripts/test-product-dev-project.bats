@@ -16,6 +16,21 @@
 # Load test helpers
 load '../test-helper.bash'
 
+# ----- Setup and Teardown functions -----
+
+# Setup and Teardown functions
+setup() {
+    # Get the directory containing this test file
+    DIR="$( cd "$( dirname "$BATS_TEST_FILENAME" )" >/dev/null 2>&1 && pwd )"
+    # Path to the script being tested
+    SCRIPT="$DIR/../../scripts/project/project-dev-project.sh"
+
+    # Ensure script exists and is executable
+    [ -f "$SCRIPT" ]
+    [ -x "$SCRIPT" ]
+}
+
+# General test environment setup
 setup() {
   setup_test_environment
 }
@@ -24,11 +39,12 @@ teardown() {
   cleanup_test_environment
 }
 
-
+# General test environment setup
 setup() {
   export GH_CLI_MOCK=1
 }
 
+# Teardown function
 teardown() {
   unset GH_CLI_MOCK
 }

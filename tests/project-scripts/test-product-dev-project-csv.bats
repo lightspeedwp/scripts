@@ -12,11 +12,27 @@
 # Load test helpers
 load '../test-helper.bash'
 
+# ----- Setup and Teardown functions -----
+
+# Get the directory containing this test file
+setup() {
+    # Get the directory containing this test file
+    DIR="$( cd "$( dirname "$BATS_TEST_FILENAME" )" >/dev/null 2>&1 && pwd )"
+        # Path to the script being tested (relative to repo root)
+        SCRIPT="$DIR/../../scripts/project/product-dev-project.sh"
+
+    # Ensure script exists and is executable
+    [ -f "$SCRIPT" ]
+    [ -x "$SCRIPT" ]
+}
+
+# General test environment setup
 setup() {
   export GH_CLI_MOCK=1
   export DRY_RUN=true
 }
 
+# Teardown function
 teardown() {
   unset GH_CLI_MOCK
   unset DRY_RUN
@@ -36,7 +52,7 @@ teardown() {
 
 
 @test "validates importing settings CSV and dry-run output (with access)" {
-  run ../../scripts/project/product-dev-project.sh lightspeedwp testproduct 99 --settings-file ../../scripts/project/fixtures/product-development-settings.csv --access-file ../../scripts/project/fixtures/product-development-manage-access.csv --manage-access
+  run ../../scripts/project/product-dev-project.sh lightspeedwp testproduct 99 --settings-file ../../scripts/project/fixtures/product-development-manage-access.csv --manage-access
   [ "$status" -eq 0 ]
   contains "$output" "Setting base role to 'Admin'"
   contains "$output" "Inviting Interns with role: Admin"

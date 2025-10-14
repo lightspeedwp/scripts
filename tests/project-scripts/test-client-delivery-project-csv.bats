@@ -19,17 +19,33 @@
 # Load test helpers
 load '../test-helper.bash'
 
+# ----- Setup and Teardown functions -----
+
+# Get the directory containing this test file
+setup() {
+    # Get the directory containing this test file
+    DIR="$( cd "$( dirname "$BATS_TEST_FILENAME" )" >/dev/null 2>&1 && pwd )"
+        # Path to the script being tested (relative to repo root)
+        SCRIPT="$DIR/../../scripts/project/client-delivery-project.sh"
+
+    # Ensure script exists and is executable
+    [ -f "$SCRIPT" ]
+    [ -x "$SCRIPT" ]
+}
+
+# General test environment setup
 setup() {
   export GH_CLI_MOCK=1
   export DRY_RUN=true
 }
 
+# Teardown function
 teardown() {
   unset GH_CLI_MOCK
   unset DRY_RUN
 }
 
-
+# General test environment setup
 @test "validates importing settings CSV and dry-run output (no access)" {
   run ../../scripts/project/client-delivery-project.sh lightspeedwp acme-corp 42 --settings-file ../../scripts/project/fixtures/client-delivery-settings.csv
   [ "$status" -eq 0 ]
@@ -41,7 +57,7 @@ teardown() {
   not_contains "$output" "Inviting"
 }
 
-
+# General test environment setup
 @test "validates importing settings CSV and dry-run output (with access)" {
   run ../../scripts/project/client-delivery-project.sh lightspeedwp acme-corp 42 --settings-file ../../scripts/project/fixtures/client-delivery-settings.csv --access-file ../../scripts/project/fixtures/client-delivery-manage-access.csv --manage-access
   [ "$status" -eq 0 ]

@@ -19,14 +19,31 @@
 # Load test helpers
 load '../test-helper.bash'
 
+# ----- Setup and Teardown functions -----
+
+# Get the directory containing this test file
+setup() {
+    # Get the directory containing this test file
+    DIR="$( cd "$( dirname "$BATS_TEST_FILENAME" )" >/dev/null 2>&1 && pwd )"
+        # Path to the script being tested (relative to repo root)
+        SCRIPT="$DIR/../../scripts/project/client-delivery-project.sh"
+
+    # Ensure script exists and is executable
+    [ -f "$SCRIPT" ]
+    [ -x "$SCRIPT" ]
+}
+
+# General test environment setup
 setup() {
   export GH_CLI_MOCK=1
 }
 
+# Teardown function
 teardown() {
   unset GH_CLI_MOCK
 }
 
+# General test environment setup
 @test "errors if gh CLI is not installed" {
   PATH="/nonexistent:$PATH"
   run ../../scripts/project/client-delivery-project.sh lightspeedwp acme-corp 42

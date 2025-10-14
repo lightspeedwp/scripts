@@ -19,11 +19,14 @@
 # Load test helpers
 load '../test-helper.bash'
 
+# ----- Setup and Teardown functions -----
+
+# Setup and Teardown functions
 setup() {
     # Get the directory containing this test file
     DIR="$( cd "$( dirname "$BATS_TEST_FILENAME" )" >/dev/null 2>&1 && pwd )"
     # Path to the script being tested
-    SCRIPT="$DIR/../scripts/project/run-tests.sh"
+    SCRIPT="$DIR/../../scripts/project/run-tests.sh"
 
     # Ensure script exists and is executable
     [ -f "$SCRIPT" ]
@@ -45,7 +48,7 @@ setup() {
 
 @test "script can run basic test validation" {
     # Run the test runner to see if it executes without error
-    run "$SCRIPT" --help 2>/dev/null || run "$SCRIPT" --dry-run 2>/dev/null || true
+    run ../../scripts/project/run-tests.sh --help 2>/dev/null || run ../../scripts/project/run-tests.sh --dry-run 2>/dev/null || true
     # Should not crash with basic invocation
     [ "$status" -ne 127 ]  # Command not found
 }
