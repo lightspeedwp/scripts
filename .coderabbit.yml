@@ -8,7 +8,6 @@ reviews:
       - markdownlint
       - Run Tests
       - ShellCheck
-      - Playwright
       - Changelog
       - Release
   required_approvals: 2

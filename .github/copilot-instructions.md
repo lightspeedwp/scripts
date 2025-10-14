@@ -25,5 +25,4 @@ This file provides workspace-specific instructions for GitHub Copilot and CodeRa
 | [.github/instructions/markdown-copilot.md](.github/instructions/markdown-copilot.md) | Markdown/documentation standards and accessibility |
 | [.github/instructions/js-copilot.md](.github/instructions/js-copilot.md) | JavaScript/Node.js workflow standards |
 | [.github/instructions/python-copilot.md](.github/instructions/python-copilot.md) | Python scripting standards |
-| [.github/instructions/playwright-copilot.md](.github/instructions/playwright-copilot.md) | Playwright-specific Copilot instructions and MCP server automation |
 <!-- INSTRUCTIONS-TABLE-END -->

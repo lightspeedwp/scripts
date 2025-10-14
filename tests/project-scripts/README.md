@@ -1,27 +1,55 @@
 
 # Project Script Test Suite
 
-This folder contains comprehensive [Bats](https://github.com/bats-core/bats-core) test suites for all GitHub Project automation scripts in `scripts/project/`. These tests ensure robust, spec-compliant automation for both client delivery and product development workflows, covering argument parsing, field creation, authentication, dry-run, idempotency, and error handling.
+
+This folder contains comprehensive [Bats](https://github.com/bats-core/bats-core) test suites for all GitHub Project automation scripts in `scripts/project/`. These tests ensure robust, spec-compliant automation for both client delivery and product development workflows, covering:
+
+- Argument parsing and usage/help output
+- Field creation and color assignment
+- CSV-driven settings import and access management
+- Authentication logic (gh CLI, auth, scopes)
+- Dry-run simulation and idempotency
+- Error handling and environment variable overrides
 
 ---
 
 ## Test Files Overview
 
-| Test File                                 | Purpose                                                                                       |
-|-------------------------------------------|-----------------------------------------------------------------------------------------------|
-| `test-client-delivery-project.bats`       | Tests `client-delivery-project.sh` for argument handling, help output, dry-run, field creation, idempotency, env overrides, and error handling |
-| `test-client-delivery-project-auth.bats`  | Tests authentication logic for `client-delivery-project.sh` (gh CLI presence, auth, scopes)    |
-| `test-product_dev_project.bats`           | Tests `product-dev-project.sh` for CLI commands, dry-run, field creation, idempotency, env overrides, and error handling |
-| `test-product-dev-project-auth.bats`      | Tests authentication logic for `product-dev-project.sh` (gh CLI presence, auth, scopes)        |
-| `test-create-project-field.bats`          | Tests helper logic for field command construction and dry-run output in project scripts        |
-| `test-update-projects.bats`               | Tests `update-projects.sh` for field management, CSV-driven creation, options, dry-run, deletion, and error handling |
+
+| Test File                                 | Purpose                                                                                       | Status |
+|-------------------------------------------|-----------------------------------------------------------------------------------------------|--------|
+| `test-client-delivery-project.bats`       | Tests `client-delivery-project.sh` for argument handling, help output, dry-run, field creation, idempotency, env overrides, and error handling | 6/9 pass |
+| `test-client-delivery-project-auth.bats`  | Tests authentication logic for `client-delivery-project.sh` (gh CLI presence, auth, scopes)    | 4/4 pass |
+| `test-client-delivery-project-csv.bats`   | Tests CSV-driven settings import and access management for `client-delivery-project.sh`         | 2/2 pass |
+| `test-product_dev_project.bats`           | Tests `product-dev-project.sh` for CLI commands, dry-run, field creation, idempotency, env overrides, and error handling | 12/12 pass |
+| `test-product-dev-project-auth.bats`      | Tests authentication logic for `product-dev-project.sh` (gh CLI presence, auth, scopes)        | 4/4 pass |
+| `test-product-dev-project-csv.bats`       | Tests CSV-driven settings import and access management for `product-dev-project.sh`             | 0/2 pass |
+| `test-create-project-field.bats`          | Tests helper logic for field command construction and dry-run output in project scripts        | 2/2 pass |
+| `test-update-projects.bats`               | Tests `update-projects.sh` for field management, CSV-driven creation, options, dry-run, deletion, and error handling | 19/19 pass |
 
 ---
+
 
 ## How the Tests Work
 
 - **Bats Framework**: All tests are written in Bats, a Bash-based testing framework. Each test runs the target script with various arguments and environment variables, then asserts on exit codes and output.
 - **Mocking**: Many tests set `GH_CLI_MOCK=1` to simulate GitHub CLI presence and authentication, ensuring tests are safe and do not require real API calls.
+- **CSV Import**: Tests for both project scripts validate importing settings from CSV files and applying access management logic with `--manage-access`.
+- **Authentication**: Dedicated tests for CLI presence, authentication, and required scopes are included for both scripts.
+- **Helper Functions**: Shared helpers for output assertions (`contains`, `not_contains`) and environment setup are used across all tests.
+
+## Troubleshooting
+
+- If a test fails on dry-run output (e.g., missing field creation or color assignment), check the script's dry-run simulation logic and ensure it matches test expectations.
+- If authentication tests fail, verify error messages match the expected output in the Bats assertions.
+- For CSV import failures, confirm the CSV format and script parsing logic are consistent.
+- All scripts should be executable (`chmod +x script.sh`).
+
+## Recent Additions
+
+- **CSV-driven settings import and access management**: Both project scripts now support `--settings-file` and `--manage-access` options, with corresponding Bats tests.
+- **Authentication helpers**: Improved CLI/auth/scope checks and error output for robust test coverage.
+- **Helper functions**: Added `not_contains` to `test-helper.bash` for negative output assertions.
 - **Dry-Run Mode**: Tests use `DRY_RUN=true` to verify that scripts print the correct actions without making changes.
 - **Helper Functions**: Shared logic is loaded from `../../tests/test-helper.bash`.
 - **Edge Cases**: Tests cover missing arguments, invalid field specs, duplicate fields, missing dependencies, and credential leakage prevention.

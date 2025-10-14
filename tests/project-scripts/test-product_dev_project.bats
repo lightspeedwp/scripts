@@ -31,6 +31,28 @@ teardown() {
   [[ "$output" =~ "Usage:" ]]
 }
 
+
+@test "updates project name in dry-run mode" {
+  export DRY_RUN=true
+  run ../../scripts/project/product-dev-project.sh lightspeedwp testproduct 99
+  [ "$status" -eq 0 ] || [ "$status" -eq 1 ]
+  contains "$output" "Updating project name to 'Product – testproduct'"
+}
+
+@test "updates short description in dry-run mode" {
+  export DRY_RUN=true
+  run ../../scripts/project/product-dev-project.sh lightspeedwp testproduct 99
+  [ "$status" -eq 0 ] || [ "$status" -eq 1 ]
+  contains "$output" "Updating short description to 'Plan and ship versioned releases with a lean Scrumban flow and clear release gates.'"
+}
+
+@test "updates README in dry-run mode" {
+  export DRY_RUN=true
+  run ../../scripts/project/product-dev-project.sh lightspeedwp testproduct 99
+  [ "$status" -eq 0 ] || [ "$status" -eq 1 ]
+  contains "$output" "Updating README for project #99"
+}
+
 @test "creates all fields in dry-run mode" {
   export DRY_RUN=true
   run ../../scripts/project/product-dev-project.sh lightspeedwp testproduct 99

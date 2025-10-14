@@ -1,10 +1,5 @@
 # lightspeedwp-automation
 
-
-
-
-
-
   </a>
 
   <a href="https://github.com/lightspeedwp/scripts/actions/workflows/playwright.yml">
@@ -25,16 +20,11 @@
     <img src="https://github.com/lightspeedwp/scripts/actions/workflows/release.yml/badge.svg?branch=develop" alt="Development Status" />
   </a>
 
-
   <a href="https://github.com/lightspeedwp/scripts/actions/workflows/changelog.yml">
-
-
 
     <a href="https://github.com/lightspeedwp/scripts">
 
-
-
-    </a>
+</a>
 
 <!-- Recommended additional badges: -->
 
@@ -44,26 +34,21 @@
 
 <!-- Code Quality: <img src="https://img.shields.io/codacy/grade/PROJECT_ID?style=flat-square" alt="Code Quality" /> -->
 
-
   npm install --save-dev all-contributors-cli
 
-
-
-  ```
+  ```bash
 - Add contributors:
   ```bash
   npx all-contributors add <username> <contribution-type>
   ```
+
 - Generate the contributors table:
 
 #### Contributor Configuration & Types
 
-
-
 See [.all-contributorsrc-docs.md](.all-contributorsrc-docs.md) for:
 - Configuration options for contributor automation
 Reference this file in your README or CONTRIBUTING.md to explain how contributor recognition works and which contribution types are supported.
-
 
 ## CodeRabbit Review Automation
 
@@ -72,15 +57,12 @@ Reference this file in your README or CONTRIBUTING.md to explain how contributor
 - Auto-labeling and auto-assign for shell, docs, CI, and test files
 \n## Advanced Project Automation Scripts
 
-
 Scripts like `product_dev_project.sh` automate GitHub ProjectV2 provisioning, field management, item/issue linking, and governance. Features include:
 
 - Create/update projects, fields, items, and status
 - Add draft issues, link repositories/teams, update labels and issue types
 
 Centralized repository for LightSpeed WP organization automation scripts and CI/CD workflows.
-
-
 
 This repository includes comprehensive GitHub Copilot instructions to assist with automation development:
 
@@ -99,7 +81,6 @@ Shell scripts for automation tasks across the organization. All scripts follow k
 
 **Naming Convention**: Use kebab-case for all script files (e.g., `deploy-site.sh`, `backup-database.sh`)
 
-
 **Usage**:
 
 - Bats test files for shell scripts
@@ -108,26 +89,14 @@ Shell scripts for automation tasks across the organization. All scripts follow k
 - Mock environments for testing
 npm install # Installs Playwright, Prettier, and other dev dependencies
 
-### 📁 `/.github/`
-
-GitHub-specific templates, Copilot instructions, and configuration files.
-
 **Contents**:
 
-- **Copilot Instructions**: Role-based AI assistance configuration
-- **Issue & PR Templates**: Standardized contribution templates
-- **MCP Configuration**: Model Context Protocol for VSCode integration
-
-npx playwright test
-npx playwright test
 - **Prompts & Chat Modes**: Reusable AI interaction patterns
 - **GitHub Actions**: Organization-level workflow configurations
 
-## Getting Started
-## New Features & CLI Usage
 
 ### Key Automation Features
-- MCP/Playwright server auto-activation and restart
+
 - GitHub ProjectV2 automation (create, update, link, field/item/status management)
 - Automatic issue type assignment for GitHub Projects
 - Contributor recognition automation
@@ -137,53 +106,40 @@ npx playwright test
 ### Automation Agents
 
 The repository includes specialized automation agents that help with various tasks:
-
-- **Issue Type Agent**: Automatically categorizes GitHub issues in Projects based on template metadata and content analysis
-  - Location: `.github/agents/issue-type-agent.js` and `.github/workflows/auto-issue-type.yml`
-  - Triggered by: Issues being opened or reopened
   - Functionality: Analyzes issue template metadata, content, and sets appropriate issue type in GitHub Projects
   - Standards: Follows org-wide-issue-types-v1-9.md specifications
 
 For more information on available agents, see [AGENTS.md](AGENTS.md).
 
-### CLI Usage Examples
 
-#### Start MCP Server
-```bash
-chmod +x scripts/start-mcp-server.sh
-./scripts/start-mcp-server.sh
-```
+    ```bash
+    ./scripts/start-mcp-server.sh
+            ```
 
-#### Run Project Automation Script
-```bash
-chmod +x scripts/project/product_dev_project.sh
-./scripts/project/product_dev_project.sh --create --name "My Project" --owner "lightspeedwp"
-```
+    ```
 
 #### Update Badges and Changelog
-```bash
-chmod +x scripts/maintenance/update-readme-and-changelog.sh
-./scripts/maintenance/update-readme-and-changelog.sh
-```
 
 #### Run All Tests
-```bash
-bats tests/
-```
+
+    bats tests/
+    ```
 
 #### Find all README files
-```bash
-chmod +x scripts/maintenance/find-readmes.sh
-./scripts/maintenance/find-readmes.sh
-```
+
+    ```bash
+    chmod +x scripts/maintenance/find-readmes.sh
+    ./scripts/maintenance/find-readmes.sh
+    ```
 
 ### Error Handling Patterns
+
 - All scripts use `set -euo pipefail` for robust error handling.
 - CLI scripts validate required parameters and provide usage/help output.
 - Errors are logged with timestamps and context for easier troubleshooting.
 - Automated workflows enforce status checks and fail on lint/test errors.
 
-### Markdownlint Compliance
+
 - All documentation files are checked with markdownlint in CI.
 - Use blank lines around code fences and lists.
 - Avoid duplicate headings and ensure consistent heading structure.
@@ -192,26 +148,21 @@ chmod +x scripts/maintenance/find-readmes.sh
 ## Release & Changelog Instructions
 
 ### Automated Release Process
-- On push to `main`, the release workflow:
   - Generates/updates `CHANGELOG.md` from commit history
   - Bumps version and tags the release
   - Publishes a GitHub Release with changelog details
-  - All PRs must include a changelog entry in the required format (see PR template)
 
 ### Changelog Entry Format
-```md
-### Added
-- Short description of new features or scripts
+    ```md
+    ### Added
+    - Short description of new features or scripts
 
-### Changed
-- Short description of changes or improvements
+    - Short description of changes or improvements
 
-### Fixed
-- Short description of bug fixes
 
-### Security
-- Short description of security updates
-```
+    ### Security
+    - Short description of security updates
+    ```
 
 ### Manual Release Fallback
 If automation fails, releases can be created manually:
@@ -245,10 +196,6 @@ Test files are located in `tests/` and use the `.spec.ts` extension.
 chmod +x scripts/start-mcp-server.sh
 ./scripts/start-mcp-server.sh
 npx playwright test
-```
-
-#### Example GitHub Actions Workflow
-
 ```yaml
 - name: Start Playwright MCP server
   run: |

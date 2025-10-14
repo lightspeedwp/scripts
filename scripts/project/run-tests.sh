@@ -1,8 +1,17 @@
 #!/bin/bash
 
-
-# Batch test runner for all Bats files in tests/project-scripts/
-# Logs results to logs/bats-project-scripts-YYYYMMDD-HHMMSS.log
+# Script Name: run-tests.sh
+# Description: Batch test runner for project script Bats tests
+# Usage: ./run-tests.sh
+# Author: LightSpeed WP Team
+# Date: 2025-10-14
+#
+# This script runs all Bats test files in the tests/project-scripts/ directory
+# and logs the results to a timestamped file in the logs directory.
+#
+# Requirements:
+#   - bats-core installed and in PATH
+#   - Appropriate project script test files in tests/project-scripts/
 
 set -euo pipefail
 
@@ -19,9 +28,20 @@ GREEN='\033[0;32m'
 BLUE='\033[0;34m'
 NC='\033[0m'
 
-log_info()    { echo -e "${BLUE}[INFO]${NC} $1"; }
+# Function: log_info
+# Description: Prints an informational message with blue [INFO] prefix
+# Args: $1 - The message to print
+log_info() { echo -e "${BLUE}[INFO]${NC} $1"; }
+
+# Function: log_success
+# Description: Prints a success message with green [SUCCESS] prefix
+# Args: $1 - The message to print
 log_success() { echo -e "${GREEN}[SUCCESS]${NC} $1"; }
-log_error()   { echo -e "${RED}[ERROR]${NC} $1" >&2; }
+
+# Function: log_error
+# Description: Prints an error message with red [ERROR] prefix to stderr
+# Args: $1 - The message to print
+log_error() { echo -e "${RED}[ERROR]${NC} $1" >&2; }
 
 if ! command -v bats &> /dev/null; then
     log_error "bats is not installed. Please install bats-core first."

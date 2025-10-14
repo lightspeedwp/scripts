@@ -50,6 +50,11 @@ contains() {
     [[ "$haystack" == *"$needle"* ]]
 }
 
+# Helper: not_contains <output> <unexpected>
+not_contains() {
+    [[ "$1" != *"$2"* ]]
+}
+
 # Verify file exists and has expected content
 assert_file_contains() {
     local file="$1"

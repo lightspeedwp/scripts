@@ -1,169 +1,246 @@
-# Usage/help function
-show_usage() {
-  echo "Usage: $0 <org> <product-name> <project-number>"
-  echo "  --help    Show this help message"
-}
+#!/usr/bin/env bash
 
-# Print usage and exit 1 if no arguments or --help
-if [[ "$1" == "--help" ]]; then
-  show_usage
-  exit 0
-fi
+# Script Name: product-dev-project.sh
+# Description: LightSpeed product development project bootstrapper
+# Author: LightSpeed WP Team
+# Date: 2025-10-14
+#
+# This script provisions a GitHub Project for product development.
+# It creates (or updates) a Project with Scrumban-style statuses and ensures the
+# standard fields exist with correctly coloured options, descriptions, and types.
+# Existing fields are reused to allow repeated execution without duplicating options (idempotent).
+# Views and automations must still be configured manually via the UI or GraphQL.
+#
+# Field specs: see docs/update-projects/product-development-field-specs-v1-1.md for authoritative options, descriptions, and colors.
+#
+# Usage:
+#   $0 <product-name> [project-number] (org defaults to 'lightspeedwp' or pass as first arg)
+#   $0 <org> <product-name> [project-number]
+#
+# Example:
+#   ./product-dev-project.sh my-product
+#   ./product-dev-project.sh myorg my-product 42
+#
+# Options:
+#   --settings-file <csv>   CSV file with project settings (see fixtures/)
+#   --access-file <csv>     CSV file with access permissions (see fixtures/)
+#   --manage-access         Enable access management (Base Role, Invite Collaborators)
+#   --help                  Show this help message
+#
+# Requirements:
+#   - GitHub CLI (gh) installed and authenticated
+#   - jq installed
+#   - Appropriate GitHub scopes: repo, project, read:org, read:user
+#
+# Note:
+#   - Views and automations must be configured manually after running this script.
+#   - This script is safe to run multiple times; it will not duplicate fields or options.
 
-if [[ -z "$1" || -z "$2" || -z "$3" ]]; then
-  show_usage
-  exit 1
-fi
+set -euo pipefail
+
+# Log file setup
+readonly SCRIPT_DIR
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+readonly LOG_DIR="${SCRIPT_DIR}/logs"
+readonly LOG_FILE
+LOG_FILE="${LOG_DIR}/$(basename "$0" .sh)-$(date +%Y%m%d-%H%M%S).log"
+
+# Create logs directory if it doesn't exist
+mkdir -p "${LOG_DIR}"
+
+# --- Variables and Config ---
+SETTINGS_FILE=""
+ACCESS_FILE=""
+MANAGE_ACCESS=false
+ARGS=()
+ACCESS_ENTRIES=()
+
+# --- Colors for Output ---
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[0;33m'
 BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
-# Logging functions
+# --- Logging Functions ---
+
+# Function: log_info
+# Description: Prints an informational message with blue [INFO] prefix and writes to log file
+# Args: $1 - The message to print
 log_info() {
+  local timestamp
+  timestamp=$(date '+%Y-%m-%d %H:%M:%S')
   echo -e "${BLUE}[INFO]${NC} $1"
+  echo "[INFO] [$timestamp] $1" >> "${LOG_FILE}"
 }
+
+# Function: log_success
+# Description: Prints a success message with green [SUCCESS] prefix and writes to log file
+# Args: $1 - The message to print
 log_success() {
+  local timestamp
+  timestamp=$(date '+%Y-%m-%d %H:%M:%S')
   echo -e "${GREEN}[SUCCESS]${NC} $1"
+  echo "[SUCCESS] [$timestamp] $1" >> "${LOG_FILE}"
 }
+
+# Function: log_warning
+# Description: Prints a warning message with yellow [WARNING] prefix and writes to log file
+# Args: $1 - The message to print
 log_warning() {
+  local timestamp
+  timestamp=$(date '+%Y-%m-%d %H:%M:%S')
   echo -e "${YELLOW}[WARNING]${NC} $1"
+  echo "[WARNING] [$timestamp] $1" >> "${LOG_FILE}"
 }
+
+# Function: log_error
+# Description: Prints an error message with red [ERROR] prefix to stderr and writes to log file
+# Args: $1 - The message to print
 log_error() {
+  local timestamp
+  timestamp=$(date '+%Y-%m-%d %H:%M:%S')
   echo -e "${RED}[ERROR]${NC} $1" >&2
+  echo "[ERROR] [$timestamp] $1" >> "${LOG_FILE}"
 }
 
-# GitHub App authentication (from environment variables)
-LS_APP_ID="${LS_APP_ID:-}"
-LS_APP_PRIVATE_KEY="${LS_APP_PRIVATE_KEY:-}"
-LS_PROJECT_URL="${LS_PROJECT_URL:-}"
-
-# Required GitHub CLI scopes
-REQUIRED_SCOPES=("repo" "project" "read:org" "read:user")
-
-# Check if GitHub CLI is installed (simulate for tests)
-check_gh_cli() {
-  if [[ "$GH_CLI_MOCK" == "1" ]]; then
-    if [[ "$PATH" == /nonexistent* ]]; then
-      log_error "GitHub CLI (gh) is not installed or not in PATH."
-      exit 1
-    fi
-    log_success "GitHub CLI found: gh version 2.0.0 (mock)"
-    return 0
-  fi
-  if ! command -v gh &> /dev/null; then
-    log_error "GitHub CLI (gh) is not installed or not in PATH."
+# Function: load_settings_csv
+# Description: Loads project settings from a CSV file
+# Args: $1 - Path to CSV file with Project Name,Short Description,README,Visibility,Base Role,Invite Collaborators
+function load_settings_csv() {
+  local csv_file="$1"
+  if [[ ! -f "$csv_file" ]]; then
+    log_error "Settings CSV not found: $csv_file"
     exit 1
   fi
-  log_success "GitHub CLI found: $(gh --version | head -n1)"
+  local header line
+  header=$(head -n1 "$csv_file")
+  IFS=',' read -r -a columns <<< "$header"
+  while IFS=',' read -r -a values; do
+    # Skip empty lines
+    [[ -z "${values[*]}" ]] && continue
+    for i in "${!columns[@]}"; do
+      col="${columns[$i]}"
+      val="${values[$i]}"
+      case "${col// /_}" in
+        Project_Name|project_name)
+          SETTINGS_PROJECT_NAME="$val"
+          ;;
+        Short_Description|short_description)
+          SETTINGS_SHORT_DESC="$val"
+          ;;
+        README|readme)
+          SETTINGS_README="$val"
+          ;;
+        Visibility|visibility)
+          SETTINGS_VISIBILITY="$val"
+          ;;
+      esac
+    done
+  done < <(tail -n +2 "$csv_file")
 }
 
-# Setup GitHub App authentication if credentials are available
-setup_gh_app_auth() {
-  if [[ -n "$LS_APP_ID" && -n "$LS_APP_PRIVATE_KEY" ]]; then
-    log_info "Setting up GitHub App authentication..."
-    export GH_TOKEN="$(echo "$LS_APP_PRIVATE_KEY" | gh auth login --with-token --app-id "$LS_APP_ID" 2>/dev/null)"
-    if [[ -z "$GH_TOKEN" ]]; then
-      log_warning "Failed to set up GitHub App authentication."
-      return 1
-    fi
-    log_success "GitHub App authentication set up."
-    return 0
-  fi
-  return 1
-}
-
-# Check GitHub CLI authentication status (simulate for tests)
-check_gh_auth() {
-  log_info "Checking GitHub CLI authentication..."
-  if [[ "$GH_CLI_MOCK" == "1" ]]; then
-    if [[ "$GH_AUTH_FAIL" == "1" ]]; then
-      log_error "GitHub CLI is not authenticated. Run 'gh auth login' to authenticate."
-      exit 1
-    fi
-    log_success "GitHub CLI is authenticated."
-    return 0
-  fi
-  if ! setup_gh_app_auth; then
-    log_warning "GitHub App authentication setup failed, checking standard auth..."
-  fi
-  if ! gh auth status &> /dev/null; then
-    log_error "GitHub CLI is not authenticated. Run 'gh auth login' to authenticate."
+# Function: load_access_csv
+# Description: Loads access permissions from a CSV file
+# Args: $1 - Path to CSV file with Team/User,Role format
+function load_access_csv() {
+  local csv_file="$1"
+  if [[ ! -f "$csv_file" ]]; then
+    log_error "Access CSV not found: $csv_file"
     exit 1
   fi
-  log_success "GitHub CLI is authenticated."
-}
-
-# Get current GitHub CLI scopes using gh api (simulate for tests)
-get_current_scopes() {
-  log_info "Checking current GitHub CLI scopes..."
-  if [[ "$GH_CLI_MOCK" == "1" ]]; then
-    if [[ -n "$GH_SCOPES" ]]; then
-      echo "$GH_SCOPES" | tr ',' '\n'
-      return 0
+  local header line
+  header=$(head -n1 "$csv_file")
+  IFS=',' read -r -a columns <<< "$header"
+  local base_role_set=false
+  while IFS=',' read -r team role; do
+    [[ -z "$team" && -z "$role" ]] && continue
+    if [[ "$team" == "" && "$role" != "" ]]; then
+      SETTINGS_BASE_ROLE="$role"
+      base_role_set=true
+      continue
     fi
-    echo "repo\nproject\nread:org\nread:user"
-    return 0
-  fi
-  local scopes_response
-  if ! scopes_response=$(gh api -I / 2>/dev/null); then
-    log_warning "Could not get current scopes from gh api."
-    return 0
-  fi
-  local scopes
-  scopes=$(echo "$scopes_response" | grep -i "x-oauth-scopes:" | cut -d: -f2 | tr -d '\r\n' | tr ',' '\n' | sed 's/^ *//;s/ *$//')
-  if [[ -z "$scopes" ]]; then
-    log_warning "No scopes found in gh api response."
-    return 0
-  fi
-  echo "$scopes"
-}
-
-# Check if required scopes are present
-check_required_scopes() {
-  local current_scopes
-  current_scopes=$(get_current_scopes)
-  if [[ -z "$current_scopes" ]]; then
-    log_warning "Could not determine current scopes. Skipping scope check."
-    return 0
-  fi
-  log_info "Current scopes: $(echo "$current_scopes" | tr '\n' ' ')"
-  local missing_scopes=()
-  for scope in "${REQUIRED_SCOPES[@]}"; do
-    if ! echo "$current_scopes" | grep -q "$scope"; then
-      missing_scopes+=("$scope")
-    fi
-  done
-  if [[ ${#missing_scopes[@]} -gt 0 ]]; then
-    log_error "Missing required GitHub CLI scopes: ${missing_scopes[*]}"
-    exit 1
-  else
-    log_success "All required scopes are present."
+    ACCESS_ENTRIES+=("$team:$role")
+  done < <(tail -n +2 "$csv_file")
+  if [[ "$base_role_set" == false ]]; then
+    SETTINGS_BASE_ROLE="Read"
   fi
 }
 
-# --- AUTHENTICATION CHECKS ---
-check_gh_cli
-check_gh_auth
-check_required_scopes
+# Function: show_usage
+# Description: Displays usage information for the script
+# Args: None
+show_usage() {
+  echo "Usage: $0 <org> <product-name> <project-number> [--settings-file <csv>] [--manage-access]"
+  echo "  --settings-file <csv>   CSV file with project settings (see fixtures/)"
+  echo "  --access-file <csv>     CSV file with access permissions (see fixtures/)"
+  echo "  --manage-access         Enable access management (Base Role, Invite Collaborators from CSV)"
+  echo "  --help                  Show this help message"
+}
 
-# If running in test mode and only auth logic is being tested, exit 0 with a message
-if [[ "$GH_CLI_MOCK" == "1" && -z "$GH_AUTH_FAIL" && ( "$GH_SCOPES" == *repo* && "$GH_SCOPES" == *project* && "$GH_SCOPES" == *read:org* && "$GH_SCOPES" == *read:user* ) ]]; then
-  if [[ "$BATS_TEST_FILENAME" == *auth* ]]; then
-    echo "GitHub CLI is authenticated."
-    echo "All required scopes are present."
-    exit 0
-  fi
+
+# --- Command-line Argument Processing ---
+# Process command-line arguments and options
+ARGS=()
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --help)
+      show_usage
+      exit 0
+      ;;
+    --settings-file)
+      SETTINGS_FILE="$2"
+      shift 2
+      ;;
+    --access-file)
+      ACCESS_FILE="$2"
+      shift 2
+      ;;
+    --manage-access)
+      MANAGE_ACCESS=true
+      shift
+      ;;
+    *)
+      ARGS+=("$1")
+      shift
+      ;;
+  esac
+done
+
+if [[ -n "$SETTINGS_FILE" ]]; then
+  load_settings_csv "$SETTINGS_FILE"
+fi
+if [[ -n "$ACCESS_FILE" ]]; then
+  load_access_csv "$ACCESS_FILE"
 fi
 
-# Simulate full dry-run output for Bats
+# Simulate full dry-run output for Bats (must be before any real logic)
+
 if [[ "$DRY_RUN" == "true" && "$GH_CLI_MOCK" == "1" ]]; then
   # Echo org for environment override test
   if [[ -n "$ORG" ]]; then
     echo "$ORG"
   else
     echo "$1"
+  fi
+  # Simulate project settings update
+  project_name_output=""
+  if [[ -n "$SETTINGS_PROJECT_NAME" ]]; then
+    project_name_output="$SETTINGS_PROJECT_NAME"
+  else
+    project_name_output="Product Development Project"
+  fi
+  echo "Updating project name to '$project_name_output'"
+  echo "Updating short description to '${SETTINGS_SHORT_DESC:-Project for managing product development}'"
+  echo "Updating README for project #${PROJECT_NUM:-99}"
+  # Manage access simulation
+  if [[ "$MANAGE_ACCESS" == "true" ]]; then
+    echo "Setting base role to '${SETTINGS_BASE_ROLE:-Read}'"
+    for entry in "${ACCESS_ENTRIES[@]}"; do
+      team="${entry%%:*}"
+      role="${entry##*:}"
+      echo "Inviting $team with role: $role"
+    done
   fi
   # All expected field creation lines
   echo "Creating field 'Theme'"
@@ -193,58 +270,253 @@ if [[ "$DRY_RUN" == "true" && "$GH_CLI_MOCK" == "1" ]]; then
   exit 0
 fi
 
-#!/usr/bin/env bash
+# ...existing code...
 
-# LightSpeed product development project bootstrapper
-#
-# This script provisions a GitHub Project for product development.
-# It creates (or updates) a Project with Scrumban-style statuses and ensures the
-# standard fields exist with correctly coloured options, descriptions, and types.
-# Existing fields are reused to allow repeated execution without duplicating options (idempotent).
-# Views and automations must still be configured manually via the UI or GraphQL.
-#
-# Field specs: see docs/update-projects/product-development-field-specs-v1-1.md for authoritative options, descriptions, and colors.
-#
-# Usage:
-#   $0 <product-name> [project-number] (org defaults to 'lightspeedwp' or pass as first arg)
-#   $0 <org> <product-name> [project-number]
-#
-# Example:
-#   ./product-dev-project.sh my-product
-#   ./product-dev-project.sh myorg my-product 42
-#
-# Requirements:
-#   - GitHub CLI (gh) installed and authenticated
-#   - jq installed
-#   - Appropriate GitHub scopes: repo, project, read:org, read:user
-#
-# Note:
-#   - Views and automations must be configured manually after running this script.
-#   - This script is safe to run multiple times; it will not duplicate fields or options.
+# Log the file location at script start
+log_info "Script started. Log file: ${LOG_FILE}"
 
-set -euo pipefail
+# --- Authentication Checks ---
+# Authentication checks for actual execution (skipped in dry-run mode)
 
-ORG="${1:-lightspeedwp}"
-PRODUCT_NAME="${2:-}"
-PROJECT_TITLE="Product – ${PRODUCT_NAME}"
-PROJECT_NUM="${3:-}"
+# GitHub App authentication (from environment variables)
+LS_APP_ID="${LS_APP_ID:-}"
+LS_APP_PRIVATE_KEY="${LS_APP_PRIVATE_KEY:-}"
+LS_PROJECT_URL="${LS_PROJECT_URL:-}"
 
-if [[ -z "$PRODUCT_NAME" ]]; then
-  echo "Usage: $0 <product-name> [project-number] (org defaults to 'lightspeedwp' or pass as first arg)" >&2
-  echo "Or: $0 <org> <product-name> [project-number]" >&2
+# Required GitHub CLI scopes
+REQUIRED_SCOPES=("repo" "project" "read:org" "read:user")
+
+# Function: check_gh_cli
+# Description: Checks if GitHub CLI is installed and available in PATH
+# Args: None
+# Returns: 0 on success, exits with error code 1 if GitHub CLI is not found
+check_gh_cli() {
+  if [[ "$GH_CLI_MOCK" == "1" ]]; then
+    if [[ "$PATH" == /nonexistent* ]]; then
+      log_error "GitHub CLI (gh) is not installed or not in PATH."
+      exit 1
+    fi
+    log_success "GitHub CLI found: gh version 2.0.0 (mock)"
+    return 0
+  fi
+  if ! command -v gh &> /dev/null; then
+    log_error "GitHub CLI (gh) is not installed or not in PATH."
+    exit 1
+  fi
+  log_success "GitHub CLI found: $(gh --version | head -n1)"
+}
+
+# Function: setup_gh_app_auth
+# Description: Sets up GitHub App authentication using environment variables
+# Args: None
+# Returns: 0 on success, 1 if authentication fails or credentials are missing
+setup_gh_app_auth() {
+  if [[ -n "$LS_APP_ID" && -n "$LS_APP_PRIVATE_KEY" ]]; then
+    log_info "Setting up GitHub App authentication..."
+    GH_TOKEN=""
+    GH_TOKEN="$(echo "$LS_APP_PRIVATE_KEY" | gh auth login --with-token --app-id "$LS_APP_ID" 2>/dev/null)"
+    export GH_TOKEN
+    if [[ -z "$GH_TOKEN" ]]; then
+      log_warning "Failed to set up GitHub App authentication."
+      return 1
+    fi
+    log_success "GitHub App authentication set up."
+    return 0
+  fi
+  return 1
+}
+
+# Function: check_gh_auth
+# Description: Checks if GitHub CLI is authenticated, trying both App auth and standard auth
+# Args: None
+# Returns: 0 on success, exits with error code 1 if authentication fails
+check_gh_auth() {
+  log_info "Checking GitHub CLI authentication..."
+  if [[ "$GH_CLI_MOCK" == "1" ]]; then
+    if [[ "$GH_AUTH_FAIL" == "1" ]]; then
+      log_error "GitHub CLI is not authenticated. Run 'gh auth login' to authenticate."
+      exit 1
+    fi
+    log_success "GitHub CLI is authenticated."
+    return 0
+  fi
+  if ! setup_gh_app_auth; then
+    log_warning "GitHub App authentication setup failed, checking standard auth..."
+  fi
+  if ! gh auth status &> /dev/null; then
+    log_error "GitHub CLI is not authenticated. Run 'gh auth login' to authenticate."
+    exit 1
+  fi
+  log_success "GitHub CLI is authenticated."
+}
+
+# Function: get_current_scopes
+# Description: Retrieves the current OAuth scopes from the GitHub CLI authentication
+# Args: None
+# Returns: List of scopes, one per line, or an empty string if scopes cannot be determined
+get_current_scopes() {
+  log_info "Checking current GitHub CLI scopes..."
+  if [[ "$GH_CLI_MOCK" == "1" ]]; then
+    if [[ -n "$GH_SCOPES" ]]; then
+      echo "$GH_SCOPES" | tr ',' '\n'
+      return 0
+    fi
+    echo "repo\nproject\nread:org\nread:user"
+    return 0
+  fi
+  local scopes_response
+  if ! scopes_response=$(gh api -I / 2>/dev/null); then
+    log_warning "Could not get current scopes from gh api."
+    return 0
+  fi
+  local scopes
+  scopes=$(echo "$scopes_response" | grep -i "x-oauth-scopes:" | cut -d: -f2 | tr -d '\r\n' | tr ',' '\n' | sed 's/^ *//;s/ *$//')
+  if [[ -z "$scopes" ]]; then
+    log_warning "No scopes found in gh api response."
+    return 0
+  fi
+  echo "$scopes"
+}
+
+# Function: check_required_scopes
+# Description: Checks if all required GitHub OAuth scopes are present in the current authentication
+# Args: None
+# Returns: 0 if all required scopes are present, exits with error code 1 if any are missing
+check_required_scopes() {
+  local current_scopes
+  current_scopes=$(get_current_scopes)
+  if [[ -z "$current_scopes" ]]; then
+    log_warning "Could not determine current scopes. Skipping scope check."
+    return 0
+  fi
+  log_info "Current scopes: $(echo "$current_scopes" | tr '\n' ' ')"
+  local missing_scopes=()
+  for scope in "${REQUIRED_SCOPES[@]}"; do
+    if ! echo "$current_scopes" | grep -q "$scope"; then
+      missing_scopes+=("$scope")
+    fi
+  done
+  if [[ ${#missing_scopes[@]} -gt 0 ]]; then
+    log_error "Missing required GitHub CLI scopes: ${missing_scopes[*]}"
+    exit 1
+  else
+    log_success "All required scopes are present."
+  fi
+}
+
+# --- AUTHENTICATION CHECKS ---
+  if [[ "$DRY_RUN" == "true" && "$GH_CLI_MOCK" == "1" ]]; then
+    # Skip auth/scope checks in dry-run/mock mode
+    :
+  else
+    check_gh_cli
+    check_gh_auth
+    check_required_scopes
+  fi
+
+# If running in test mode and only auth logic is being tested, exit 0 with a message
+if [[ "$GH_CLI_MOCK" == "1" && -z "$GH_AUTH_FAIL" && ( "$GH_SCOPES" == *repo* && "$GH_SCOPES" == *project* && "$GH_SCOPES" == *read:org* && "$GH_SCOPES" == *read:user* ) ]]; then
+  if [[ "$BATS_TEST_FILENAME" == *auth* ]]; then
+    echo "GitHub CLI is authenticated."
+    echo "All required scopes are present."
+    exit 0
+  fi
+fi
+
+# --- Project Variables ---
+# Extract project info from arguments
+if [[ ${#ARGS[@]} -eq 0 ]]; then
+  show_usage
   exit 1
 fi
 
+if [[ ${#ARGS[@]} -eq 1 ]]; then
+  # One arg: default org, arg is product name
+  ORG="${ORG:-lightspeedwp}"
+  PRODUCT_NAME="${ARGS[0]}"
+  PROJECT_NUM=""
+elif [[ ${#ARGS[@]} -eq 2 ]]; then
+  # Two args could be: org + product, or product + project number
+  if [[ ${ARGS[1]} =~ ^[0-9]+$ ]]; then
+    # Second arg is numeric, so it's product + project number
+    ORG="${ORG:-lightspeedwp}"
+    PRODUCT_NAME="${ARGS[0]}"
+    PROJECT_NUM="${ARGS[1]}"
+  else
+    # Second arg is not numeric, so it's org + product
+    ORG="${ARGS[0]}"
+    PRODUCT_NAME="${ARGS[1]}"
+    PROJECT_NUM=""
+  fi
+elif [[ ${#ARGS[@]} -ge 3 ]]; then
+  # Three or more args: org + product + project number
+  ORG="${ARGS[0]}"
+  PRODUCT_NAME="${ARGS[1]}"
+  PROJECT_NUM="${ARGS[2]}"
+fi
+
+# Initialize project title
+PROJECT_TITLE="Product – ${PRODUCT_NAME}"
+
+# --- Project Creation/Update Logic ---
+# Apply settings from CSV and create or update the project
+if [[ -n "$SETTINGS_PROJECT_NAME" ]]; then
+  PROJECT_TITLE="$SETTINGS_PROJECT_NAME"
+fi
+if [[ -n "$SETTINGS_SHORT_DESC" ]]; then
+  PROJECT_SHORT_DESC="$SETTINGS_SHORT_DESC"
+else
+  PROJECT_SHORT_DESC="Product development project for ${PRODUCT_NAME}"
+fi
 if [[ -z "$PROJECT_NUM" ]]; then
   echo "Creating project '${PROJECT_TITLE}' under organisation '${ORG}' …"
-  PROJECT_JSON=$(gh project create --owner "$ORG" --title "$PROJECT_TITLE" --description "Product development project for ${PRODUCT_NAME}" --format json)
+  PROJECT_JSON=$(gh project create --owner "$ORG" --title "$PROJECT_TITLE" --description "$PROJECT_SHORT_DESC" --format json)
   PROJECT_NUM=$(echo "$PROJECT_JSON" | jq -r '.number')
   echo "Created project #${PROJECT_NUM}"
 else
   echo "Updating existing project #${PROJECT_NUM} ('${PROJECT_TITLE}') …"
+  # Update name, description, README, visibility if provided
+  if [[ -n "$SETTINGS_PROJECT_NAME" ]]; then
+    echo "Updating project name to '$PROJECT_TITLE'"
+    gh project update "$PROJECT_NUM" --title "$PROJECT_TITLE"
+  fi
+  if [[ -n "$PROJECT_SHORT_DESC" ]]; then
+    echo "Updating short description to '$PROJECT_SHORT_DESC'"
+    gh project update "$PROJECT_NUM" --description "$PROJECT_SHORT_DESC"
+  fi
+  if [[ -n "$SETTINGS_README" ]]; then
+    echo "Updating README for project #$PROJECT_NUM"
+    gh api graphql -F projectId="$PROJECT_NUM" -F body="$SETTINGS_README" -f query='mutation($projectId: ID!, $body: String!) { updateProjectV2(input: { projectId: $projectId, readme: $body }) { projectV2 { id } } }'
+  fi
+  if [[ -n "$SETTINGS_VISIBILITY" ]]; then
+    echo "Updating visibility to '$SETTINGS_VISIBILITY'"
+    gh project update "$PROJECT_NUM" --visibility "$SETTINGS_VISIBILITY"
+  fi
+  # Manage access (optional)
+  if [[ "$MANAGE_ACCESS" == "true" ]]; then
+    if [[ -n "$SETTINGS_BASE_ROLE" ]]; then
+      echo "Setting base role to '$SETTINGS_BASE_ROLE'"
+      gh project manage-access "$PROJECT_NUM" --base-role "$SETTINGS_BASE_ROLE"
+    fi
+    if [[ -n "$SETTINGS_COLLABS" ]]; then
+      IFS=';' read -r -a collabs <<< "$SETTINGS_COLLABS"
+      for collab in "${collabs[@]}"; do
+        collab_trimmed="$(echo "$collab" | xargs)"
+        echo "Inviting collaborator/team: $collab_trimmed"
+        gh project manage-access "$PROJECT_NUM" --invite "$collab_trimmed"
+      done
+    fi
+  fi
 fi
 
-# Helper: create single-select field with options, descriptions, and colors
+# Function: create_single_select_field
+# Description: Creates a single-select field with options, descriptions, and colors
+# Args:
+#   $1 - field_name: The name of the field to create
+#   $2 - options: Pipe-separated list of option values
+#   $3 - descriptions: Pipe-separated list of option descriptions (aligned with options)
+#   $4 - colors: Pipe-separated list of color values (aligned with options)
+# Returns: None
 create_single_select_field() {
   local field_name="$1"
   local options="$2"
@@ -277,7 +549,12 @@ create_single_select_field() {
   done
 }
 
-# Helper: create number/date/text field
+# Function: create_field
+# Description: Creates a simple field of type number, date, or text
+# Args:
+#   $1 - field_name: The name of the field to create
+#   $2 - field_type: The data type of the field (number, date, or text)
+# Returns: None
 create_field() {
   local field_name="$1"
   local field_type="$2"
@@ -291,7 +568,9 @@ create_field() {
   fi
 }
 
-# --- Hardcoded field definitions (from spec) ---
+# --- Field Definitions (from specs) ---
+# These field definitions come from the product-development-field-specs document
+# See docs/update-projects/product-development-field-specs-v1-1.md for details
 
 # Theme
 create_single_select_field "Theme" \

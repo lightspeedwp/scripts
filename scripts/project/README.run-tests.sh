@@ -7,7 +7,19 @@ Batch runner for all Bats test files in `tests/project-scripts/`.
 
 ## Overview
 
-This script runs all Bats tests for project automation scripts, logging results to a timestamped log file. It ensures all scripts are tested for compliance, authentication, dry-run, and field spec logic.
+
+This script runs all Bats tests for project automation scripts, logging results to a timestamped log file. It ensures all scripts are tested for compliance, authentication, dry-run, field spec logic, CSV import, and access management.
+
+### New Features
+
+- **CSV-driven test coverage**: Runs tests for CSV import and access management logic in both project scripts.
+- **Authentication logic**: Validates CLI presence, authentication, and required scopes for all scripts.
+- **Helper functions**: Supports output assertion helpers and environment setup for robust test coverage.
+
+### Troubleshooting
+
+- If a test fails, check the log file for details and compare script output to test expectations.
+- Ensure all scripts under test are executable (`chmod +x script.sh`).
 
 ---
 

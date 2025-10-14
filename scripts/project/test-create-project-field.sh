@@ -1,3 +1,19 @@
+#!/usr/bin/env bash
+
+# Script Name: test-create-project-field.sh
+# Description: Test to verify build_project_field_cmd and dry-run output for project field creation.
+# Usage: ./test-create-project-field.sh [--help]
+# Author: LightSpeed WP Team
+# Date: 2025-10-14
+#
+# This script tests the project field command building functionality from update-projects.sh.
+# It sources the update-projects.sh script to access helper functions without executing the main logic,
+# then tests that the field creation command is properly constructed.
+#
+# Requirements:
+#   - update-projects.sh must be in the same directory
+#   - GitHub CLI (gh) installed (even though actual commands won't be executed)
+
 # Show help/usage if --help is passed
 if [[ "$1" == "--help" ]]; then
   echo "test-create-project-field.sh: Test for project field command helpers."
@@ -5,15 +21,6 @@ if [[ "$1" == "--help" ]]; then
   echo "  --help    Show this help message."
   exit 0
 fi
-
-#!/usr/bin/env bash
-#
-# Script Name: test-create-project-field.sh
-# Description: Test to verify build_project_field_cmd and dry-run output for project field creation.
-# Usage: ./test-create-project-field.sh
-# Author: LightSpeed WP Team
-# Date: 2025-10-12
-#
 set -euo pipefail
 
 SCRIPT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
@@ -26,7 +33,7 @@ chmod +x "$SCRIPT"
 SKIP_MAIN=1 source "$SCRIPT"
 
 PROJECT_OWNER=lightspeedwp
-PROJECT_NUMBER=32
+PROJECT_NUMBER=17
 
 # Capture command parts from helper
 mapfile -t parts < <(build_project_field_cmd "Priority" "single_select" --options "High,Medium,Low")

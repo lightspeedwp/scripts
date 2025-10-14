@@ -7,7 +7,19 @@ Test helper for verifying project field command construction and dry-run output 
 
 ## Overview
 
+
 This script is used to test the helper functions for building project field creation commands and to verify dry-run output for field creation logic. It is primarily used in Bats tests to ensure that field command construction is correct and portable.
+
+### New Features
+
+- **Helper functions**: Loads command construction helpers from `update-projects.sh` for field creation.
+- **Dry-run output**: Verifies dry-run output for field creation logic, ensuring correct command structure.
+- **Bats test coverage**: Used by `test-create-project-field.bats` to validate helper logic and output.
+
+### Troubleshooting
+
+- If expected tokens are missing in output, check the helper function logic in `update-projects.sh`.
+- Ensure the script is executable (`chmod +x test-create-project-field.sh`).
 
 ---
 

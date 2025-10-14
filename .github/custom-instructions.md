@@ -16,12 +16,7 @@ This is the central automation scripts repository for LightSpeed WP organization
 
 ### Language-Specific Instructions
 
-- [/.github/instructions/js-copilot.md](./instructions/js-copilot.md) - JavaScript/Node.js workflow guidance
-- [/.github/instructions/python-copilot.md](./instructions/python-copilot.md) - Python scripting standards
 
-### Reusable Prompts
-
-- [/.github/prompts/prompts.md](./prompts/prompts.md) - Template prompts for Copilot Chat and CLI
 
 ### Chat Modes
 

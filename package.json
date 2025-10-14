@@ -36,7 +36,6 @@
   "homepage": "https://github.com/lightspeedwp/scripts#readme",
   "devDependencies": {
     "@eslint/js": "^9.37.0",
-    "@playwright/test": "^1.56.0",
     "@typescript-eslint/eslint-plugin": "^8.46.0",
     "@typescript-eslint/parser": "^8.46.0",
     "all-contributors-cli": "^3.1.1",
@@ -45,7 +44,6 @@
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.4",
     "markdownlint-cli": "^0.45.0",
-    "playwright": "^1.56.0",
     "prettier": "^3.6.2",
     "shellcheck": "^4.1.0"
   }

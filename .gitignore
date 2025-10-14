@@ -102,3 +102,4 @@ local-settings.yaml
 *.key
 id_rsa*
 known_hosts*
+.early.coverage

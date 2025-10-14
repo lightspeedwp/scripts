@@ -6,8 +6,8 @@ setup() {
     # Get the directory containing this test file
     DIR="$( cd "$( dirname "$BATS_TEST_FILENAME" )" >/dev/null 2>&1 && pwd )"
     # Path to the script being tested
-    SCRIPT="$DIR/../scripts/run-tests.sh"
-    
+    SCRIPT="$DIR/../scripts/project/run-tests.sh"
+
     # Ensure script exists and is executable
     [ -f "$SCRIPT" ]
     [ -x "$SCRIPT" ]
