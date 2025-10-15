@@ -362,8 +362,7 @@ generate_file_readme() {
     if [[ "$DRY_RUN" == true ]]; then
         echo "[DRY RUN] Would create $readme_path with contents:" >&2
         echo -e "$content"
-        if [[ -n "$LOG_FILE" ]]; then
-            echo "[$(date '+%Y-%m-%d %H:%M:%S")] [DRY RUN] Would create $readme_path" >> "$LOG_FILE"
+        # Logging already handled by log_info above
         fi
     else
         if [[ "$MERGE_MODE" == true && -f "$readme_path" ]]; then
@@ -374,7 +373,7 @@ generate_file_readme() {
             log_success "Updated $readme_path"
         fi
     fi
-    license="$(echo "$header_block" | grep -i 'license:' | cut -d: -f2-)"
+    license="$(echo "$header_block" | grep -i 'license:' | cut -d: -f2-)" # No logging or echo here
 
     contributors="$(echo "$header_block" | grep -i 'contributors:' | cut -d: -f2-)"
 }
@@ -487,7 +486,7 @@ main() {
     # Dry-run explicit logging and output
     if [[ "$DRY_RUN" == true ]]; then
         echo "[DRY RUN] No files will be created or modified. Actions will be logged."
-        echo "[$(date '+%Y-%m-%d %H:%M:%S')] [DRY RUN] No files will be created or modified." >> "$LOG_FILE"
+    # Logging already handled by log_info above
     fi
 
     # Default to overwrite if neither merge nor overwrite specified
