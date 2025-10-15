@@ -4,7 +4,7 @@
 # Test name: test-update-readme-and-changelog.bats
 # Testing: update-readme-and-changelog.sh script
 # Description: Bats test suite for update-readme-and-changelog.sh. Validates script execution, output, and error handling. Ensures compliance with LightSpeed WP standards for shell script documentation and test coverage.
-# Version: v1.0.0
+# Version: v0.1.0
 # Date: 2025-10-15
 # Author: LightSpeedWP
 # Author URI: https://lightspeedwp.agency/

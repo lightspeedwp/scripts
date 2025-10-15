@@ -2,7 +2,7 @@
 # ============================================================================
 # Test Suite: test-client-delivery-project-auth.bats
 # Description: Authentication and scope validation tests for client-delivery-project.sh
-# Version: v0.1.1
+# Version: v0.1.0
 # Date: 2025-10-15
 # Author: LightSpeedWP
 # Author URI: https://lightspeedwp.agency/
@@ -18,6 +18,7 @@
 # Test Scope: GitHub CLI authentication, required scopes, error handling.
 # ============================================================================
 
+# Load node modules
 load '../../node_modules/bats-support/load'
 load '../../node_modules/bats-assert/load'
 

@@ -1,8 +1,0 @@
-#!/bin/bash
-function run_tests {
-    bats tests/test-hello-world.bats
-}
-
-run_tests
-
-# Ensure this helper is correct for bats

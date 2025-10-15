@@ -69,4 +69,3 @@ This command will find all workflows and update the badges in the `README.md` fi
 - **Arguments:** None
 - **Output:** Modifies the `README.md` file in place.
 - **Notes:** This function will replace the content between the `BADGES_START` and `BADGES_END` comments with the new badges.
-

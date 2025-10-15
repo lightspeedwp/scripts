@@ -16,13 +16,16 @@
 # Test Scope: example-deployment.sh script functionality.
 # ============================================================================
 
+# Load test helpers
 load '../test-helper.bash'
 
 # ----- Section: Setup function -----
+# ============================================================================
 # setup()
 # Sets up the test environment for example-deployment.sh tests.
 # - Calls setup_test_environment and setup_test_logging
 # - Sources the script to test
+# ============================================================================
 setup() {
     REPO_ROOT="$(cd "$(dirname "$BATS_TEST_FILENAME")" && cd ../.. && pwd)"
     SCRIPT="$REPO_ROOT/scripts/deployment/example-deployment.sh"

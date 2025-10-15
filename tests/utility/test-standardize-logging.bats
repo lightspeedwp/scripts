@@ -1,6 +1,6 @@
 
-
-###############################################################################
+#!/usr/bin/env bats
+# ============================================================================
 # Test Name: test-standardize-logging.bats
 # Description: Bats test suite for standardize-logging.sh utility script. Validates logging injection, dry-run, error handling, and verbose mode. Ensures compliance with LightSpeed WP standards for shell script documentation and test coverage.
 # Version: v0.1.0
@@ -27,7 +27,7 @@
 #    - Expand tests as new features are added
 # Test Scope:
 #    - Validates logging injection, dry-run, error handling, verbose mode
-###############################################################################
+# ============================================================================
 
 
 # Load test helpers
@@ -38,13 +38,13 @@ TEST_SCRIPT_PATH="${BATS_TEST_DIRNAME}/fixtures/test-script-for-logging.sh"
 
 
 # ----- Section: Setup and Teardown Functions -----
-###############################################################################
+# ============================================================================
 # Function: setup
 # Description: Sets up the test environment for standardize-logging.sh tests.
 # Arguments: None
 # Output: Creates test directory and test script without logging.
 # Notes: Ensures test script is available for all tests.
-###############################################################################
+# ============================================================================
 setup() {
     mkdir -p "${BATS_TEST_DIRNAME}/fixtures"
     cat > "${TEST_SCRIPT_PATH}" << EOF
@@ -60,13 +60,13 @@ EOF
 }
 
 
-###############################################################################
+# ============================================================================
 # Function: teardown
 # Description: Cleans up the test environment after each test.
 # Arguments: None
 # Output: Removes test script and backup.
 # Notes: Ensures no test artifacts remain.
-###############################################################################
+# ============================================================================
 teardown() {
     rm -f "${TEST_SCRIPT_PATH}"
     rm -f "${TEST_SCRIPT_PATH}.bak"
@@ -74,31 +74,31 @@ teardown() {
 
 
 # ----- Section: Functional Tests -----
-###############################################################################
+# ============================================================================
 # Test Name: "script exists and is executable"
 # Test Type: Basic Validation
 # Test Scope: Verifies that the script exists and is executable.
-###############################################################################
+# ============================================================================
 @test "script exists and is executable" {
     [ -x "${SCRIPT_PATH}" ]
 }
 
-###############################################################################
+# ============================================================================
 # Test Name: "script shows help with --help flag"
 # Test Type: Help and Usage
 # Test Scope: Verifies that the script shows help output with --help flag.
-###############################################################################
+# ============================================================================
 @test "script shows help with --help flag" {
     run "${SCRIPT_PATH}" --help
     [ "$status" -eq 0 ]
     [[ "$output" =~ "Usage:" ]]
 }
 
-###############################################################################
+# ============================================================================
 # Test Name: "script shows error for unknown option"
 # Test Type: Error Handling
 # Test Scope: Verifies that the script shows error for unknown option.
-###############################################################################
+# ============================================================================
 @test "script shows error for unknown option" {
     run "${SCRIPT_PATH}" --unknown-option
     [ "$status" -eq 1 ]

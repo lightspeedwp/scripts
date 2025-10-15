@@ -1,5 +1,5 @@
 #!/usr/bin/env bats
-#
+# ============================================================================
 # Test Name: test-update-changelog-links.bats
 # Description: Bats tests for validate-changelog-links.sh maintenance script.
 # Requirements:
@@ -8,10 +8,17 @@
 # Usage:
 #    - bats test-update-changelog-links.bats
 # Test Scope: changelog link validation.
+# ============================================================================
 
 # Load test helpers
 load ../test-helper.bash
 
+# ----- Section: Setup function -----
+# ============================================================================
+# Function Name: setup
+# Function Type: Setup
+# Function Scope: Prepares environment and resolves script path for update-badges.sh.
+# ============================================================================
 setup() {
   # Get the root directory of the repository
   local REPO_ROOT

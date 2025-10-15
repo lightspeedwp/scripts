@@ -16,5 +16,3 @@ This directory contains scripts for repository maintenance, automation, and qual
 | `update-badges.sh` | Updates workflow badges in the main `README.md` file for all workflows in the repository. |
 | `update-readme-and-changelog.sh` | Ensures all `README.md` files contain a license badge and a link to the `CONTRIBUTING.md` file. |
 | `validate-changelog-links.sh` | Validates that all entries in the `[Unreleased]` section of the `CHANGELOG.md` have proper links. |
-
-

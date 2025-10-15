@@ -1,1 +1,0 @@
-# \n\n**File Type:** cannot open `' (No such file or directory)\n\n**Shebang:** \n\n## Description\n\n_No description found._\n\n## Usage\n\n_No usage info found._\n\n## Author\n\n_No author info found._\n\n## Version\n\n_No version info found._\n\n## License\n\n_No license info found._\n\n

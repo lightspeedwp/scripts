@@ -46,4 +46,3 @@ This test suite covers the following scenarios:
 - Dry-run mode is validated to ensure no files are written to disk.
 - Paths are resolved relative to the test file location.
 - This test suite should be expanded as new features are added to the `folder-and-file-readmes.sh` script.
-

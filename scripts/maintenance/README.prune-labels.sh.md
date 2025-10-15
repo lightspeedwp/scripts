@@ -40,7 +40,7 @@ The script is executed with environment variables to control its behavior.
 | `STRICT_PRUNE`   | If `true`, deletes non-canonical labels. Default: `false`.                                              |
 | `CANON_REPO`     | The repository containing the canonical `labels.yml` file. Default: `.github`.                          |
 | `LABELS_PATH`    | The path to the `labels.yml` file in the canonical repository. Default: `.github/labels.yml`.             |
-| `PROTECT_REGEX`  | An optional regex to protect certain labels from being deleted (e.g., `"^lang:|^area:"`).                |
+| `PROTECT_REGEX`  | An optional regex to protect certain labels from being deleted (e.g., `"^lang: + ^area:"`).             |
 | `ONLY`           | A space-separated list of repositories to process exclusively.                                          |
 
 ## Options
@@ -51,20 +51,24 @@ The script is executed with environment variables to control its behavior.
 
 ## Examples
 
-### Preview Label Pruning (Dry Run)
 This command shows which labels would be pruned without actually deleting them.
+
 ```bash
 DRY_RUN=true ./prune-labels.sh
 ```
 
 ### Prune Labels with Protection
+
 This command deletes non-canonical labels but protects any labels matching the specified regex.
+
 ```bash
 DRY_RUN=false STRICT_PRUNE=true PROTECT_REGEX="^lang:|^area:" ./prune-labels.sh
 ```
 
 ### Process Specific Repositories
+
 This command processes only the specified repositories (`repo1` and `repo2`).
+
 ```bash
 ONLY="repo1 repo2" ./prune-labels.sh
 ```

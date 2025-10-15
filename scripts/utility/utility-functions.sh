@@ -1,8 +1,7 @@
 #!/bin/bash
-###############################################################################
 #
 # Script Name: utility-functions.sh
-# Description: Common utility functions for LightSpeed WP automation scripts. Provides a standardized set of functions for logging, file operations, command validation, error handling, and other common tasks used across the automation toolset.
+# Description: Common utility functions for LightSpeed WP automation scripts
 #
 # Version: v0.1.0
 # Date: 2025-10-14
@@ -18,26 +17,18 @@
 #
 # Usage: source ./utility-functions.sh [options]
 #
-# Environment Variables:
-#   LOG_LEVEL               Log level (0=ERROR, 1=WARN, 2=INFO, 3=DEBUG), defaults to INFO (2)
-#
 # Options:
 #   --help                  Show this help message
-#   --verbose               Enable verbose logging (sets LOG_LEVEL to DEBUG)
+#   --verbose               Enable verbose logging
 #
 # Examples:
 #   source ./utility-functions.sh --help        # Show help message
 #   source ./utility-functions.sh --verbose     # Enable verbose logging
 #   source ./utility-functions.sh               # Load with default settings
-#   LOG_LEVEL=3 source ./utility-functions.sh   # Set custom log level
 #
-# Notes:
+# Note:
 #   - This script is intended to be sourced, not executed directly.
-#   - After sourcing, all utility functions will be available in the current shell.
-#   - Use the log_* functions for consistent output formatting across scripts.
-#   - Functions will respect the LOG_LEVEL environment variable for output control.
 #
-###############################################################################
 
 set -euo pipefail
 
@@ -53,95 +44,43 @@ readonly LOG_LEVEL_INFO=2
 readonly LOG_LEVEL_DEBUG=3
 # Default log level
 LOG_LEVEL=${LOG_LEVEL:-$LOG_LEVEL_INFO}
-###############################################################################
-# Function: log_error
-# Description: Logs error messages to stderr in red if log level permits.
-# Arguments:
-#   $* - Message to log
-# Output: Prints colored [ERROR] message to stderr.
-###############################################################################
+# Colored logging functions
 log_error() {
     if [ "$LOG_LEVEL" -ge "$LOG_LEVEL_ERROR" ]; then
         echo -e "${COLOR_RED}[ERROR]${COLOR_NC} $*" >&2
     fi
 }
 
-###############################################################################
-#
-# Function: log_warn
-# Description: Logs warning messages to stderr in yellow if log level permits.
-# Arguments:
-#   $* - Message to log
-# Output: Prints colored [WARN] message to stderr.
-###############################################################################
 log_warn() {
     if [ "$LOG_LEVEL" -ge "$LOG_LEVEL_WARN" ]; then
         echo -e "${COLOR_YELLOW}[WARN]${COLOR_NC} $*" >&2
     fi
 }
 
-###############################################################################
-#
-# Function: log_info
-# Description: Logs informational messages to stdout in blue if log level permits.
-# Arguments:
-#   $* - Message to log
-# Output: Prints colored [INFO] message to stdout.
-###############################################################################
 log_info() {
     if [ "$LOG_LEVEL" -ge "$LOG_LEVEL_INFO" ]; then
         echo -e "${COLOR_BLUE}[INFO]${COLOR_NC} $*"
     fi
 }
 
-###############################################################################
-#
-# Function: log_success
-# Description: Logs success messages to stdout in green if log level permits.
-# Arguments:
-#   $* - Message to log
-# Output: Prints colored [SUCCESS] message to stdout.
-###############################################################################
 log_success() {
     if [ "$LOG_LEVEL" -ge "$LOG_LEVEL_INFO" ]; then
         echo -e "${COLOR_GREEN}[SUCCESS]${COLOR_NC} $*"
     fi
 }
 
-###############################################################################
-#
-# Function: log_debug
-# Description: Logs debug messages to stderr if log level permits.
-# Arguments:
-#   $* - Message to log
-# Output: Prints [DEBUG] message to stderr.
-###############################################################################
 log_debug() {
     if [ "$LOG_LEVEL" -ge "$LOG_LEVEL_DEBUG" ]; then
         echo -e "[DEBUG] $*" >&2
     fi
 }
 
-###############################################################################
-#
-# Function: command_exists
-# Description: Checks if a command exists in PATH.
-# Arguments:
-#   $1 - Command name
-# Output: Returns 0 if command exists, 1 otherwise.
-###############################################################################
+# Check if command exists
 command_exists() {
     command -v "$1" >/dev/null 2>&1
 }
 
-###############################################################################
-#
-# Function: check_dependencies
-# Description: Checks if all required commands are available in PATH.
-# Arguments:
-#   $@ - List of command names
-# Output: Logs missing dependencies and returns 1 if any are missing, 0 otherwise.
-###############################################################################
+# Check if required commands are available
 check_dependencies() {
     local missing_deps=()
 
@@ -160,15 +99,7 @@ check_dependencies() {
     return 0
 }
 
-###############################################################################
-#
-# Function: confirm
-# Description: Prompts user for yes/no confirmation. Uses default if not interactive.
-# Arguments:
-#   $1 - Prompt message (optional)
-#   $2 - Default response (optional, 'n' by default)
-# Output: Returns 0 for yes, 1 for no.
-###############################################################################
+# Prompt for yes/no confirmation
 confirm() {
     local prompt="${1:-Are you sure?}"
     local default="${2:-n}"
@@ -205,15 +136,7 @@ confirm() {
     done
 }
 
-###############################################################################
-#
-# Function: backup_file
-# Description: Creates a timestamped backup of a file in a specified directory.
-# Arguments:
-#   $1 - File to backup
-#   $2 - Backup directory (optional, defaults to ./backups)
-# Output: Prints backup path on success, logs error on failure.
-###############################################################################
+# Create backup of a file
 backup_file() {
     local file="$1"
     local backup_dir="${2:-./backups}"
@@ -236,15 +159,7 @@ backup_file() {
     fi
 }
 
-###############################################################################
-#
-# Function: retry
-# Description: Retries a command with exponential backoff up to max_attempts.
-# Arguments:
-#   $1 - Maximum number of attempts
-#   $@ - Command to execute
-# Output: Logs warnings on failure, returns 0 on success, 1 on final failure.
-###############################################################################
+# Retry a command with exponential backoff
 retry() {
     local max_attempts="$1"
     shift
@@ -267,25 +182,12 @@ retry() {
     return 1
 }
 
-###############################################################################
-#
-# Function: get_script_dir
-# Description: Returns the directory of the current script.
-# Arguments: None
-# Output: Prints script directory path.
-###############################################################################
+# Get script directory
 get_script_dir() {
     cd "$(dirname "${BASH_SOURCE[0]}")" && pwd
 }
 
-###############################################################################
-#
-# Function: validate_url
-# Description: Validates that a string is a properly formatted URL.
-# Arguments:
-#   $1 - URL string to validate
-# Output: Returns 0 if valid, logs error and returns 1 if invalid.
-###############################################################################
+# Validate URL format
 validate_url() {
     local url="$1"
     local url_regex='^https?://[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}(/.*)?$'
@@ -298,24 +200,12 @@ validate_url() {
     fi
 }
 
-###############################################################################
-#
-# Function: is_root
-# Description: Checks if the current user is root.
-# Arguments: None
-# Output: Returns 0 if root, 1 otherwise.
-###############################################################################
+# Check if running as root
 is_root() {
     [ "$EUID" -eq 0 ]
 }
 
-###############################################################################
-#
-# Function: timestamp
-# Description: Generates a timestamp in YYYY-MM-DD HH:MM:SS format.
-# Arguments: None
-# Output: Prints timestamp string.
-###############################################################################
+# Generate timestamp
 timestamp() {
     date '+%Y-%m-%d %H:%M:%S'
 }

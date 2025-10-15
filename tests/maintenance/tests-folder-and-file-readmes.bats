@@ -99,34 +99,47 @@ teardown() {
 }
 
 ###############################################################################
-# Test Name: "folder-and-file-readmes.sh: dry-run creates no files"
+
+# Test Name: "folder-and-file-readmes.sh: dry-run creates no files and logs actions"
 # Test Type: Dry-Run Option
-# Test Scope: Validates that dry-run mode does not create or modify any files.
+# Test Scope: Validates that dry-run mode does not create or modify any files and logs actions to the log file.
 ###############################################################################
-@test "folder-and-file-readmes.sh: dry-run creates no files" {
+@test "folder-and-file-readmes.sh: dry-run creates no files and logs actions" {
     local test_dir
     test_dir=$(mktemp -d)
+    local log_dir="$PWD/logs"
     run "$SCRIPT" --dry-run "$test_dir"
     [ "$status" -eq 0 ]
     [ ! -f "$test_dir/README.md" ]
+    # Find the latest log file
+    local log_file
+    log_file=$(ls -t "$log_dir"/folder-and-file-readmes.*.log 2>/dev/null | head -n1)
+    [ -n "$log_file" ]
+    grep "DRY RUN" "$log_file"
     rm -rf "$test_dir"
 }
 
 # ----- Section: Backup, Merge, and Overwrite Tests -----
 ###############################################################################
-# Test Name: "folder-and-file-readmes.sh: creates backup before overwrite"
+
+# Test Name: "folder-and-file-readmes.sh: creates backup before overwrite and logs action"
 # Test Type: Backup Option
-# Test Scope: Validates that a backup is created before overwriting an existing README.md file.
+# Test Scope: Validates that a backup is created before overwriting an existing README.md file and logs the backup action.
 ###############################################################################
-@test "folder-and-file-readmes.sh: creates backup before overwrite" {
+@test "folder-and-file-readmes.sh: creates backup before overwrite and logs action" {
     local test_dir
     test_dir=$(mktemp -d)
     touch "$test_dir/README.md"
     echo "old content" > "$test_dir/README.md"
+    local log_dir="$PWD/logs"
     run "$SCRIPT" --overwrite "$test_dir"
     [ "$status" -eq 0 ]
     ls "$test_dir"/README.md.bak.*
     [ -f "$test_dir/README.md.bak."* ]
+    local log_file
+    log_file=$(ls -t "$log_dir"/folder-and-file-readmes.*.log 2>/dev/null | head -n1)
+    [ -n "$log_file" ]
+    grep "Backup created" "$log_file"
     rm -rf "$test_dir"
 }
 

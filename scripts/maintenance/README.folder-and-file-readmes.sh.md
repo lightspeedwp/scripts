@@ -27,16 +27,19 @@ This script generates comprehensive documentation for a repository by creating `
 ## Usage
 
 To generate READMEs for a target folder:
+
 ```bash
 ./folder-and-file-readmes.sh [options] <target-folder>
 ```
 
 To generate a README for a specific file with merge or overwrite options:
+
 ```bash
 ./folder-and-file-readmes.sh --file <file> [--merge|--overwrite]
 ```
 
 To preview changes without writing files:
+
 ```bash
 DRY_RUN=true ./folder-and-file-readmes.sh <target-folder>
 ```
@@ -66,19 +69,25 @@ DRY_RUN=true ./folder-and-file-readmes.sh <target-folder>
 ## Examples
 
 ### Generate READMEs for a Folder
+
 This command generates documentation for all files in the `scripts/maintenance` directory.
+
 ```bash
 ./folder-and-file-readmes.sh scripts/maintenance
 ```
 
 ### Generate and Merge a README for a Single File
+
 This command generates a README for `update-projects.sh` and merges it with any existing documentation.
+
 ```bash
 ./folder-and-file-readmes.sh --file scripts/project/update-projects.sh --merge
 ```
 
 ### Preview README Generation with Dry Run
+
 This command shows a preview of the documentation that would be generated for the `scripts/utility` folder without actually creating or modifying any files.
+
 ```bash
 DRY_RUN=true ./folder-and-file-readmes.sh scripts/utility
 ```

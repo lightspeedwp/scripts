@@ -52,25 +52,33 @@ The script can be run with various environment variables to control its behavior
 ## Examples
 
 ### Preview Label Synchronization
+
 This command shows the changes that would be made without actually applying them.
+
 ```bash
 DRY_RUN=true ./sync-org-labels.sh
 ```
 
 ### Synchronize and Prune Labels
+
 This command applies the label synchronization and deletes any non-canonical labels.
+
 ```bash
 PRUNE=true ./sync-org-labels.sh
 ```
 
 ### Synchronize Labels for Specific Repositories
+
 This command synchronizes labels for `repo1` and `repo2` only.
+
 ```bash
 ONLY="repo1 repo2" ./sync-org-labels.sh
 ```
 
 ### Combined Dry Run and Prune for Specific Repositories
+
 This command previews the pruning of labels for `repo1` and `repo2`.
+
 ```bash
 DRY_RUN=true PRUNE=true ONLY="repo1 repo2" ./sync-org-labels.sh
 ```

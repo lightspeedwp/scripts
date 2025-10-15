@@ -62,4 +62,3 @@ This script validates that all changelog entries under the `[Unreleased]` sectio
 - **Arguments:**
   - `$*`: The error message to log.
 - **Output:** Prints the formatted error message to standard error.
-

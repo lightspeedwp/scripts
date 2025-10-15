@@ -47,4 +47,3 @@ This script serves as a dedicated test runner for all maintenance-related Bats t
 | `--junit <file>` | Output results in JUnit XML format to the specified file. |
 | `--tap <file>` | Output results in TAP format to the specified file. |
 | `--html <file>` | Output results in HTML format to the specified file. |
-

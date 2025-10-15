@@ -34,13 +34,17 @@ This script finds all README files within the repository. It performs a case-ins
 ## Examples
 
 ### Find all README files
+
 This command will list all README files in the current directory and its subdirectories.
+
 ```bash
 ./find-readmes.sh
 ```
 
 ### Show Help
+
 Displays the help message, providing information on usage and available options.
+
 ```bash
 ./find-readmes.sh --help
 ```

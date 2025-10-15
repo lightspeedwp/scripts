@@ -66,4 +66,3 @@ This script updates all `README.md` files in the repository to ensure they conta
 - **Description:** Finds all `README.md` files and adds a license badge and a contributing link if they are missing.
 - **Arguments:** None
 - **Output:** Modifies `README.md` files in place.
-

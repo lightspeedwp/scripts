@@ -1,8 +1,8 @@
 #!/usr/bin/env bats
 # ============================================================================
 # Test Suite: test-product-dev-project.bats
-# Description: End-to-end and edge case tests for product-dev-project.sh
-# Version: v0.1.1
+# Description: End-to-end and edge case tests for product-dev-project.sh. This test suite covers the core functionality of the product-dev-project.sh script. It validates command-line argument parsing, dry-run behavior, project field creation, idempotency, and error handling. Mocking is used extensively to isolate tests from network activity and ensure predictable outcomes.
+# Version: v0.1.0
 # Date: 2025-10-15
 # Author: LightSpeedWP
 # Author URI: https://lightspeedwp.agency/
@@ -18,17 +18,9 @@
 # Test Scope: CLI usage, dry-run, field creation, error handling, idempotency.
 # ============================================================================
 
+# Load node modules
 load '../../node_modules/bats-support/load'
 load '../../node_modules/bats-assert/load'
-
-# ============================================================================
-# This test suite covers the core functionality of the product-dev-project.sh
-# script. It validates command-line argument parsing, dry-run behavior,
-# project field creation, idempotency, and error handling.
-#
-# Mocking is used extensively to isolate tests from network activity and
-# ensure predictable outcomes.
-# ============================================================================
 
 # ----- Setup and Teardown functions -----
 
