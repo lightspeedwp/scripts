@@ -132,7 +132,6 @@ This is the central automation scripts repository for LightSpeed WP organization
 - [/.github/instructions/js-copilot.instructions.md](./instructions/js-copilot.instructions.md) - JavaScript/Node.js workflow standards
 - [/.github/instructions/python-copilot.instructions.md](./instructions/python-copilot.instructions.md) - Python scripting and automation standards
 - [/.github/instructions/wordpress.instructions.md](./instructions/wordpress.instructions.md) - WordPress coding standards and security patterns
-- [/.github/instructions/shell-script-copilot.instructions.md](./instructions/shell-script-copilot.instructions.md) - Shell script development standards
 
 #### Testing and Quality Instructions
 
