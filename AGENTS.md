@@ -206,7 +206,7 @@ This repository contains AI and automation agents to assist with GitHub project 
 
 ## Build and Deployment
 
-- Build command: `npm run lint && npm test` (validation pipeline)
+- Validation pipeline command: `npm run lint && npm test`
 - Output directories: `tests/` for test outputs, `logs/` for execution logs
 - Environment configurations: Development uses local validation, production uses GitHub Actions
 - Deployment commands: Deployment handled via GitHub Actions workflows in `.github/workflows/`
