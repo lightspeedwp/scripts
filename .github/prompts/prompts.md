@@ -31,24 +31,34 @@ THIS FILE CONTAINS TEMPLATE DOCUMENTATION ONLY
 This file contains **TEMPLATE DOCUMENTATION** of prompt patterns for use with  
 GitHub Copilot Chat and CLI, tailored to LightSpeed WP automation workflows.
 
+## Available Prompt Templates
+
+### Core Prompt Files
+
+- [AI Prompt Engineering Safety Review](./ai-prompt-engineering-safety-review.prompt.md) - AI prompt safety review patterns and validation
+- [Conventional Commit](./conventional-commit.prompt.md) - Conventional commit message patterns and standards
+- [Copilot Instructions Blueprint Generator](./copilot-instructions-blueprint-generator.prompt.md) - Instructions blueprint generation and validation
+- [Create AGENTS.md](./create-agentsmd.prompt.md) - AGENTS.md file creation prompt following agents.md standards
+- [Generate Custom Instructions from Codebase](./generate-custom-instructions-from-codebase.prompt.md) - Codebase analysis for custom instructions generation
+- [GitHub Copilot Starter](./github-copilot-starter.prompt.md) - Copilot initialization prompts and setup
+- [Prompt Builder](./prompt-builder.prompt.md) - Meta-prompt for building and refining prompts
+
 ## 📋 How to Use This Template Documentation
 
 ### ⚠️ IMPORTANT: Template patterns, NOT executable prompts
 
 **MANUAL PROCESS ONLY - FOR HUMANS TO FOLLOW:**
 
-1. **🔍 FIND** the relevant template pattern in the sections below
-2. **📋 COPY** the template text manually from the relevant section
-3. **✏️ CUSTOMIZE** by replacing `{placeholder}` variables with your specific  
-   requirements
+1. **🔍 FIND** the relevant template pattern in the sections below or in individual prompt files
+2. **📋 COPY** the template text manually from the relevant section or prompt file
+3. **✏️ CUSTOMIZE** by replacing `{placeholder}` variables with your specific requirements
 4. **📨 PASTE** the customized prompt manually into GitHub Copilot Chat or CLI
 5. **🔄 REFINE** based on the output and your needs
 
 **Example Manual Transformation Process:**
 
 - **📄 Template Found**: `Create a shell script for {specific_functionality}`
-- **✏️ Human Customizes**: `Create a shell script for WordPress plugin  
-deployment automation`
+- **✏️ Human Customizes**: `Create a shell script for WordPress plugin deployment automation`
 - **📨 Human Pastes** the customized version into Copilot Chat
 
 ## 🚨 Template Format Notice
