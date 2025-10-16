@@ -46,7 +46,7 @@ This repository contains AI and automation agents to assist with GitHub project 
 ### issue-type-agent
 
 - **Purpose:** Automatically analyzes GitHub issues and assigns appropriate issue types in GitHub Projects
-- **Location:** `.github/agents/issue-type.agent.js`
+- **Location:** `.github/agents/issue-type-agent.js`
 - **Integration:** GitHub Actions (`.github/workflows/auto-issue-type.yml`)
 - **Usage:** Automatically runs when issues are opened or reopened
 - **Standards:** Aligned with org-wide issue types and project templates
