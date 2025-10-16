@@ -370,4 +370,4 @@ create_feature_branch() {
 
 ---
 
-Follow these instructions for all shell scripts in the repository to ensure documentation is complete, consistent, and maintainable. For further details, see [bats-tests-and-runner-scripts.md](./bats-tests-and-runner-scripts.md) and [shell-script-header-and-docs.md](./shell-script-header-and-docs.md).
+Follow these instructions for all shell scripts in the repository to ensure documentation is complete, consistent, and maintainable. For further details, see [bats-tests-and-runner-scripts.md](./bats-tests-and-runner-scripts.md) and [shell-script-header-and-docs.md](./shell-script-header-and-docs.md). For further details, see [custom-instructions.md](../custom-instructions.md).

@@ -1,0 +1,6 @@
+Priority,SINGLE_SELECT,High,Medium,Low
+Status,SINGLE_SELECT,Todo,In Progress,Done
+Severity,SINGLE_SELECT,Low,Medium,High
+Assignee,TEXT,
+Due Date,DATE,
+Story Points,NUMBER,

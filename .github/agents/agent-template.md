@@ -22,6 +22,7 @@ Use this template to document and implement new agents in the `.github/agents/` 
 ## Example Entry
 
 ### copilot-swe-agent
+
 - **Purpose:** Automates code suggestions and review for SWE tasks
 - **Location:** `.github/agents/copilot-swe-agent.js`
 - **Integration:** GitHub Actions, Copilot Chat, CodeRabbit

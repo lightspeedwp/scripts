@@ -152,7 +152,8 @@ touch "$LOG_FILE"
 generate_folder_readme() {
     local folder_path="$1"
     local readme_path="$folder_path/README.md"
-    local content="# Folder Contents\n\nThis folder contains scripts and documentation for automation.\n\n---\n\nAuto-generated documentation stub by folder-and-file-readmes.sh on $(date)\n"
+    local content
+    content="# Folder Contents\n\nThis folder contains scripts and documentation for automation.\n\n---\n\nAuto-generated documentation stub by folder-and-file-readmes.sh on $(date)\n"
 
     # Ensure backup logic always creates a backup file before overwrite/merge, even if README does not exist or is empty
     # For folder README
@@ -363,7 +364,6 @@ generate_file_readme() {
         echo "[DRY RUN] Would create $readme_path with contents:" >&2
         echo -e "$content"
         # Logging already handled by log_info above
-        fi
     else
         if [[ "$MERGE_MODE" == true && -f "$readme_path" ]]; then
             echo -e "$content" >> "$readme_path"

@@ -27,7 +27,6 @@ This file provides workspace-specific instructions for GitHub Copilot and CodeRa
 | [.github/instructions/python-copilot.md](.github/instructions/python-copilot.md) | Python scripting standards |
 <!-- INSTRUCTIONS-TABLE-END -->
 
-
 ## Repository Overview
 
 This is the central automation scripts repository for LightSpeed WP organization, containing shell scripts, GitHub workflows, and organizational governance files aligned with our development standards.
@@ -41,8 +40,6 @@ This is the central automation scripts repository for LightSpeed WP organization
 - [/.github/instructions/markdown-copilot.md](./instructions/markdown-copilot.md) - Documentation and markdown standards
 
 ### Language-Specific Instructions
-
-
 
 ### Chat Modes
 
@@ -62,15 +59,13 @@ All instructions follow the pattern: "You are a [role]. Follow our [framework/pa
 
 ### Repository Structure Compliance
 
-```
+```md
 ├── scripts/           # Shell scripts (kebab-case naming)
 ├── workflows/         # GitHub Actions workflows
 ├── tests/            # Bats tests and dry-run scripts
 ├── .github/          # GitHub templates, Copilot instructions, and configuration
 └── LIGHTSPEED_AUTOMATION_HANDBOOK.md  # Organization-wide documentation
 ```
-
-
 
 ## Usage Guidelines
 

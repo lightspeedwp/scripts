@@ -1,4 +1,49 @@
+---
+applyTo: '**/*'
+description: 'Contributor types and standards for LightSpeed WP Copilot'
+version: '1.1'
+author: 'LightSpeed WP Team'
+audience: ['contributor', 'maintainer', 'reviewer', 'automation']
+status: 'approved'
+changelog: ['2025-10-15: Initial version', '2025-10-15: Added extended fields for governance']
+tags: ['standards', 'contributor', 'roles']
+feedback: 'Submit suggestions or issues via repository discussions or PR comments.'
+deprecated: false
+related: ['custom-instructions.md', 'AGENTS.md', 'prompts.md', 'chatmodes.md']
+updated: '2025-10-15'
+created: '2025-10-15'
+---
+
 # Contributor Types - GitHub Copilot Instructions
+
+You are a contributor. Follow our contributor role standards and workflow patterns to create and maintain automation scripts, documentation, and CI/CD workflows. Avoid missing documentation, non-compliant code, or unsafe practices unless specified.
+
+## Purpose and Scope
+Defines contributor types, standards, and templates for LightSpeed WP Copilot.
+
+## Core Principles
+- Clarity, maintainability, and role-based standards
+- Actionable, testable code
+- Consistent structure and documentation
+- Integration with org-wide standards
+
+## Required Sections
+- Role definition and context
+- Framework and standards to follow
+- Task types and scenarios
+- Anti-patterns and explicit exclusions
+- Examples and references
+
+## Formatting Guidelines
+- Use markdown headings and bullet lists
+- Include code blocks for templates and examples
+- Reference related files using relative links
+
+## Integration References
+- See `.github/custom-instructions.md` and related agent, prompt, and chatmode files
+
+## Review and Enforcement
+- Use the checklist in `create-or-update-copilot.instructions.md` to validate clarity, completeness, and compliance
 
 ## Core Contributors
 
@@ -101,3 +146,9 @@ You are a product manager. Follow our project planning templates to organize wor
 ### For Release Planning
 
 "Help plan release [version] using our changelog automation. Review completed features, identify risks, and suggest deployment strategy."
+
+---
+
+Follow these instructions for all contributor types in the repository to ensure consistency and quality. For further details, see [custom-instructions.md](../custom-instructions.md).
+
+<!-- End of Contributor Types Instructions -->

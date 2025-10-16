@@ -1,4 +1,18 @@
 #!/bin/bash
+# Logging setup
+LOG_DIR="$(cd "$(dirname "$0")/../../logs" && pwd)"
+mkdir -p "$LOG_DIR"
+LOG_DIR="$(cd "$(dirname "$0")/../../../logs" && pwd)"
+SCRIPT_NAME="$(basename "$0" .sh)"
+LOG_DATE="$(date +%d-%m-%Y)"
+LOG_FILE="$LOG_DIR/$SCRIPT_NAME-$LOG_DATE.log"
+
+# Logging function: logs to stdout and appends to log file
+log_msg() {
+    local msg="$1"
+    echo "$msg"
+    echo "$msg" >> "$LOG_FILE"
+}
 ###############################################################################
 #
 # Script Name: validate-release.sh

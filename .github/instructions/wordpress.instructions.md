@@ -1,7 +1,8 @@
 ---
+name: 'WordPress Development'
 applyTo: 'wp-content/plugins/**,wp-content/themes/**,**/*.php,**/*.inc,**/*.js,**/*.jsx,**/*.ts,**/*.tsx,**/*.css,**/*.scss,**/*.json'
 description: 'Coding, security, and testing rules for WordPress plugins and themes'
-version: '1.1'
+version: '0.1.0'
 author: 'LightSpeed WP Team'
 audience: ['contributor', 'maintainer', 'reviewer', 'automation']
 status: 'approved'
@@ -16,9 +17,39 @@ created: '2025-10-15'
 
 # WordPress Development — Copilot Instructions
 
+You are a WordPress developer. Follow our WordPress coding standards and security patterns to create and maintain plugins and themes. Avoid modifying WordPress core, using unsafe practices, or omitting documentation unless specified.
+
+## Purpose and Scope
+This instruction covers coding, security, and testing standards for WordPress plugins and themes. It is intended for contributors, maintainers, and reviewers working on WordPress codebases.
+
+## Core Principles
+- Clarity, security, and maintainability
+- Actionable, testable code
+- Consistent structure and documentation
+- Integration with org-wide standards
+
+## Required Sections
+- Role definition and context
+- Framework and standards to follow
+- Task types and scenarios
+- Anti-patterns and explicit exclusions
+- Examples and references
+
+## Formatting Guidelines
+- Use markdown headings and bullet lists
+- Include code blocks for templates and examples
+- Reference related files using relative links
+
+## Integration References
+- See `.github/custom-instructions.md` and related agent, prompt, and chatmode files
+
+## Review and Enforcement
+- Use the checklist in `create-or-update-copilot.instructions.md` to validate clarity, completeness, and compliance
+
 **Goal:** Generate WordPress code that is secure, performant, testable, and compliant with official WordPress practices. Prefer hooks, small functions, dependency injection (where sensible), and clear separation of concerns.
 
 ## 1) Core Principles
+
 - Never modify WordPress core. Extend via **actions** and **filters**.
 - For plugins, always include a header and guard direct execution in entry PHP files.
 - Use unique prefixes or PHP namespaces to avoid global collisions.
@@ -26,6 +57,7 @@ created: '2025-10-15'
 - Make user‑facing strings translatable and load the correct text domain.
 
 ### Minimal plugin header & guard
+
 ```php
 <?php
 defined('ABSPATH') || exit;
@@ -41,6 +73,7 @@ defined('ABSPATH') || exit;
 ```
 
 ## 2) Coding Standards (PHP, JS, CSS, HTML)
+
 - Follow **WordPress Coding Standards (WPCS)** and write DocBlocks for public APIs.
 - PHP: Prefer strict comparisons (`===`, `!==`) where appropriate. Be consistent with array syntax and spacing as per WPCS.
 - JS: Match WordPress JS style; prefer `@wordpress/*` packages for block/editor code.
@@ -48,6 +81,7 @@ defined('ABSPATH') || exit;
 - PHP 7.4+ compatible patterns unless the project specifies higher. Avoid using features not supported by target WP/PHP versions.
 
 ### Linting setup suggestions
+
 ```xml
 <!-- phpcs.xml -->
 <?xml version="1.0"?>
@@ -67,18 +101,17 @@ defined('ABSPATH') || exit;
 ```json
 // composer.json (snippet)
 {
-  "require-dev": {
-    "dealerdirect/phpcodesniffer-composer-installer": "^1.0",
-    "wp-coding-standards/wpcs": "^3.0",
-    "phpcompatibility/php-compatibility": "^9.0"
-  },
-  "scripts": {
-    "lint:php": "phpcs -p",
-    "fix:php": "phpcbf -p"
-  }
+    "require-dev": {
+        "dealerdirect/phpcodesniffer-composer-installer": "^1.0",
+        "wp-coding-standards/wpcs": "^3.0",
+        "phpcompatibility/php-compatibility": "^9.0"
+    },
+    "scripts": {
+        "lint:php": "phpcs -p",
+        "fix:php": "phpcbf -p"
+    }
 }
 ```
-
 ```json
 // package.json (snippet)
 {
@@ -92,6 +125,7 @@ defined('ABSPATH') || exit;
 ```
 
 ## 3) Security & Data Handling
+
 - **Escape on output, sanitize on input.**
   - Escape: `esc_html()`, `esc_attr()`, `esc_url()`, `wp_kses_post()`.
   - Sanitize: `sanitize_text_field()`, `sanitize_email()`, `sanitize_key()`, `absint()`, `intval()`.
@@ -187,11 +221,21 @@ require $_tests_dir . '/includes/bootstrap.php';
 - Use clear, imperative commit messages; reference issues/tickets and summarize impact.
 
 ## 12) What Copilot Must Ensure (Checklist)
-- ✅ Unique prefixes/namespaces; no accidental globals.  
-- ✅ Nonce + capability checks for any write action (AJAX/REST/forms).  
-- ✅ Inputs sanitized; outputs escaped.  
-- ✅ User‑visible strings wrapped in i18n with correct text domain.  
-- ✅ Assets enqueued via APIs (no inline script/style).  
-- ✅ Tests added/updated for new behaviors.  
-- ✅ Code passes PHPCS (WPCS) and ESLint where applicable.  
+- ✅ Unique prefixes/namespaces; no accidental globals.
+- ✅ Nonce + capability checks for any write action (AJAX/REST/forms).
+- ✅ Inputs sanitized; outputs escaped.
+- ✅ User‑visible strings wrapped in i18n with correct text domain.
+- ✅ Assets enqueued via APIs (no inline script/style).
+- ✅ Tests added/updated for new behaviors.
+- ✅ Code passes PHPCS (WPCS) and ESLint where applicable.
 - ✅ Avoid direct DB concatenation; always prepare queries.
+- ✅ Follow WordPress coding standards and best practices.
+- ✅ Documentation updated for new features or changes.
+- ✅ No use of deprecated functions or patterns.
+- ✅ Performance considerations: avoid heavy lifting on common hooks.
+- ✅ Consistent versioning in asset URLs and plugin headers.
+- ✅ Proper use of hooks (actions/filters) for extensibility.
+
+---
+
+Follow these instructions for WordPress development in the repository to ensure maintainability, coverage, and documentation quality. For further details, see [custom-instructions.md](../custom-instructions.md).

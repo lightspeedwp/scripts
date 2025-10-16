@@ -1,8 +1,54 @@
-# LightSpeed WP Shell Script and Bats Test Standards
+---
+applyTo: '**/*'
+description: 'Shell script and Bats test standards for LightSpeed WP'
+version: '0.1.0'
+author: 'LightSpeed WP Team'
+audience: ['contributor', 'maintainer', 'reviewer', 'automation']
+status: 'approved'
+changelog: ['2025-10-15: Initial version', '2025-10-15: Added extended fields for governance']
+tags: ['standards', 'shell', 'bats', 'testing']
+feedback: 'Submit suggestions or issues via repository discussions or PR comments.'
+deprecated: false
+related: ['custom-instructions.md', 'AGENTS.md', 'prompts.md', 'chatmodes.md']
+updated: '2025-10-15'
+created: '2025-10-15'
+---
+
+You are a shell script developer and test author. Follow our LightSpeed WP documentation, scripting, and testing standards to create and maintain shell scripts, runner scripts, and Bats test suites. Avoid truncating, duplicating, omitting header fields, missing inline documentation, non-POSIX features, complex dependencies, or undocumented options unless specified.
+...existing code...
 
 You are a shell script developer and test author. Follow our LightSpeed WP documentation, scripting, and testing standards to create and maintain shell scripts, runner scripts, and Bats test suites. Avoid truncating, duplicating, omitting header fields, missing inline documentation, non-POSIX features, complex dependencies, or undocumented options unless specified.
 
----
+**Strictly preserve all original content, context, and examples when refactoring or updating instruction files. Do not strip out, abbreviate, or remove any information unless explicitly directed. All merges and updates must be traceable and maintain full historical context.**
+
+## Purpose and Scope
+Covers header and inline documentation standards, runner script structure, Bats test file standards, directory/naming conventions, logging, output, coverage, and CI/CD integration.
+
+## Core Principles
+- Clarity, maintainability, and testability
+- Actionable, testable code
+- Consistent structure and documentation
+- Integration with org-wide standards
+
+## Required Sections
+- Role definition and context
+- Framework and standards to follow
+- Task types and scenarios
+- Anti-patterns and explicit exclusions
+- Examples and references
+
+## Formatting Guidelines
+- Use markdown headings and bullet lists
+- Include code blocks for templates and examples
+- Reference related files using relative links
+
+## Integration References
+- See `.github/custom-instructions.md` and related agent, prompt, and chatmode files
+
+## Review and Enforcement
+- Use the checklist in `create-or-update-copilot.instructions.md` to validate clarity, completeness, and compliance
+
+# LightSpeed WP Shell Script and Bats Test Standards
 
 ## Introduction
 
@@ -18,16 +64,11 @@ This document merges all LightSpeed WP instructions for shell scripts, runner sc
 Use this as the single source of truth for all scripting and testing in the repository.
 
 ---
+---
 
 ## Directory and Naming Conventions
 
-- **Shell scripts and runner scripts**: Use kebab-case (e.g., `run-utility-tests.sh`). Place in `/scripts/{domain}/`.
-- **Bats test files**: Use kebab-case (e.g., `test-run-utility-tests.bats`). Place in `/tests/{domain}/`.
-- **README.md**: Each domain in `/scripts/` and `/tests/` must have a README describing runner/test process and conventions.
-- **Test helper**: `/tests/test-helper.bash` is required and must be loaded in every test file using the correct relative path.
-
   - See the **Test Helper File** and **Loader Scenarios** sections below for full details and best practices on loader usage, including variable-based and dynamic path resolution.
-
   - Always include the inline documentation note `# Load test helpers` above the loader line.
 
 - **Coverage summary**: `/tests/TEST_COVERAGE_SUMMARY.md` must list all runner scripts and test files, with coverage status and notes.
@@ -48,7 +89,6 @@ Use this as the single source of truth for all scripting and testing in the repo
   - Script Name
   - Description (detailed, single paragraph)
   - Version
-  - Date
   - Author
   - Github Contributors
   - Author URI
@@ -63,8 +103,7 @@ Use this as the single source of truth for all scripting and testing in the repo
 
 - **Inline function documentation:**
 
-  - Every function must be preceded by a comment block:
-
+  You are a shell script developer and test author. Follow our LightSpeed WP documentation, scripting, and testing standards to create and maintain shell scripts, runner scripts, and Bats test suites. Avoid truncating, duplicating, omitting header fields, missing inline documentation, non-POSIX features, complex dependencies, or undocumented options unless specified.
     ```bash
     # Function: function_name
     # Description: ...
@@ -109,7 +148,6 @@ Use this as the single source of truth for all scripting and testing in the repo
 - `--help`           Show help message
 - `--verbose`        Show detailed output
 - `--quiet`          Show minimal output
-- `--list`           List all available test files
 - `--test <name>`    Run a specific test file by name (without `.bats`)
 - `--color`          Enable colored output
 - `--no-color`       Disable colored output
@@ -135,64 +173,35 @@ Use this as the single source of truth for all scripting and testing in the repo
 - `--help-general`   Show help for general options
 - `--version`        Show script version
 - `--update`         Update runner script
-- `--install-deps`   Install dependencies
 - `--check-deps`     Check dependencies
 - `--dry-run`        Show what would be done
 - `--force`          Force execution
 - `--skip`           Skip tests/checks
 - `--only`           Run only specified tests
-- `--config <file>`  Specify config file
 - `--env <key=val>`  Set environment variable
 - `--list-env`       List environment variables
 - `--clear-env`      Clear environment variables
 - `--help-all`       Show help for all options
 
----
 
 ## Bats Test File Standards
-
-### Naming and Location
-
-- Use kebab-case for all test file names (e.g., `test-run-utility-tests.bats`).
 - Place test files in the corresponding domain folder under `/tests/`.
-
 ### Test File Header
 
 - Every Bats test file must begin with a standardized header block immediately following the `#!/usr/bin/env bats` shebang.
 - The header must provide essential metadata (see example below).
 
-**Example Header:**
 
 ```bats
-#!/usr/bin/env bats
-# ============================================================================
-# Test name: test-validate-release.bats
-# Testing: validate-release.sh script
-# Description: Brief summary of the test suite's purpose.
 # Version: v1.0.0
-# Date: YYYY-MM-DD
 # Author: LightSpeedWP
 # Author URI: https://lightspeedwp.agency/
-# License: GPL v3 or later
-# License URI: https://www.gnu.org/licenses/gpl-3.0.html
-# Github Author: @github-username
-# Requirements:
-#   - bats-core         # The testing framework
-#   - test-helper.bash  # Shared test helpers
 # Usage:
-#   - bats path/to/test-file.bats    # How to run the test suite directly
 # Options:
 #  - None             # List any command-line options the test script itself might parse
-# Test Scope:
-#   - Outline of what is and is not being tested by this file.
-# ============================================================================
-```
 
-### Test Helper File
 
 - The test helper must be loaded immediately below the header in every Bats test file.
-- Always include the inline documentation note `# Load test helpers` above the loader line.
-- Use a variable-based loader to ensure portability and correctness for all folder depths and scenarios.
 
   ```bats
   # Load test helpers
@@ -214,7 +223,6 @@ Use this as the single source of truth for all scripting and testing in the repo
   # Load test helpers
   load "$(dirname \"$BATS_TEST_FILENAME\")/../test-helper.bash"
   ```
-
 - **Test file in deeper nested folder (e.g., `/tests/{domain}/subdir/`):**
 
   - You may need to adjust the path, e.g.:
@@ -232,25 +240,10 @@ Use this as the single source of truth for all scripting and testing in the repo
 - If you refactor or move test files, always verify the loader path resolves correctly.
 - Never hardcode static relative paths unless required by project constraints.
 - If in doubt, use:
-
   ```bats
   # Load test helpers
-  load "$(dirname \"$BATS_TEST_FILENAME\")/../test-helper.bash"
   ```
-
   and test with `bats` from the repo root and from the test folder.
-
-- If your test files may be nested arbitrarily deep, consider using a helper function to search for `test-helper.bash` upward from the test file's location.
-
-#### What NOT to Do
-
-- Do not use a static path like `load '../test-helper.bash'` unless you are certain the test file is always one level deep.
-- Do not omit the loader or the documentation note above it.
-- Do not place the loader anywhere except immediately below the header block.
-- Do not use inconsistent or ambiguous loader paths.
-- Do not use a loader path that fails if the test file is moved or the folder structure changes.
-
-This ensures all Bats test files can reliably load the test helper regardless of their location in the directory tree.
 
 ### Section Headers
 
@@ -412,4 +405,6 @@ Run all test runner scripts and Bats test suites for {domain}. Report any errors
 
 ---
 
-Follow these instructions for all shell scripts, runner scripts, and Bats test files in the repository to ensure maintainability, coverage, and documentation quality. For further details, see [shell-script-header-and-docs.md](./shell-script-header-and-docs.md) and [shell-script-copilot.md](./shell-script-copilot.md).
+Follow these instructions for all shell scripts, runner scripts, and Bats test files in the repository to ensure maintainability, coverage, and documentation quality. For further details, see [custom-instructions.md](../custom-instructions.md).
+
+<!-- End of Bats Tests and Runner Scripts Instructions -->

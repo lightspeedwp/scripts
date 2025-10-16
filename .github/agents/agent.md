@@ -10,10 +10,12 @@
   - Invoked automatically via workflow or manually via Copilot Chat
   - Requires access to Copilot and CodeRabbit APIs
   - Example workflow integration:
-    ```yaml
+
+    ```yml
     - name: Run Copilot SWE Agent
       run: node .github/agents/copilot-swe-agent.js
     ```
+
 - **Maintenance Notes:**
   - Update agent logic as Copilot/CodeRabbit APIs evolve
   - Test integration with CI workflows and review automation

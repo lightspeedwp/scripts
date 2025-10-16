@@ -16,6 +16,23 @@ This repository includes comprehensive GitHub Copilot instructions to assist wit
 - **[Reusable Prompts](/.github/prompts/prompts.md)**: Template prompts for Copilot Chat and CLI
 - **[Chat Modes](/.github/chatmodes/chatmodes.md)**: Scenario-based development contexts
 
+## Project Script Bats Tests
+
+- `test-project-auth.bats` — Shared authentication and scope validation for all project scripts. Use with `SCRIPT=path/to/script.sh`.
+- `test-project-csv.bats` — Shared CSV import and dry-run output tests for all project scripts. Use with `SCRIPT=path/to/script.sh`.
+- `test-client-delivery-project.bats` — End-to-end and edge-case tests for client-delivery-project.sh
+- `test-product-dev-project.bats` — End-to-end and edge-case tests for product-dev-project.sh
+- `test-update-projects.bats` — End-to-end and edge-case tests for update-projects.sh
+
+## Usage Pattern for Shared Tests
+
+To run shared tests for a specific script:
+
+```bash
+SCRIPT=path/to/script.sh bats tests/project-scripts/test-project-auth.bats
+SCRIPT=path/to/script.sh bats tests/project-scripts/test-project-csv.bats
+```
+
 ## Repository Structure
 
 - `scripts/`: Shell scripts for automation tasks.
@@ -92,8 +109,6 @@ npm run format     # Format code with Prettier
 - CLI scripts validate required parameters and provide usage/help output.
 - Errors are logged with timestamps and context for easier troubleshooting.
 - Automated workflows enforce status checks and fail on lint/test errors.
-
-
 
 ## Release & Changelog
 

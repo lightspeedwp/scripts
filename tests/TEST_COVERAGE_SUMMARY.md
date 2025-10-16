@@ -63,25 +63,29 @@ bats tests/maintenance/test-prune-labels.bats
 ## Best Practices
 
 - Setup/teardown for isolated environments
-- Temporary directories for file operations
 - Descriptive, maintainable test names
-- Inline documentation and test headers
 - Coverage of both happy paths and failure scenarios
-- Use the main test runner script for consistent test execution and reporting
 
-## Future Additions
 
-- Expand tests for `/scripts/deployment/` and `/scripts/testing/`
 - Add integration tests for MCP server scripts and end-to-end workflows
-- Increase coverage for new subfolders as automation grows
 - Add more runner script options and reporting features
-
 ## Reference
 
 See [tests/TEST_COVERAGE_SUMMARY.md](tests/TEST_COVERAGE_SUMMARY.md) for full details.
-Run all tests with `./run-all-tests.sh`, `npm test`, or `bats tests/`.
+### Project Scripts
 
-## Test Files
+- product-dev-project.sh: Covered by test-project-auth.bats, test-project-csv.bats, test-product-dev-project.bats
+- client-delivery-project.sh: Covered by test-project-auth.bats, test-project-csv.bats, test-client-delivery-project.bats
+- update-projects.sh: Covered by test-update-projects.bats
+
+#### Shared Test Usage
+
+Run shared tests for any project script with:
+
+```bash
+SCRIPT=path/to/script.sh bats tests/project-scripts/test-project-auth.bats
+SCRIPT=path/to/script.sh bats tests/project-scripts/test-project-csv.bats
+```
 
 ### 1. **tests/test-utility-functions.bats** (370+ tests)
 

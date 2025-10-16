@@ -15,7 +15,10 @@
 #    - bats-assert
 # Usage:
 #    - npx bats tests/project-scripts/test-client-delivery-project.bats
-# Test Scope: CLI usage, dry-run, field creation, error handling, idempotency.
+#    - For CSV import and authentication tests, use:
+#        SCRIPT=path/to/client-delivery-project.sh bats tests/project-scripts/test-project-csv.bats
+#        SCRIPT=path/to/client-delivery-project.sh bats tests/project-scripts/test-project-auth.bats
+# Test Scope: CLI usage, dry-run, field creation, error handling, idempotency. Shared tests cover CSV import and authentication.
 # ============================================================================
 
 # Load nod modules
@@ -27,8 +30,13 @@ load '../../node_modules/bats-assert/load'
 # script. It validates command-line argument parsing, dry-run behavior,
 # project field creation, idempotency, and error handling.
 #
-# Mocking is used extensively to isolate tests from network activity and
-# ensure predictable outcomes.
+# For CSV import and authentication, use the shared test suites:
+#   - test-project-csv.bats
+#   - test-project-auth.bats
+#
+# Example:
+#   SCRIPT=path/to/client-delivery-project.sh bats tests/project-scripts/test-project-csv.bats
+#   SCRIPT=path/to/client-delivery-project.sh bats tests/project-scripts/test-project-auth.bats
 # ============================================================================
 
 # ----- Setup and Teardown functions -----
@@ -155,6 +163,7 @@ teardown() {
     source '$DIR/../../scripts/project/update-projects.sh'
     update_projects_main 'Client Delivery' acme-corp 42
     update_projects_main 'Client Delivery' acme-corp 42
+    exit $? # propagate status
   "
   [ "$status" -eq 0 ]
   assert_output --partial "Field 'Theme' already exists"
@@ -174,7 +183,7 @@ teardown() {
 @test "handles environment variable overrides" {
   export ORG="customorg"
   export DRY_RUN=true
-  run "$SCRIPT" testclient
+  run bash -c "$SCRIPT customorg testclient; exit $?"
   [ "$status" -eq 0 ]
   assert_output --partial "Creating project 'Client – testclient' under organisation 'customorg'"
 }
@@ -209,7 +218,11 @@ teardown() {
 ###############################################################################
 @test "errors on invalid field spec (simulate)" {
   export DRY_RUN=true
-  run "$SCRIPT" "" 42
+  run bash -c "
+    source '$DIR/../../scripts/project/update-projects.sh'
+    update_projects_main 'Client Delivery' '' 42
+    exit $? # propagate status
+  "
   [ "$status" -eq 1 ]
   assert_output --partial "Product/Client name is required"
 }

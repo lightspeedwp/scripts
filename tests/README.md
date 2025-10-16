@@ -89,19 +89,23 @@ teardown() {
 4. Mock external dependencies when possible
 5. Test edge cases and error conditions
 
-## Test Categories
 
-### Unit Tests
+## Project Script Tests
 
-Test individual functions and script components in isolation.
+- `test-project-auth.bats` — Shared authentication and scope validation for all project scripts. Use with `SCRIPT=path/to/script.sh`.
+- `test-project-csv.bats` — Shared CSV import and dry-run output tests for all project scripts. Use with `SCRIPT=path/to/script.sh`.
+- `test-client-delivery-project.bats` — End-to-end and edge-case tests for client-delivery-project.sh
+- `test-product-dev-project.bats` — End-to-end and edge-case tests for product-dev-project.sh
+- `test-update-projects.bats` — End-to-end and edge-case tests for update-projects.sh
 
-### Integration Tests
+### Usage Pattern for Shared Tests
 
-Test complete script workflows and interactions between components.
+To run shared tests for a specific script:
 
-### Validation Tests
-
-Dry-run tests that validate configuration and setup without making changes.
+```bash
+SCRIPT=path/to/script.sh bats tests/project-scripts/test-project-auth.bats
+SCRIPT=path/to/script.sh bats tests/project-scripts/test-project-csv.bats
+```
 
 ## Helper Functions
 

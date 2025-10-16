@@ -44,7 +44,7 @@ set -euo pipefail
 # Global variables
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 SCRIPT_NAME="$(basename "${BASH_SOURCE[0]}" .sh)"
-LOG_DIR="${SCRIPT_DIR}/../logs"
+LOG_DIR="$(cd \"$(dirname \"$0\")/../../../logs\" && pwd)"
 LOG_FILE="${LOG_DIR}/${SCRIPT_NAME}.log"
 
 # Readonly variables
@@ -291,8 +291,9 @@ function update_script_file() {
     fi
 
     # Check if logging is already set up
-    if grep -q "Standardized logging" "${script_file}"; then
+    if grep -q "Standardized logging" "${script_file}" || grep -q "LOG_FILE" "${script_file}"; then
         log_warn "Logging already set up in ${script_file}. Skipping."
+        echo "already set up"
         return 0
     fi
 
@@ -316,6 +317,7 @@ function update_script_file() {
     # Handle dry run
     if [[ "${DRY_RUN}" == "true" ]]; then
         log_info "[DRY RUN] Would update ${script_file} at line ${insert_line}"
+        echo "[DRY RUN]"
         return 0
     fi
 
@@ -336,6 +338,7 @@ function update_script_file() {
 
     # Log the update
     log_info "Updated ${script_file} with standardized logging"
+    echo "Updated"
 }
 
 #############################################################################

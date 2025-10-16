@@ -5,6 +5,7 @@ This repository contains AI and automation agents to assist with GitHub project 
 ## Purpose
 
 This file serves as a registry for agent implementations in the repository, including:
+
 - Custom GitHub Copilot agents
 - Issue management automation agents
 - Workflow automation agents

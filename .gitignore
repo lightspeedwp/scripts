@@ -1,3 +1,5 @@
+# Exclude logs directory
+/logs/
 # Logs
 *.log
 logs/

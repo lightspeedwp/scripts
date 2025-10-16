@@ -14,7 +14,10 @@
 #    - test-helper.bash
 # Usage:
 #    - bats test-update-projects.bats
-# Test Scope: Tests argument parsing, help output, and basic functionality without requiring actual GitHub CLI interaction.
+#    - For CSV import and authentication tests, use:
+#        SCRIPT=path/to/update-projects.sh bats tests/project-scripts/test-project-csv.bats
+#        SCRIPT=path/to/update-projects.sh bats tests/project-scripts/test-project-auth.bats
+# Test Scope: Argument parsing, help output, and basic functionality. Shared tests cover CSV import and authentication.
 
 # Load test helpers
 load '../test-helper.bash'

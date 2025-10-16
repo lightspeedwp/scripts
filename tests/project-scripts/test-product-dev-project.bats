@@ -15,7 +15,12 @@
 #    - bats-assert
 # Usage:
 #    - npx bats tests/project-scripts/test-product-dev-project.bats
-# Test Scope: CLI usage, dry-run, field creation, error handling, idempotency.
+# Test Scope: CLI usage, dry-run, field creation, error handling, idempotency. Shared tests cover CSV import and authentication.
+
+# Shared Tests:
+# For CSV import and authentication, use:
+#   SCRIPT=path/to/product-dev-project.sh bats tests/project-scripts/test-project-csv.bats
+#   SCRIPT=path/to/product-dev-project.sh bats tests/project-scripts/test-project-auth.bats
 # ============================================================================
 
 # Load node modules

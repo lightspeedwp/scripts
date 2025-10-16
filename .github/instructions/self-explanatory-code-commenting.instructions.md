@@ -98,7 +98,7 @@ Before writing a comment, ask:
 ```javascript
 /**
  * Calculate compound interest using the standard formula.
- * 
+ *
  * @param {number} principal - Initial amount invested
  * @param {number} rate - Annual interest rate (as decimal, e.g., 0.05 for 5%)
  * @param {number} time - Time period in years
@@ -171,3 +171,7 @@ Before committing, ensure your comments:
 ## Summary
 
 Remember: **The best comment is the one you don't need to write because the code is self-documenting.**
+
+---
+
+These instructions are designed to help you write self-explanatory code comments. For further details, see [custom-instructions.md](../custom-instructions.md).

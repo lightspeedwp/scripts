@@ -36,7 +36,8 @@ set -euo pipefail
 
 # Configuration
 readonly SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-readonly LOG_FILE="${SCRIPT_DIR}/../logs/deployment.log"
+LOG_DIR="$(cd \"$(dirname \"$0\")/../../../logs\" && pwd)"
+readonly LOG_FILE="$LOG_DIR/deployment.log"
 
 # Default values
 ENVIRONMENT="${1:-staging}"
