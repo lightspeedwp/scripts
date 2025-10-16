@@ -2,6 +2,23 @@
 
 Scenario-based chat modes for different development contexts in LightSpeed WP automation workflows.
 
+## Available Chat Modes
+
+### Core Development Modes
+
+- [4.1-Beast Mode](./4.1-Beast.chatmode.md) - Advanced beast mode for complex tasks requiring maximum capability
+- [Critical Thinking Mode](./critical-thinking.chatmode.md) - Critical thinking and analysis mode for complex problem-solving
+- [Debug Mode](./debug.chatmode.md) - Debugging and troubleshooting mode for issue resolution
+- [Implementation Plan Mode](./implementation-plan.chatmode.md) - Implementation planning mode for structured development
+- [Plan Mode](./plan.chatmode.md) - General planning mode for project organization
+- [Planner Mode](./planner.chatmode.md) - Strategic planning mode for high-level project management
+- [Task Planner Mode](./task-planner.chatmode.md) - Task planning and management mode for detailed work breakdown
+
+### AI and Prompt Engineering Modes
+
+- [Prompt Builder Mode](./prompt-builder.chatmode.md) - Prompt building and engineering mode for AI interactions
+- [Prompt Engineer Mode](./prompt-engineer.chatmode.md) - Advanced prompt engineering mode for complex AI tasks
+
 ## Development Contexts
 
 ### Shell Script Development Mode
