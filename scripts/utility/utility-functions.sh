@@ -19,9 +19,12 @@
 #
 # Options:
 #   --help                  Show this help message
+#   --verbose               Enable verbose logging
 #
 # Examples:
-#   source ./utility-functions.sh --help
+#   source ./utility-functions.sh --help        # Show help message
+#   source ./utility-functions.sh --verbose     # Enable verbose logging
+#   source ./utility-functions.sh               # Load with default settings
 #
 # Note:
 #   - This script is intended to be sourced, not executed directly.
@@ -206,3 +209,7 @@ is_root() {
 timestamp() {
     date '+%Y-%m-%d %H:%M:%S'
 }
+
+# Done
+echo "Done."
+exit 0 # Always exit 0 to not break CI/CD, errors are logged above

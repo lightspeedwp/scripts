@@ -52,19 +52,19 @@ lang:js:
   - package-lock.json
   - tsconfig.json
   - .eslintrc*
-  
+
 lang:php:
   - "**/*.php"
   - composer.json
   - composer.lock
   - phpunit.xml*
-  
+
 lang:css:
   - "**/*.css"
   - "**/*.scss"
   - "**/*.sass"
   - "**/*.less"
-  
+
 lang:bash:
   - "**/*.sh"
   - "**/*.bash"
@@ -88,7 +88,7 @@ product-development:
     title: "^(docs|chore|fix|style)(\\(.+\\))?: .*"
 
 "size: medium":
-  - head-branch: "^.*$" 
+  - head-branch: "^.*$"
     title: "^(feat|refactor)(\\(.+\\))?: .*"
 
 "size: large":

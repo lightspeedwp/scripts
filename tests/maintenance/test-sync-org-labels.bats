@@ -1,6 +1,6 @@
 #!/usr/bin/env bats
 #
-# Test Name: test-sync-org-labels.bats
+# Function Name: test-sync-org-labels.bats
 # Description: Tests sync-org-labels.sh for dry-run and label sync output
 # Version: v0.1.0
 # Date: 14-10-2025
@@ -14,15 +14,37 @@
 #    - test-helper.bash
 # Usage:
 #    - bats test-sync-org-labels.bats
-# Test Scope: dry-run, label sync, error handling.
+# Function Scope: dry-run, label sync, error handling.
 
 # Load test helpers
 load ../test-helper.bash
 
+# ============================================================================
+# Function Name: setup
+# Function Type: Setup
+# Function Scope: Prepares environment and resolves script path for ync-org-labels.sh
+# ============================================================================
+setup() {
+  # Get the root directory of the repository
+  local REPO_ROOT
+  REPO_ROOT="$(cd "$(dirname "$BATS_TEST_FILENAME")/../.." && pwd)"
+  # Path to the script being tested
+  SCRIPT="$REPO_ROOT/scripts/maintenance/sync-org-labels.sh"
+
+  # Ensure script exists and is executable
+  [ -f "$SCRIPT" ]
+  [ -x "$SCRIPT" ]
+}
+
+# ============================================================================
+# Function Name: sync-org-labels.sh runs in dry-run mode and outputs label sync
+# Function Type: Functional
+# Function Scope: Verifies that the sync-org-labels.sh script runs in dry-run mode and outputs label sync.
+# ============================================================================
 @test "sync-org-labels.sh runs in dry-run mode and outputs label sync" {
-	export DRY_RUN=true
-	run ../../scripts/maintenance/sync-org-labels.sh
-	[ "$status" -eq 0 ]
-		[[ $output =~ Fetching ]]
-		[[ $output =~ Syncing ]]
+    export DRY_RUN=true
+    run "$SCRIPT"
+    [ "$status" -eq 0 ]
+        [[ $output =~ Fetching ]]
+        [[ $output =~ Syncing ]]
 }

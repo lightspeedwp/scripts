@@ -1,9 +1,10 @@
 #!/bin/bash
-
-# Script Name: prune-labels.sh
-# Description:
+###############################################################################
 #
-# Version: v0.1.0
+# Script Name: run-maintenance-tests.sh
+# Description: Test runner for scripts/maintenance scripts. Runs all maintenance Bats tests in scripts/tests/maintenance for each reciprocal script. Supports listing, running specific tests, dry-run mode, verbose/quiet output, and summary reporting.
+#
+# Version: v0.1.1
 # Date: 2025-10-14
 # Author: LightSpeedWP
 # Github Contributors: @lightspeedwp / @ashleyshaw
@@ -11,13 +12,23 @@
 # License: GPL v3 or later
 # License URI: https://www.gnu.org/licenses/gpl-3.0.html
 #
+# Requirements:
+#   - bats-core
+#   - bash
+#   - jq (optional, for JSON output)
+#   - yq (optional, for YAML output)
+#
+# Usage: ./run-maintenance-tests.sh [options]
+#
+# Environment Variables:
+#   None
 #
 # Options:
 #   --help      Show this help message
 #   --verbose   Show detailed output
 #   --quiet     Show minimal output
 #   --list      List all available tests without running them
-#   --test <test_name>  Run a specific test by name (without .bats extension
+#   --test <test_name>  Run a specific test by name (without .bats extension)
 #   --color     Enable colored output
 #   --no-color  Disable colored output
 #   --log-file <file>  Specify a log file to write output
@@ -37,43 +48,25 @@
 #   --list-suites  List all test suites (test files)
 #   --list-tags  List all tags used in tests
 #   --tag <tag>  Run tests with a specific tag
-#   --exclude-tag <tag>  Exclude tests with a specific tag
-#   --help-test  Show help for test-specific options
-#   --help-general  Show help for general options
-#   --version  Show script version
-#   --update  Update the test runner script to the latest version
-#   --install-deps  Install required dependencies
-#   --check-deps  Check if required dependencies are installed
-#   --dry-run  Show what would be done without executing tests
-#   --force  Force execution even if certain checks fail
-#   --skip  Skip certain tests or checks
-#   --only  Run only specified tests or checks
-#   --config <file>  Specify a configuration file
-#   --env <key=value>  Set environment variables for the test run
-#   --list-env  List all environment variables set for the test run
-#   --clear-env  Clear all environment variables set for the test run
-#   --help-all  Show help for all options
 #
 # Examples:
-#   ./run-maintenance-tests.sh --test example-utility  # Run a specific test
-#   ./run-maintenance-tests.sh --list                  # List all available tests
-#   ./run-maintenance-tests.sh --verbose --color       # Run all tests with verbose colored output
-#   ./run-maintenance-tests.sh --log-file utility-tests.log  # Log output to a file
-#   ./run-maintenance-tests.sh --timeout 30 --parallel 4  # Run tests with a timeout and in parallel
-#   ./run-maintenance-tests.sh --filter "util*" --exclude "*fail*"  # Filter tests to run
-#   ./run-maintenance-tests.sh --retry 2 --coverage  # Retry failed tests and generate coverage report
-#   ./run-maintenance-tests.sh --junit results.xml --html results.html  # Output results in multiple formats
+#   ./run-maintenance-tests.sh
+#   ./run-maintenance-tests.sh --test find-readmes
+#   ./run-maintenance-tests.sh --verbose --summary
 #
-# Note:
-# - This script runs all Bats tests located in the tests/utility directory.
-# - Each test file should correspond to a script in the scripts/utility directory.
-# - Ensure all scripts under test are executable (chmod +x script.sh).
-# - Requires bats-core to be installed and available in PATH.
+# Notes:
+# - This script finds and runs all maintenance Bats tests
+# - Tests are expected to be in the tests/maintenance directory
+# - Can be used for continuous integration testing
 #
+###############################################################################
 
+# Fail on errors
 set -euo pipefail
+
+# Determine script and repo paths
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-REPO_ROOT="$(cd "$SCRIPT_DIR/../../.." && pwd)"
+REPO_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
 
 # Colors for output
 RED='\033[0;31m'
@@ -82,14 +75,44 @@ YELLOW='\033[0;33m'
 BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
+###############################################################################
+# Function: log_info
+# Description: Logs an informational message with blue color highlighting.
+#
+# Arguments:
+#   $1 - The message to log.
+#
+# Output:
+#   Prints a formatted info message to stdout.
+###############################################################################
 log_info() {
     echo -e "${BLUE}[INFO]${NC} $1"
 }
 
+###############################################################################
+# Function: log_success
+# Description: Logs a success message with green color highlighting.
+#
+# Arguments:
+#   $1 - The success message to log.
+#
+# Output:
+#   Prints a formatted success message to stdout.
+###############################################################################
 log_success() {
     echo -e "${GREEN}[SUCCESS]${NC} $1"
 }
 
+###############################################################################
+# Function: log_error
+# Description: Logs an error message with red color highlighting.
+#
+# Arguments:
+#   $1 - The error message to log.
+#
+# Output:
+#   Prints a formatted error message to stderr.
+###############################################################################
 log_error() {
     echo -e "${RED}[ERROR]${NC} $1" >&2
 }
@@ -102,24 +125,55 @@ if ! command -v bats &> /dev/null; then
     exit 1
 fi
 
-log_info "Running all maintenance Bats tests..."
+###############################################################################
+# Function: main
+# Description: Main function that runs all maintenance tests and reports results.
+#              Finds and executes all Bats test files in the maintenance test
+#              directory.
+#
+# Arguments:
+#   None
+#
+# Output:
+#   Test execution results with appropriate formatting.
+###############################################################################
+main() {
+    # Start running tests
+    log_info "Running all maintenance Bats tests..."
 
-TEST_DIR="$REPO_ROOT/tests/maintenance"
-FAILED=0
+    # Directory containing test files
+    TEST_DIR="$REPO_ROOT/tests/maintenance"
+    FAILED=0
 
-for test_file in "$TEST_DIR"/*.bats; do
-    log_info "Running $(basename "$test_file")..."
-    if bats "$test_file"; then
-        log_success "$(basename "$test_file") passed."
+    # Loop through each .bats file in the test directory
+    for test_file in "$TEST_DIR"/*.bats; do
+        log_info "Running $(basename "$test_file")..."
+        if bats "$test_file"; then
+            log_success "$(basename "$test_file") passed."
+        else
+            log_error "$(basename "$test_file") failed!"
+            FAILED=1
+        fi
+    done
+
+    # Final summary
+    # Show the final result of the test run
+    if [[ "$FAILED" -eq 0 ]]; then
+        log_success "All maintenance tests passed!"
+        return 0 # Success
     else
-        log_error "$(basename "$test_file") failed!"
-        FAILED=1
+        log_error "Some maintenance tests failed!"
+        return 1 # Failure
     fi
-done
+}
 
-if [[ "$FAILED" -eq 0 ]]; then
-    log_success "All maintenance tests passed!"
-else
-    log_error "Some maintenance tests failed!"
-    exit 1
-fi
+# Call the main function and capture its return value
+main
+status=$?
+
+# Cleanup if needed
+# (Add any necessary cleanup commands here)
+
+# Done
+log_info "Tests completed."
+exit $status

@@ -1,4 +1,3 @@
-
 # product-dev-project.sh
 
 Provision and manage a GitHub ProjectV2 for internal product development, supporting all automatable ProjectV2 actions and standardized fields.
@@ -198,3 +197,25 @@ Supported roles:
 
 - [Field spec doc](../docs/update-projects/product-development-field-specs-v1-1.md)
 - [update-projects.sh](./update-projects.sh) for advanced field management
+
+## Core Logic
+
+This script now directly executes the core `update-projects.sh` script, passing `"Product Development"` as the first argument, along with all other command-line arguments. This simplifies the execution flow and removes the need for sourcing.
+
+For detailed information on environment variables, advanced options, and the underlying implementation, please refer to the [README for update-projects.sh](./README.update-projects.md).
+
+## Examples
+
+```bash
+# Create a new product project in the default org
+./product-dev-project.sh my-product
+
+# Update an existing project in a custom org
+./product-dev-project.sh myorg my-product 42
+
+# Dry-run mode (no changes made)
+DRY_RUN=true ./product-dev_project.sh my-product
+
+# Create with CSV settings and access management
+./product-dev-project.sh my-product --settings-file fixtures/product-development-settings.csv --access-file fixtures/product-development-manage-access.csv --manage-access
+```

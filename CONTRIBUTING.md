@@ -8,7 +8,7 @@ To run locally:
 
 ```bash
 npm run lint:md
-```markdown
+```
 
 Thank you for your interest in contributing to the LightSpeed WP automation repository! This document provides guidelines and information for contributors.
 
@@ -191,7 +191,6 @@ bats tests/test-script-name.bats
 - Tag relevant maintainers if needed
 - Check existing issues before creating new ones
 
-
 ### Teardown Instructions for Contributor Recognition Automation
 
 If you need to remove contributor automation from this repository, follow these steps:
@@ -199,9 +198,11 @@ If you need to remove contributor automation from this repository, follow these 
 1. **Remove a Contributor**
     - Edit `.all-contributorsrc` and remove the contributor's entry from the `contributors` array.
     - Run:
+
       ```bash
       npx all-contributors generate
       ```
+
     - Commit and push the updated README and `.all-contributorsrc`.
 
 2. **Disable Contributor Update Workflow**
@@ -210,9 +211,11 @@ If you need to remove contributor automation from this repository, follow these 
 
 3. **Remove CLI Dependency**
     - Uninstall the CLI tool:
+
       ```bash
       npm uninstall --save-dev all-contributors-cli
       ```
+
     - Remove any related documentation from README and `.all-contributorsrc-docs.md` if desired.
 
 4. **Clean Up Files**

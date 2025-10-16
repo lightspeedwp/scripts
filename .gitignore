@@ -1,3 +1,5 @@
+# Exclude logs directory
+/logs/
 # Logs
 *.log
 logs/
@@ -64,12 +66,7 @@ node_modules/
 	*.spec.js
 	*.test.js
 
-# Playwright output
-playwright-report/
-test-results/
-*.png
-*.webm
-*.zip
+
 
 # ShellCheck reports (if you save them)
 shellcheck-report*.txt
@@ -77,7 +74,7 @@ shellcheck-report*.txt
 # VS Code workspace settings
 .vscode/
 
-# Playwright traces and screenshots
+
 trace/
 screenshots/
 

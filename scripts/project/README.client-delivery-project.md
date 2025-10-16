@@ -1,4 +1,3 @@
-
 # client-delivery-project.sh
 
 Provision and manage a GitHub ProjectV2 for client delivery engagements using Scrumban-style statuses and standardized fields.
@@ -185,7 +184,7 @@ Supported roles:
 
 ---
 
-## Troubleshooting
+## Troubleshooting Exit Codes
 
 - Ensure `gh` CLI is authenticated and has access to the organization
 - Check for correct permissions to create/update projects
@@ -199,3 +198,25 @@ Supported roles:
 
 - [Field spec doc](../docs/update-projects/client-delivery-field-specs-v1-1.md)
 - [update-projects.sh](./update-projects.sh) for advanced field management
+
+## Core Logic
+
+This script now directly executes the core `update-projects.sh` script, passing `"Client Delivery"` as the first argument, along with all other command-line arguments. This simplifies the execution flow and removes the need for sourcing.
+
+For detailed information on environment variables, advanced options, and the underlying implementation, please refer to the [README for update-projects.sh](./README.update-projects.md).
+
+## Examples
+
+```bash
+# Create a new client project in the default org
+./client-delivery-project.sh acme-corp
+
+# Update an existing project in a custom org
+./client-delivery-project.sh myorg acme-corp 42
+
+# Dry-run mode (no changes made)
+DRY_RUN=true ./client-delivery-project.sh acme-corp
+
+# Create with CSV settings and access management
+./client-delivery-project.sh acme-corp --settings-file fixtures/client-delivery-settings.csv --access-file fixtures/client-delivery-manage-access.csv --manage-access
+```
