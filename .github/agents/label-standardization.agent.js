@@ -1,21 +1,29 @@
 #!/usr/bin/env node
 /**
- * Label Standardization Agent
- * 
- * This agent enforces label standards across repositories by:
- * 1. Detecting non-standard labels (e.g., "php" vs "lang:php")
- * 2. Migrating issues/PRs to use standardized labels
- * 3. Deleting redundant non-standard labels after migration
- * 
- * Usage:
- * - Automatically runs via GitHub Actions
- * - Can be run manually with appropriate permissions
- * 
- * Environment Variables:
- * - GITHUB_TOKEN: Required for API access
- * - DRY_RUN: Set to "true" to preview without making changes
- * - VERBOSE: Set to "true" for detailed logs
+* Script Name: label-standardization.agent.js
+* Description: Label Standardization Agent. Enforces org-wide label standards, detects and migrates non-standard labels, and deletes redundant labels. Integrates with automation workflows for repository management.
+* Version: v1.0.0
+* Author: LightSpeed WP Team
+* Github Contributors: See repo history
+* Author URI: https://lightspeedwp.agency/
+* License: GPL v3 or later
+* License URI: https://www.gnu.org/licenses/gpl-3.0.html
+* Requirements: Node.js, @octokit/rest, @actions/core, @actions/github
+* Usage: Used in workflows: label-standardization.yml, label-enforcement.yml, pr-labels-project-sync.yml, issue-labels-project-sync.yml
+* Environment Variables:
+*   - GITHUB_TOKEN: Required for API access
+*   - DRY_RUN: Set to "true" to preview without making changes
+*   - VERBOSE: Set to "true" for detailed logs
+* Options: None (all configuration via env vars and workflow inputs)
+* Examples:
+*   - node .github/agents/label-standardization.agent.js
+*   - Used via GitHub Actions workflow
+* Notes:
+*   - Aligns with org-wide-labels-v1-12.md, label-automation-strategy-v1-1.md
+*   - See related script: manage-labels.sh, prune-labels.sh
+*   - See related tests: test-manage-labels.bats, label-standardization.agent.test.js
  */
+
 
 const { Octokit } = require('@octokit/rest');
 const core = require('@actions/core');
@@ -64,27 +72,27 @@ async function run() {
     if (!config.token) {
       throw new Error('GITHUB_TOKEN is required');
     }
-    
+
     const octokit = new Octokit({ auth: config.token });
     const context = github.context;
     const repo = context.repo.repo;
     const owner = context.repo.owner;
-    
+
     // Get repository labels
     const labels = await getRepositoryLabels(octokit, owner, repo);
     log(`Found ${labels.length} labels in repository ${owner}/${repo}`);
-    
+
     // Find non-standard labels that have standard equivalents
     const labelsToStandardize = findLabelsToStandardize(labels);
     log(`Found ${labelsToStandardize.length} non-standard labels to standardize`);
-    
+
     // Process each non-standard label
     for (const labelPair of labelsToStandardize) {
       await standardizeLabel(octokit, owner, repo, labelPair);
     }
-    
+
     log('Label standardization completed successfully');
-    
+
   } catch (error) {
     core.setFailed(`Error: ${error.message}`);
   }
@@ -97,12 +105,11 @@ async function getRepositoryLabels(octokit, owner, repo) {
   const labelsResponse = await octokit.paginate(
     octokit.issues.listLabelsForRepo,
     {
-      owner,
-      repo,
+              repo,
       per_page: 100,
     }
   );
-  
+
   return labelsResponse;
 }
 
@@ -112,16 +119,17 @@ async function getRepositoryLabels(octokit, owner, repo) {
 function findLabelsToStandardize(labels) {
   const labelsToStandardize = [];
   const labelNames = labels.map(label => label.name);
-  
+
   for (const mapping of LABEL_MAPPINGS) {
+
     if (
-      labelNames.includes(mapping.nonStandard) && 
+      labelNames.includes(mapping.nonStandard) &&
       labelNames.includes(mapping.standard)
     ) {
       labelsToStandardize.push(mapping);
     }
   }
-  
+
   return labelsToStandardize;
 }
 
@@ -130,9 +138,9 @@ function findLabelsToStandardize(labels) {
  */
 async function standardizeLabel(octokit, owner, repo, labelPair) {
   const { nonStandard, standard } = labelPair;
-  
+
   log(`Standardizing label: ${nonStandard} → ${standard}`);
-  
+
   // Find issues/PRs with the non-standard label
   const issues = await octokit.paginate(
     octokit.issues.listForRepo,
@@ -144,14 +152,14 @@ async function standardizeLabel(octokit, owner, repo, labelPair) {
       per_page: 100,
     }
   );
-  
+
   log(`Found ${issues.length} issues/PRs with label "${nonStandard}"`);
-  
+
   // Update each issue/PR
   for (const issue of issues) {
     await updateIssueLabels(octokit, owner, repo, issue, nonStandard, standard);
   }
-  
+
   // Delete the non-standard label if not in dry run mode
   if (!config.dryRun) {
     try {
@@ -174,15 +182,15 @@ async function standardizeLabel(octokit, owner, repo, labelPair) {
  */
 async function updateIssueLabels(octokit, owner, repo, issue, nonStandard, standard) {
   const issueNumber = issue.number;
-  
+
   // Get current labels and ensure we don't duplicate the standard label
   const currentLabels = issue.labels.map(label => label.name);
   const updatedLabels = currentLabels.filter(label => label !== nonStandard);
-  
+
   if (!updatedLabels.includes(standard)) {
     updatedLabels.push(standard);
   }
-  
+
   // Update the issue's labels
   if (!config.dryRun) {
     try {

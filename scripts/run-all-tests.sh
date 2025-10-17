@@ -1,5 +1,5 @@
 
-#!/bin/bash
+#!/opt/homebrew/bin/bash
 # ============================================================================
 # Script Name: run-all-tests.sh
 # Description: Runs all Bats test files in the scripts/tests directory and subdirectories, providing a summary of results. Supports dry-run, verbose, pattern filtering, and full LightSpeed WP runner script standards.

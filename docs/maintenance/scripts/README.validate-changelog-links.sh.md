@@ -20,6 +20,12 @@
 
 This script validates that all changelog entries under the `[Unreleased]` section of `CHANGELOG.md` include a linked Pull Request, Issue, or Commit. This ensures that all changes are traceable and properly documented before a new release.
 
+## Changelog Enforcement and Automation
+
+Changelog entries are required for every pull request (PR) that changes user-facing code. The repository uses a GitHub Action to enforce that each PR includes a changelog entry under the `[Unreleased]` section of `CHANGELOG.md`, following the [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) format. If a PR does not include a changelog entry, the action will fail and block merging until one is added. Maintainers can bypass this requirement for non-user-facing changes by adding a `[skip changelog]` label or comment.
+
+On release, changelog entries under `[Unreleased]` are compiled into a new version section with the release number and date. The `validate-changelog-links.sh` script ensures that all entries are properly linked to a PR, Issue, or Commit, supporting a reliable and auditable release process.
+
 ## Requirements
 
 - A `CHANGELOG.md` file in the root of the repository.

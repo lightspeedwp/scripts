@@ -20,62 +20,6 @@
 #   - See README.md for integration and troubleshooting.
 # ============================================================================
 
-# ============================================================================
-# Function: setup
-# Description: Sets up the test environment for each test.
-# Arguments: None
-# Output: Sets environment variables and paths.
-# ============================================================================
-
-# ============================================================================
-# Function: setup
-# Description: Sets up the test environment for each test.
-# Arguments: None
-# Output: Loads test-helper, defines SCRIPT variable, checks runner existence and executability.
-# Notes: Follows LightSpeed WP Bats standards for environment setup and path resolution.
-# ============================================================================
-setup() {
-    load 'test-helper.bash'
-    SCRIPT="../../run-all-tests.sh"
-    [ -f "$SCRIPT" ]
-    [ -x "$SCRIPT" ]
-    setup_test_environment
-}
-
-# ============================================================================
-# Function: teardown
-# Description: Cleans up the test environment after each test.
-# Arguments: None
-# Output: Removes temporary files and directories.
-# ============================================================================
-teardown() {
-    cleanup_test_environment
-}
-
-@test "run-all-tests.sh runs all tests and prints summary" {
-    run bash ../../run-all-tests.sh
-    [ "$status" -eq 0 ]
-    [[ "$output" =~ "Bats" ]]
-}
-
-@test "run-all-tests.sh --dry-run previews test files" {
-    run bash ../../run-all-tests.sh --dry-run
-    [ "$status" -eq 0 ]
-    [[ "$output" =~ "DRY RUN" ]]
-    [[ "$output" =~ ".bats" ]]
-}
-
-@test "run-all-tests.sh --verbose shows detailed output" {
-    run bash ../../run-all-tests.sh --verbose
-    [ "$status" -eq 0 ]
-    [[ "$output" =~ "Bats" ]]
-}
-
-@test "run-all-tests.sh --test utility runs only utility tests" {
-    run bash ../../run-all-tests.sh --test utility
-    [ "$status" -eq 0 ]
-    [[ "$output" =~ "utility" ]]
-}
 
 # ============================================================================
 # Function: setup
@@ -99,26 +43,26 @@ teardown() {
 }
 
 @test "run-all-tests.sh runs all tests and prints summary" {
-    run bash ../../run-all-tests.sh
+    run bash scripts/run-all-tests.sh
     [ "$status" -eq 0 ]
     [[ "$output" =~ "Bats" ]]
 }
 
 @test "run-all-tests.sh --dry-run previews test files" {
-    run bash ../../run-all-tests.sh --dry-run
+    run bash scripts/run-all-tests.sh --dry-run
     [ "$status" -eq 0 ]
     [[ "$output" =~ "DRY RUN" ]]
-    [[ "$output" =~ ".bats" ]]
+    [[ "$output" =~ .bats ]]
 }
 
 @test "run-all-tests.sh --verbose shows detailed output" {
-    run bash ../../run-all-tests.sh --verbose
+    run bash scripts/run-all-tests.sh --verbose
     [ "$status" -eq 0 ]
     [[ "$output" =~ "Bats" ]]
 }
 
 @test "run-all-tests.sh --test utility runs only utility tests" {
-    run bash ../../run-all-tests.sh --test utility
+    run bash scripts/run-all-tests.sh --test utility
     [ "$status" -eq 0 ]
     [[ "$output" =~ "utility" ]]
 }
