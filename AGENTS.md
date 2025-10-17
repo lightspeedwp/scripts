@@ -206,11 +206,13 @@ This repository contains AI and automation agents to assist with GitHub project 
 
 ## Build and Deployment
 
-- Validation pipeline command: `npm run lint && npm test`
+- Validation pipeline command: `npm run validate` (includes lint and test)
+- Enhanced testing with modular includes: `scripts/includes/` and `tests/includes/`
 - Output directories: `tests/` for test outputs, `logs/` for execution logs
 - Environment configurations: Development uses local validation, production uses GitHub Actions
 - Deployment commands: Deployment handled via GitHub Actions workflows in `.github/workflows/`
 - CI/CD integration: All agents integrate with GitHub Actions for automated execution
+- Quality gates: Husky pre-commit hooks validate code before commits
 
 ## Pull Request Guidelines
 
@@ -227,8 +229,17 @@ This repository contains AI and automation agents to assist with GitHub project 
 1. Create agent file in `.github/agents/` following naming convention `name.agent.js`
 2. Add corresponding workflow in `.github/workflows/` if needed
 3. Document agent in this file and `.github/agents/agent.md`
-4. Add tests following Bats testing standards
+4. Add tests using `tests/includes/agent-test-helpers.bash`
 5. Update documentation and cross-references
+6. Validate with `bats tests/test-agents-structure.bats`
+
+### Agent Testing and Validation
+
+- **Structure Validation:** Use `tests/test-agents-structure.bats` for comprehensive validation
+- **Test Helpers:** Leverage `tests/includes/agent-test-helpers.bash` for agent-specific testing
+- **Standards Compliance:** All agents must pass `assert_agent_follows_standards()` checks
+- **GitHub API Mocking:** Use provided mocking capabilities for safe testing
+- **Dry-run Support:** All agents must support `DRY_RUN=true` for safe testing
 
 ### Agent Integration Workflows
 
