@@ -1,0 +1,48 @@
+#!/bin/sh
+# Husky pre-commit hook for LightSpeed WP Scripts
+
+echo "🔍 Running pre-commit checks..."
+
+# Check if we're in the correct directory
+if [ ! -f "package.json" ]; then
+    echo "❌ Not in project root directory"
+    exit 1
+fi
+
+# Install dependencies if node_modules doesn't exist
+if [ ! -d "node_modules" ]; then
+    echo "📦 Installing dependencies..."
+    npm install
+fi
+
+# Run linting
+echo "🧹 Running linters..."
+npm run lint || {
+    echo "❌ Linting failed. Please fix the issues before committing."
+    exit 1
+}
+
+# Run tests
+echo "🧪 Running tests..."
+if command -v bats >/dev/null 2>&1; then
+    npm test || {
+        echo "❌ Tests failed. Please fix the issues before committing."
+        exit 1
+    }
+else
+    echo "⚠️  Bats not available, skipping tests"
+fi
+
+# Check for TODO/FIXME comments in staged files
+echo "🔍 Checking for TODO/FIXME comments..."
+staged_files=$(git diff --cached --name-only --diff-filter=ACM | grep -E '\.(sh|js|ts|md)$' || true)
+if [ -n "$staged_files" ]; then
+    todo_count=$(echo "$staged_files" | xargs grep -l "TODO\|FIXME" 2>/dev/null | wc -l || echo "0")
+    if [ "$todo_count" -gt 0 ]; then
+        echo "⚠️  Found $todo_count file(s) with TODO/FIXME comments:"
+        echo "$staged_files" | xargs grep -l "TODO\|FIXME" 2>/dev/null || true
+        echo "Consider resolving these before committing."
+    fi
+fi
+
+echo "✅ Pre-commit checks passed!"

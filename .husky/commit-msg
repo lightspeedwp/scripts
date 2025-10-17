@@ -1,0 +1,37 @@
+#!/bin/sh
+# Husky commit-msg hook for conventional commits
+
+echo "📝 Validating commit message..."
+
+# Check if commit message follows conventional commit format
+commit_regex="^(feat|fix|docs|style|refactor|test|chore|perf|ci|build|revert)(\(.+\))?: .{1,100}"
+
+if ! grep -qE "$commit_regex" "$1"; then
+    echo "❌ Invalid commit message format!"
+    echo ""
+    echo "Commit message should follow conventional commit format:"
+    echo "  <type>[optional scope]: <description>"
+    echo ""
+    echo "Types:"
+    echo "  feat:     A new feature"
+    echo "  fix:      A bug fix"
+    echo "  docs:     Documentation only changes"
+    echo "  style:    Changes that do not affect the meaning of the code"
+    echo "  refactor: A code change that neither fixes a bug nor adds a feature"
+    echo "  test:     Adding missing tests or correcting existing tests"
+    echo "  chore:    Changes to the build process or auxiliary tools"
+    echo "  perf:     A code change that improves performance"
+    echo "  ci:       Changes to CI configuration files and scripts"
+    echo "  build:    Changes that affect the build system or external dependencies"
+    echo "  revert:   Reverts a previous commit"
+    echo ""
+    echo "Examples:"
+    echo "  feat: add new utility function for logging"
+    echo "  fix(scripts): resolve issue with path resolution"
+    echo "  docs: update README with new usage examples"
+    echo "  test: add unit tests for git functions"
+    echo ""
+    exit 1
+fi
+
+echo "✅ Commit message format is valid!"
