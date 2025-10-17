@@ -19,9 +19,7 @@ You are a workflow documentation specialist. Create a prompt to guide the renami
 
 ## Purpose
 
-Ensure the folder structure is clear, consistent, and aligned with project naming conventions. Document the process for renaming `/scripts/update-projects/` to `/scripts/projects/` and `/tests/project/` to `/tests/projects/`.
-
-Ensure the folder structure is clear, consistent, and aligned with project naming conventions. Document the process for renaming `/scripts/project/` to `/scripts/projects/` and `/tests/project-scripts/` to `/tests/projects/`. All related documentation, scripts, tests, and log files must be updated to reflect these changes.
+Ensure the folder structure is clear, consistent, and aligned with project naming conventions. Document the process for renaming `/scripts/project/` to `/scripts/projects/` and `/tests/project-scripts/` to `/tests/projects/`. Additionally, document the renaming of `update-projects.sh` to `manage-projects.sh` for improved clarity and extensibility. All related documentation, scripts, tests, log files, and includes must be updated to reflect these changes and prevent breakage.
 
 ## Critical Review & Impact Assessment
 
@@ -38,6 +36,8 @@ Renaming these folders will break all existing script and test references, inclu
 - Loader lines for test helpers
 - CI/CD configuration and scripts
 - Any hardcoded paths in scripts, tests, or documentation
+- Script file `update-projects.sh` → `manage-projects.sh` (in `/scripts/projects/`)
+- All scripts, tests, and includes that source or reference `update-projects.sh`
 
 ## Exhaustive Update Instructions
 
@@ -59,26 +59,29 @@ You are an automation agent. Follow these instructions to rename project folders
 
 **Folders to Rename:**
 
-- Rename `/scripts/update-projects/` to `/scripts/projects/`
-- Rename `/tests/project/` to `/tests/projects/`
+- Rename `/scripts/project/` to `/scripts/projects/`
+- Rename `/tests/project-scripts/` to `/tests/projects/`
+- Rename `/scripts/projects/update-projects.sh` to `/scripts/projects/manage-projects.sh`
 
 **Requirements:**
 
 - Move all files and subfolders to the new locations.
-- Update all references in scripts, documentation, tests, and workflows to use the new folder names.
-- Ensure no broken paths or import errors remain.
-- Update any README or documentation files that mention the old folder names.
+- Rename `update-projects.sh` to `manage-projects.sh` in the new `/scripts/projects/` folder.
+- Update all references in scripts, documentation, tests, includes, and workflows to use the new folder and file names.
+- Ensure no broken paths, sourcing, or import errors remain (especially for includes and test scripts).
+- Update any README or documentation files that mention the old folder or script names.
 - Validate that all scripts and tests run successfully after the change.
-- Commit the changes with a clear message, e.g., `refactor: rename update-projects and project folders for consistency`.
+- Commit the changes with a clear message, e.g., `refactor: rename project folders and update-projects.sh to manage-projects.sh for consistency`.
 
 **Example Commit Message:**
 
 ```text
-refactor: rename update-projects and project folders for consistency
+refactor: rename project folders and update-projects.sh to manage-projects.sh for consistency
 
-- Renamed /scripts/update-projects/ to /scripts/projects/
-- Renamed /tests/project/ to /tests/projects/
-- Updated all references in code, docs, and workflows
+- Renamed /scripts/project/ to /scripts/projects/
+- Renamed /tests/project-scripts/ to /tests/projects/
+- Renamed update-projects.sh to manage-projects.sh
+- Updated all references in code, docs, tests, includes, and workflows
 ```
 
 **Notes:**
@@ -98,17 +101,24 @@ Use this prompt as a template for future folder renaming or refactoring tasks.
 - Update helper functions that resolve script or log paths.
 - Update documentation links in script headers and inline comments.
 - Update any script-generated output or artifacts to use the new folder name.
+- Update `run-project-tests.sh` to reference the new test directory path.
+- Update fixture file paths and CSV file references in scripts.
+- Update all references to `update-projects.sh` to use `manage-projects.sh` (including sourcing, includes, and script calls).
 
 ### 4. Update Test Files
 
 - Update all loader lines for test helpers to use the new path:
-  - Example: `load "$(dirname \"$BATS_TEST_FILENAME\")/../test-helper.bash"`
+   - Example: `load "$(dirname \"$BATS_TEST_FILENAME\")/../test-helper.bash"`
 - Update all references to scripts under test to use `/scripts/projects/`.
 - Update setup and teardown blocks to resolve new script and log paths.
 - Update log file creation and cleanup logic to use the new folder name.
 - Update any test output normalization functions to handle new paths.
 - Update documentation links in test headers and inline comments.
 - Update test coverage summary and README files to reflect new test folder and file names.
+- Update `SCRIPT` variable assignments in all test files (e.g., `SCRIPT="$DIR/../../scripts/projects/..."`).
+- Update fixture file paths in test files to reference new script directory structure.
+- Update test runner script paths and test directory references.
+- Update all references to `update-projects.sh` in test files to use `manage-projects.sh`.
 
 ### 5. Update Documentation
 
@@ -127,13 +137,15 @@ Use this prompt as a template for future folder renaming or refactoring tasks.
 ### 7. Update Helper Functions
 
 - Update any shared helper functions (e.g., in `test-helper.bash`) that resolve script, test, or log paths.
-- Update any path normalization logic to use the new folder names.
-- Validate that all helper functions work correctly after the change.
+- Update any path normalization logic to use the new folder names and new script name (`manage-projects.sh`).
+- Validate that all helper functions and includes work correctly after the change.
 
 ### 8. Update CI/CD Configuration
 
 - Update all CI/CD scripts and configuration files to use the new folder names for test discovery, script execution, and artifact collection.
 - Update any workflow triggers or job paths.
+- Update `.github/labeler.yml` to reference `scripts/projects/**` instead of `scripts/project/**`.
+- Update GitHub Actions workflows that reference project scripts or tests.
 - Validate that all CI/CD jobs run successfully after the change.
 
 ### 9. Update Hardcoded Paths
@@ -159,8 +171,8 @@ Use this prompt as a template for future folder renaming or refactoring tasks.
 ## Checklist
 
 - [ ] Identify all references to the old folder names in scripts, tests, and documentation
-- [ ] Rename `/scripts/update-projects/` to `/scripts/projects/`
-- [ ] Rename `/tests/project/` to `/tests/projects/`
+- [ ] Rename `/scripts/project/` to `/scripts/projects/`
+- [ ] Rename `/tests/project-scripts/` to `/tests/projects/`
 - [ ] Update all import, require, and path references in scripts and tests
 - [ ] Update documentation files to reflect new folder names
 - [ ] Validate that all scripts and tests run successfully after renaming
@@ -172,37 +184,93 @@ Use this prompt as a template for future folder renaming or refactoring tasks.
 
 We need to rename the following folders for consistency:
 
-- `/scripts/update-projects/` → `/scripts/projects/`
-- `/tests/project/` → `/tests/projects/`
+- `/scripts/project/` → `/scripts/projects/`
+- `/tests/project-scripts/` → `/tests/projects/`
 
 ### Steps
 
+#### Specific Files Requiring Updates
 
-```sh  git commit -am "Rename project folders, update all references, logs, and documentation"  ```- Update changelog and release notes to document the migration.- Notify team members of the breaking change and provide migration instructions.## Additional Concerns & Recommendations
-- **Backup:** Create a backup of the repository before starting the migration.
-- **Atomic Migration:** Perform all changes in a single commit or PR to avoid partial updates.
-- **Review:** Have a second reviewer validate all changes before merging.- **Testing:** Run all tests and scripts in a clean environment to catch missed references.
-- **Documentation:** Update all onboarding and setup guides to reflect the new structure.
-- **Deprecation:** Mark old folder names as deprecated in documentation and comments.
-- **Communication:** Announce the change to all contributors and stakeholders.
+Based on codebase analysis, the following files contain references that must be updated:
+
+**Documentation Files:**
+- `README.md` - Update test command examples and script references
+- `tests/TEST_COVERAGE_SUMMARY.md` - Update script and test path references
+- `tests/README.md` - Update test command examples  
+- `docs/utility/scripts/README.standardize-logging.md` - Update script path references
+
+**Configuration Files:**
+- `.github/labeler.yml` - Update `scripts/project/**` to `scripts/projects/**`
+
+**Script Files:**
+- `scripts/project/run-project-tests.sh` - Update `TEST_DIR` variable, documentation, and references to `update-projects.sh`
+- `scripts/maintenance/folder-and-file-readmes.sh` - Update example paths in comments
+
+**Test Files (All in `/tests/project-scripts/`):**
+- `test-update-projects.bats` - Update `SCRIPT` variable path and references to `update-projects.sh`
+- `test-project-csv.bats` - Update `SCRIPT` variable, fixture paths, and references to `update-projects.sh`
+- `test-client-delivery-project.bats` - Update `SCRIPT` variable, source paths, and references to `update-projects.sh`
+- `test-project-auth.bats` - Update `SCRIPT` variable path and references to `update-projects.sh`
+- `test-product-dev-project.bats` - Update documentation comments and references to `update-projects.sh`
+
+**Include/Helper Files:**
+- Any includes or helper scripts that source or reference `update-projects.sh` must be updated to use `manage-projects.sh`.
+
+#### Migration Steps
 
 1. Search the codebase for all references to the old folder names
-2. Rename the folders using `mv` or your file manager
+2. Rename the folders using `git mv` to preserve history:
+   ```sh
+   git mv scripts/project scripts/projects
+   git mv tests/project-scripts tests/projects
+   ```
 3. Update all scripts, tests, and documentation to use the new folder names
 4. Run all tests to ensure functionality is preserved
 5. Update any CI/CD configuration or scripts that reference the old folder names
 6. Commit the changes with a message such as:
-
    ```sh
-   git commit -am "Rename project folders, update all references, logs, and documentation"
+   git commit -am "refactor: rename project folders for consistency"
    ```
+7. Update changelog and release notes to document the migration
+8. Notify team members of the breaking change and provide migration instructions
+
+## Additional Concerns & Recommendations
+
+- **Backup:** Create a backup of the repository before starting the migration.
+- **Atomic Migration:** Perform all changes in a single commit or PR to avoid partial updates.
+- **Review:** Have a second reviewer validate all changes before merging.
+- **Testing:** Run all tests and scripts in a clean environment to catch missed references.
+- **Documentation:** Update all onboarding and setup guides to reflect the new structure.
+- **Deprecation:** Mark old folder names as deprecated in documentation and comments.
+- **Communication:** Announce the change to all contributors and stakeholders.
 
 ### Validation Steps
 
 - Run all scripts and tests to confirm no broken references
 - Review documentation for updated paths
 - Ensure CI/CD pipeline passes
+- Validate that fixture files and CSV references still work
+- Check that log file creation uses the new folder names
+
+### Post-Migration Verification
+
+1. Run the test suite:
+   ```sh
+   npm test
+   bats tests/projects/test-*.bats
+   ```
+
+2. Verify script functionality:
+   ```sh
+   scripts/projects/run-project-tests.sh --list
+   ```
+
+3. Check documentation links and references:
+   ```sh
+   grep -r "scripts/project[^s]" . --exclude-dir=.git
+   grep -r "tests/project-scripts" . --exclude-dir=.git
+   ```
 
 ---
 
-Use this expanded prompt to guide and document all folder renaming operations, including exhaustive updates to scripts, tests, documentation, log files, helper functions, and CI/CD configuration. Ensure all references are updated and validated for a smooth migration. Use this prompt to guide and document all folder renaming operations in the repository.
+Use this comprehensive prompt to guide folder renaming operations in the LightSpeed WP scripts repository. The documented process ensures all references are updated systematically and validates the migration for a smooth transition.
