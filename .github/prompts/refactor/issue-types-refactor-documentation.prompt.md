@@ -24,17 +24,17 @@ Ensure issue types automation scripts and workflows are updated to match project
 
 ## Checklist
 
-- [ ] Audit current issue types automation scripts and workflows
-- [ ] Review specifications in `/docs/projects/spec/`
-- [ ] Identify gaps, errors, or outdated logic in issue types automation
-- [ ] Update scripts, agents, and workflows to match issue type categories, naming conventions, and rules
-- [ ] Identify and resolve any GitHub authentication scope issues
-- [ ] Add or update tests for all issue type scenarios
-- [ ] Document changes and usage in README and changelog files
-- [ ] Validate issue type accuracy and error handling
-- [ ] Validate all changes with tests and in CI
-- [ ] Commit changes with a clear message (e.g., `refactor: update issue types automation and fix auth scopes`)
-- [ ] Add front matter to all prompt files for metadata and compliance
+
+## Current Repository State & Action Items
+
+- Issue type automation scripts are present in `scripts/maintenance/` (e.g., `manage-issue-types.sh`).
+- Folder structure: `/scripts/project/` and `/tests/project-scripts/` currently used; planned renaming for consistency.
+- Spec files for issue types and rules are in `/docs/projects/spec/`.
+- Automated issue type workflows exist in `.github/workflows/`.
+- Tests for issue type scenarios are missing or incomplete.
+- GitHub authentication scope issues may exist; audit and update as needed.
+
+**Action:** Audit scripts against spec files, update naming and logic, resolve authentication issues, add/expand tests, and update documentation in README and changelog files.
 
 
 ## Issue Types Refactor Prompt Template

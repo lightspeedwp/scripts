@@ -23,11 +23,12 @@ Establish definitive best practices and architectural guidelines for modular she
 
 ## Checklist
 
-- [ ] Define comprehensive modularization principles and architectural patterns
-- [ ] Establish coding standards and conventions for modular components
-- [ ] Create reusability and maintainability guidelines
-- [ ] Define testing and validation best practices
-- [ ] Establish performance and security considerations
+
+## Current Repository State & Action Items
+
+
+**Action:** Create missing includes, add Bats tests, expand documentation, and update folder names for consistency.
+**Note:** As part of the refactor, `/scripts/project/` will be renamed to `/scripts/projects/` and `/tests/project-scripts/` to `/tests/projects/`. Update all references in scripts, tests, workflows, and documentation to match the new names and validate that automation works after changes.
 - [ ] Create integration and deployment best practices
 
 ## Instructions

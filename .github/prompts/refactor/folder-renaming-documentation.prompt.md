@@ -21,6 +21,15 @@ You are a workflow documentation specialist. Create a prompt to guide the renami
 
 Ensure the folder structure is clear, consistent, and aligned with project naming conventions. Document the process for renaming `/scripts/project/` to `/scripts/projects/` and `/tests/project-scripts/` to `/tests/projects/`. Additionally, document the renaming of `update-projects.sh` to `manage-projects.sh` for improved clarity and extensibility. All related documentation, scripts, tests, log files, and includes must be updated to reflect these changes and prevent breakage.
 
+## Current Repository State & Action Items
+
+- Current folder names: `/scripts/project/` and `/tests/project-scripts/`.
+- Planned renaming: `/scripts/projects/` and `/tests/projects/` for consistency.
+- Script renaming: `update-projects.sh` to `manage-projects.sh`.
+- Update all references in scripts, tests, documentation, and log files to match new names.
+
+**Action:** Rename folders and scripts, update all references, and validate that all automation and tests work after changes.
+
 ## Critical Review & Impact Assessment
 
 Renaming these folders will break all existing script and test references, including imports, path resolutions, documentation links, log file paths, and helper function usage. A comprehensive, step-by-step update is required to restore functionality and maintain consistency.

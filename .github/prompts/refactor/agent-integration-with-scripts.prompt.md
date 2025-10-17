@@ -23,12 +23,12 @@ Define comprehensive integration strategies for connecting shell scripts with AI
 
 ## Checklist
 
-- [ ] Document agent integration patterns for shell script automation
-- [ ] Define agent trigger mechanisms and event handling
-- [ ] Create agent communication protocols with scripts
-- [ ] Establish agent testing and validation procedures
-- [ ] Define agent configuration management and deployment strategies
-- [ ] Document agent monitoring and error handling approaches
+
+## Current Repository State & Action Items
+
+
+**Action:** Expand includes, document agent trigger points in scripts, and update agent integration documentation as new components are added.
+**Note:** As part of the refactor, `/scripts/project/` will be renamed to `/scripts/projects/` and `/tests/project-scripts/` to `/tests/projects/`. Update all references in scripts, tests, workflows, and documentation to match the new names and validate that agent integration and automation work after changes.
 
 ## Instructions
 

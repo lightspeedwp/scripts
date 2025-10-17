@@ -23,11 +23,15 @@ Establish robust CI/CD pipelines that automate testing, validation, security sca
 
 ### Requirements
 
-- Review current CI workflows and documentation.
-- Identify gaps or missing documentation for automation, agents, and quality gates.
-- Add or update documentation for each CI workflow and agent.
-- Ensure all documentation is markdownlint compliant and up to date.
-- Document how to add new workflows or agents.
+
+## Current Repository State & Action Items
+
+- CI/CD workflows for markdownlint, shellcheck, ESLint, and others exist in `.github/workflows/`.
+- Some config files (e.g., `.markdownlint-cli2.mjs`, `.vscode/settings.json`) are missing; add for local/CI parity.
+- Documentation for workflows and agents is incomplete; expand README files in relevant folders.
+- Folder structure: `/scripts/project/` and `/tests/project-scripts/` currently used; planned renaming for consistency.
+
+**Action:** Add missing config files, expand documentation, and update folder names for consistency. Document workflow addition steps in README files.
 - Commit changes with a message like `docs: update CI process documentation`.
 
 ## Notes

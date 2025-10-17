@@ -24,12 +24,15 @@ Define systematic testing methodology for validating extracted shell script func
 
 ## Checklist
 
-- [ ] Create test files for each include module
-- [ ] Define test categories and coverage requirements
-- [ ] Implement edge case and error condition testing
-- [ ] Create integration tests for function interactions
-- [ ] Establish test data management and cleanup procedures
-- [ ] Define test execution and reporting standards
+
+## Current Repository State & Action Items
+
+- Modular includes present: `common-functions.sh`, `git-functions.sh` in `scripts/includes/`. Additional includes recommended.
+- No Bats test files for includes exist in `tests/includes/`; add for each include module.
+- Folder structure: `/scripts/project/` and `/tests/project-scripts/` currently used; planned renaming for consistency.
+- README files for includes and tests are incomplete; expand documentation.
+
+**Action:** Create Bats test files for each include, expand documentation, and update folder names for consistency.
 
 ## Instructions
 

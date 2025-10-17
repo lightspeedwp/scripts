@@ -25,12 +25,14 @@ Comprehensive interactive prompt implementation ensures systematic and guided de
 
 ## Checklist
 
-- [ ] Create step-by-step implementation prompts for each component
-- [ ] Design interactive decision trees for implementation choices
-- [ ] Develop validation prompts for quality assurance
-- [ ] Create troubleshooting and debugging prompt templates
-- [ ] Establish progress tracking and milestone prompts
-- [ ] Design integration testing conversation flows
+
+## Current Repository State & Action Items
+
+- Modular includes present: `common-functions.sh`, `git-functions.sh` in `scripts/includes/`. Additional includes recommended for full modularization.
+- Folder structure: `/scripts/project/` and `/tests/project-scripts/` currently used; planned renaming for consistency.
+- Interactive prompt templates should reference actual includes and folder names, and guide implementation/testing for each component.
+
+**Action:** Expand prompt templates to cover all planned includes, update folder names, and ensure validation/troubleshooting steps are actionable for the current branch.
 
 ## Instructions
 

@@ -23,18 +23,14 @@ Ensure Husky is configured to run linting, formatting, and test checks on releva
 
 ## Checklist
 
-- [ ] Install Husky as a dev dependency in the project
-- [ ] Initialize Husky in the repository
-- [ ] Add Husky initialization to `package.json` scripts (e.g., `prepare`)
-- [ ] Create pre-commit and pre-push hooks for linting, formatting, and tests
-- [ ] Integrate ShellCheck, ESLint, markdownlint, and other linters
-- [ ] Add formatting checks (Prettier, Black, etc.)
-- [ ] Add test execution (Jest, Bats, Pytest) to hooks
-- [ ] Ensure hooks fail the commit or push if checks do not pass
-- [ ] Document Husky setup and usage in README and CONTRIBUTING.md
-- [ ] Add instructions for developers to install Husky hooks locally after cloning
-- [ ] Validate hook execution and error handling in all supported environments (macOS, Linux, Windows)
-- [ ] Commit changes with a clear message
+
+## Current Repository State & Action Items
+
+- Husky and lint-staged are not yet installed or configured in this branch.
+- No pre-commit or pre-push hooks are present.
+- `package.json` does not include Husky setup or scripts for hooks.
+
+**Action:** Install Husky and lint-staged, add setup to `package.json`, create hooks for linting, formatting, and tests, and document the process in README files.
 
 ## Husky Setup Prompt Template
 
@@ -87,11 +83,6 @@ Husky must be set up to:
 
 ### Validation Steps
 
-- Test pre-commit and pre-push hooks for correct execution
-- Validate error handling and prevention of bad commits/pushes
-- Review documentation for clarity and completeness
-- Validate that hooks run in all supported environments (macOS, Linux, Windows)
 
----
 
 Use this prompt to guide and document all Husky setup and integration operations, ensuring automated quality checks and improved code standards across the repository. Use this as a template for future Husky or pre-commit hook integrations.

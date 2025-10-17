@@ -24,12 +24,15 @@ Comprehensive directory structure organization ensures modular shell script comp
 
 ## Checklist
 
-- [ ] Design directory structures for different project scales
-- [ ] Create examples for include organization patterns
-- [ ] Define test directory layouts and conventions
-- [ ] Establish documentation organization standards
-- [ ] Document automation and CI/CD file placement
-- [ ] Create naming conventions and file type standards
+
+## Current Repository State & Action Items
+
+- Current folder structure uses `/scripts/project/` and `/tests/project-scripts/`. Planned renaming to `/scripts/projects/` and `/tests/projects/` for consistency and clarity.
+- Modular includes are in `scripts/includes/` (currently `common-functions.sh`, `git-functions.sh`). Additional includes recommended.
+- README files exist in some folders; expand to all major folders and subfolders.
+- CI/CD workflows are in `.github/workflows/`.
+
+**Action:** Rename folders for consistency, expand includes, add README files, and document directory structure in onboarding guides.
 
 ## Instructions
 

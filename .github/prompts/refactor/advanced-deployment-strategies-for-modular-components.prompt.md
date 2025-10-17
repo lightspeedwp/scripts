@@ -23,12 +23,13 @@ Establish sophisticated deployment strategies and automation frameworks for modu
 
 ## Checklist
 
-- [ ] Design multi-environment deployment architecture
-- [ ] Implement zero-downtime deployment strategies
-- [ ] Create comprehensive validation and testing frameworks
-- [ ] Establish automated rollback and recovery procedures
-- [ ] Define monitoring and observability for deployments
-- [ ] Create configuration management and environment promotion
+## Current Repository State & Action Items
+
+- Modular includes present: `common-functions.sh`, `git-functions.sh` in `scripts/includes/`. Additional includes (logging, validation, etc.) are recommended for full modular deployment support.
+- Folder structure: Currently uses `/scripts/project/` and `/tests/project-scripts/`. Planned renaming to `/scripts/projects/` and `/tests/projects/` for consistency.
+- CI/CD workflows for deployment exist, but ensure all deployment scripts reference modular includes and support rollback/validation.
+
+**Action:** Expand modular includes, update deployment scripts to use them, and ensure CI/CD workflows validate multi-environment and zero-downtime strategies.
 
 ## Instructions
 

@@ -38,6 +38,15 @@ Ensure Jest and Playwright are configured for robust unit, integration, and end-
 
 ## Checklist
 
+## Current Repository State & Action Items
+
+- Jest and Playwright are not yet installed or configured in this branch.
+- No `jest.config.js` or `playwright.config.js` files exist.
+- No example test files for Jest or Playwright are present.
+- CI workflows for testing exist, but do not include Jest/Playwright integration.
+
+**Action:** Install Jest and Playwright, add configuration files, create example tests, update CI workflows, and document setup/usage in README files.
+
 - [x] Add Jest, Playwright, and related packages to package.json
 - [x] Install all required devDependencies
 - [x] Create `tests/jest` and `tests/playwright` folders for test organization

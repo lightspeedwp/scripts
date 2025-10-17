@@ -35,6 +35,14 @@ The agent must create/update files, scripts, and CI so contributors get the same
 7. **Sanity check:** run lint, fix sample violations, re-run.
 8. **Open PR:** include summary, test steps, and rollback note.
 
+## Current Repository State & Action Items
+
+- `.github/workflows/markdownlint.yml` exists, but `.markdownlint-cli2.mjs`, `.markdownlint.jsonc`, and `.vscode/settings.json` are missing.
+- Husky and lint-staged are not yet installed or configured.
+- Documentation for markdownlint setup and usage is incomplete; expand in README and CONTRIBUTING.md.
+
+**Action:** Add missing config files, install Husky/lint-staged, update documentation, and validate local/CI parity for markdownlint.
+
 ---
 
 ## File Operations
