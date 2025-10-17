@@ -1,63 +1,61 @@
-# Automated label configuration for PRs
-# See: https://github.com/actions/labeler
+# LightSpeed PR Labeler (expanded)
+# Uses actions/labeler to apply labels based on file paths and branch names.
+# Docs: https://github.com/actions/labeler
+#
+# Tip: labels not listed here will never be touched by sync-labels=true.
+# Use org-level label sync for creating/updating the catalogue.
 
-# File path patterns for labeling PRs
-scripts:
-  - scripts/**/*.sh
-  - scripts/**/*.bash
-  - scripts/*/
-  - scripts/maintenance/**
-  - scripts/deployment/**
-  - scripts/project/**
-  - scripts/testing/**
-  - scripts/utility/**
-
-tests:
-  - tests/**/*.bats
-  - tests/**/*.sh
-  - tests/**/*.ts
-  - tests/**/*.js
-  - tests/**/*.spec.*
-
-github-workflow:
-  - .github/workflows/**
-  - .github/actions/**
-
-workflows:
-  - workflows/**
+# --- Paths → labels ---------------------------------------------------------
 
 area:documentation:
-  - "*.md"
-  - "**/*.md"
-  - docs/**
+  - any:
+      - "README.md"
+      - "**/*.md"
+      - "docs/**"
 
 configuration:
-  - .github/*.yml
-  - .github/*.yaml
-  - "*.json"
-  - "*.yml"
-  - "*.yaml"
-  - .shellcheckrc
-  - .eslintrc*
-  - .prettierrc*
-  - .markdownlint*
+  - any:
+      - ".github/*.yml"
+      - ".github/*.yaml"
+      - "**/*.yml"
+      - "**/*.yaml"
+      - "**/*.json"
+      - ".eslintrc*"
+      - ".prettierrc*"
+      - ".markdownlint*"
 
-# Language labels
+github-workflow:
+  - ".github/workflows/**"
+  - ".github/actions/**"
+
+scripts:
+  - "scripts/**/*.sh"
+  - "scripts/**/*.bash"
+  - "scripts/**"
+  - "workflows/**"
+
+tests:
+  - "tests/**/*.bats"
+  - "tests/**/*.sh"
+  - "tests/**/*.ts"
+  - "tests/**/*.js"
+  - "tests/**/*.spec.*"
+
+# Languages
 lang:js:
   - "**/*.js"
   - "**/*.jsx"
   - "**/*.ts"
   - "**/*.tsx"
-  - package.json
-  - package-lock.json
-  - tsconfig.json
-  - .eslintrc*
+  - "package*.json"
+  - "tsconfig.json"
+  - ".eslintrc*"
 
 lang:php:
   - "**/*.php"
-  - composer.json
-  - composer.lock
-  - phpunit.xml*
+  - "composer.json"
+  - "composer.lock"
+  - "phpunit.xml*"
 
 lang:css:
   - "**/*.css"
@@ -65,32 +63,154 @@ lang:css:
   - "**/*.sass"
   - "**/*.less"
 
-lang:bash:
-  - "**/*.sh"
-  - "**/*.bash"
-  - .bashrc
-  - .bash_profile
+lang:html:
+  - "**/*.html"
+  - "**/*.htm"
 
-# Branch name patterns
-client-delivery:
-  - "client-delivery-*"
-  - "client/*"
-  - "clients/*"
+lang:md:
+  - "**/*.md"
 
-product-development:
-  - "product-dev-*"
-  - "product/*"
-  - "feature/*"
+lang:json:
+  - "**/*.json"
 
-# Commit message patterns (PR title typically)
-"size: small":
-  - head-branch: "^.*$"
-    title: "^(docs|chore|fix|style)(\\(.+\\))?: .*"
+lang:yaml:
+  - "**/*.yaml"
+  - "**/*.yml"
 
-"size: medium":
-  - head-branch: "^.*$"
-    title: "^(feat|refactor)(\\(.+\\))?: .*"
+# WordPress theme/plugin structure
+area:theme:
+  - any:
+      - "theme.json"
+      - "styles/*.json"
+      - "styles/**/*.json"
+      - "templates/**"
+      - "parts/**"
+      - "assets/**"
+      - "patterns/**"
+      - "inc/**"
+      - "src/blocks/**"
+      - "blocks/**"
 
-"size: large":
-  - head-branch: "^.*$"
-    title: "^(major|breaking|rewrite)(\\(.+\\))?: .*"
+area:plugins:
+  - any:
+      - "plugins/**"
+      - "mu-plugins/**"
+
+area:design-system:
+  - any:
+      - "packages/design-system/**"
+      - "design-system/**"
+
+area:integration:
+  - any:
+      - "integrations/**"
+      - "packages/integrations/**"
+      - "services/**"
+
+# WooCommerce
+area:woocommerce:
+  - any:
+      - "woocommerce/**"
+      - "plugins/woocommerce/**"
+      - "templates/woocommerce/**"
+      - "src/woocommerce/**"
+
+woo:page-cart:
+  - any:
+      - "templates/woocommerce/cart/**"
+      - "woocommerce/cart/**"
+
+woo:page-checkout:
+  - any:
+      - "templates/woocommerce/checkout/**"
+      - "woocommerce/checkout/**"
+
+woo:block-cart:
+  - "src/blocks/cart/**"
+
+woo:block-checkout:
+  - "src/blocks/checkout/**"
+
+# Blocks (common examples — extend as needed)
+block:gallery:
+  - any:
+      - "src/blocks/gallery/**"
+      - "blocks/gallery/**"
+
+block:image:
+  - any:
+      - "src/blocks/image/**"
+      - "blocks/image/**"
+
+block:button:
+  - any:
+      - "src/blocks/button/**"
+      - "blocks/button/**"
+
+block:query-loop:
+  - any:
+      - "src/blocks/query-loop/**"
+      - "blocks/query-loop/**"
+
+# Components / comp:*
+comp:block-json:
+  - "**/block.json"
+
+comp:theme-json:
+  - "theme.json"
+
+comp:templates:
+  - "templates/**"
+
+comp:template-parts:
+  - "parts/**"
+
+# Template labels (examples)
+template:single:
+  - "templates/single*.html"
+  - "templates/single*.php"
+
+template:page:
+  - "templates/page*.html"
+  - "templates/page*.php"
+
+template:archive:
+  - "templates/archive*.html"
+  - "templates/archive*.php"
+
+# Tour Operator plugin (to:* — examples)
+to:core:
+  - "plugins/tour-operator/core/**"
+  - "to/core/**"
+
+to:maps:
+  - "plugins/tour-operator/maps/**"
+  - "to/maps/**"
+
+to:search-results:
+  - "plugins/tour-operator/search-results/**"
+  - "to/search-results/**"
+
+# --- Branch/title heuristics → labels --------------------------------------
+# Head branch conventions (requires actions/labeler v5+)
+status:needs-review:
+  - head-branch: "^(feat|fix|refactor|docs|chore|build)/.+$"
+
+release:major:
+  - head-branch: "^release/major(-.*)?$"
+
+release:minor:
+  - head-branch: "^release/minor(-.*)?$"
+
+release:patch:
+  - head-branch: "^release/patch(-.*)?$"
+
+# Optional: title-based size heuristics (supported in newer labeler versions)
+# Uncomment if your runner uses a labeler build with PR title matching.
+"size:XS":
+   - title: "^(docs|chore|style)(\\(.+\\))?: .+"
+"size:M":
+   - title: "^(feat|refactor)(\\(.+\\))?: .+"
+"size:XL":
+   - title: "^(major|breaking|rewrite)(\\(.+\\))?: .+"
+
