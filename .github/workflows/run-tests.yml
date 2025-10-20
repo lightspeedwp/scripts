@@ -34,7 +34,11 @@ jobs:
 
       - name: Fetch and diff against input branch
         run: |
-          git fetch origin ${{ inputs.branch }}
+          echo "Fetching branch '${{ inputs.branch }}' from origin..."
+          if ! git fetch origin ${{ inputs.branch }}; then
+            echo "Error: Failed to fetch branch '${{ inputs.branch }}' from origin. Please check the branch name and network connectivity."
+            exit 1
+          fi
           if git rev-parse --verify origin/${{ inputs.branch }}; then
             git diff origin/${{ inputs.branch }} HEAD
           else
