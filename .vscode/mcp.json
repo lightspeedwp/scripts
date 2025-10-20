@@ -71,7 +71,8 @@
                         "description": "Workflow description"
                     }
                 },
-                "required": ["name", "trigger", "description"]
+                "required": ["name", "trigger", "description"],
+                "additionalProperties": false
             }
         },
         {
