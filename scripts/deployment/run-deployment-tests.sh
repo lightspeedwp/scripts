@@ -98,36 +98,6 @@
 #
 # Source standardized logging functions and variables from modular includes system
 source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/../includes/logging.sh"
-function log_info() {
-    local timestamp
-    timestamp=$(date "+%Y-%m-%d %H:%M:%S")
-    echo -e "${GREEN}[INFO]${NC} $*" >&2
-    echo "[INFO] ${timestamp}: $*" >> "${LOG_FILE}"
-}
-
-function log_warn() {
-    local timestamp
-    timestamp=$(date "+%Y-%m-%d %H:%M:%S")
-    echo -e "${YELLOW}[WARNING]${NC} $*" >&2
-    echo "[WARNING] ${timestamp}: $*" >> "${LOG_FILE}"
-}
-
-function log_error() {
-    local timestamp
-    timestamp=$(date "+%Y-%m-%d %H:%M:%S")
-    echo -e "${RED}[ERROR]${NC} $*" >&2
-    echo "[ERROR] ${timestamp}: $*" >> "${LOG_FILE}"
-}
-
-function log_debug() {
-    if [[ "${VERBOSE}" == "true" ]]; then
-        local timestamp
-        timestamp=$(date "+%Y-%m-%d %H:%M:%S")
-        echo -e "[DEBUG] $*" >&2
-        echo "[DEBUG] ${timestamp}: $*" >> "${LOG_FILE}"
-    fi
-}
-
 set -euo pipefail
 
 # Determine script and repository root directories
