@@ -23,10 +23,10 @@
 #   - Error handling follows LightSpeed WP standards
 # ============================================================================
 
-# Source common functions
+# Source required includes
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-# shellcheck source=common-functions.sh
-source "${SCRIPT_DIR}/common-functions.sh"
+# shellcheck source=../core/logging.sh
+source "${SCRIPT_DIR}/../core/logging.sh"
 
 # ============================================================================
 # Function: is_git_repo
