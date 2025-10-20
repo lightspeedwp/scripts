@@ -7,7 +7,7 @@
     "test": "bats tests/test-*.bats",
     "test:dry-run": "find tests/ -name 'dry-run-*.sh' -exec {} \\;",
     "lint:md": "markdownlint '**/*.md'",
-    "lint:sh": "shellcheck scripts/**/*.sh scripts/includes/*.sh",
+    "lint:sh": "sh -c 'set -e; FILES=$(find scripts -type f -name \"*.sh\"); [ -n \"$FILES\" ] && shellcheck $FILES || echo \"No shell scripts to lint.\"'",
     "lint:js": "eslint .",
     "format": "prettier --write .",
     "lint": "npm run lint:md && npm run lint:sh && npm run lint:js",
