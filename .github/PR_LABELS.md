@@ -12,5 +12,5 @@ For updates, refer to the community health repo.
 
 ## Files powering this
 
-- `[.github/labeler.yml](https://github.com/lightspeedwp/.github/blob/develop/.github/labeler.yml)` — path & branch rules.
+- [.github/labeler.yml](https://github.com/lightspeedwp/.github/blob/develop/.github/labeler.yml) — path & branch rules.
 - `.github/workflows/labels-issues-prs.yml` — defaults, status enforcement, changelog nudge.
