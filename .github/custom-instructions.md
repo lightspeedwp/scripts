@@ -58,15 +58,13 @@ All instructions follow the pattern: "You are a [role]. Follow our [framework/pa
 
 ### Repository Structure Compliance
 
-```
+```md
 ├── scripts/           # Shell scripts (kebab-case naming)
 ├── workflows/         # GitHub Actions workflows
 ├── tests/            # Bats tests and dry-run scripts
 ├── .github/          # GitHub templates, Copilot instructions, and configuration
 └── LIGHTSPEED_AUTOMATION_HANDBOOK.md  # Organization-wide documentation
 ```
-
-
 
 ## Usage Guidelines
 
