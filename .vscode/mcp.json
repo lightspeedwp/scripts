@@ -85,7 +85,8 @@
                         "description": "Name of the script to test (without .sh extension)"
                     }
                 },
-                "required": ["script_name"]
+                "required": ["script_name"],
+                "additionalProperties": false
             }
         }
     ],
