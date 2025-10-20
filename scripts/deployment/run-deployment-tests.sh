@@ -97,7 +97,16 @@
 # Standardized logging - LightSpeed WP
 #
 # Source standardized logging functions and variables from modular includes system
-source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/../includes/logging.sh"
+LOGGING_SH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/../includes/logging.sh"
+if [[ -f "$LOGGING_SH" ]]; then
+    if ! source "$LOGGING_SH"; then
+        echo -e "\033[0;31m[ERROR]\033[0m Failed to source logging module at $LOGGING_SH. Please check for syntax errors." >&2
+        exit 1
+    fi
+else
+    echo -e "\033[0;31m[ERROR]\033[0m Logging module not found at $LOGGING_SH. Please ensure it exists." >&2
+    exit 1
+fi
 set -euo pipefail
 
 # Determine script and repository root directories
