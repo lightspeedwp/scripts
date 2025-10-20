@@ -7,11 +7,14 @@
     "test": "bats tests/test-*.bats",
     "test:dry-run": "find tests/ -name 'dry-run-*.sh' -exec {} \\;",
     "lint:md": "markdownlint '**/*.md'",
-    "lint:sh": "shellcheck scripts/*.sh",
+    "lint:sh": "sh -c 'set -e; FILES=$(find scripts -type f -name \"*.sh\"); [ -n \"$FILES\" ] && shellcheck $FILES || echo \"No shell scripts to lint.\"'",
     "lint:js": "eslint .",
     "format": "prettier --write .",
     "lint": "npm run lint:md && npm run lint:sh && npm run lint:js",
-    "validate": "npm run lint && npm run test"
+    "validate": "npm run lint && npm run test",
+    "prepare": "husky",
+    "commit": "git add . && git commit",
+    "commit-msg": "commitlint --edit"
   },
   "directories": {
     "doc": "docs",
@@ -35,6 +38,8 @@
   },
   "homepage": "https://github.com/lightspeedwp/scripts#readme",
   "devDependencies": {
+    "@commitlint/cli": "^20.1.0",
+    "@commitlint/config-conventional": "^20.0.0",
     "@eslint/js": "^9.37.0",
     "@typescript-eslint/eslint-plugin": "^8.46.0",
     "@typescript-eslint/parser": "^8.46.0",
@@ -46,6 +51,7 @@
     "eslint": "^9.37.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.4",
+    "husky": "^9.1.7",
     "jest": "^30.2.0",
     "markdownlint-cli": "^0.45.0",
     "prettier": "^3.6.2",

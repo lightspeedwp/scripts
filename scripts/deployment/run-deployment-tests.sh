@@ -93,6 +93,11 @@
 ###############################################################################
 
 # Set strict mode
+
+# Standardized logging - LightSpeed WP
+#
+# Source standardized logging functions and variables from modular includes system
+source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/../includes/logging.sh"
 set -euo pipefail
 
 # Determine script and repository root directories

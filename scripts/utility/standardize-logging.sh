@@ -41,16 +41,19 @@
 # Strict mode
 set -euo pipefail
 
-# Global variables
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-SCRIPT_NAME="$(basename "${BASH_SOURCE[0]}" .sh)"
-LOG_DIR="$(cd \"$(dirname \"$0\")/../../../logs\" && pwd)"
-LOG_FILE="${LOG_DIR}/${SCRIPT_NAME}.log"
 
-# Readonly variables
+# Set up script and logging directories
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
+LOG_DIR="${REPO_ROOT}/logs"
+SCRIPT_NAME="standardize-logging"
+LOG_FILE="${LOG_DIR}/${SCRIPT_NAME}.log"
+mkdir -p "${LOG_DIR}"
+
 readonly SCRIPT_DIR
-readonly SCRIPT_NAME
+readonly REPO_ROOT
 readonly LOG_DIR
+readonly SCRIPT_NAME
 readonly LOG_FILE
 
 # Script defaults
@@ -178,8 +181,8 @@ function parse_arguments() {
                 show_help
                 exit 0
                 ;;
-            -*)
-                log_error "Unknown option: $1"
+            -* )
+                echo "Unknown option: $1"
                 show_help
                 exit 1
                 ;;
@@ -254,7 +257,7 @@ function log_debug() {
     if [[ "${VERBOSE}" == "true" ]]; then
         local timestamp
         timestamp=$(date "+%Y-%m-%d %H:%M:%S")
-        echo -e "${BLUE}[DEBUG]${NC} $*" >&2
+        echo -e "[DEBUG] $*" >&2
         echo "[DEBUG] ${timestamp}: $*" >> "${LOG_FILE}"
     fi
 }
@@ -281,6 +284,7 @@ function update_script_file() {
     # Check if file exists
     if [[ ! -f "${script_file}" ]]; then
         log_error "File not found: ${script_file}"
+        echo "File not found"
         return 1
     fi
 
@@ -323,6 +327,9 @@ function update_script_file() {
 
     # Create a backup
     cp "${script_file}" "${script_file}.bak"
+    if [[ ! -f "${script_file}.bak" ]]; then
+        log_error "Backup file not created: ${script_file}.bak"
+    fi
 
     # Generate the new file with logging code
     {

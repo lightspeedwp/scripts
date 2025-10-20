@@ -1,42 +1,33 @@
 #!/usr/bin/env node
 /**
- * Labeling Agent
- * 
- * You are a project organization specialist. Follow our LightSpeed WP labeling standards 
- * to ensure consistent issue and PR categorization. Avoid non-standard labels 
- * unless specified.
- * 
- * This agent manages comprehensive labeling automation:
- * 1. Automatically applies labels based on content, files changed, and context
- * 2. Enforces label consistency and naming conventions
- * 3. Manages label hierarchies and relationships
- * 4. Integrates with project management and workflow automation
- * 
- * Usage:
- * - Automatically triggered on issue/PR creation and updates
- * - Validates label consistency during repository management
- * 
+ * ============================================================================
+ * Script Name: labeling.agent.js
+ * Description: Labeling Agent. Automatically applies, enforces, and manages org-wide label standards for issues and PRs. Integrates with project management and workflow automation.
+ * Version: v1.0.0
+ * Author: LightSpeed WP Team
+ * Github Contributors: See repo history
+ * Author URI: https://lightspeedwp.agency/
+ * License: GPL v3 or later
+ * License URI: https://www.gnu.org/licenses/gpl-3.0.html
+ * Requirements: Node.js, @octokit/rest, @actions/core, @actions/github, path
+ * Usage: Used in workflows: pr-labeller.yml, issue-labeler.yml, pr-labels-project-sync.yml, issue-labels-project-sync.yml
  * Environment Variables:
- * - GITHUB_TOKEN: Required for API access
- * - DRY_RUN: Set to "true" to preview without making changes
- * - VERBOSE: Set to "true" for detailed logs
- * - LABEL_CONFIG_PATH: Path to label configuration file (default: .github/labels.yml)
- * - AUTO_REMOVE_INVALID: Set to "true" to automatically remove non-standard labels
+ *   - GITHUB_TOKEN: Required for API access
+ *   - DRY_RUN: Set to "true" to preview without making changes
+ *   - VERBOSE: Set to "true" for detailed logs
+ *   - LABEL_CONFIG_PATH: Path to label configuration file (default: .github/labels.yml)
+ *   - AUTO_REMOVE_INVALID: Set to "true" to automatically remove non-standard labels
+ * Options: None (all configuration via env vars and workflow inputs)
+ * Examples:
+ *   - node .github/agents/labeling.agent.js
+ *   - Used via GitHub Actions workflow
+ * Notes:
+ *   - Aligns with org-wide-labels-v1-12.md, label-automation-strategy-v1-1.md
+ *   - See related script: manage-labels.sh
+ *   - See related tests: test-manage-labels.bats, labeling.agent.test.js
+ * ============================================================================
  */
-
-const { Octokit } = require('@octokit/rest');
-const core = require('@actions/core');
-const github = require('@actions/github');
-const path = require('path');
-
-// Standard label categories and patterns per LightSpeed conventions
-const LABEL_CATEGORIES = {
-  area: {
-    prefix: 'area:',
-    description: 'Component or functional area',
-    color: '0052CC',
-    labels: ['ci', 'documentation', 'security', 'testing', 'ui', 'ux', 'performance', 'dependencies'],
-  },
+const LABEL_FAMILIES = {
   lang: {
     prefix: 'lang:',
     description: 'Programming language or technology',
@@ -142,15 +133,15 @@ async function run() {
     if (!config.token) {
       throw new Error('GITHUB_TOKEN is required');
     }
-    
+
     const octokit = new Octokit({ auth: config.token });
     const context = github.context;
-    
+
     log('Starting labeling automation...');
-    
+
     const labelingAction = determineLabelingAction(context);
     log(`Detected labeling action: ${labelingAction}`);
-    
+
     switch (labelingAction) {
       case 'label_issue':
         await labelIssue(octokit, context);
@@ -167,9 +158,9 @@ async function run() {
       default:
         log('No labeling action required for this event');
     }
-    
+
     log('Labeling automation completed successfully');
-    
+
   } catch (error) {
     core.setFailed(`Error: ${error.message}`);
   }
@@ -180,23 +171,23 @@ async function run() {
  */
 function determineLabelingAction(context) {
   const { eventName, payload } = context;
-  
+
   if (eventName === 'issues' && ['opened', 'edited'].includes(payload.action)) {
     return 'label_issue';
   }
-  
+
   if (eventName === 'pull_request' && ['opened', 'edited', 'synchronize'].includes(payload.action)) {
     return 'label_pull_request';
   }
-  
+
   if (eventName === 'schedule' || (eventName === 'workflow_dispatch')) {
     return 'sync_labels';
   }
-  
+
   if (eventName === 'push' && payload.ref === 'refs/heads/main') {
     return 'validate_labels';
   }
-  
+
   return 'none';
 }
 
@@ -206,19 +197,19 @@ function determineLabelingAction(context) {
 async function labelIssue(octokit, context) {
   const issue = context.payload.issue;
   log(`Analyzing issue #${issue.number}: ${issue.title}`);
-  
+
   const suggestedLabels = await analyzeIssueForLabels(issue);
   const currentLabels = issue.labels.map(label => label.name);
-  
+
   // Filter out labels that are already applied
   const newLabels = suggestedLabels.filter(label => !currentLabels.includes(label));
-  
+
   if (newLabels.length > 0) {
     await applyLabelsToIssue(octokit, context, issue.number, newLabels, 'issue');
   } else {
     log('No new labels to apply to issue');
   }
-  
+
   // Generate labeling report
   await generateIssueLabelingReport(octokit, context, issue, suggestedLabels, currentLabels);
 }
@@ -229,26 +220,26 @@ async function labelIssue(octokit, context) {
 async function labelPullRequest(octokit, context) {
   const pr = context.payload.pull_request;
   log(`Analyzing PR #${pr.number}: ${pr.title}`);
-  
+
   // Get changed files
   const { data: files } = await octokit.pulls.listFiles({
     owner: context.repo.owner,
     repo: context.repo.repo,
     pull_number: pr.number,
   });
-  
+
   const suggestedLabels = await analyzePullRequestForLabels(pr, files);
   const currentLabels = pr.labels.map(label => label.name);
-  
+
   // Filter out labels that are already applied
   const newLabels = suggestedLabels.filter(label => !currentLabels.includes(label));
-  
+
   if (newLabels.length > 0) {
     await applyLabelsToIssue(octokit, context, pr.number, newLabels, 'pull_request');
   } else {
     log('No new labels to apply to pull request');
   }
-  
+
   // Generate labeling report
   await generatePRLabelingReport(octokit, context, pr, suggestedLabels, currentLabels, files);
 }
@@ -258,16 +249,16 @@ async function labelPullRequest(octokit, context) {
  */
 async function analyzeIssueForLabels(issue) {
   const labels = new Set();
-  
+
   const content = `${issue.title} ${issue.body || ''}`.toLowerCase();
-  
+
   // Check content patterns
   for (const [label, patterns] of Object.entries(CONTENT_PATTERNS)) {
     if (patterns.some(pattern => pattern.test(content))) {
       labels.add(label);
     }
   }
-  
+
   // Check for template-based labels
   if (issue.body) {
     const templateLabelMatch = issue.body.match(/(?:labels?|type):\s*([^\r\n]+)/i);
@@ -276,7 +267,7 @@ async function analyzeIssueForLabels(issue) {
         .split(',')
         .map(l => l.trim().toLowerCase())
         .filter(l => l.length > 0);
-      
+
       templateLabels.forEach(label => {
         // Try to map to standard labels
         const standardLabel = findStandardLabel(label);
@@ -286,12 +277,12 @@ async function analyzeIssueForLabels(issue) {
       });
     }
   }
-  
+
   // Add default labels for issues
   if (!Array.from(labels).some(l => l.startsWith('type:'))) {
     labels.add('type:question'); // Default for issues without clear type
   }
-  
+
   return Array.from(labels);
 }
 
@@ -300,19 +291,19 @@ async function analyzeIssueForLabels(issue) {
  */
 async function analyzePullRequestForLabels(pr, files) {
   const labels = new Set();
-  
+
   const content = `${pr.title} ${pr.body || ''}`.toLowerCase();
-  
+
   // Check content patterns
   for (const [label, patterns] of Object.entries(CONTENT_PATTERNS)) {
     if (patterns.some(pattern => pattern.test(content))) {
       labels.add(label);
     }
   }
-  
+
   // Check changed files for automatic labels
   const changedPaths = files.map(f => f.filename);
-  
+
   for (const [label, patterns] of Object.entries(FILE_PATTERNS)) {
     if (patterns.some(pattern => {
       const glob = new RegExp(pattern.replace(/\*\*/g, '.*').replace(/\*/g, '[^/]*'));
@@ -321,19 +312,19 @@ async function analyzePullRequestForLabels(pr, files) {
       labels.add(label);
     }
   }
-  
+
   // Estimate size based on changes
   const totalChanges = files.reduce((sum, file) => sum + file.changes, 0);
   const sizeLabel = estimateChangeSize(totalChanges);
   if (sizeLabel) {
     labels.add(sizeLabel);
   }
-  
+
   // Check for breaking changes
   if (content.includes('breaking') || content.includes('breaking change')) {
     labels.add('type:breaking-change');
   }
-  
+
   // Add default type if none specified
   if (!Array.from(labels).some(l => l.startsWith('type:'))) {
     if (pr.draft) {
@@ -342,7 +333,7 @@ async function analyzePullRequestForLabels(pr, files) {
       labels.add('type:enhancement'); // Default for PRs
     }
   }
-  
+
   return Array.from(labels);
 }
 
@@ -363,7 +354,7 @@ function estimateChangeSize(changes) {
  */
 function findStandardLabel(input) {
   const normalized = input.toLowerCase().trim();
-  
+
   // Direct matches
   for (const [category, config] of Object.entries(LABEL_CATEGORIES)) {
     const fullLabel = `${config.prefix}${normalized}`;
@@ -371,7 +362,7 @@ function findStandardLabel(input) {
       return fullLabel;
     }
   }
-  
+
   // Fuzzy matches
   const mappings = {
     'javascript': 'lang:js',
@@ -395,7 +386,7 @@ function findStandardLabel(input) {
     'chore': 'type:chore',
     'refactor': 'type:refactor',
   };
-  
+
   return mappings[normalized] || null;
 }
 
@@ -407,7 +398,7 @@ async function applyLabelsToIssue(octokit, context, issueNumber, labels, type) {
     log(`[DRY RUN] Would apply labels to ${type} #${issueNumber}: ${labels.join(', ')}`);
     return;
   }
-  
+
   try {
     // Get current labels
     const { data: issue } = await octokit.issues.get({
@@ -415,19 +406,19 @@ async function applyLabelsToIssue(octokit, context, issueNumber, labels, type) {
       repo: context.repo.repo,
       issue_number: issueNumber,
     });
-    
+
     const currentLabels = issue.labels.map(label => label.name);
     const allLabels = [...new Set([...currentLabels, ...labels])];
-    
+
     await octokit.issues.setLabels({
       owner: context.repo.owner,
       repo: context.repo.repo,
       issue_number: issueNumber,
       labels: allLabels,
     });
-    
+
     log(`Applied labels to ${type} #${issueNumber}: ${labels.join(', ')}`);
-    
+
   } catch (error) {
     log(`Error applying labels: ${error.message}`, 'error');
   }
@@ -438,20 +429,20 @@ async function applyLabelsToIssue(octokit, context, issueNumber, labels, type) {
  */
 async function validateRepositoryLabels(octokit, context) {
   log('Validating repository labels...');
-  
+
   const { data: repoLabels } = await octokit.issues.listLabelsForRepo({
     owner: context.repo.owner,
     repo: context.repo.repo,
     per_page: 100,
   });
-  
+
   const validation = {
     standardLabels: [],
     nonStandardLabels: [],
     missingLabels: [],
     duplicateLabels: [],
   };
-  
+
   // Check each existing label
   repoLabels.forEach(label => {
     if (isStandardLabel(label.name)) {
@@ -460,17 +451,17 @@ async function validateRepositoryLabels(octokit, context) {
       validation.nonStandardLabels.push(label);
     }
   });
-  
+
   // Check for missing standard labels
   const expectedLabels = generateExpectedLabels();
   const existingLabelNames = repoLabels.map(l => l.name);
-  
+
   expectedLabels.forEach(expectedLabel => {
     if (!existingLabelNames.includes(expectedLabel.name)) {
       validation.missingLabels.push(expectedLabel);
     }
   });
-  
+
   // Generate validation report
   await generateLabelValidationReport(octokit, context, validation);
 }
@@ -480,7 +471,7 @@ async function validateRepositoryLabels(octokit, context) {
  */
 function isStandardLabel(labelName) {
   // Check if it matches any category pattern
-  return Object.values(LABEL_CATEGORIES).some(category => 
+  return Object.values(LABEL_CATEGORIES).some(category =>
     labelName.startsWith(category.prefix)
   ) || ['good first issue', 'help wanted', 'duplicate', 'invalid', 'wontfix'].includes(labelName);
 }
@@ -490,7 +481,7 @@ function isStandardLabel(labelName) {
  */
 function generateExpectedLabels() {
   const labels = [];
-  
+
   Object.entries(LABEL_CATEGORIES).forEach(([categoryName, config]) => {
     config.labels.forEach(label => {
       labels.push({
@@ -500,7 +491,7 @@ function generateExpectedLabels() {
       });
     });
   });
-  
+
   // Add common GitHub labels
   labels.push(
     { name: 'good first issue', color: '7057FF', description: 'Good for newcomers' },
@@ -509,7 +500,7 @@ function generateExpectedLabels() {
     { name: 'invalid', color: 'E4E669', description: 'This doesn\'t seem right' },
     { name: 'wontfix', color: 'FFFFFF', description: 'This will not be worked on' },
   );
-  
+
   return labels;
 }
 
@@ -518,14 +509,14 @@ function generateExpectedLabels() {
  */
 async function syncLabelsWithStandard(octokit, context) {
   log('Syncing labels with standard set...');
-  
+
   if (config.dryRun) {
     log('[DRY RUN] Would sync repository labels with standard set');
     return;
   }
-  
+
   const expectedLabels = generateExpectedLabels();
-  
+
   try {
     // Create or update each expected label
     for (const label of expectedLabels) {
@@ -558,9 +549,9 @@ async function syncLabelsWithStandard(octokit, context) {
         }
       }
     }
-    
+
     log('Label synchronization completed');
-    
+
   } catch (error) {
     log(`Error syncing labels: ${error.message}`, 'error');
   }
@@ -571,29 +562,29 @@ async function syncLabelsWithStandard(octokit, context) {
  */
 async function generateIssueLabelingReport(octokit, context, issue, suggestedLabels, currentLabels) {
   const newLabels = suggestedLabels.filter(label => !currentLabels.includes(label));
-  
+
   if (newLabels.length === 0 && config.verbose) {
     return; // No report needed if no new labels
   }
-  
+
   let reportContent = `## 🏷️ Auto-Labeling Report - Issue #${issue.number}
 
 ### Labels Applied:`;
-  
+
   if (newLabels.length > 0) {
     reportContent += `\n${newLabels.map(label => `- \`${label}\``).join('\n')}`;
   } else {
     reportContent += `\n*No new labels applied - issue already has appropriate labels*`;
   }
-  
+
   if (suggestedLabels.length > newLabels.length) {
     const existingRelevant = suggestedLabels.filter(label => currentLabels.includes(label));
     reportContent += `\n\n### Existing Relevant Labels:`;
     reportContent += `\n${existingRelevant.map(label => `- \`${label}\``).join('\n')}`;
   }
-  
+
   reportContent += `\n\n*Labels are automatically applied based on issue content and our [labeling standards](/.github/instructions/labeling-standards.md).*`;
-  
+
   // Post report if there are new labels or verbose mode
   if ((newLabels.length > 0 || config.verbose) && !config.dryRun) {
     try {
@@ -615,41 +606,41 @@ async function generateIssueLabelingReport(octokit, context, issue, suggestedLab
  */
 async function generatePRLabelingReport(octokit, context, pr, suggestedLabels, currentLabels, files) {
   const newLabels = suggestedLabels.filter(label => !currentLabels.includes(label));
-  
+
   if (newLabels.length === 0 && !config.verbose) {
     return; // No report needed if no new labels
   }
-  
+
   const changedFiles = files.slice(0, 10); // Limit to first 10 files
   const totalChanges = files.reduce((sum, file) => sum + file.changes, 0);
-  
+
   let reportContent = `## 🏷️ Auto-Labeling Report - PR #${pr.number}
 
 ### Labels Applied:`;
-  
+
   if (newLabels.length > 0) {
     reportContent += `\n${newLabels.map(label => `- \`${label}\``).join('\n')}`;
   } else {
     reportContent += `\n*No new labels applied - PR already has appropriate labels*`;
   }
-  
+
   reportContent += `\n\n### Analysis Summary:`;
   reportContent += `\n- **Files changed:** ${files.length}`;
   reportContent += `\n- **Total changes:** ${totalChanges} lines`;
-  
+
   if (changedFiles.length > 0) {
     reportContent += `\n- **Key files:**`;
     changedFiles.forEach(file => {
       reportContent += `\n  - \`${file.filename}\` (+${file.additions} -${file.deletions})`;
     });
-    
+
     if (files.length > 10) {
       reportContent += `\n  - *...and ${files.length - 10} more files*`;
     }
   }
-  
+
   reportContent += `\n\n*Labels are automatically applied based on changed files, PR content, and our [labeling standards](/.github/instructions/labeling-standards.md).*`;
-  
+
   // Post report if there are new labels or verbose mode
   if ((newLabels.length > 0 || config.verbose) && !config.dryRun) {
     try {
@@ -672,9 +663,9 @@ async function generatePRLabelingReport(octokit, context, pr, suggestedLabels, c
 async function generateLabelValidationReport(octokit, context, validation) {
   const totalLabels = validation.standardLabels.length + validation.nonStandardLabels.length;
   const standardPercentage = Math.round((validation.standardLabels.length / totalLabels) * 100);
-  
+
   const statusEmoji = validation.nonStandardLabels.length === 0 ? '✅' : '⚠️';
-  
+
   let reportContent = `## 🏷️ Label Validation Report
 
 ${statusEmoji} **Label Standards Compliance: ${standardPercentage}%**
@@ -690,27 +681,27 @@ ${statusEmoji} **Label Standards Compliance: ${standardPercentage}%**
       const suggestion = findStandardLabel(label.name);
       reportContent += `\n- \`${label.name}\`${suggestion ? ` → Consider: \`${suggestion}\`` : ''}`;
     });
-    
+
     if (validation.nonStandardLabels.length > 10) {
       reportContent += `\n- *...and ${validation.nonStandardLabels.length - 10} more*`;
     }
   }
-  
+
   if (validation.missingLabels.length > 0) {
     reportContent += `\n\n### ℹ️ Missing Recommended Labels:`;
     validation.missingLabels.slice(0, 10).forEach(label => {
       reportContent += `\n- \`${label.name}\` - ${label.description}`;
     });
-    
+
     if (validation.missingLabels.length > 10) {
       reportContent += `\n- *...and ${validation.missingLabels.length - 10} more*`;
     }
   }
-  
+
   if (validation.nonStandardLabels.length === 0 && validation.missingLabels.length === 0) {
     reportContent += `\n\n🎉 **All labels follow LightSpeed standards!**`;
   }
-  
+
   reportContent += `\n\n### Next Steps:`;
   if (validation.nonStandardLabels.length > 0) {
     reportContent += `\n1. Review non-standard labels and consider standardizing`;
@@ -719,9 +710,9 @@ ${statusEmoji} **Label Standards Compliance: ${standardPercentage}%**
   if (validation.missingLabels.length > 0) {
     reportContent += `\n3. Add missing recommended labels to improve categorization`;
   }
-  
+
   reportContent += `\n\nSee our [Labeling Standards](/.github/instructions/labeling-standards.md) for complete guidelines.`;
-  
+
   log('Label validation completed');
   if (config.verbose) {
     log(reportContent);

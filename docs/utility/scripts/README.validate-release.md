@@ -18,7 +18,12 @@ This document provides a detailed explanation of the `validate-release.sh` scrip
 
 ## Script Overview
 
+
 The `validate-release.sh` script is a pre-release checklist tool. It runs a series of checks to ensure that the repository is in a consistent and valid state before a new version is released. This helps prevent common release issues, such as version mismatches, broken workflows, or incomplete documentation.
+
+## Changelog and Release Automation
+
+The release process is fully automated using GitHub Actions and supporting scripts. Every PR must include a changelog entry under the `[Unreleased]` section of `CHANGELOG.md` (unless `[skip changelog]` is present). On release, the changelog is compiled, the version is bumped, and a GitHub Release is created with notes from the changelog. The `validate-release.sh` script validates that the changelog, version, and documentation are consistent and complete before a release can proceed. See also: `validate-changelog-links.sh` for changelog entry validation.
 
 The script is designed to be run from the root of the repository, either manually by a developer or as part of an automated CI/CD pipeline.
 

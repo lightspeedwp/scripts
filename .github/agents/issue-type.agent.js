@@ -1,83 +1,94 @@
 /**
- * Issue Type Assignment Agent
- * 
- * This agent automatically assigns issue types to newly created GitHub issues 
- * based on content analysis and project configuration.
- * 
- * It serves as a bridge between GitHub Issues and GitHub Projects V2,
- * ensuring consistent issue categorization across repositories.
+ * ============================================================================
+ * Script Name: issue-type.agent.js
+ * Description: Issue Type Assignment Agent. Automatically assigns issue types to newly created GitHub issues based on content analysis and org-wide configuration. Bridges GitHub Issues and Projects V2 for consistent categorization.
+ * Version: v1.0.0
+ * Author: LightSpeed WP Team
+ * Github Contributors: See repo history
+ * Author URI: https://lightspeedwp.agency/
+ * License: GPL v3 or later
+ * License URI: https://www.gnu.org/licenses/gpl-3.0.html
+ * Requirements: Node.js, @actions/core, @actions/github, @octokit/graphql
+ * Usage: Used in workflows: issue-types.yml, issue-types-project-sync.yml, auto-issue-type.yml
+ * Environment Variables:
+ *   - GITHUB_TOKEN: Required for API access
+ *   - DRY_RUN: Set to "true" to preview without making changes
+ *   - STRICT_PRUNE: Set to "true" to strictly prune non-standard issue types
+ *   - ONLY: Target a specific repo (optional)
+ * Options: None (all configuration via env vars and workflow inputs)
+ * Examples:
+ *   - node .github/agents/issue-type.agent.js
+ *   - Used via GitHub Actions workflow
+ * Notes:
+ *   - Aligns with org-wide-issue-types-v1-10.md and .github/ISSUE_TYPES.md
+ *   - See related script: manage-issue-types.sh
+ *   - See related tests: test-manage-issue-types.bats, issue-type.agent.test.js
+ * ============================================================================
  */
-
-const core = require('@actions/core');
-const github = require('@actions/github');
-const { graphql } = require('@octokit/graphql');
-
-async function run() {
-  try {
-    // Get inputs from workflow
-    const token = core.getInput('token', { required: true });
+{
+    {
     const projectNumber = core.getInput('project-number', { required: true });
     const organization = core.getInput('organization', { required: true });
-    
+
     // Get issue details from context
     const context = github.context;
     const issue = context.payload.issue;
-    
+
     if (!issue) {
       core.info('No issue found in context. Skipping.');
       return;
     }
-    
+
     core.info(`Processing issue #${issue.number}: ${issue.title}`);
-    
+
     // Set up GraphQL client with authentication
     const graphqlWithAuth = graphql.defaults({
       headers: {
         authorization: `token ${token}`,
       },
     });
-    
+
     // Determine issue type based on content analysis
     const issueType = await determineIssueType(issue);
     core.info(`Determined issue type: ${issueType}`);
-    
+
     // Get Project and field data
     const projectData = await getProjectData(graphqlWithAuth, organization, parseInt(projectNumber));
     if (!projectData) {
       core.setFailed('Could not find project or type field.');
       return;
     }
-    
+
     // Find the issue in the project
     const itemId = await findIssueInProject(graphqlWithAuth, projectData.id, issue.node_id);
     if (!itemId) {
       core.info('Issue not found in project. It may need to be added first.');
       return;
     }
-    
+
     // Get type field options
     const typeField = projectData.fields.find(field => field.name.toLowerCase() === 'type');
     if (!typeField || !typeField.options) {
       core.setFailed('Type field not found or has no options.');
       return;
     }
-    
+
     // Find the matching option ID
-    const typeOption = typeField.options.find(option => 
+    const typeOption = typeField.options.find(option =>
       option.name.toLowerCase() === issueType.toLowerCase()
     );
-    
+
     if (!typeOption) {
       core.info(`Could not find type option for "${issueType}". Available options: ${
         typeField.options.map(o => o.name).join(', ')
       }`);
       return;
     }
-    
+
     // Update the issue's type in the project
     await updateIssueType(graphqlWithAuth, itemId, typeField.id, typeOption.id);
     core.info(`Successfully updated issue type to "${issueType}"`);
-    
+
   } catch (error) {
     core.setFailed(`Action failed: ${error.message}`);
     if (error.message.includes('GraphQL')) {
@@ -95,7 +106,7 @@ async function determineIssueType(issue) {
   const title = issue.title.toLowerCase();
   const body = (issue.body || '').toLowerCase();
   const content = `${title} ${body}`;
-  
+
   // Check for issue template type field first (most reliable source)
   if (issue.body && issue.body.includes("type:")) {
     const typeMatch = issue.body.match(/type:\s*['"]([^'"]+)['"]/);
@@ -116,7 +127,7 @@ async function determineIssueType(issue) {
       }
     }
   }
-  
+
   // Define comprehensive type detection patterns per org standards
   const patterns = {
     bug: ['bug', 'fix', 'error', 'crash', 'problem', 'not working', 'broken', 'issue', 'defect'],
@@ -130,7 +141,7 @@ async function determineIssueType(issue) {
     improvement: ['improvement', 'optimize', 'performance', 'speed up', 'efficiency'],
     build: ['build', 'ci', 'pipeline', 'workflow', 'github action', 'automation']
   };
-  
+
   // Check for explicit type labels already on the issue
   if (issue.labels && issue.labels.length > 0) {
     for (const label of issue.labels) {
@@ -147,7 +158,7 @@ async function determineIssueType(issue) {
       if (labelName.includes('build') || labelName.includes('ci')) return 'Build';
     }
   }
-  
+
   // Look for type indicators in content
   for (const [type, keywords] of Object.entries(patterns)) {
     if (keywords.some(keyword => content.includes(keyword))) {
@@ -167,7 +178,7 @@ async function determineIssueType(issue) {
       }
     }
   }
-  
+
   // Default to Task if no clear pattern is found
   return 'Task';
 }
@@ -198,14 +209,14 @@ async function getProjectData(graphqlClient, org, number) {
       }
     }
   `;
-  
+
   try {
     const result = await graphqlClient({
       query,
       org,
       number
     });
-    
+
     const project = result.organization.projectV2;
     const fields = project.fields.nodes.map(node => {
       if (node.options) {
@@ -220,7 +231,7 @@ async function getProjectData(graphqlClient, org, number) {
         name: node.name
       };
     });
-    
+
     return {
       id: project.id,
       title: project.title,
@@ -249,14 +260,14 @@ async function findIssueInProject(graphqlClient, projectId, issueNodeId) {
       }
     }
   `;
-  
+
   try {
     const result = await graphqlClient({
       query,
       projectId,
       issueNodeId
     });
-    
+
     const items = result.node.items.nodes;
     if (items.length > 0) {
       return items[0].id;
@@ -279,7 +290,7 @@ async function updateIssueType(graphqlClient, itemId, fieldId, optionId) {
           projectId: $projectId,
           itemId: $itemId,
           fieldId: $fieldId,
-          value: { 
+          value: {
             singleSelectOptionId: $optionId
           }
         }
@@ -290,7 +301,7 @@ async function updateIssueType(graphqlClient, itemId, fieldId, optionId) {
       }
     }
   `;
-  
+
   try {
     await graphqlClient({
       mutation,

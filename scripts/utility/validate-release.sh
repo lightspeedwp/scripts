@@ -1,3 +1,9 @@
+# Logging setup: always log to /logs/validate-release.log in repo root
+REPO_ROOT="$(cd "$(dirname "$0")/../../.." && pwd)"
+LOG_DIR="$REPO_ROOT/logs"
+SCRIPT_NAME="validate-release"
+LOG_FILE="$LOG_DIR/$SCRIPT_NAME.log"
+mkdir -p "$LOG_DIR"
 #!/bin/bash
 # Logging setup
 LOG_DIR="$(cd "$(dirname "$0")/../../logs" && pwd)"
@@ -6,6 +12,11 @@ LOG_DIR="$(cd "$(dirname "$0")/../../../logs" && pwd)"
 SCRIPT_NAME="$(basename "$0" .sh)"
 LOG_DATE="$(date +%d-%m-%Y)"
 LOG_FILE="$LOG_DIR/$SCRIPT_NAME-$LOG_DATE.log"
+REPO_ROOT="$(cd "$(dirname "$0")/../../.." && pwd)"
+LOG_DIR="$REPO_ROOT/logs"
+SCRIPT_NAME="validate-release"
+LOG_FILE="$LOG_DIR/$SCRIPT_NAME.log"
+mkdir -p "$LOG_DIR"
 
 # Logging function: logs to stdout and appends to log file
 log_msg() {
@@ -13,6 +24,10 @@ log_msg() {
     echo "$msg"
     echo "$msg" >> "$LOG_FILE"
 }
+
+# Diagnostic: test log_msg at script startup
+log_msg "[DIAGNOSTIC] validate-release.sh log_msg test $(date)"
+
 ###############################################################################
 #
 # Script Name: validate-release.sh
@@ -104,7 +119,7 @@ EOF
 # Output: Prints the message to stdout.
 ###############################################################################
 log_info() {
-    echo "ℹ️  $1"
+    log_msg "ℹ️  $1"
 }
 
 #############################################################################
@@ -115,7 +130,7 @@ log_info() {
 # Output: Prints the message to stdout.
 ###############################################################################
 log_success() {
-    echo "✅ $1"
+    log_msg "✅ $1"
 }
 
 #############################################################################
@@ -126,7 +141,7 @@ log_success() {
 # Output: Prints the message to stdout.
 ###############################################################################
 log_warning() {
-    echo "⚠️  $1"
+    log_msg "⚠️  $1"
 }
 
 #############################################################################
@@ -137,7 +152,7 @@ log_warning() {
 # Output: Prints the message to stderr.
 ###############################################################################
 log_error() {
-    echo "❌ $1"
+    log_msg "❌ $1"
     EXIT_CODE=1
 }
 
@@ -325,9 +340,6 @@ main() {
                 ;;
         esac
     done
-
-    echo "🚀 Validating release readiness for version $EXPECTED_VERSION"
-    echo
 
     check_version_files
     echo

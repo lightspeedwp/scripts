@@ -62,6 +62,65 @@
 ###############################################################################
 
 # Fail on errors
+
+# Standardized logging - LightSpeed WP
+#
+# Global variables for logging
+SCRIPT_NAME="$(basename "${BASH_SOURCE[0]}" .sh)"
+LOG_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/../logs"
+LOG_FILE="${LOG_DIR}/${SCRIPT_NAME}.log"
+
+readonly SCRIPT_NAME
+readonly LOG_DIR
+readonly LOG_FILE
+
+# Colors for terminal output
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[0;33m'
+BLUE='\033[0;34m'
+NC='\033[0m' # No Color
+
+readonly RED
+readonly GREEN
+readonly YELLOW
+readonly BLUE
+readonly NC
+
+# Create log directory if it doesn't exist
+mkdir -p "${LOG_DIR}"
+
+# Logging functions
+function log_info() {
+    local timestamp
+    timestamp=$(date "+%Y-%m-%d %H:%M:%S")
+    echo -e "${GREEN}[INFO]${NC} $*" >&2
+    echo "[INFO] ${timestamp}: $*" >> "${LOG_FILE}"
+}
+
+function log_warn() {
+    local timestamp
+    timestamp=$(date "+%Y-%m-%d %H:%M:%S")
+    echo -e "${YELLOW}[WARNING]${NC} $*" >&2
+    echo "[WARNING] ${timestamp}: $*" >> "${LOG_FILE}"
+}
+
+function log_error() {
+    local timestamp
+    timestamp=$(date "+%Y-%m-%d %H:%M:%S")
+    echo -e "${RED}[ERROR]${NC} $*" >&2
+    echo "[ERROR] ${timestamp}: $*" >> "${LOG_FILE}"
+}
+
+function log_debug() {
+    if [[ "${VERBOSE}" == "true" ]]; then
+        local timestamp
+        timestamp=$(date "+%Y-%m-%d %H:%M:%S")
+        echo -e "[DEBUG] $*" >&2
+        echo "[DEBUG] ${timestamp}: $*" >> "${LOG_FILE}"
+    fi
+}
+
 set -euo pipefail
 
 # Determine script and repo paths
