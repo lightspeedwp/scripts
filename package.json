@@ -7,7 +7,7 @@
     "test": "bats tests/test-*.bats",
     "test:dry-run": "find tests/ -name 'dry-run-*.sh' -exec {} \\;",
     "lint:md": "markdownlint '**/*.md'",
-    "lint:sh": "sh -c 'set -e; FILES=$(find scripts -type f -name \"*.sh\"); [ -n \"$FILES\" ] && shellcheck $FILES || echo \"No shell scripts to lint.\"'",
+    "lint:sh": "sh -c 'set -e; FILES_COUNT=$(find scripts -type f -name \"*.sh\" | wc -l); if [ \"$FILES_COUNT\" -gt 0 ]; then find scripts -type f -name \"*.sh\" -print0 | xargs -0 shellcheck; else echo \"No shell scripts to lint.\"; fi'",
     "lint:js": "eslint .",
     "format": "prettier --write .",
     "lint": "npm run lint:md && npm run lint:sh && npm run lint:js",
