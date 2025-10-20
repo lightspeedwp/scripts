@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: ❓ Questions & Discussions
+    url: https://github.com/lightspeedwp/scripts/discussions
+    about: Ask questions, discuss best practices, or share ideas about our automation scripts
+  - name: 📚 Documentation
+    url: https://github.com/lightspeedwp/scripts/tree/main/docs
+    about: Check our documentation for guides and examples
+  - name: 📝 Contribution Guide
+    url: https://github.com/lightspeedwp/scripts/blob/main/CONTRIBUTING.md
+    about: Learn how to contribute to our automation scripts

@@ -1,0 +1,20 @@
+# ShellCheck configuration
+# Disable specific checks that are not applicable or too strict for our use case
+
+# SC2034 - Variable appears unused (common in sourced scripts)
+disable=SC2034
+
+# SC2039 - Bash-specific features (we explicitly use bash)
+disable=SC2039
+
+# SC1090 - Can't follow sourced files (dynamic sourcing)
+disable=SC1090
+
+# SC1091 - Not following sourced files (external dependencies)  
+disable=SC1091
+
+# Set shell dialect to bash
+shell=bash
+
+# External sources (can be ignored for sourcing checks)
+external-sources=true
