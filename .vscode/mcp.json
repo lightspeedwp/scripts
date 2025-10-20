@@ -48,7 +48,8 @@
                         "description": "Script category"
                     }
                 },
-                "required": ["name", "description", "category"]
+                "required": ["name", "description", "category"],
+                "additionalProperties": false
             }
         },
         {
