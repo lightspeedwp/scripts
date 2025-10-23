@@ -37,7 +37,7 @@ What benefits will this refactoring provide?
 - [ ] Reduced complexity
 - [ ] Enhanced readability
 - [ ] Easier testing
-- [ ] Other: _____
+- [ ] Other: **\_**
 
 ## Risks and Challenges
 

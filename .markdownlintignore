@@ -1,0 +1,7 @@
+# .markdownlintignore
+# Ignore node_modules and other generated or dependency folders
+node_modules/
+logs/
+coverage/
+dist/
+*.log

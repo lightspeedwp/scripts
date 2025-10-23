@@ -1,6 +1,6 @@
 # LightSpeed Automation & Governance Handbook
 
-This documentation bundles all org-wide automation, workflow, branching, label governance, and project templates discussed in our Copilot Space, including shell scripts, workflows, and configuration files. It is intended for onboarding, reference, and automation engineers contributing to https://github.com/lightspeedwp/scripts/.
+This documentation bundles all org-wide automation, workflow, branching, label governance, and project templates discussed in our Copilot Space, including shell scripts, workflows, and configuration files. It is intended for onboarding, reference, and automation engineers contributing to <https://github.com/lightspeedwp/scripts/>.
 
 ## Table of Contents
 
@@ -575,7 +575,7 @@ Phased implementation approach for organization-wide adoption of automation and 
 
 ### Essential Links
 
-- **Repository:** https://github.com/lightspeedwp/scripts/
+- **Repository:** <https://github.com/lightspeedwp/scripts/>
   _All organizational standards and workflows are documented in this consolidated handbook._
 - **Workflows:** [`workflows/`](workflows/) directory
 - **Scripts:** [`scripts/`](scripts/) directory

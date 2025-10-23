@@ -1,4 +1,3 @@
-
 ---
 applyTo: '**'
 description: 'Prompt for example directory structure for modular shell script components.'
@@ -23,7 +22,6 @@ You are a filesystem architecture specialist. Follow our LightSpeed WP organizat
 Comprehensive directory structure organization ensures modular shell script components are organized systematically for optimal maintainability, scalability, and developer experience while supporting enterprise automation requirements.
 
 ## Checklist
-
 
 ## Current Repository State & Action Items
 
@@ -342,36 +340,44 @@ config/                            # Configuration management
 #### File Naming Standards
 
 **Shell Scripts**
+
 - Format: `kebab-case.sh`
 - Examples: `validate-release.sh`, `backup-database.sh`, `sync-repositories.sh`
 
 **Include Files**
+
 - Format: `kebab-case.sh` (same as scripts, but in includes/ directory)
 - Examples: `logging.sh`, `file-operations.sh`, `github-api.sh`
 
 **Test Files**
+
 - Format: `test-[script-name].bats` or `test-[include-name].bats`
 - Examples: `test-validate-release.bats`, `test-logging.bats`
 
 **Documentation Files**
+
 - Format: `kebab-case.md`
 - Examples: `getting-started.md`, `api-reference.md`, `migration-guide.md`
 
 **Configuration Files**
+
 - Format: `kebab-case.conf` or `kebab-case.env`
 - Examples: `database-config.conf`, `api-settings.env`
 
 #### Directory Naming Standards
 
 **Functional Grouping**
+
 - Use descriptive, purpose-based names
 - Examples: `deployment/`, `maintenance/`, `monitoring/`
 
 **Technical Grouping**
+
 - Group by technology or component type
 - Examples: `includes/`, `tests/`, `docs/`
 
 **Environment Grouping**
+
 - Group by deployment environment
 - Examples: `environments/development/`, `environments/production/`
 

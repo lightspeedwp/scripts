@@ -69,7 +69,7 @@ Located in [`.github/SAVED_REPLIES/technical/`](./SAVED_REPLIES/technical/)
 While saved replies provide a foundation, always:
 
 1. **Personalize the greeting** with the contributor's username
-2. **Reference specific details** from the issue or PR content  
+2. **Reference specific details** from the issue or PR content
 3. **Add context-specific information** when relevant
 4. **Maintain professional and helpful tone** throughout
 5. **Include actionable next steps** for the contributor
@@ -77,18 +77,20 @@ While saved replies provide a foundation, always:
 ### Example Usage
 
 Instead of using a saved reply verbatim:
+
 ```markdown
 Thank you for reporting this issue. We need more information to reproduce the problem.
 ```
 
 Customize it for the specific case:
+
 ```markdown
-Hi @username, thank you for reporting this deployment issue with the WordPress automation script. 
+Hi @username, thank you for reporting this deployment issue with the WordPress automation script.
 
 To help us reproduce the problem you're experiencing, could you please provide:
 
 - The specific script version you're using
-- Your target environment configuration  
+- Your target environment configuration
 - The complete error output from the logs
 - Steps you followed before encountering the issue
 
@@ -137,6 +139,7 @@ To add new saved replies:
 ### GitHub Saved Replies Feature
 
 These replies can be:
+
 - **Imported into GitHub's saved replies feature** for quick access
 - **Referenced in issue and PR templates** for consistency
 - **Used in automation workflows** for standardized responses
@@ -145,6 +148,7 @@ These replies can be:
 ### Automation Integration
 
 Saved replies integrate with:
+
 - **Issue labeling automation** for triggered responses
 - **PR review workflows** for standard feedback patterns
 - **Community management bots** for automatic responses
@@ -155,14 +159,16 @@ Saved replies integrate with:
 ### Usage Tracking
 
 Monitor saved reply effectiveness through:
+
 - **Response time improvement** when using templates
-- **Issue resolution rates** with standard responses  
+- **Issue resolution rates** with standard responses
 - **Contributor satisfaction** feedback and surveys
 - **Team efficiency** metrics and feedback
 
 ### Continuous Improvement
 
 Regular analysis helps identify:
+
 - **Gaps in current reply coverage** for new scenarios
 - **Opportunities for automation** of common responses
 - **Areas requiring more detailed guidance** or documentation
@@ -170,14 +176,14 @@ Regular analysis helps identify:
 
 ## Quick Reference Index
 
-| Category | File | Use Case |
-|----------|------|----------|
-| **Bug Reports** | [bug-reports.md](./SAVED_REPLIES/issues/bug-reports.md) | Initial response to bug reports requiring more information |
-| **Feature Requests** | [feature-requests.md](./SAVED_REPLIES/issues/feature-requests.md) | Acknowledgment and next steps for feature requests |
-| **Code Review** | [code-review.md](./SAVED_REPLIES/pull-requests/code-review.md) | Common code review feedback and improvement suggestions |
-| **Test Coverage** | [testing.md](./SAVED_REPLIES/pull-requests/testing.md) | Requesting additional tests or test improvements |
-| **CI/CD Issues** | [cicd-failures.md](./SAVED_REPLIES/workflow/cicd-failures.md) | Standard responses to build and deployment failures |
-| **New Contributors** | [welcome.md](./SAVED_REPLIES/community/welcome.md) | Welcoming first-time contributors with helpful resources |
-| **Configuration Help** | [configuration.md](./SAVED_REPLIES/technical/configuration.md) | Common configuration problem solutions |
+| Category               | File                                                              | Use Case                                                   |
+| ---------------------- | ----------------------------------------------------------------- | ---------------------------------------------------------- |
+| **Bug Reports**        | [bug-reports.md](./SAVED_REPLIES/issues/bug-reports.md)           | Initial response to bug reports requiring more information |
+| **Feature Requests**   | [feature-requests.md](./SAVED_REPLIES/issues/feature-requests.md) | Acknowledgment and next steps for feature requests         |
+| **Code Review**        | [code-review.md](./SAVED_REPLIES/pull-requests/code-review.md)    | Common code review feedback and improvement suggestions    |
+| **Test Coverage**      | [testing.md](./SAVED_REPLIES/pull-requests/testing.md)            | Requesting additional tests or test improvements           |
+| **CI/CD Issues**       | [cicd-failures.md](./SAVED_REPLIES/workflow/cicd-failures.md)     | Standard responses to build and deployment failures        |
+| **New Contributors**   | [welcome.md](./SAVED_REPLIES/community/welcome.md)                | Welcoming first-time contributors with helpful resources   |
+| **Configuration Help** | [configuration.md](./SAVED_REPLIES/technical/configuration.md)    | Common configuration problem solutions                     |
 
 This comprehensive saved replies system ensures consistent, helpful, and professional communication across all LightSpeed WP repositories and projects.

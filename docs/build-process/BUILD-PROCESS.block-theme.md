@@ -41,34 +41,36 @@ Before starting block theme development, set up an efficient local environment:
 Choose one of these approaches:
 
 1. **@wordpress/env (Recommended)**
-   ```bash
-   npm i -g @wordpress/env
-   wp-env start
-   ```
+
+    ```bash
+    npm i -g @wordpress/env
+    wp-env start
+    ```
 
 2. **LocalWP**
-   - Install from [localwp.com](https://localwp.com/)
-   - Create a new site with latest WordPress version
+    - Install from [localwp.com](https://localwp.com/)
+    - Create a new site with latest WordPress version
 
 ### Required Development Tools
 
 1. **Node.js and npm**
-   ```bash
-   # Check versions
-   node -v  # Should be v16+
-   npm -v   # Should be v7+
-   
-   # Install latest if needed
-   brew install node  # macOS with Homebrew
-   ```
+
+    ```bash
+    # Check versions
+    node -v  # Should be v16+
+    npm -v   # Should be v7+
+
+    # Install latest if needed
+    brew install node  # macOS with Homebrew
+    ```
 
 2. **Code Editor Setup**
-   - VS Code with WordPress extensions
-   - Syntax highlighting for theme.json
+    - VS Code with WordPress extensions
+    - Syntax highlighting for theme.json
 
 3. **Browser Development Tools**
-   - React Developer Tools
-   - Redux DevTools (for inspecting @wordpress/data stores)
+    - React Developer Tools
+    - Redux DevTools (for inspecting @wordpress/data stores)
 
 ## Block Theme Structure
 
@@ -115,76 +117,79 @@ There are several ways to start a block theme project:
 1. Create a new directory in wp-content/themes/
 2. Create the essential files:
 
-   **style.css**:
-   ```css
-   /*
-   Theme Name: My Block Theme
-   Theme URI: https://example.com
-   Author: Your Name
-   Author URI: https://example.com
-   Description: A custom block theme
-   Version: 1.0.0
-   License: GNU General Public License v2 or later
-   License URI: http://www.gnu.org/licenses/gpl-2.0.html
-   Text Domain: my-block-theme
-   Tags: block-theme, full-site-editing
-   */
-   ```
+    **style.css**:
 
-   **theme.json**:
-   ```json
-   {
-     "$schema": "https://schemas.wp.org/trunk/theme.json",
-     "version": 2,
-     "settings": {
-       "color": {
-         "palette": [
-           {
-             "slug": "primary",
-             "color": "#0d6efd",
-             "name": "Primary"
-           },
-           {
-             "slug": "secondary",
-             "color": "#6c757d",
-             "name": "Secondary"
-           }
-         ]
-       }
-     }
-   }
-   ```
+    ```css
+    /*
+    Theme Name: My Block Theme
+    Theme URI: https://example.com
+    Author: Your Name
+    Author URI: https://example.com
+    Description: A custom block theme
+    Version: 1.0.0
+    License: GNU General Public License v2 or later
+    License URI: http://www.gnu.org/licenses/gpl-2.0.html
+    Text Domain: my-block-theme
+    Tags: block-theme, full-site-editing
+    */
+    ```
 
-   **index.html** (in templates/ directory):
-   ```html
-   <!-- wp:template-part {"slug":"header"} /-->
-   
-   <!-- wp:query {"queryId":1,"query":{"pages":0,"offset":0,"postType":"post","order":"desc","orderBy":"date","author":"","search":"","exclude":[],"sticky":"","inherit":true}} -->
-   <div class="wp-block-query">
-     <!-- wp:post-template -->
-       <!-- wp:post-title {"isLink":true} /-->
-       <!-- wp:post-excerpt /-->
-     <!-- /wp:post-template -->
-     
-     <!-- wp:query-pagination -->
-       <!-- wp:query-pagination-previous /-->
-       <!-- wp:query-pagination-numbers /-->
-       <!-- wp:query-pagination-next /-->
-     <!-- /wp:query-pagination -->
-   </div>
-   <!-- /wp:query -->
-   
-   <!-- wp:template-part {"slug":"footer"} /-->
-   ```
+    **theme.json**:
+
+    ```json
+    {
+        "$schema": "https://schemas.wp.org/trunk/theme.json",
+        "version": 2,
+        "settings": {
+            "color": {
+                "palette": [
+                    {
+                        "slug": "primary",
+                        "color": "#0d6efd",
+                        "name": "Primary"
+                    },
+                    {
+                        "slug": "secondary",
+                        "color": "#6c757d",
+                        "name": "Secondary"
+                    }
+                ]
+            }
+        }
+    }
+    ```
+
+    **index.html** (in templates/ directory):
+
+    ```html
+    <!-- wp:template-part {"slug":"header"} /-->
+
+    <!-- wp:query {"queryId":1,"query":{"pages":0,"offset":0,"postType":"post","order":"desc","orderBy":"date","author":"","search":"","exclude":[],"sticky":"","inherit":true}} -->
+    <div class="wp-block-query">
+        <!-- wp:post-template -->
+        <!-- wp:post-title {"isLink":true} /-->
+        <!-- wp:post-excerpt /-->
+        <!-- /wp:post-template -->
+
+        <!-- wp:query-pagination -->
+        <!-- wp:query-pagination-previous /-->
+        <!-- wp:query-pagination-numbers /-->
+        <!-- wp:query-pagination-next /-->
+        <!-- /wp:query-pagination -->
+    </div>
+    <!-- /wp:query -->
+
+    <!-- wp:template-part {"slug":"footer"} /-->
+    ```
 
 ### Method 3: Using Starter Themes
 
 Start with an existing block theme as a foundation:
 
 1. Download a starter block theme like:
-   - [Frost](https://wordpress.org/themes/frost/)
-   - [Tove](https://wordpress.org/themes/tove/)
-   - [BlockBase](https://wordpress.org/themes/blockbase/)
+    - [Frost](https://wordpress.org/themes/frost/)
+    - [Tove](https://wordpress.org/themes/tove/)
+    - [BlockBase](https://wordpress.org/themes/blockbase/)
 
 2. Rename the theme directory and customize theme details in style.css
 
@@ -195,49 +200,51 @@ Block theme development has two main approaches that can be used separately or i
 ### Code-First Approach
 
 1. **Setup Build Tools**:
-   ```bash
-   # Initialize project
-   npm init -y
-   
-   # Install WordPress scripts and dependencies
-   npm install --save-dev @wordpress/scripts @wordpress/env
-   ```
+
+    ```bash
+    # Initialize project
+    npm init -y
+
+    # Install WordPress scripts and dependencies
+    npm install --save-dev @wordpress/scripts @wordpress/env
+    ```
 
 2. **Configure package.json**:
-   ```json
-   {
-     "scripts": {
-       "start": "wp-scripts start",
-       "build": "wp-scripts build",
-       "env:start": "wp-env start",
-       "env:stop": "wp-env stop"
-     }
-   }
-   ```
+
+    ```json
+    {
+        "scripts": {
+            "start": "wp-scripts start",
+            "build": "wp-scripts build",
+            "env:start": "wp-env start",
+            "env:stop": "wp-env stop"
+        }
+    }
+    ```
 
 3. **Create/Edit Templates in Code**:
-   - Edit HTML files directly in the templates/ directory
-   - Use block comments syntax for WordPress blocks
+    - Edit HTML files directly in the templates/ directory
+    - Use block comments syntax for WordPress blocks
 
 4. **Update theme.json**:
-   - Define colors, typography, spacing, etc.
-   - Configure block support and styles
+    - Define colors, typography, spacing, etc.
+    - Configure block support and styles
 
 ### Visual-First Approach
 
 1. **Design in Site Editor**:
-   - Go to Appearance > Editor
-   - Create and customize templates visually
-   - Design template parts like headers and footers
+    - Go to Appearance > Editor
+    - Create and customize templates visually
+    - Design template parts like headers and footers
 
 2. **Export Changes to Theme**:
-   - Use Create Block Theme plugin
-   - Select "Create Child Theme" or "Export" to generate theme files
-   - The plugin will convert your visual changes to HTML and theme.json
+    - Use Create Block Theme plugin
+    - Select "Create Child Theme" or "Export" to generate theme files
+    - The plugin will convert your visual changes to HTML and theme.json
 
 3. **Refine in Code**:
-   - Clean up exported files
-   - Organize and improve code structure
+    - Clean up exported files
+    - Organize and improve code structure
 
 ### Hybrid Approach (Recommended)
 
@@ -255,93 +262,97 @@ The theme.json file is the heart of a block theme, defining the design system:
 
 ```json
 {
-  "$schema": "https://schemas.wp.org/trunk/theme.json",
-  "version": 2,
-  "settings": {
-    "color": {},
-    "typography": {},
-    "spacing": {},
-    "layout": {}
-  },
-  "styles": {
-    "color": {},
-    "typography": {},
-    "elements": {},
-    "blocks": {}
-  },
-  "customTemplates": [],
-  "templateParts": []
+    "$schema": "https://schemas.wp.org/trunk/theme.json",
+    "version": 2,
+    "settings": {
+        "color": {},
+        "typography": {},
+        "spacing": {},
+        "layout": {}
+    },
+    "styles": {
+        "color": {},
+        "typography": {},
+        "elements": {},
+        "blocks": {}
+    },
+    "customTemplates": [],
+    "templateParts": []
 }
 ```
 
 ### Key Configuration Areas
 
 1. **Color Palette**
-   ```json
-   "color": {
-     "palette": [
-       {
-         "slug": "primary",
-         "color": "#0d6efd",
-         "name": "Primary"
-       }
-     ],
-     "gradients": [],
-     "duotone": []
-   }
-   ```
+
+    ```json
+    "color": {
+      "palette": [
+        {
+          "slug": "primary",
+          "color": "#0d6efd",
+          "name": "Primary"
+        }
+      ],
+      "gradients": [],
+      "duotone": []
+    }
+    ```
 
 2. **Typography**
-   ```json
-   "typography": {
-     "fontFamilies": [
-       {
-         "fontFamily": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif",
-         "slug": "system-font",
-         "name": "System Font"
-       }
-     ],
-     "fontSizes": [
-       {
-         "slug": "small",
-         "size": "0.875rem",
-         "name": "Small"
-       },
-       {
-         "slug": "medium",
-         "size": "1rem",
-         "name": "Medium"
-       }
-     ]
-   }
-   ```
+
+    ```json
+    "typography": {
+      "fontFamilies": [
+        {
+          "fontFamily": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif",
+          "slug": "system-font",
+          "name": "System Font"
+        }
+      ],
+      "fontSizes": [
+        {
+          "slug": "small",
+          "size": "0.875rem",
+          "name": "Small"
+        },
+        {
+          "slug": "medium",
+          "size": "1rem",
+          "name": "Medium"
+        }
+      ]
+    }
+    ```
 
 3. **Spacing**
-   ```json
-   "spacing": {
-     "units": ["px", "em", "rem", "vh", "vw", "%"],
-     "spacingSizes": [
-       {
-         "slug": "small",
-         "size": "1rem",
-         "name": "Small"
-       },
-       {
-         "slug": "medium", 
-         "size": "2rem",
-         "name": "Medium"
-       }
-     ]
-   }
-   ```
+
+    ```json
+    "spacing": {
+      "units": ["px", "em", "rem", "vh", "vw", "%"],
+      "spacingSizes": [
+        {
+          "slug": "small",
+          "size": "1rem",
+          "name": "Small"
+        },
+        {
+          "slug": "medium",
+          "size": "2rem",
+          "name": "Medium"
+        }
+      ]
+    }
+    ```
 
 4. **Layout**
-   ```json
-   "layout": {
-     "contentSize": "800px",
-     "wideSize": "1200px"
-   }
-   ```
+
+    ```json
+    "layout": {
+      "contentSize": "800px",
+      "wideSize": "1200px"
+    }
+    ```
 
 ### Block-Specific Settings
 
@@ -429,10 +440,10 @@ Templates use HTML comments for block markup:
 
 <!-- wp:query {"queryId":1,"query":{"perPage":3,"postType":"post"}} -->
 <div class="wp-block-query">
-  <!-- wp:post-template -->
+    <!-- wp:post-template -->
     <!-- wp:post-title {"isLink":true} /-->
     <!-- wp:post-excerpt /-->
-  <!-- /wp:post-template -->
+    <!-- /wp:post-template -->
 </div>
 <!-- /wp:query -->
 ```
@@ -444,25 +455,26 @@ Templates use HTML comments for block markup:
 Block themes primarily use theme.json for styling, but custom CSS can be added:
 
 1. **Style.css**
-   - For theme metadata only, not for styles
+    - For theme metadata only, not for styles
 
 2. **Additional CSS Files**
-   ```php
-   // functions.php
-   function mytheme_enqueue_styles() {
-     wp_enqueue_style(
-       'mytheme-styles',
-       get_template_directory_uri() . '/assets/css/custom.css',
-       [],
-       wp_get_theme()->get('Version')
-     );
-   }
-   add_action('wp_enqueue_scripts', 'mytheme_enqueue_styles');
-   ```
+
+    ```php
+    // functions.php
+    function mytheme_enqueue_styles() {
+      wp_enqueue_style(
+        'mytheme-styles',
+        get_template_directory_uri() . '/assets/css/custom.css',
+        [],
+        wp_get_theme()->get('Version')
+      );
+    }
+    add_action('wp_enqueue_scripts', 'mytheme_enqueue_styles');
+    ```
 
 3. **Block-Specific Styles**
-   - Create CSS files that match block names
-   - Register in functions.php or with block.json
+    - Create CSS files that match block names
+    - Register in functions.php or with block.json
 
 ### JavaScript Management
 
@@ -485,36 +497,39 @@ add_action('wp_enqueue_scripts', 'mytheme_enqueue_scripts');
 ### Build Process for Assets
 
 1. Configure webpack via @wordpress/scripts:
-   ```js
-   // webpack.config.js
-   const defaultConfig = require('@wordpress/scripts/config/webpack.config');
-   
-   module.exports = {
-     ...defaultConfig,
-     entry: {
-       'theme': './src/js/theme.js',
-     },
-   };
-   ```
+
+    ```js
+    // webpack.config.js
+    const defaultConfig = require('@wordpress/scripts/config/webpack.config');
+
+    module.exports = {
+        ...defaultConfig,
+        entry: {
+            theme: './src/js/theme.js',
+        },
+    };
+    ```
 
 2. Add build scripts to package.json:
-   ```json
-   {
-     "scripts": {
-       "build": "wp-scripts build",
-       "start": "wp-scripts start"
-     }
-   }
-   ```
+
+    ```json
+    {
+        "scripts": {
+            "build": "wp-scripts build",
+            "start": "wp-scripts start"
+        }
+    }
+    ```
 
 3. Run the development or build process:
-   ```bash
-   # For development with auto-reload
-   npm start
-   
-   # For production
-   npm run build
-   ```
+
+    ```bash
+    # For development with auto-reload
+    npm start
+
+    # For production
+    npm run build
+    ```
 
 ## Custom Block Patterns
 
@@ -536,11 +551,11 @@ function mytheme_register_block_patterns() {
           <!-- wp:heading {"textAlign":"center","level":1,"fontSize":"x-large"} -->
           <h1 class="wp-block-heading has-text-align-center has-x-large-font-size">Welcome to My Site</h1>
           <!-- /wp:heading -->
-          
+
           <!-- wp:paragraph {"align":"center"} -->
           <p class="has-text-align-center">This is a hero section pattern you can reuse across your site.</p>
           <!-- /wp:paragraph -->
-          
+
           <!-- wp:buttons {"layout":{"type":"flex","justifyContent":"center"}} -->
           <div class="wp-block-buttons">
             <!-- wp:button -->
@@ -588,6 +603,7 @@ add_action( 'init', 'mytheme_register_pattern_directory' );
 ### Cross-Browser Testing
 
 Test your theme across multiple browsers:
+
 - Chrome
 - Firefox
 - Safari
@@ -596,6 +612,7 @@ Test your theme across multiple browsers:
 ### Responsive Testing
 
 Test on various screen sizes:
+
 - Mobile phones (320px - 480px)
 - Tablets (768px - 1024px)
 - Laptops (1024px - 1440px)
@@ -604,6 +621,7 @@ Test on various screen sizes:
 ### WordPress Compatibility
 
 Test with:
+
 - Latest WordPress version
 - Common plugins like Yoast SEO, WooCommerce, etc.
 - Different content types and edge cases
@@ -625,22 +643,24 @@ Run the Theme Check plugin to validate WordPress standards compliance.
 ### Theme Packaging
 
 1. **Create Production Build**
-   ```bash
-   npm run build
-   ```
+
+    ```bash
+    npm run build
+    ```
 
 2. **Remove Development Files**
    Create a distribution copy without:
-   - node_modules/
-   - src/ (if using a build process)
-   - .git/
-   - development configuration files
+    - node_modules/
+    - src/ (if using a build process)
+    - .git/
+    - development configuration files
 
 3. **ZIP Creation**
-   ```bash
-   # From theme directory
-   zip -r mytheme.zip . -x "node_modules/*" ".*" "src/*" "package*" "webpack*"
-   ```
+
+    ```bash
+    # From theme directory
+    zip -r mytheme.zip . -x "node_modules/*" ".*" "src/*" "package*" "webpack*"
+    ```
 
 ### WordPress.org Submission
 
@@ -669,34 +689,34 @@ Modern theme development can be accelerated with AI tools:
 Use AI tools to:
 
 1. **Generate Design Tokens**
-   - Color palettes
-   - Typography scale
-   - Spacing values
+    - Color palettes
+    - Typography scale
+    - Spacing values
 
 2. **Create Block Patterns**
-   - Hero sections
-   - Testimonial layouts
-   - Product showcases
+    - Hero sections
+    - Testimonial layouts
+    - Product showcases
 
 3. **Generate theme.json Configurations**
-   - Convert design requirements to theme.json
-   - Create style variations
+    - Convert design requirements to theme.json
+    - Create style variations
 
 ### GitHub Copilot Integration
 
 GitHub Copilot can help with:
 
 1. **Writing Block Markup**
-   - Suggest complex block structures
-   - Generate pattern variations
+    - Suggest complex block structures
+    - Generate pattern variations
 
 2. **CSS Generation**
-   - Create custom CSS for advanced styling
-   - Generate responsive layouts
+    - Create custom CSS for advanced styling
+    - Generate responsive layouts
 
 3. **PHP Functionality**
-   - Develop custom theme functions
-   - Create block pattern registration
+    - Develop custom theme functions
+    - Create block pattern registration
 
 ### Example AI-Assisted Workflow
 
@@ -711,6 +731,7 @@ GitHub Copilot can help with:
 ### Performance Monitoring
 
 Regularly test your theme's performance:
+
 - Google PageSpeed Insights
 - Web Vitals
 - Load time testing
@@ -718,6 +739,7 @@ Regularly test your theme's performance:
 ### Update Strategy
 
 Keep your theme updated:
+
 1. Follow WordPress core changes
 2. Test with beta versions
 3. Update dependencies
@@ -733,6 +755,7 @@ Keep your theme updated:
 ### Documentation
 
 Maintain comprehensive documentation:
+
 - User guides
 - Customization options
 - Template overrides

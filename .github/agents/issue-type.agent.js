@@ -1,108 +1,127 @@
-#!/usr/bin/env node
-const core = require('@actions/core');
-const github = require('@actions/github');
-const { graphql } = require('@octokit/graphql');
-const fs = require('fs');
-const path = require('path');
+/**
+ * ============================================================================
 
-function input(name, opts={}){
-  // Support core.getInput, INPUT_* and plain env vars for CLI usage
-  const v = core.getInput(name, opts) ||
-            process.env[`INPUT_${name.replace(/[- ]/g,'_').toUpperCase()}`] ||
-            process.env[name.replace(/[- ]/g,'_').toUpperCase()] ||
-            process.env[name];
-  if (opts.required && !v) throw new Error(`Missing input: ${name}`);
-  return v;
-}
+const actionsCore = require('@actions/core');
+const actionsGithub = require('@actions/github');
+ * Description:
+ *   - Analyzes issues and PRs and assigns appropriate issue type labels.
+ *   - Main functions: run(), canonical type lookup, alias heuristics, type label application, report generation.
+ *   - Uses shared utilities: type-lookup, label-reporting.
+ *   - Shared test helpers: mockOctokit, mockContext, expectMarkdownReport, mockIssuePayload, expectDryRun, etc.
+ *   - Coverage: Type assignment, heuristics, markdown report, dry-run, error handling.
+ * Standards:
+ *   - Follows [LightSpeed Coding Standards](https://github.com/lightspeedwp/.github/blob/master/.github/instructions/coding-standards.instructions.md)
+ *   - See org instructions: [Custom Instructions](https://github.com/lightspeedwp/.github/blob/master/.github/custom-instructions.md)
+ * Contribution:
+ *   - Update docblock with new functions or helpers
+ *   - Add new helpers to tests/utility/test-helpers.js as needed
+ * ============================================================================
+ */
 
-function token(){ return input('github-token') || process.env.GITHUB_TOKEN; }
-function readJson(p, fallback){ try { return JSON.parse(fs.readFileSync(p,'utf8')); } catch(e){ return fallback; } }
+const {
+    fetchCanonicalIssueTypes,
+    buildTypeAliasMap,
+    findStandardType,
+} = require('../../scripts/utility/type-lookup');
+// buildLabelingReport is not used, so removed to fix no-unused-vars
+const actionsCore = require('@actions/core');
+const actionsGithub = require('@actions/github');
 
-const BUILTIN = [
-  {name:'Epic', label:'type:epic'},{name:'Feature', label:'type:feature'},{name:'Story', label:'type:story'},
-  {name:'Task', label:'type:task'},{name:'Bug', label:'type:bug'},{name:'Refactor', label:'type:refactor'},
-  {name:'Design', label:'type:design'},{name:'Documentation', label:'type:documentation'},
-  {name:'Research', label:'type:research'},{name:'Performance', label:'type:performance'},
-  {name:'Accessibility', label:'type:a11y'},{name:'Test', label:'type:test'},{name:'Chore', label:'type:chore'},
-];
+const config = {
+    dryRun: process.env.DRY_RUN === 'true',
+    token: process.env.GITHUB_TOKEN,
+    orgOwner: 'lightspeedwp',
+    orgRepo: '.github',
+};
 
-function branchToType(branch){
-  if(/^feat\//i.test(branch)) return 'Feature';
-  if(/^fix\//i.test(branch)) return 'Bug';
-  if(/^refactor\//i.test(branch)) return 'Refactor';
-  if(/^docs\//i.test(branch)) return 'Documentation';
-  if(/^chore\//i.test(branch) || /^build\//i.test(branch)) return 'Chore';
-  return null;
-}
+/**
+ * Main orchestrator for issue type agent.
+ * @param {Object} context - GitHub Actions context object.
+ * @returns {Promise<void>}
+ */
 
-async function run(){
-  try{
-    const tk = token(); if(!tk) throw new Error('Missing token');
-    const org = input('organization', {required:true});
-    const projectNumber = parseInt(input('project-number', {required:true}),10);
-    const ctx = github.context;
-    const item = ctx.payload.issue || ctx.payload.pull_request;
-    if(!item){ core.info('No issue/PR in context.'); return; }
-
-    const cfg = readJson(path.join(process.cwd(), 'config', 'issue-types.json'), []);
-    const candidates = cfg.length ? cfg : BUILTIN;
-
-    const labels = (item.labels || []).map(l => (l.name||'').toLowerCase());
-    let picked = null;
-    for(const t of candidates){
-      if(t.label && labels.includes(t.label.toLowerCase())) { picked = t.name; break; }
-    }
-    if(!picked && item.head && item.head.ref){
-      picked = branchToType(item.head.ref);
-    }
-    if(!picked){
-      const content = ((item.title||'')+' '+(item.body||'')).toLowerCase();
-      const kw = [['Bug',['bug','fix','error','crash','regression']],['Feature',['feature','enhancement','new']],
-        ['Documentation',['docs','readme','guide','changelog']],['Refactor',['refactor','restructure','rewrite']],
-        ['Design',['design','figma','prototype']],['Performance',['performance','lcp','cls','speed','optimize']],
-        ['Accessibility',['a11y','accessibility','wcag']],['Test',['test','unit','integration','coverage']],
-        ['Chore',['chore','cleanup','maintenance']]];
-      for(const [type, keys] of kw){ if(keys.some(k => content.includes(k))) { picked = type; break; } }
-    }
-    if(!picked) picked = 'Task';
-
-    const gql = graphql.defaults({ headers: { authorization: `token ${tk}` } });
-    const proj = await gql(`query($org:String!,$num:Int!){
-      organization(login:$org){
-        projectV2(number:$num){
-          id title fields(first:50){ nodes {
-            ... on ProjectV2SingleSelectField { id name options{ id name } }
-            ... on ProjectV2FieldCommon { id name }
-          } }
+async function run(context = actionsGithub.context) {
+    try {
+        if (!config.token) {
+            throw new Error('GITHUB_TOKEN is required');
         }
-      }
-    }`, { org, num: projectNumber });
+        const octokit = actionsGithub.getOctokit(config.token);
+        const owner = context.repo.owner;
+        const repo = context.repo.repo;
 
-    const project = proj?.organization?.projectV2;
-    if(!project){ core.setFailed('Project not found'); return; }
-    const fields = (project.fields?.nodes || []).map(n=>({id:n.id,name:n.name,options:n.options||null}));
-    const typeField = fields.find(f => f.name && f.name.toLowerCase()==='type' && Array.isArray(f.options));
-    if(!typeField){ core.setFailed('Type field missing'); return; }
+        const canonicalTypes = await fetchCanonicalIssueTypes(
+            octokit,
+            config.orgOwner,
+            config.orgRepo
+        );
+        const aliasMap = buildTypeAliasMap(canonicalTypes);
 
-    const contentId = item.node_id;
-    const itemRes = await gql(`query($pid:ID!,$cid:ID!){
-      node(id:$pid){ ... on ProjectV2 { items(first:1, filter:{contentIds:[$cid]}){ nodes{ id } } } }
-    }`, { pid: project.id, cid: contentId });
-    const projItemId = itemRes?.node?.items?.nodes?.[0]?.id || null;
-    if(!projItemId){ core.info('Item not in project; skipping.'); return; }
+        const item = context.payload.issue || context.payload.pull_request;
+        if (!item) {
+            actionsCore.info('No issue or PR in context; exiting.');
+            return;
+        }
+        const issueOrPrNumber = item.number;
+        const labels = (item.labels || []).map((l) => l.name || l);
 
-    const opt = (typeField.options||[]).find(o => (o.name||'').toLowerCase() === picked.toLowerCase());
-    if(!opt){ core.info(`No matching Type option for "${picked}"`); return; }
-    await gql(`mutation($pid:ID!,$iid:ID!,$fid:ID!,$oid:String!){
-      updateProjectV2ItemFieldValue(input:{
-        projectId:$pid,itemId:$iid,fieldId:$fid,value:{singleSelectOptionId:$oid}
-      }){ projectV2Item{ id } }
-    }`, { pid: project.id, iid: projItemId, fid: typeField.id, oid: opt.id });
+        let typeLabel = labels.find((l) => findStandardType(l, aliasMap));
+        if (!typeLabel) {
+            const content =
+                `${item.title || ''} ${item.body || ''}`.toLowerCase();
+            for (const t of Object.keys(aliasMap)) {
+                if (content.includes(t)) {
+                    typeLabel = aliasMap[t];
+                    break;
+                }
+            }
+        }
+        if (!typeLabel) {
+            typeLabel = 'type:task';
+        }
 
-    core.info(`Set Type → ${opt.name}`);
-  }catch(e){ core.setFailed(e.message); }
+        if (!labels.includes(typeLabel) && !config.dryRun) {
+            await octokit.rest.issues.addLabels({
+                owner,
+                repo,
+                issue_number: issueOrPrNumber,
+                labels: [typeLabel],
+            });
+            actionsCore.info(
+                `Applied type label to #${issueOrPrNumber}: ${typeLabel}`
+            );
+        } else if (config.dryRun) {
+            actionsCore.info(
+                `[DRY RUN] Would apply type label to #${issueOrPrNumber}: ${typeLabel}`
+            );
+        }
+
+        const report = {
+            type: context.payload.issue ? 'Issue' : 'Pull Request',
+            newLabels: [typeLabel],
+            suggestions: [],
+        };
+        if (!config.dryRun) {
+            await octokit.rest.issues.createComment({
+                owner,
+                repo,
+                issue_number: issueOrPrNumber,
+                body: JSON.stringify(report, null, 2),
+            });
+            actionsCore.info(
+                `Posted type labeling report for #${issueOrPrNumber}`
+            );
+        } else {
+            actionsCore.info(JSON.stringify(report, null, 2));
+        }
+    } catch (e) {
+        actionsCore.setFailed(e.message);
+    }
 }
 
-if(require.main===module) run();
-module.exports = { run };
+if (require.main === module) {
+    run();
+}
 
+module.exports = {
+    run,
+};

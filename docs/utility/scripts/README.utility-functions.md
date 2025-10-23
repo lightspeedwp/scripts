@@ -66,22 +66,22 @@ source ./utility-functions.sh --verbose
 
 ## Function Reference
 
-| Function | Description |
-| --- | --- |
-| `log_error()` | Logs a message at the ERROR level (red). |
-| `log_warn()` | Logs a message at the WARN level (yellow). |
-| `log_info()` | Logs a message at the INFO level (blue). |
-| `log_success()` | Logs a success message at the INFO level (green). |
-| `log_debug()` | Logs a message at the DEBUG level (no color). Only prints if `LOG_LEVEL` is 3. |
-| `command_exists()` | Checks if a given command is available in the system's `PATH`. |
+| Function               | Description                                                                                 |
+| ---------------------- | ------------------------------------------------------------------------------------------- |
+| `log_error()`          | Logs a message at the ERROR level (red).                                                    |
+| `log_warn()`           | Logs a message at the WARN level (yellow).                                                  |
+| `log_info()`           | Logs a message at the INFO level (blue).                                                    |
+| `log_success()`        | Logs a success message at the INFO level (green).                                           |
+| `log_debug()`          | Logs a message at the DEBUG level (no color). Only prints if `LOG_LEVEL` is 3.              |
+| `command_exists()`     | Checks if a given command is available in the system's `PATH`.                              |
 | `check_dependencies()` | Takes a list of commands and checks if they all exist, logging an error if any are missing. |
-| `confirm()` | Prompts the user with a "yes/no" question and returns an appropriate exit code. |
-| `backup_file()` | Creates a timestamped `.bak` file for a given file. |
-| `retry()` | Attempts to run a command up to a specified number of times with exponential backoff. |
-| `get_script_dir()` | Returns the absolute path to the directory of the script where it is called. |
-| `validate_url()` | Checks if a string is a valid `http` or `https` URL. |
-| `is_root()` | Checks if the script is being run by the root user. |
-| `timestamp()` | Returns the current date and time in `YYYY-MM-DD HH:MM:SS` format. |
+| `confirm()`            | Prompts the user with a "yes/no" question and returns an appropriate exit code.             |
+| `backup_file()`        | Creates a timestamped `.bak` file for a given file.                                         |
+| `retry()`              | Attempts to run a command up to a specified number of times with exponential backoff.       |
+| `get_script_dir()`     | Returns the absolute path to the directory of the script where it is called.                |
+| `validate_url()`       | Checks if a string is a valid `http` or `https` URL.                                        |
+| `is_root()`            | Checks if the script is being run by the root user.                                         |
+| `timestamp()`          | Returns the current date and time in `YYYY-MM-DD HH:MM:SS` format.                          |
 
 ## License
 

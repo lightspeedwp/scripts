@@ -14,18 +14,18 @@ This workflow automatically assigns appropriate issue types to newly created iss
 
 This workflow aligns with the organization-wide issue types defined in `org-wide-issue-types-v1-9.md`:
 
-| Issue Type | Color | Usage |
-|------------|-------|-------|
-| 🧩 Task | Blue #4393f8 | Small, well-defined work items |
-| 🐞 Bug | Red #9f3734 | Defects requiring fixes |
-| ✨ Feature | Green #3fb950 | New functionality |
-| 🎨 Design | Purple #ab7df8 | UI/UX work |
-| 🧭 Epic | Purple #ab7df8 | Large initiatives grouping multiple issues |
-| 📖 Story | Blue #4393f8 | User-focused feature descriptions |
-| 🔧 Improvement | Grey #9198a1 | Enhancements to existing functionality |
-| ♻️ Refactor | Grey #9198a1 | Code improvement without behavioral changes |
-| ⚙️ Build & CI | Blue #4393f8 | CI/CD and tooling improvements |
-| 📚 Documentation | Blue #4393f8 | Documentation updates |
+| Issue Type       | Color          | Usage                                       |
+| ---------------- | -------------- | ------------------------------------------- |
+| 🧩 Task          | Blue #4393f8   | Small, well-defined work items              |
+| 🐞 Bug           | Red #9f3734    | Defects requiring fixes                     |
+| ✨ Feature       | Green #3fb950  | New functionality                           |
+| 🎨 Design        | Purple #ab7df8 | UI/UX work                                  |
+| 🧭 Epic          | Purple #ab7df8 | Large initiatives grouping multiple issues  |
+| 📖 Story         | Blue #4393f8   | User-focused feature descriptions           |
+| 🔧 Improvement   | Grey #9198a1   | Enhancements to existing functionality      |
+| ♻️ Refactor      | Grey #9198a1   | Code improvement without behavioral changes |
+| ⚙️ Build & CI    | Blue #4393f8   | CI/CD and tooling improvements              |
+| 📚 Documentation | Blue #4393f8   | Documentation updates                       |
 
 ## Type Assignment Priority
 

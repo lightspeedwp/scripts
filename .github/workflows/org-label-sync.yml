@@ -3,25 +3,24 @@
 name: org-label-sync
 
 on:
-  workflow_dispatch:
-  schedule:
-    - cron: "0 2 * * 0"
+    workflow_dispatch:
+    schedule:
+        - cron: '0 2 * * 0'
 
 permissions:
-  contents: read
-  issues: write
-  pull-requests: write
-  administration: write
+    contents: read
+    issues: write
+    pull-requests: write
+    administration: write
 
 jobs:
-  sync:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v5
-      - name: Sync labels (micnncim/action-label-syncer)
-        uses: micnncim/action-label-syncer@v1
-        with:
-          manifest: .github/labels.yml
-        env:
-          GITHUB_TOKEN: ${{ secrets.ORGANIZATION_PAT }}
-
+    sync:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v5
+            - name: Sync labels (micnncim/action-label-syncer)
+              uses: micnncim/action-label-syncer@v1
+              with:
+                  manifest: .github/labels.yml
+              env:
+                  GITHUB_TOKEN: ${{ secrets.ORGANIZATION_PAT }}

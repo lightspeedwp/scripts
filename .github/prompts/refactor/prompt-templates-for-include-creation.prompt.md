@@ -1,4 +1,3 @@
-
 ---
 applyTo: '**'
 description: 'Prompt for structured templates for shell script modularization and include creation.'
@@ -21,7 +20,6 @@ You are a prompt engineering specialist for shell script modularization. Follow 
 ## Purpose
 
 Comprehensive prompt templates ensure systematic and high-quality creation of modular shell script includes with consistent standards, thorough validation, and seamless integration into enterprise automation workflows.
-
 
 ## Checklist
 
@@ -367,7 +365,7 @@ Execute comprehensive integration testing for the created includes.
 
 ##### API Documentation Prompt
 
-```text
+````text
 OBJECTIVE: Generate comprehensive API documentation for shell script includes.
 
 DOCUMENTATION STRUCTURE:
@@ -409,7 +407,7 @@ if function_name "param1" "param2"; then
 else
     log_error "Operation failed"
 fi
-```
+````
 
 ### Function Error Conditions
 
@@ -424,9 +422,9 @@ fi
 - Compatibility information
 - Version history and changes
 
-```markdown
-
+`````markdown
 DOCUMENTATION REQUIREMENTS:
+
 - All public functions must be documented
 - Examples must be tested and working
 - Error conditions must be comprehensive
@@ -434,6 +432,7 @@ DOCUMENTATION REQUIREMENTS:
 - Usage patterns and best practices
 
 QUALITY STANDARDS:
+
 - Documentation must pass markdown linting
 - All code examples must be syntax-highlighted
 - Links must be validated and functional
@@ -441,7 +440,7 @@ QUALITY STANDARDS:
 
 CREATE: Comprehensive API documentation for all include functions.
 
-```text
+````text
 
 #### Usage Guide Prompt
 
@@ -498,7 +497,10 @@ AUDIENCE CONSIDERATIONS:
 - CI/CD automation requirements
 
 CREATE: Complete usage and migration documentation suite.
-```
+````
+`````
+
+````
 
 #### 5. Quality Assurance and Optimization Prompts
 
@@ -634,3 +636,4 @@ I need to create modular shell script includes following LightSpeed WP standards
 ## Closing Statement
 
 Structured prompt templates enable systematic, high-quality creation of modular shell script includes while ensuring comprehensive testing, documentation, and optimization throughout the development process.
+````

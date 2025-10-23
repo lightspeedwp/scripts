@@ -3,10 +3,28 @@
 
 echo "🔍 Running pre-commit checks..."
 
-# Check if we're in the correct directory
-if [ ! -f "package.json" ]; then
-    echo "❌ Not in project root directory"
+
+# Robust project root check using git
+PROJECT_ROOT=$(git rev-parse --show-toplevel 2>/dev/null)
+if [ -z "$PROJECT_ROOT" ] || [ ! -f "$PROJECT_ROOT/package.json" ]; then
+    echo "❌ Not in project root directory (could not find package.json at repo root)"
     exit 1
+fi
+cd "$PROJECT_ROOT"
+
+# Node.js version check using .nvmrc (optional)
+if [ -f .nvmrc ]; then
+    REQUIRED_NODE_VERSION=$(cat .nvmrc | head -n1 | tr -d 'v')
+    CURRENT_NODE_VERSION=$(node -v 2>/dev/null | tr -d 'v')
+    if [ -z "$CURRENT_NODE_VERSION" ]; then
+        echo "⚠️  Node.js is not installed or not in PATH."
+        exit 1
+    fi
+    if [ "$REQUIRED_NODE_VERSION" != "$CURRENT_NODE_VERSION" ]; then
+        echo "⚠️  Node.js version mismatch: required $REQUIRED_NODE_VERSION, current $CURRENT_NODE_VERSION"
+        echo "Please run 'nvm use' or switch to the correct Node.js version."
+        exit 1
+    fi
 fi
 
 # Install dependencies if node_modules doesn't exist
@@ -21,6 +39,7 @@ npm run lint || {
     echo "❌ Linting failed. Please fix the issues before committing."
     exit 1
 }
+npx lint-staged
 
 # Run tests
 echo "🧪 Running tests..."

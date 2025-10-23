@@ -43,10 +43,10 @@ The script is executed with the target environment and version as arguments.
 
 **Arguments:**
 
-| Argument | Description |
-| --- | --- |
+| Argument        | Description                                                                                       |
+| --------------- | ------------------------------------------------------------------------------------------------- |
 | `[environment]` | The target environment for the deployment (e.g., `staging`, `production`). Defaults to `staging`. |
-| `[version]` | The version of the application to deploy. Defaults to `latest`. |
+| `[version]`     | The version of the application to deploy. Defaults to `latest`.                                   |
 
 ## As a Template
 
@@ -64,13 +64,13 @@ To use this script as a template:
 
 ## Function Reference
 
-| Function | Description |
-| --- | --- |
-| `main()` | The main entry point that orchestrates the validation and deployment process. |
-| `deploy()` | The core function where the main deployment logic should be placed. |
+| Function                 | Description                                                                            |
+| ------------------------ | -------------------------------------------------------------------------------------- |
+| `main()`                 | The main entry point that orchestrates the validation and deployment process.          |
+| `deploy()`               | The core function where the main deployment logic should be placed.                    |
 | `validate_environment()` | Checks if the specified environment is a valid target (e.g., `staging`, `production`). |
-| `log()` | A simple logging function that prints messages to the console and a log file. |
-| `error_exit()` | A function to log an error message and exit the script with a non-zero status code. |
+| `log()`                  | A simple logging function that prints messages to the console and a log file.          |
+| `error_exit()`           | A function to log an error message and exit the script with a non-zero status code.    |
 
 ## License
 

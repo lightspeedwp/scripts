@@ -35,19 +35,19 @@ The script can be run with various environment variables to control its behavior
 
 ## Environment Variables
 
-| Variable  | Description                                                                 |
-| :-------- | :-------------------------------------------------------------------------- |
-| `DRY_RUN` | Set to `true` to preview changes without applying them (default).           |
-| `PRUNE`   | Set to `true` to delete non-canonical labels from repositories.             |
-| `ONLY`    | A space-separated list of repository names to process exclusively.          |
+| Variable  | Description                                                        |
+| :-------- | :----------------------------------------------------------------- |
+| `DRY_RUN` | Set to `true` to preview changes without applying them (default).  |
+| `PRUNE`   | Set to `true` to delete non-canonical labels from repositories.    |
+| `ONLY`    | A space-separated list of repository names to process exclusively. |
 
 ## Options
 
-| Option      | Description                         |
-| :---------- | :---------------------------------- |
+| Option      | Description                            |
+| :---------- | :------------------------------------- |
 | `--dry-run` | Preview changes without applying them. |
-| `--verbose` | Show detailed debug information.    |
-| `--help`    | Show this help message.             |
+| `--verbose` | Show detailed debug information.       |
+| `--help`    | Show this help message.                |
 
 ## Examples
 

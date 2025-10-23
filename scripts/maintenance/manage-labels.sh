@@ -64,10 +64,12 @@ ONLY="${ONLY:-}"                    # space-separated repo names to target (opti
 
 tmp="$(mktemp -d)"; trap 'rm -rf "$tmp"' EXIT
 
+# shellcheck disable=SC2317,SC2329
 function uri_encode() {
   jq -rn --arg s "$1" '$s|@uri'
 }
 
+# shellcheck disable=SC2317,SC2329
 function fetch_canonical_labels() {
   echo "Fetching $ORG/$CANON_REPO:$LABELS_PATH ..."
   local path_encoded
@@ -78,6 +80,7 @@ function fetch_canonical_labels() {
   echo "Canonical labels fetched and processed."
 }
 
+# shellcheck disable=SC2317,SC2329
 function get_repository_list() {
   if [[ -n "$ONLY" ]]; then
     mapfile -t REPOS < <(printf "%s\n" "$ONLY")
@@ -88,8 +91,10 @@ function get_repository_list() {
   fi
 }
 
+# shellcheck disable=SC2317,SC2329
 function sync_repository_labels() {
-  local repo="$1"
+  local repo
+  repo="$1"
   echo "==> Syncing $ORG/$repo"
   mapfile -t EXISTING < <(gh api "repos/$ORG/$repo/labels" --paginate -q '.[].name' || true)
   jq -c '.[]' "$tmp/labels.json" | while read -r lbl; do
@@ -122,4 +127,5 @@ for repo in "${REPOS[@]}"; do
   sync_repository_labels "$repo"
 done
 echo "Done."
+# shellcheck disable=SC2317,SC2329
 exit 0

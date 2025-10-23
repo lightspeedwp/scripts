@@ -1,60 +1,141 @@
 {
-  "name": "lightspeedwp-scripts",
-  "version": "0.1.0",
-  "description": "LightSpeed WordPress automation scripts and workflows",
-  "main": "index.js",
-  "scripts": {
-    "test": "bats tests/test-*.bats",
-    "test:dry-run": "find tests/ -name 'dry-run-*.sh' -exec {} \\;",
-    "lint:md": "markdownlint '**/*.md'",
-    "lint:sh": "sh -c 'set -e; FILES_COUNT=$(find scripts -type f -name \"*.sh\" | wc -l); if [ \"$FILES_COUNT\" -gt 0 ]; then find scripts -type f -name \"*.sh\" -print0 | xargs -0 shellcheck; else echo \"No shell scripts to lint.\"; fi'",
-    "lint:js": "eslint .",
-    "format": "prettier --write .",
-    "lint": "npm run lint:md && npm run lint:sh && npm run lint:js",
-    "validate": "npm run lint && npm run test",
-    "prepare": "husky",
-    "commit": "git add . && git commit",
-    "commit-msg": "commitlint --edit"
-  },
-  "directories": {
-    "doc": "docs",
-    "test": "tests"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/lightspeedwp/scripts.git"
-  },
-  "keywords": [
-    "wordpress",
-    "automation",
-    "github-actions",
-    "deployment",
-    "scripts"
-  ],
-  "author": "LightSpeed WP",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/lightspeedwp/scripts/issues"
-  },
-  "homepage": "https://github.com/lightspeedwp/scripts#readme",
-  "devDependencies": {
-    "@commitlint/cli": "^20.1.0",
-    "@commitlint/config-conventional": "^20.0.0",
-    "@eslint/js": "^9.37.0",
-    "@typescript-eslint/eslint-plugin": "^8.46.0",
-    "@typescript-eslint/parser": "^8.46.0",
-    "all-contributors-cli": "^6.26.1",
-    "auto-changelog": "^2.4.0",
-    "bats": "^1.8.2",
-    "bats-assert": "^2.2.4",
-    "bats-support": "^0.3.0",
-    "eslint": "^9.37.0",
-    "eslint-config-prettier": "^10.1.8",
-    "eslint-plugin-prettier": "^5.5.4",
-    "husky": "^9.1.7",
-    "jest": "^30.2.0",
-    "markdownlint-cli": "^0.45.0",
-    "prettier": "^3.6.2",
-    "shellcheck": "^4.1.0"
-  }
+    "name": "lightspeedwp-scripts",
+    "version": "0.1.0",
+    "description": "LightSpeed WP automation scripts, agents, and utilities for GitHub workflow automation, labeling, testing, and standardization. See README.md for full documentation.",
+    "main": "index.js",
+    "type": "module",
+    "directories": {
+        "doc": "docs",
+        "test": "tests"
+    },
+    "files": [
+        "scripts/",
+        "tests/",
+        "docs/",
+        "README.md",
+        "CHANGELOG.md",
+        "CONTRIBUTING.md",
+        "SECURITY.md",
+        "SUPPORT.md",
+        "LICENSE",
+        "CODE_OF_CONDUCT.md"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/lightspeedwp/scripts.git"
+    },
+    "homepage": "https://github.com/lightspeedwp/scripts#readme",
+    "bugs": {
+        "url": "https://github.com/lightspeedwp/scripts/issues"
+    },
+    "author": "LightSpeed WP Team",
+    "contributors": [
+        {
+            "name": "Ashley Shaw",
+            "email": "ashley@lightspeedwp.agency",
+            "url": "https://github.com/ashleyshaw"
+        },
+        {
+            "name": "LightSpeed WP Team",
+            "url": "https://lightspeedwp.agency/"
+        }
+    ],
+    "license": "GPL-3.0-or-later",
+    "keywords": [
+        "wordpress",
+        "automation",
+        "github-actions",
+        "deployment",
+        "scripts"
+    ],
+    "engines": {
+        "node": ">=18.0.0",
+        "npm": ">=8.0.0"
+    },
+    "funding": {
+        "type": "custom",
+        "url": "https://lightspeedwp.agency/support"
+    },
+    "support": {
+        "email": "support@lightspeedwp.agency",
+        "url": "https://lightspeedwp.agency/support"
+    },
+    "os": [
+        "darwin",
+        "linux"
+    ],
+    "private": false,
+    "sideEffects": false,
+    "readmeFilename": "README.md",
+    "scripts": {
+        "test:bats": "bats tests/test-*.bats",
+        "test:jest": "jest",
+        "test": "npm run test:bats && npm run test:jest",
+        "test:dry-run": "find tests/ -name 'dry-run-*.sh' -exec {} \\;",
+        "test:watch": "jest --watch",
+        "test:coverage": "jest --coverage",
+        "lint:md": "markdownlint '**/*.md'",
+        "lint:sh": "./scripts/utility/lint-shell.sh",
+        "lint:js": "eslint .",
+        "lint:package": "npmPkgJsonLint .",
+        "lint": "npm run lint:md && npm run lint:sh && npm run lint:js && npm run lint:package",
+        "lint:fix": "npm run format && npm run lint:js -- --fix",
+        "format": "prettier --write .",
+        "format:check": "prettier --check .",
+        "validate": "npm run lint && npm run test",
+        "prepare": "husky",
+        "precommit": "npm run lint:fix && npm run test",
+        "commit": "git add . && git commit",
+        "commit-msg": "commitlint --edit",
+        "clean": "rimraf node_modules coverage dist build logs/*.log",
+        "deps:check": "npm-check-updates",
+        "deps:update": "npm-check-updates -u && npm install",
+        "security:audit": "npm audit",
+        "security:fix": "npm audit fix",
+        "changelog": "auto-changelog --template keepachangelog",
+        "release:validate": "./scripts/utility/validate-release.sh",
+        "dev": "nodemon --watch scripts --ext sh,js,md --exec 'npm run validate'",
+        "ci": "npm ci && npm run validate"
+    },
+    "devDependencies": {
+        "@commitlint/cli": "^20.1.0",
+        "@commitlint/config-conventional": "^20.0.0",
+        "@eslint/js": "^9.38.0",
+        "@octokit/rest": "^22.0.0",
+        "@semantic-release/changelog": "^6.0.3",
+        "@semantic-release/git": "^10.0.1",
+        "@tsconfig/recommended": "1.0.10",
+        "@typescript-eslint/eslint-plugin": "^8.46.2",
+        "@typescript-eslint/parser": "^8.46.2",
+        "ajv": "8.17.1",
+        "all-contributors-cli": "3.1.1",
+        "auto-changelog": "^2.4.0",
+        "bats": "^1.12.0",
+        "bats-assert": "^2.2.4",
+        "bats-support": "^0.3.0",
+        "chokidar-cli": "^3.0.0",
+        "concurrently": "^9.0.1",
+        "cross-env": "^7.0.3",
+        "eslint": "^9.38.0",
+        "eslint-config-prettier": "^10.1.8",
+        "eslint-plugin-prettier": "^5.5.4",
+        "husky": "^9.1.7",
+        "jest": "^30.2.0",
+        "js-yaml": "^4.1.0",
+        "markdownlint-cli": "^0.45.0",
+        "nodemon": "^3.1.4",
+        "npm-check-updates": "^17.0.0",
+        "npm-package-json-lint": "^8.0.0",
+        "npm-run-all2": "^7.0.1",
+        "prettier": "^3.6.2",
+        "rimraf": "^6.0.1",
+        "semantic-release": "^24.0.0",
+        "shellcheck": "^4.1.0",
+        "wait-on": "^8.0.1",
+        "yaml": "2.8.1"
+    },
+    "dependencies": {
+        "@actions/core": "^1.10.0",
+        "@actions/github": "^6.0.0"
+    }
 }

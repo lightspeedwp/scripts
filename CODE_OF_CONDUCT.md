@@ -20,7 +20,7 @@ Unacceptable behavior:
 
 ## Enforcement
 
-Report violations to support@lightspeedwp.com.
+Report violations to <support@lightspeedwp.com>.
 
 ## Attribution
 

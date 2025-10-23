@@ -21,9 +21,7 @@ You are an issue type automation specialist. Create a prompt to guide the refact
 
 Ensure issue types automation scripts and workflows are updated to match project specifications, improve accuracy, maintain consistency, and resolve GitHub authentication scope issues for issues, pull requests, and project boards.
 
-
 ## Checklist
-
 
 ## Current Repository State & Action Items
 
@@ -35,7 +33,6 @@ Ensure issue types automation scripts and workflows are updated to match project
 - GitHub authentication scope issues may exist; audit and update as needed.
 
 **Action:** Audit scripts against spec files, update naming and logic, resolve authentication issues, add/expand tests, and update documentation in README and changelog files.
-
 
 ## Issue Types Refactor Prompt Template
 

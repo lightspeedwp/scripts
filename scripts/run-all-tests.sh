@@ -1,4 +1,3 @@
-
 #!/opt/homebrew/bin/bash
 # ============================================================================
 # Script Name: run-all-tests.sh
@@ -205,6 +204,7 @@ run_tests() {
                 ;;
             --help)
                 show_help
+                # shellcheck disable=SC2317,SC2329
                 exit 0
                 ;;
             *)
@@ -238,7 +238,7 @@ run_tests() {
         else
             bats "$test_file" > /dev/null
         fi
-        if [[ $? -eq 0 ]]; then
+        if bats -v "$test_files"; then
             log_success "PASS: $test_file"
         else
             log_error "FAIL: $test_file"
@@ -269,109 +269,9 @@ main() {
 main "$@"
 
 log_info "Done."
+# shellcheck disable=SC2317,SC2329
 exit 0 # Always exit 0 to not break CI/CD, errors are logged above
 
 
 
-###############################################################################
-# Function: show_help
-# Description: Displays usage information for the test runner script.
-# Arguments: None
-# Output: Prints help message to stdout.
-# Notes: Follows LightSpeed WP documentation standards.
-###############################################################################
-show_help() {
-    cat << EOF
-Usage: ./run-all-tests.sh [OPTIONS]
 
-Runs all Bats test files in the tests directory and subdirectories.
-
-Options:
-  --help           Show help message
-  --dry-run        Preview tests to be run
-  --verbose        Show detailed output
-  --test <pattern> Run only tests matching pattern
-
-Examples:
-  ./run-all-tests.sh
-  ./run-all-tests.sh --dry-run
-  ./run-all-tests.sh --verbose
-  ./run-all-tests.sh --test "utility"
-EOF
-}
-
-###############################################################################
-# Function: run_tests
-# Description: Finds and runs all Bats test files, optionally filtering by pattern, and prints a summary.
-# Arguments: $@ - Command line arguments
-# Output: Runs Bats tests and prints results to stdout.
-# Notes: Supports dry-run and verbose modes. Uses find and xargs for test discovery.
-###############################################################################
-run_tests() {
-    local dry_run=false
-    local verbose=false
-    local test_pattern="*.bats"
-
-    while [[ $# -gt 0 ]]; do
-        case "$1" in
-            --dry-run)
-                dry_run=true
-                shift
-                ;;
-            --verbose)
-                verbose=true
-                shift
-                ;;
-            --test)
-                test_pattern="*$2*.bats"
-                shift 2
-                ;;
-            --help)
-                show_help
-                exit 0
-                ;;
-            *)
-                echo "Unknown option: $1"
-                show_help
-                exit 1
-                ;;
-        esac
-    done
-
-    local test_files
-    test_files=$(find "$(dirname "$0")/tests" -name "$test_pattern" -print)
-
-    if [[ "$dry_run" == true ]]; then
-        echo "[DRY RUN] The following test files would be run:"
-        echo "$test_files"
-        return 0
-    fi
-
-    if [[ -z "$test_files" ]]; then
-        echo "No test files found matching pattern: $test_pattern"
-        exit 1
-    fi
-
-    if [[ "$verbose" == true ]]; then
-        bats -v $test_files
-    else
-        bats $test_files
-    fi
-}
-###############################################################################
-# Main execution
-# Function: main
-# Description: Entry point for the test runner script. Parses arguments and runs tests.
-# Arguments: $@ - Command line arguments
-# Output: Orchestrates test execution and prints summary.
-# Notes: Follows LightSpeed WP documentation standards.
-###############################################################################
-main() {
-    run_tests "$@"
-}
-
-main "$@"
-
-# Done
-echo "Done."
-exit 0 # Always exit 0 to not break CI/CD, errors are logged above

@@ -1,14 +1,23 @@
-# EditorConfig helps maintain consistent coding styles
+# ============================================================================
+# EditorConfig helps maintain consistent coding styles across editors and CI
+# This file enforces line endings, charset, whitespace, and indentation rules.
+# See also: .vscode/settings.json for VS Code-specific overrides.
+# ============================================================================
 root = true
 
+# --------------------------------------------------------------------------
+# Default settings for all files
+# --------------------------------------------------------------------------
 [*]
-end_of_line = lf
-insert_final_newline = true
-charset = utf-8
-trim_trailing_whitespace = true
-indent_style = space
-indent_size = 4
+end_of_line = lf                # Use LF for all files (Unix style)
+insert_final_newline = true     # Ensure file ends with a newline
+charset = utf-8                 # Use UTF-8 encoding
+trim_trailing_whitespace = true # Remove trailing whitespace on save
+indent_style = space            # Use spaces, not tabs
+indent_size = 2                 # Default: 2 spaces per indent (matches VS Code)
 
+# --------------------------------------------------------------------------
+# Shell scripts: Use 4 spaces for indentation
+# --------------------------------------------------------------------------
 [*.sh]
-indent_style = space
-indent_size = 4
+indent_size = 4                 # Shell scripts: 4 spaces per indent

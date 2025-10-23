@@ -78,38 +78,44 @@ This file provides workspace-specific instructions for GitHub Copilot and CodeRa
 - [Script Header Docs Agent](./agents/script-header-docs.agent.js): Script documentation validation
 
 <!-- INSTRUCTIONS-TABLE-START -->
-| File | Purpose |
-|------|---------|
-| [.github/custom-instructions.md](.github/custom-instructions.md) | Main Copilot & CodeRabbit integration, file index, and standards cross-reference |
-| [.github/prompts/prompts.md](.github/prompts/prompts.md) | Reusable prompt templates for Copilot Chat/CLI |
-| [.github/chatmodes/chatmodes.md](.github/chatmodes/chatmodes.md) | Scenario-based chat modes for development contexts |
-| [.github/agents/agent.md](.github/agents/agent.md) | Agent registry and automation tools |
-| [.github/instructions/ai-prompt-engineering-safety-best-practices.instructions.md](.github/instructions/ai-prompt-engineering-safety-best-practices.instructions.md) | AI prompt engineering and safety best practices |
-| [.github/instructions/bats-tests-and-runner-scripts.instructions.md](.github/instructions/bats-tests-and-runner-scripts.instructions.md) | Shell script and Bats test standards |
-| [.github/instructions/coding-standards.instructions.md](.github/instructions/coding-standards.instructions.md) | Universal coding standards for all languages |
-| [.github/instructions/contributor-types.instructions.md](.github/instructions/contributor-types.instructions.md) | Role-specific contributor standards and prompts |
-| [.github/instructions/copilot-thought-logging.instructions.md](.github/instructions/copilot-thought-logging.instructions.md) | Copilot thought logging and debugging |
-| [.github/instructions/create-or-update-copilot.instructions.md](.github/instructions/create-or-update-copilot.instructions.md) | Standards for instruction authoring |
-| [.github/instructions/documentation-standards.instructions.md](.github/instructions/documentation-standards.instructions.md) | Documentation and README requirements |
-| [.github/instructions/github-actions-ci-cd-best-practices.instructions.md](.github/instructions/github-actions-ci-cd-best-practices.instructions.md) | Comprehensive CI/CD guidance |
-| [.github/instructions/js-copilot.instructions.md](.github/instructions/js-copilot.instructions.md) | JavaScript/Node.js workflow standards |
-| [.github/instructions/localization.instructions.md](.github/instructions/localization.instructions.md) | Guidance for document localization |
-| [.github/instructions/markdown.instructions.md](.github/instructions/markdown.instructions.md) | Markdown content rules and validation |
-| [.github/instructions/markdown-copilot.instructions.md](.github/instructions/markdown-copilot.instructions.md) | Markdown standards for Copilot |
-| [.github/instructions/memory-bank.instructions.md](.github/instructions/memory-bank.instructions.md) | Memory bank for session persistence |
-| [.github/instructions/performance-optimization.instructions.md](.github/instructions/performance-optimization.instructions.md) | Universal performance optimization practices |
-| [.github/instructions/playwright-copilot.instructions.md](.github/instructions/playwright-copilot.instructions.md) | Playwright automation and MCP server standards |
-| [.github/instructions/playwright-typescript.instructions.md](.github/instructions/playwright-typescript.instructions.md) | Playwright test generation instructions |
-| [.github/instructions/python-copilot.instructions.md](.github/instructions/python-copilot.instructions.md) | Python scripting and automation standards |
-| [.github/instructions/self-explanatory-code-commenting.instructions.md](.github/instructions/self-explanatory-code-commenting.instructions.md) | Code commenting guidelines |
-| [.github/instructions/shell-script-copilot.instructions.md](.github/instructions/shell-script-copilot.instructions.md) | Shell script development standards |
-| [.github/instructions/shell-script-header-and-docs.instructions.md](.github/instructions/shell-script-header-and-docs.instructions.md) | Script header and documentation standards |
-| [.github/instructions/spec-driven-workflow-v1.instructions.md](.github/instructions/spec-driven-workflow-v1.instructions.md) | Specification-driven development workflow |
-| [.github/instructions/taming-copilot.instructions.md](.github/instructions/taming-copilot.instructions.md) | Copilot control and guidance instructions |
-| [.github/instructions/task-implementation.instructions.md](.github/instructions/task-implementation.instructions.md) | Task plan implementation instructions |
-| [.github/instructions/tasksync.instructions.md](.github/instructions/tasksync.instructions.md) | TaskSync V4 protocol for continuous task management |
-| [.github/instructions/wordpress.instructions.md](.github/instructions/wordpress.instructions.md) | WordPress coding standards and security patterns |
-<!-- INSTRUCTIONS-TABLE-END -->
+
+| File                                                                                                                                                                 | Purpose                                                                          |
+| -------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
+| [.github/custom-instructions.md](.github/custom-instructions.md)                                                                                                     | Main Copilot & CodeRabbit integration, file index, and standards cross-reference |
+| [.github/prompts/prompts.md](.github/prompts/prompts.md)                                                                                                             | Reusable prompt templates for Copilot Chat/CLI                                   |
+| [.github/chatmodes/chatmodes.md](.github/chatmodes/chatmodes.md)                                                                                                     | Scenario-based chat modes for development contexts                               |
+| [.github/agents/agent.md](.github/agents/agent.md)                                                                                                                   | Agent registry and automation tools                                              |
+| [.github/instructions/ai-prompt-engineering-safety-best-practices.instructions.md](.github/instructions/ai-prompt-engineering-safety-best-practices.instructions.md) | AI prompt engineering and safety best practices                                  |
+| [.github/instructions/bats-tests-and-runner-scripts.instructions.md](.github/instructions/bats-tests-and-runner-scripts.instructions.md)                             | Shell script and Bats test standards                                             |
+| [.github/instructions/coding-standards.instructions.md](.github/instructions/coding-standards.instructions.md)                                                       | Universal coding standards for all languages                                     |
+| [.github/instructions/contributor-types.instructions.md](.github/instructions/contributor-types.instructions.md)                                                     | Role-specific contributor standards and prompts                                  |
+| [.github/instructions/copilot-thought-logging.instructions.md](.github/instructions/copilot-thought-logging.instructions.md)                                         | Copilot thought logging and debugging                                            |
+| [.github/instructions/create-or-update-copilot.instructions.md](.github/instructions/create-or-update-copilot.instructions.md)                                       | Standards for instruction authoring                                              |
+| [.github/instructions/documentation-standards.instructions.md](.github/instructions/documentation-standards.instructions.md)                                         | Documentation and README requirements                                            |
+| [.github/instructions/github-actions-ci-cd-best-practices.instructions.md](.github/instructions/github-actions-ci-cd-best-practices.instructions.md)                 | Comprehensive CI/CD guidance                                                     |
+| [.github/instructions/js-copilot.instructions.md](.github/instructions/js-copilot.instructions.md)                                                                   | JavaScript/Node.js workflow standards                                            |
+| [.github/instructions/localization.instructions.md](.github/instructions/localization.instructions.md)                                                               | Guidance for document localization                                               |
+| [.github/instructions/markdown.instructions.md](.github/instructions/markdown.instructions.md)                                                                       | Markdown content rules and validation                                            |
+| [.github/instructions/markdown-copilot.instructions.md](.github/instructions/markdown-copilot.instructions.md)                                                       | Markdown standards for Copilot                                                   |
+| [.github/instructions/memory-bank.instructions.md](.github/instructions/memory-bank.instructions.md)                                                                 | Memory bank for session persistence                                              |
+| [.github/instructions/performance-optimization.instructions.md](.github/instructions/performance-optimization.instructions.md)                                       | Universal performance optimization practices                                     |
+| [.github/instructions/playwright-copilot.instructions.md](.github/instructions/playwright-copilot.instructions.md)                                                   | Playwright automation and MCP server standards                                   |
+| [.github/instructions/playwright-typescript.instructions.md](.github/instructions/playwright-typescript.instructions.md)                                             | Playwright test generation instructions                                          |
+| [.github/instructions/python-copilot.instructions.md](.github/instructions/python-copilot.instructions.md)                                                           | Python scripting and automation standards                                        |
+| [.github/instructions/self-explanatory-code-commenting.instructions.md](.github/instructions/self-explanatory-code-commenting.instructions.md)                       | Code commenting guidelines                                                       |
+| [.github/instructions/shell-script-copilot.instructions.md](.github/instructions/shell-script-copilot.instructions.md)                                               | Shell script development standards                                               |
+| [.github/instructions/shell-script-header-and-docs.instructions.md](.github/instructions/shell-script-header-and-docs.instructions.md)                               | Script header and documentation standards                                        |
+| [.github/instructions/spec-driven-workflow-v1.instructions.md](.github/instructions/spec-driven-workflow-v1.instructions.md)                                         | Specification-driven development workflow                                        |
+| [.github/instructions/taming-copilot.instructions.md](.github/instructions/taming-copilot.instructions.md)                                                           | Copilot control and guidance instructions                                        |
+| [.github/instructions/task-implementation.instructions.md](.github/instructions/task-implementation.instructions.md)                                                 | Task plan implementation instructions                                            |
+| [.github/instructions/tasksync.instructions.md](.github/instructions/tasksync.instructions.md)                                                                       | TaskSync V4 protocol for continuous task management                              |
+| [.github/instructions/wordpress.instructions.md](.github/instructions/wordpress.instructions.md)                                                                     | WordPress coding standards and security patterns                                 |
+
+# <!-- INSTRUCTIONS-TABLE-END -->
+
+# GitHub Copilot Custom Instructions
+
+This file serves as the main configuration for GitHub Copilot instructions across the LightSpeed WP scripts repository. It follows the LightSpeed role-based framework to provide context-aware assistance for contributors.
 
 ## Repository Overview
 
@@ -170,7 +176,43 @@ This is the central automation scripts repository for LightSpeed WP organization
 ### Agents
 
 - [/.github/agents/agent.md](./agents/agent.md) - Agent registry and automation tools
-- [/AGENTS.md](../AGENTS.md) - Root agents directory and registry
+- # [/AGENTS.md](../AGENTS.md) - Root agents directory and registry
+
+### Core Instructions
+
+The `.github/instructions/` directory contains specialized guidance files that provide context-aware assistance for different aspects of the LightSpeed WP automation workflow. Each file follows the standard format: "You are a [role]. Follow our [framework/patterns] to [type of task]. Avoid [practices or tools] unless specified."
+
+#### Foundation Files
+
+- **[contributor-types.md](./instructions/contributor-types.md)** - Defines role-specific guidance for different contributor types (developers, maintainers, reviewers, documentation writers). Provides context switching for Copilot based on contributor expertise level and responsibilities.
+
+- **[coding-standards.md](./instructions/coding-standards.md)** - Establishes organization-wide coding standards that apply across all languages and frameworks. Covers general principles like naming conventions, error handling, security practices, and code review requirements.
+
+- **[documentation-standards.md](./instructions/documentation-standards.md)** - Comprehensive documentation guidelines covering technical writing, API documentation, README structures, and accessibility requirements. Aligns with markdown standards but extends to broader documentation practices.
+
+#### Language-Specific Instructions
+
+- **[shell-script-copilot.md](./instructions/shell-script-copilot.md)** - Comprehensive shell scripting standards and patterns including Bash best practices, error handling with `set -euo pipefail`, script header requirements, and integration with LightSpeed automation workflows.
+
+- **[js-copilot.md](./instructions/js-copilot.md)** - JavaScript and Node.js development standards covering ES6+ practices, npm workflow integration, testing with Jest, linting with ESLint, and GitHub Actions workflow automation.
+
+- **[python-copilot.md](./instructions/python-copilot.md)** - Python scripting standards for automation tasks including type hints, pytest testing, virtual environments, dependency management, and integration with organizational workflows.
+
+- **[markdown-copilot.md](./instructions/markdown-copilot.md)** - Markdown and documentation standards focusing on accessibility, consistent formatting, cross-referencing, and integration with automated documentation workflows.
+
+- **[playwright-copilot.md](./instructions/playwright-copilot.md)** - Playwright-specific testing standards and MCP server automation guidance for browser testing, test organization, and CI/CD integration.
+
+#### Testing & Quality Assurance
+
+- **[bats-tests-and-runner-scripts.md](./instructions/bats-tests-and-runner-scripts.md)** - Comprehensive Bats testing framework guidance covering test structure, runner script patterns, coverage requirements, and CI/CD integration for shell script testing.
+
+- **[shell-script-header-and-docs.md](./instructions/shell-script-header-and-docs.md)** - Detailed requirements for shell script documentation including mandatory header components, inline documentation patterns, function documentation, and usage examples.
+
+### Chat Modes & Prompts
+
+- **[chatmodes.md](./chatmodes/chatmodes.md)** - Scenario-based chat modes for different development contexts including shell script development, GitHub Actions workflows, documentation contribution, code review, and problem diagnosis.
+
+- **[prompts.md](./prompts/prompts.md)** - Reusable prompt templates for Copilot Chat and CLI covering code generation, review, documentation, testing, automation, and learning scenarios.
 
 ## LightSpeed Framework Integration
 
@@ -187,11 +229,11 @@ All instructions follow the pattern: "You are a [role]. Follow our [framework/pa
 ### Repository Structure Compliance
 
 ```md
-├── scripts/           # Shell scripts (kebab-case naming)
-├── workflows/         # GitHub Actions workflows
-├── tests/            # Bats tests and dry-run scripts
-├── .github/          # GitHub templates, Copilot instructions, and configuration
-└── LIGHTSPEED_AUTOMATION_HANDBOOK.md  # Organization-wide documentation
+├── scripts/ # Shell scripts (kebab-case naming)
+├── workflows/ # GitHub Actions workflows
+├── tests/ # Bats tests and dry-run scripts
+├── .github/ # GitHub templates, Copilot instructions, and configuration
+└── LIGHTSPEED_AUTOMATION_HANDBOOK.md # Organization-wide documentation
 ```
 
 ## Usage Guidelines

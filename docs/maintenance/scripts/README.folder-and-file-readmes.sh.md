@@ -46,25 +46,25 @@ DRY_RUN=true ./folder-and-file-readmes.sh <target-folder>
 
 ## Environment Variables
 
-| Variable         | Description                                  |
-| :--------------- | :------------------------------------------- |
+| Variable         | Description                                        |
+| :--------------- | :------------------------------------------------- |
 | `DRY_RUN`        | If `true`, previews changes without writing files. |
 | `MERGE_MODE`     | If `true`, merges new content with existing files. |
-| `OVERWRITE_MODE` | If `true`, overwrites existing files.        |
-| `LOG_FILE`       | Path to an optional log file.                |
+| `OVERWRITE_MODE` | If `true`, overwrites existing files.              |
+| `LOG_FILE`       | Path to an optional log file.                      |
 
 ## Options
 
-| Option         | Description                               |
-| :------------- | :---------------------------------------- |
-| `--help`       | Show the help message.                    |
-| `--lint`       | Lint the generated markdown files.        |
-| `--toc`        | Add a table of contents to `README.md`.   |
-| `--dry-run`    | Preview changes without writing files.    |
-| `--profile`    | Generate a GitHub profile-style `README.md`. |
-| `--file <file>`| Generate a README for a specific file.    |
-| `--merge`      | Merge new content with an existing README. |
-| `--overwrite`  | Overwrite an existing README.             |
+| Option          | Description                                  |
+| :-------------- | :------------------------------------------- |
+| `--help`        | Show the help message.                       |
+| `--lint`        | Lint the generated markdown files.           |
+| `--toc`         | Add a table of contents to `README.md`.      |
+| `--dry-run`     | Preview changes without writing files.       |
+| `--profile`     | Generate a GitHub profile-style `README.md`. |
+| `--file <file>` | Generate a README for a specific file.       |
+| `--merge`       | Merge new content with an existing README.   |
+| `--overwrite`   | Overwrite an existing README.                |
 
 ## Examples
 

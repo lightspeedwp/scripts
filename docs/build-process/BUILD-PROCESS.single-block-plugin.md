@@ -20,6 +20,7 @@ This document details the build process specifically for WordPress single block 
 A single block plugin represents one of the most focused WordPress development projects: it adds exactly one custom block to the WordPress block editor (Gutenberg). Despite its targeted scope, a single block plugin requires modern build tools and processes to create an optimized, maintainable, and user-friendly experience.
 
 Single block plugins are ideal for:
+
 - Focused functionality that works independently
 - Learning block development fundamentals
 - Creating highly specialized content elements
@@ -36,34 +37,34 @@ Before starting development, set up a consistent and reliable local environment:
 Choose one of these approaches:
 
 1. **wp-env (Recommended)**
-   - Install: `npm i -g @wordpress/env`
-   - Initialize: `wp-env start` (from project directory)
-   - Advantages: Docker-based, consistent across team members, simple configuration
+    - Install: `npm i -g @wordpress/env`
+    - Initialize: `wp-env start` (from project directory)
+    - Advantages: Docker-based, consistent across team members, simple configuration
 
 2. **LocalWP**
-   - Install from [localwp.com](https://localwp.com/)
-   - Create a new site with latest WordPress version
-   - Advantages: User-friendly GUI, easy database management
+    - Install from [localwp.com](https://localwp.com/)
+    - Create a new site with latest WordPress version
+    - Advantages: User-friendly GUI, easy database management
 
 3. **Manual LAMP/LEMP Stack**
-   - Configure Apache/Nginx, MySQL, and PHP
-   - Install WordPress manually
-   - Advantages: Full control over server configuration
+    - Configure Apache/Nginx, MySQL, and PHP
+    - Install WordPress manually
+    - Advantages: Full control over server configuration
 
 ### Required Development Tools
 
 1. **Node.js and npm**
-   - Install Node.js (LTS version recommended)
-   - Update npm: `npm install -g npm@latest`
+    - Install Node.js (LTS version recommended)
+    - Update npm: `npm install -g npm@latest`
 
 2. **Code Editor Setup**
-   - VS Code with WordPress extensions (recommended)
-   - ESLint and Stylelint configuration
-   - PHP_CodeSniffer with WordPress standards
+    - VS Code with WordPress extensions (recommended)
+    - ESLint and Stylelint configuration
+    - PHP_CodeSniffer with WordPress standards
 
 3. **Version Control**
-   - Git repository initialization
-   - .gitignore for build artifacts and dependencies
+    - Git repository initialization
+    - .gitignore for build artifacts and dependencies
 
 ## Scaffolding and Initialization
 
@@ -86,6 +87,7 @@ npm install
 ```
 
 This command generates a complete plugin structure with:
+
 - Main plugin PHP file
 - block.json for block registration
 - JavaScript source files (edit.js, save.js, index.js)
@@ -156,27 +158,27 @@ The block metadata file defines your block's properties:
 
 ```json
 {
-  "$schema": "https://schemas.wp.org/trunk/block.json",
-  "apiVersion": 3,
-  "name": "my-namespace/my-block",
-  "version": "1.0.0",
-  "title": "My Block",
-  "category": "widgets",
-  "icon": "smiley",
-  "description": "My custom block description",
-  "supports": {
-    "html": false
-  },
-  "textdomain": "my-single-block",
-  "editorScript": "file:./index.js",
-  "editorStyle": "file:./index.css",
-  "style": "file:./style-index.css",
-  "attributes": {
-    "content": {
-      "type": "string",
-      "default": ""
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "name": "my-namespace/my-block",
+    "version": "1.0.0",
+    "title": "My Block",
+    "category": "widgets",
+    "icon": "smiley",
+    "description": "My custom block description",
+    "supports": {
+        "html": false
+    },
+    "textdomain": "my-single-block",
+    "editorScript": "file:./index.js",
+    "editorStyle": "file:./index.css",
+    "style": "file:./style-index.css",
+    "attributes": {
+        "content": {
+            "type": "string",
+            "default": ""
+        }
     }
-  }
 }
 ```
 
@@ -198,6 +200,7 @@ npm start
 ```
 
 This command:
+
 - Watches for file changes
 - Compiles JavaScript with webpack
 - Transpiles modern JS with Babel
@@ -212,6 +215,7 @@ npm run build
 ```
 
 This command:
+
 - Optimizes and minifies JS and CSS
 - Removes development-only code
 - Creates source maps
@@ -222,11 +226,13 @@ This command:
 ### Static vs. Dynamic Blocks
 
 **Static Blocks:**
+
 - Save output as HTML in the database
 - Render exactly as saved
 - Implementation: Both edit.js and save.js export React components
 
 **Dynamic Blocks:**
+
 - Save attributes in the database
 - Render with PHP on the front end
 - Implementation: save.js returns null, render.php handles front-end display
@@ -255,36 +261,38 @@ Add settings and controls in the editor:
 
 ```jsx
 // In edit.js
-import { useBlockProps, BlockControls, InspectorControls } from '@wordpress/block-editor';
+import {
+    useBlockProps,
+    BlockControls,
+    InspectorControls,
+} from '@wordpress/block-editor';
 import { ToolbarGroup, PanelBody, TextControl } from '@wordpress/components';
 
 export default function Edit({ attributes, setAttributes }) {
-  const blockProps = useBlockProps();
-  
-  return (
-    <>
-      <InspectorControls>
-        <PanelBody title="Block Settings">
-          <TextControl
-            label="Custom Setting"
-            value={attributes.content}
-            onChange={(content) => setAttributes({ content })}
-          />
-        </PanelBody>
-      </InspectorControls>
-      
-      <BlockControls>
-        <ToolbarGroup>
-          {/* Toolbar controls here */}
-        </ToolbarGroup>
-      </BlockControls>
-      
-      <div {...blockProps}>
-        {/* Block content here */}
-        {attributes.content}
-      </div>
-    </>
-  );
+    const blockProps = useBlockProps();
+
+    return (
+        <>
+            <InspectorControls>
+                <PanelBody title="Block Settings">
+                    <TextControl
+                        label="Custom Setting"
+                        value={attributes.content}
+                        onChange={(content) => setAttributes({ content })}
+                    />
+                </PanelBody>
+            </InspectorControls>
+
+            <BlockControls>
+                <ToolbarGroup>{/* Toolbar controls here */}</ToolbarGroup>
+            </BlockControls>
+
+            <div {...blockProps}>
+                {/* Block content here */}
+                {attributes.content}
+            </div>
+        </>
+    );
 }
 ```
 
@@ -295,13 +303,13 @@ Style your block for both editor and front end:
 ```scss
 // editor.scss - Editor-only styles
 .wp-block-my-namespace-my-block {
-  border: 1px dashed #f00;
+    border: 1px dashed #f00;
 }
 
 // style.scss - Editor and front-end styles
 .wp-block-my-namespace-my-block {
-  padding: 20px;
-  background: #f8f8f8;
+    padding: 20px;
+    background: #f8f8f8;
 }
 ```
 
@@ -324,10 +332,15 @@ import { render, screen } from '@testing-library/react';
 import Edit from '../edit';
 
 describe('Edit', () => {
-  test('renders content', () => {
-    render(<Edit attributes={{ content: 'Test content' }} setAttributes={() => {}} />);
-    expect(screen.getByText('Test content')).toBeInTheDocument();
-  });
+    test('renders content', () => {
+        render(
+            <Edit
+                attributes={{ content: 'Test content' }}
+                setAttributes={() => {}}
+            />
+        );
+        expect(screen.getByText('Test content')).toBeInTheDocument();
+    });
 });
 ```
 
@@ -343,21 +356,24 @@ npm run test:e2e
 ```js
 // block-e2e.spec.js
 describe('Block', () => {
-  test('can be inserted', async ({ page }) => {
-    await page.goto('/wp-admin/post-new.php');
-    await page.click('.block-editor-inserter__toggle');
-    await page.fill('input[placeholder="Search"]', 'My Block');
-    await page.click('button:has-text("My Block")');
-    
-    // Test block is inserted and works correctly
-    await expect(page.locator('.wp-block-my-namespace-my-block')).toBeVisible();
-  });
+    test('can be inserted', async ({ page }) => {
+        await page.goto('/wp-admin/post-new.php');
+        await page.click('.block-editor-inserter__toggle');
+        await page.fill('input[placeholder="Search"]', 'My Block');
+        await page.click('button:has-text("My Block")');
+
+        // Test block is inserted and works correctly
+        await expect(
+            page.locator('.wp-block-my-namespace-my-block')
+        ).toBeVisible();
+    });
 });
 ```
 
 ### WordPress Compatibility
 
 Test your block with:
+
 - Different WordPress versions
 - Various themes
 - Common plugins that might interact with your block
@@ -367,26 +383,29 @@ Test your block with:
 ### Packaging for WordPress.org
 
 1. **Prepare your readme.txt**
-   - Follow WordPress.org requirements
-   - Include screenshots and detailed descriptions
+    - Follow WordPress.org requirements
+    - Include screenshots and detailed descriptions
 
 2. **Build production assets**
-   ```bash
-   npm run build
-   ```
+
+    ```bash
+    npm run build
+    ```
 
 3. **Create distributable zip**
-   ```bash
-   npm run plugin-zip
-   ```
+
+    ```bash
+    npm run plugin-zip
+    ```
 
 4. **Submit to WordPress.org**
-   - Upload your zip file
-   - Follow the plugin review process
+    - Upload your zip file
+    - Follow the plugin review process
 
 ### Direct Distribution
 
 For client work or premium plugins:
+
 1. Create zip file with build assets
 2. Distribute through your chosen channels
 3. Provide installation instructions
@@ -424,8 +443,8 @@ If @wordpress/scripts doesn't meet your needs:
 const defaultConfig = require('@wordpress/scripts/config/webpack.config');
 
 module.exports = {
-  ...defaultConfig,
-  // Add custom config here
+    ...defaultConfig,
+    // Add custom config here
 };
 ```
 
@@ -449,12 +468,12 @@ For more complex single blocks:
 ```js
 // webpack.config.js
 module.exports = {
-  ...defaultConfig,
-  entry: {
-    index: './src/index.js',
-    frontend: './src/frontend.js',
-    admin: './src/admin.js',
-  }
+    ...defaultConfig,
+    entry: {
+        index: './src/index.js',
+        frontend: './src/frontend.js',
+        admin: './src/admin.js',
+    },
 };
 ```
 

@@ -1,4 +1,3 @@
-
 # test-create-project-field.sh
 
 Test helper for verifying project field command construction and dry-run output in project automation scripts.
@@ -6,7 +5,6 @@ Test helper for verifying project field command construction and dry-run output 
 ---
 
 ## Overview
-
 
 This script is used to test the helper functions for building project field creation commands and to verify dry-run output for field creation logic. It is primarily used in Bats tests to ensure that field command construction is correct and portable.
 
@@ -50,7 +48,7 @@ This script is used to test the helper functions for building project field crea
 $ ./test-create-project-field.sh --help
 test-create-project-field.sh: Test for project field command helpers.
 Usage: ./test-create-project-field.sh [--help]
-	--help    Show this help message.
+ --help    Show this help message.
 
 $ ./test-create-project-field.sh
 Command parts:

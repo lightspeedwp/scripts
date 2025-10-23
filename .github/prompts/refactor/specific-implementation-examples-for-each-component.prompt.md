@@ -1,4 +1,3 @@
-
 ---
 applyTo: '**'
 description: 'Prompt for specific implementation examples for modular shell script components.'
@@ -912,55 +911,55 @@ main
 name: Validate Modular Includes
 
 on:
-  push:
-    branches: [main, develop]
-    paths:
-      - 'scripts/includes/**'
-      - 'tests/includes/**'
-  pull_request:
-    branches: [main]
-    paths:
-      - 'scripts/includes/**'
-      - 'tests/includes/**'
+    push:
+        branches: [main, develop]
+        paths:
+            - 'scripts/includes/**'
+            - 'tests/includes/**'
+    pull_request:
+        branches: [main]
+        paths:
+            - 'scripts/includes/**'
+            - 'tests/includes/**'
 
 jobs:
-  test-includes:
-    name: Test Include Functions
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
+    test-includes:
+        name: Test Include Functions
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout Repository
+              uses: actions/checkout@v4
 
-      - name: Setup Bats Testing Framework
-        run: |
-          git clone https://github.com/bats-core/bats-core.git
-          cd bats-core
-          sudo ./install.sh /usr/local
+            - name: Setup Bats Testing Framework
+              run: |
+                  git clone https://github.com/bats-core/bats-core.git
+                  cd bats-core
+                  sudo ./install.sh /usr/local
 
-      - name: Run Include Unit Tests
-        run: |
-          # Test core includes
-          bats tests/includes/core/test-logging.bats
-          bats tests/includes/core/test-validation.bats
+            - name: Run Include Unit Tests
+              run: |
+                  # Test core includes
+                  bats tests/includes/core/test-logging.bats
+                  bats tests/includes/core/test-validation.bats
 
-      - name: Run Include Integration Tests
-        run: |
-          bats tests/includes/integration/test-include-interactions.bats
+            - name: Run Include Integration Tests
+              run: |
+                  bats tests/includes/integration/test-include-interactions.bats
 
-      - name: Validate Include Documentation
-        run: |
-          # Check that all includes have documentation
-          ./scripts/maintenance/validate-include-docs.sh
+            - name: Validate Include Documentation
+              run: |
+                  # Check that all includes have documentation
+                  ./scripts/maintenance/validate-include-docs.sh
 
-      - name: Performance Benchmark
-        run: |
-          # Run performance tests for includes
-          ./tests/includes/performance/benchmark-includes.sh
+            - name: Performance Benchmark
+              run: |
+                  # Run performance tests for includes
+                  ./tests/includes/performance/benchmark-includes.sh
 
-      - name: Test Migration Compatibility
-        run: |
-          # Test that migrated scripts work correctly
-          bats tests/integration/test-migration-compatibility.bats
+            - name: Test Migration Compatibility
+              run: |
+                  # Test that migrated scripts work correctly
+                  bats tests/integration/test-migration-compatibility.bats
 ```
 
 ### Troubleshooting Example
@@ -968,6 +967,7 @@ jobs:
 #### Common Issue: Include Loading Failures
 
 **Problem Script:**
+
 ```bash
 #!/bin/bash
 source "includes/logging.sh"  # Fails - relative path issue
@@ -975,6 +975,7 @@ log_info "This won't work"
 ```
 
 **Solution Implementation:**
+
 ```bash
 #!/bin/bash
 

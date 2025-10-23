@@ -49,66 +49,66 @@ DRY_RUN=true ./folder-and-file-readmes.sh <target-folder>
 
 ## Options
 
-| Option | Description |
-| --- | --- |
-| `--help` | Show help message |
-| `--lint` | Lint generated markdown files |
-| `--toc` | Add table of contents to README.md or specified file |
-| `--dry-run` | Preview changes without writing files |
-| `--profile` | Generate GitHub profile-style README.md |
-| `--file <file>` | Generate README for a specific file |
-| `--merge` | Merge new content with existing README |
-| `--overwrite` | Overwrite existing README |
-| `--create <folders...>` | Create docs for one or more folders |
-| `--list` | List all markdown files that would be generated |
-| `--backup` | Backup existing README files before overwrite |
-| `--check` | Check for missing documentation blocks |
-| `--update` | Update existing README files with new content |
-| `--force` | Force overwrite even if backup exists |
-| `--exclude <pat>` | Exclude files/folders matching pattern |
-| `--include <pat>` | Include only files/folders matching pattern |
-| `--summary` | Show summary of generated docs |
-| `--version` | Show script version |
-| `--log-file <file>` | Specify log file for output |
-| `--color` | Enable colored output |
-| `--no-color` | Disable colored output |
-| `--config <file>` | Specify config file for doc generation |
-| `--env <key=val>` | Set environment variable for script |
-| `--list-env` | List environment variables |
-| `--clear-env` | Clear environment variables |
-| `--help-all` | Show help for all options |
+| Option                  | Description                                          |
+| ----------------------- | ---------------------------------------------------- |
+| `--help`                | Show help message                                    |
+| `--lint`                | Lint generated markdown files                        |
+| `--toc`                 | Add table of contents to README.md or specified file |
+| `--dry-run`             | Preview changes without writing files                |
+| `--profile`             | Generate GitHub profile-style README.md              |
+| `--file <file>`         | Generate README for a specific file                  |
+| `--merge`               | Merge new content with existing README               |
+| `--overwrite`           | Overwrite existing README                            |
+| `--create <folders...>` | Create docs for one or more folders                  |
+| `--list`                | List all markdown files that would be generated      |
+| `--backup`              | Backup existing README files before overwrite        |
+| `--check`               | Check for missing documentation blocks               |
+| `--update`              | Update existing README files with new content        |
+| `--force`               | Force overwrite even if backup exists                |
+| `--exclude <pat>`       | Exclude files/folders matching pattern               |
+| `--include <pat>`       | Include only files/folders matching pattern          |
+| `--summary`             | Show summary of generated docs                       |
+| `--version`             | Show script version                                  |
+| `--log-file <file>`     | Specify log file for output                          |
+| `--color`               | Enable colored output                                |
+| `--no-color`            | Disable colored output                               |
+| `--config <file>`       | Specify config file for doc generation               |
+| `--env <key=val>`       | Set environment variable for script                  |
+| `--list-env`            | List environment variables                           |
+| `--clear-env`           | Clear environment variables                          |
+| `--help-all`            | Show help for all options                            |
 
 ## Examples
 
 - Generate documentation for a folder:
 
-  ```bash
-  ./folder-and-file-readmes.sh scripts/maintenance
-  ```
+    ```bash
+    ./folder-and-file-readmes.sh scripts/maintenance
+    ```
 
 - Generate README for a specific file:
 
-  ```bash
-  ./folder-and-file-readmes.sh --file scripts/project/update-projects.sh --merge
-  ```
+    ```bash
+    ./folder-and-file-readmes.sh --file scripts/project/update-projects.sh --merge
+    ```
 
 - Preview changes (dry run):
 
-  ```bash
-  DRY_RUN=true ./folder-and-file-readmes.sh scripts/utility
-  ```
+    ```bash
+    DRY_RUN=true ./folder-and-file-readmes.sh scripts/utility
+    ```
 
 - Add table of contents and lint:
 
-  ```bash
-  ./folder-and-file-readmes.sh --lint --toc scripts/maintenance
-  ```
+    ```bash
+    ./folder-and-file-readmes.sh --lint --toc scripts/maintenance
+    ```
 
 - Multi-folder support:
 
-  ```bash
-  ./folder-and-file-readmes.sh --create scripts/maintenance scripts/project scripts/utility
-  ```
+    ```bash
+    ./folder-and-file-readmes.sh --create scripts/maintenance scripts/project scripts/utility
+    ```
 
 ## Features
 
@@ -122,12 +122,12 @@ DRY_RUN=true ./folder-and-file-readmes.sh <target-folder>
 
 ## Function Reference
 
-| Function | Description |
-| --- | --- |
-| `generate_file_readme()` | Generates `README.<filename>.md` for a file, extracting header metadata and composing documentation sections. |
-| `parse_arguments()` | Parses command line arguments and sets script options. |
-| `main()` | Main execution function, coordinates argument parsing, README generation, and option handling. |
-| `create_docs_for_folders()` | Generates documentation for all valid files in specified folders. |
+| Function                    | Description                                                                                                   |
+| --------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| `generate_file_readme()`    | Generates `README.<filename>.md` for a file, extracting header metadata and composing documentation sections. |
+| `parse_arguments()`         | Parses command line arguments and sets script options.                                                        |
+| `main()`                    | Main execution function, coordinates argument parsing, README generation, and option handling.                |
+| `create_docs_for_folders()` | Generates documentation for all valid files in specified folders.                                             |
 
 ## Integration
 

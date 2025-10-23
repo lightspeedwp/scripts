@@ -5,7 +5,11 @@ version: '1.1'
 author: 'LightSpeed WP Team'
 audience: ['contributor', 'maintainer', 'reviewer', 'automation']
 status: 'approved'
-changelog: ['2025-10-15: Initial version', '2025-10-15: Added extended fields for governance']
+changelog:
+    [
+        '2025-10-15: Initial version',
+        '2025-10-15: Added extended fields for governance',
+    ]
 tags: ['standards', 'markdown', 'documentation']
 feedback: 'Submit suggestions or issues via repository discussions or PR comments.'
 deprecated: false
@@ -46,26 +50,24 @@ Follow these guidelines for formatting and structuring your markdown content:
 Ensure compliance with the following validation requirements:
 
 - **Front Matter**: Include the following fields in the YAML front matter:
-
-  - `post_title`: The title of the post.
-  - `author1`: The primary author of the post.
-  - `post_slug`: The URL slug for the post.
-  - `microsoft_alias`: The Microsoft alias of the author.
-  - `featured_image`: The URL of the featured image.
-  - `categories`: The categories for the post. These categories must be from the list in /categories.txt.
-  - `tags`: The tags for the post.
-  - `ai_note`: Indicate if AI was used in the creation of the post.
-  - `summary`: A brief summary of the post. Recommend a summary based on the content when possible.
-  - `post_date`: The publication date of the post.
+    - `post_title`: The title of the post.
+    - `author1`: The primary author of the post.
+    - `post_slug`: The URL slug for the post.
+    - `microsoft_alias`: The Microsoft alias of the author.
+    - `featured_image`: The URL of the featured image.
+    - `categories`: The categories for the post. These categories must be from the list in /categories.txt.
+    - `tags`: The tags for the post.
+    - `ai_note`: Indicate if AI was used in the creation of the post.
+    - `summary`: A brief summary of the post. Recommend a summary based on the content when possible.
+    - `post_date`: The publication date of the post.
 
 - **Extended Fields for Documentation and Governance**:
-
-  - `documentation`: A brief description of the documentation and governance structure.
-  - `governance`: A brief description of the governance structure.
-  - `contact`: The contact information for the author or team.
-  - `permissions`: The permissions for the author or team.
-  - `license`: The license for the content.
-  - `copyright`: The copyright for the content.
+    - `documentation`: A brief description of the documentation and governance structure.
+    - `governance`: A brief description of the governance structure.
+    - `contact`: The contact information for the author or team.
+    - `permissions`: The permissions for the author or team.
+    - `license`: The license for the content.
+    - `copyright`: The copyright for the content.
 
 - **Content Rules**: Ensure that the content follows the markdown content rules specified above.
 - **Formatting**: Ensure that the content is properly formatted and structured according to the guidelines.

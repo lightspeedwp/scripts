@@ -37,6 +37,7 @@ ONLY="${ONLY:-}" # repo name
 # Description: Log info messages to stdout and log file
 # Arguments: $1 - message
 # Output: stdout, log file
+# shellcheck disable=SC2317,SC2329
 log_info() {
   echo "[INFO] $(date '+%Y-%m-%d %H:%M:%S'): $1" | tee -a "$LOG_FILE"
 }
@@ -56,7 +57,8 @@ parse_issue_types() {
 # Arguments: $1 - repo name
 # Output: stdout, log file
 sync_issue_types() {
-  local repo="$1"
+  local repo
+  repo="$1"
   log_info "Syncing issue types for repo: $repo"
   # Example: Add logic to read canonical types and update labels using gh CLI
   # This is a stub for demonstration
@@ -67,7 +69,8 @@ sync_issue_types() {
 }
 
 main() {
-  local target_repo="${ONLY:-scripts}"
+  local target_repo
+  target_repo="${ONLY:-scripts}"
   sync_issue_types "$target_repo"
   log_info "Issue type sync complete."
 }

@@ -67,7 +67,7 @@ Add any other context about the problem here.
 
 ### Fixed
 
-- 
+-
 
 ## Definition of Ready (DoR) Checklist
 

@@ -117,6 +117,7 @@ readonly NC
 mkdir -p "${LOG_DIR}"
 
 # Logging functions
+ # shellcheck disable=SC2317,SC2329
 function log_info() {
     local timestamp
     timestamp=$(date "+%Y-%m-%d %H:%M:%S")
@@ -124,6 +125,7 @@ function log_info() {
     echo "[INFO] ${timestamp}: $*" >> "${LOG_FILE}"
 }
 
+ # shellcheck disable=SC2317,SC2329
 function log_warn() {
     local timestamp
     timestamp=$(date "+%Y-%m-%d %H:%M:%S")
@@ -131,6 +133,7 @@ function log_warn() {
     echo "[WARNING] ${timestamp}: $*" >> "${LOG_FILE}"
 }
 
+ # shellcheck disable=SC2317,SC2329
 function log_error() {
     local timestamp
     timestamp=$(date "+%Y-%m-%d %H:%M:%S")
@@ -138,6 +141,7 @@ function log_error() {
     echo "[ERROR] ${timestamp}: $*" >> "${LOG_FILE}"
 }
 
+ # shellcheck disable=SC2317,SC2329
 function log_debug() {
     if [[ "${VERBOSE}" == "true" ]]; then
         local timestamp
@@ -168,6 +172,7 @@ NC='\033[0m' # No Color
 # Output: Prints the message to stdout.
 ###############################################################################
 # Logging function
+ # shellcheck disable=SC2317,SC2329
 log_info() {
     echo -e "${BLUE}[INFO]${NC} $1"
 }
@@ -180,6 +185,7 @@ log_info() {
 # Output: Prints the message to stdout.
 ###############################################################################
 # Logging function
+ # shellcheck disable=SC2317,SC2329
 log_success() {
     echo -e "${GREEN}[SUCCESS]${NC} $1"
 }
@@ -192,6 +198,7 @@ log_success() {
 # Output: Prints the message to stderr.
 ###############################################################################
 # Logging function
+ # shellcheck disable=SC2317,SC2329
 log_error() {
     echo -e "${RED}[ERROR]${NC} $1" >&2
 }
@@ -211,6 +218,7 @@ TEST_NAME=""
 # Output: Prints the help message to stdout.
 ###############################################################################
 # Show help message
+ # shellcheck disable=SC2317,SC2329
 show_help() {
     cat << EOF
 Usage: $0 [options]
@@ -290,6 +298,7 @@ if [[ "$LIST" == "true" ]]; then
     log_info "Listing all utility test files:"
     for test_file in "$TEST_DIR"/*.bats; do
         if [[ -f "$test_file" ]]; then
+            # shellcheck disable=SC2005
             echo "$(basename "$test_file")"
         fi
     done
@@ -300,6 +309,7 @@ if [[ "$DRY_RUN" == "true" ]]; then
     log_info "DRY-RUN mode: Would run the following utility bats tests:"
     for test_file in "$TEST_DIR"/*.bats; do
         if [[ -f "$test_file" ]]; then
+            # shellcheck disable=SC2005
             echo "$(basename "$test_file")"
         fi
     done

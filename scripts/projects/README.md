@@ -4,15 +4,15 @@ This directory contains scripts for managing GitHub Projects, including creation
 
 ## Scripts
 
-| Script | Description |
-| --- | --- |
-| [`client-delivery-project.sh`](./client-delivery-project.sh) | A wrapper script to create or update a "Client Delivery" type GitHub project. |
-| [`product-dev-project.sh`](./product-dev-project.sh) | A wrapper script to create or update a "Product Development" type GitHub project. |
-| [`update-projects.sh`](./update-projects.sh) | The core engine for managing GitHub projects, sourced by the wrapper scripts. |
-| [`README.client-delivery-project.md`](./README.client-delivery-project.md) | Detailed documentation for the `client-delivery-project.sh` script. |
-| [`README.product-dev-project.md`](./README.product-dev-project.md) | Detailed documentation for the `product-dev-project.sh` script. |
-| [`README.update-projects.md`](./README.update-projects.md) | Detailed documentation for the core `update-projects.sh` script. |
-| [`README.test-create-project-field.sh`](./README.test-create-project-field.sh) | Documentation related to the test script for creating project fields. |
+| Script                                                                         | Description                                                                       |
+| ------------------------------------------------------------------------------ | --------------------------------------------------------------------------------- |
+| [`client-delivery-project.sh`](./client-delivery-project.sh)                   | A wrapper script to create or update a "Client Delivery" type GitHub project.     |
+| [`product-dev-project.sh`](./product-dev-project.sh)                           | A wrapper script to create or update a "Product Development" type GitHub project. |
+| [`update-projects.sh`](./update-projects.sh)                                   | The core engine for managing GitHub projects, sourced by the wrapper scripts.     |
+| [`README.client-delivery-project.md`](./README.client-delivery-project.md)     | Detailed documentation for the `client-delivery-project.sh` script.               |
+| [`README.product-dev-project.md`](./README.product-dev-project.md)             | Detailed documentation for the `product-dev-project.sh` script.                   |
+| [`README.update-projects.md`](./README.update-projects.md)                     | Detailed documentation for the core `update-projects.sh` script.                  |
+| [`README.test-create-project-field.sh`](./README.test-create-project-field.sh) | Documentation related to the test script for creating project fields.             |
 
 ## Architecture
 

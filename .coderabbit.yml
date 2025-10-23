@@ -1,216 +1,130 @@
-# yaml-language-server: $schema=https://coderabbit.ai/integrations/coderabbit-overrides.v2.json
-language: "en"
+###############################################################################
+# .coderabbit.yml - CodeRabbit/Code Review Automation Configuration
+#
+# This file configures CodeRabbit review, lint, and automation settings for the
+# LightSpeed WP scripts repository. It enforces status checks, auto-labeling,
+# reviewer assignment, and path-based review instructions for all code, scripts,
+# and documentation. See repo docs for governance and standards.
+###############################################################################
+
+# YAML language server schema for validation
+# https://coderabbit.ai/integrations/coderabbit-overrides.v2.json
+language: 'en'  # Review language
+
+# Chat/auto-reply settings
 chat:
-  auto_reply: true
+    auto_reply: true  # Enable automatic chat replies
+
+# Review and status check configuration
 reviews:
-  status_checks:
-    required:
-      - markdownlint
-      - Run Tests
-      - ShellCheck
-      - Changelog
-      - Release
-  required_approvals: 2
-  auto_labels:
-    enabled: true
-    rules:
-      - path: "scripts/**/*.sh"
-        label: "shell"
-      - path: "**/*.md"
-        label: "docs"
-      - path: "workflows/**/*.yml"
-        label: "ci"
-      - path: "tests/**/*.bats"
-        label: "test"
-      - path: "scripts/**/*.js"
-        label: "js"
-      - path: "scripts/**/*.py"
-        label: "python"
-  auto_assign:
-    enabled: true
-    reviewers:
-      - "ash"
-      - "lightspeedwp"
-  path_filters:
-    - "!build/**"
-    - "!node_modules/**"
-    - "!assets/css/*.map"
-    - "!logs/**"
-    - "!coverage/**"
-    - "!test-logs/**"
-    - "!docs/drafts/**"
-    - "!scripts/experimental/**"
-    - "!tests/legacy/**"
-  request_changes_workflow: true
-  high_level_summary: true
-  poem: false
-  review_status: true
-  collapse_walkthrough: true
-  auto_review:
-    enabled: true
-    drafts: false
-    base_branches:
-      - "main"
-      - "develop"
-      - "feature/*"
-      - "fix/*"
-      - "update/*"
-  path_instructions:
-    - path: "scripts/**/*.sh"
-      instructions: |
-        "Review shell scripts for:
-          - Header comments and metadata
-          - Error handling (set -euo pipefail)
-          - ShellCheck compliance
-          - Test coverage with Bats
-          - Security best practices
-          - Documentation in README"
-    - path: "scripts/**/*.js"
-      instructions: |
-        "Review JS scripts for:
-          - ESLint compliance
-          - Modular structure
-          - Test coverage
-          - Documentation and usage examples"
-    - path: "scripts/**/*.py"
-      instructions: |
-        "Review Python scripts for:
-          - PEP8 compliance
-          - Test coverage
-          - Inline documentation and docstrings"
-    - path: "workflows/**/*.yml"
-      instructions: |
-        "Review workflows for:
-          - Linting and test enforcement
-          - Required status checks
-          - Use of verified Marketplace actions
-          - Documentation and maintainability"
-    - path: "CHANGELOG.md"
-      instructions: |
-        "Review changelog for:
-          - Accurate entries for all changes
-          - Customer-facing release notes
-          - Compliance with Keep a Changelog format"
-    - path: "README.md"
-      instructions: |
-        "Review README for:
-          - Usage instructions
-          - Automation feature documentation
-          - Test coverage and status badges
-          - Compliance with documentation standards"
-    - path: "scripts/product_dev_project.sh"
-      instructions: |
-        "Review project automation script for GitHub ProjectV2:
-          - Ensure script supports all automatable ProjectV2 actions (create project, add fields, add items/issues, link repositories/teams, update project/fields/items/status)
-          - Validate use of helper functions for each mutation and CLI/GraphQL integration
-          - Check for modular, maintainable, and well-documented code
-          - Confirm error handling and logging for automation steps
-          - Ensure script is tested with Bats and covers edge cases
-          - Verify script updates and syncs project meta/template files as required
-          - Confirm alignment with repo governance and automation standards"
-    - path: "scripts/**/*.sh"
-      instructions: |
-        "Review shell scripts for automation and governance:
-          - Ensure script header includes metadata (name, description, usage, author, date)
-          - Verify use of #!/bin/bash and set -euo pipefail for error handling
-          - Check for meaningful variable names and proper error handling
-          - Validate logging and output clarity
-          - Ensure scripts are executable and tested with Bats
-          - Confirm scripts follow repo naming conventions (kebab-case)
-          - Check for security best practices (no unsafe eval, proper quoting)
-          - Validate compatibility with macOS and Linux environments
-          - Ensure scripts are documented in README files"
-          - Ensure code style matches repo standards (indentation, quoting, comments)
-          - Check for test coverage and edge case handling"
-    - path: "tests/**/*.bats"
-      instructions: |
-        "Review Bats test files:
-          - Ensure tests cover all script functionality, including edge cases and error conditions
-          - Validate dry-run scripts are tested
-          - Check for clear test descriptions and maintainability
-          - Confirm tests run successfully in CI workflows
-          - Ensure tests follow repo naming conventions"
-          - Check for comprehensive coverage and error handling"
-    - path: "scripts/run-tests.sh"
-      instructions: |
-        "Review test runner script:
-          - Ensure all scripts are covered by tests
-          - Validate test output and error handling
-          - Confirm integration with CI workflows"
-    - path: "workflows/**/*.yml"
-      instructions: |
-        "Review GitHub Actions workflows for automation and governance:
-          - Ensure workflows are reusable, modular, and well-documented
-          - Validate job and step names are meaningful and descriptive
-          - Check for proper error handling, status checks, and required approvals
-          - Confirm workflows enforce linting (markdownlint), testing (Bats), and release policies
-          - Ensure integration with project automation scripts and meta/template file updates
-          - Validate inputs, outputs, and secrets are documented and used securely
-          - Confirm workflows support branch protection and merge requirements
-          - Ensure workflows are compatible with repo automation standards and CI best practices
-          - Check for notifications, artifact uploads, and reporting for automation outcomes
-          - Validate that workflows run on appropriate triggers (push, PR, release, workflow_call) and filter paths/branches as needed"
-    - path: "**/*.md"
-      instructions: |
-        "Review Markdown documentation:
-          - Ensure documentation is clear, up-to-date, and follows markdownlint standards
-          - Validate code blocks specify language
-          - Check for proper heading structure and list formatting
-          - Confirm documentation covers automation features, usage, and contribution guidelines
-          - Ensure README files are present in key directories"
-    - path: "scripts/package.json"
-      instructions: |
-        "Review package.json for automation dependencies:
-          - Ensure only necessary devDependencies are included (e.g., markdownlint-cli)
-          - Validate scripts for linting and testing are present and correct
-          - Check for security vulnerabilities in dependencies
-          - Confirm semantic versioning and proper separation of dev/prod dependencies"
-    - path: "**/.markdownlint.json"
-      instructions: |
-        "Review markdownlint configuration:
-          - Ensure rules enforce repo documentation standards
-          - Validate config is compatible with markdownlint-cli and CI workflows"
-          - Confirm strict enforcement of code block language and heading structure"
-    - path: "scripts/utility-functions.sh"
-      instructions: |
-        "Review utility functions for script automation:
-          - Ensure functions are modular, reusable, and well-documented
-          - Validate error handling and input validation
-          - Confirm functions are tested and used consistently across scripts"
-          - Check for code style and maintainability"
-    - path: "**/.github/workflows/*.yml"
-      instructions: |
-        "Review .github workflows for CI/CD:
-          - Ensure workflows enforce linting, testing, and release policies
-          - Validate status checks are required for merges
-          - Check for proper branch and path filters
-          - Confirm workflows are documented and maintainable"
-          - Ensure workflows run markdownlint and test jobs as required checks"
+    status_checks:
+        required:
+            - markdownlint  # Enforce markdownlint for docs
+            - Run Tests     # Require all tests to pass
+            - ShellCheck    # Require ShellCheck for shell scripts
+            - Changelog     # Require changelog update
+            - Release       # Require release workflow
+    required_approvals: 2  # Require 2 approvals for PR merge
+
+    # Auto-labeling rules for PRs/issues based on file paths
+    auto_labels:
+        enabled: true
+        rules:
+
+          # Shell script review (merged)
+          - path: 'scripts/**/*.sh'
+            instructions: |
+                # Review shell scripts for:
+                # - Header comments and metadata (name, description, usage, author, date)
+                # - Error handling (set -euo pipefail)
+                # - ShellCheck compliance
+                # - Test coverage with Bats
+                # - Security best practices (no unsafe eval, proper quoting)
+                # - Documentation in README
+                # - Naming conventions (kebab-case)
+                # - Logging and output clarity
+                # - Compatibility with macOS and Linux
+                # - Maintainability and modularity
+                # - Code style (indentation, quoting, comments)
+                # - Edge case and error handling
+
+          # JavaScript review
+          - path: 'scripts/**/*.js'
+            instructions: |
+                # Review JS scripts for:
+                # - ESLint compliance
+                # - Modular structure
+                # - Test coverage
+                # - Documentation and usage examples
+
+          # Python review
+          - path: 'scripts/**/*.py'
+            instructions: |
+                # Review Python scripts for:
+                # - PEP8 compliance
+                # - Test coverage
+                # - Inline documentation and docstrings
+
+          # Workflow review (merged)
+          - path: 'workflows/**/*.yml'
+            instructions: |
+                # Review workflows for:
+                # - Linting and test enforcement
+                # - Required status checks
+                # - Use of verified Marketplace actions
+                # - Documentation and maintainability
+                # - Reusability, modularity, and error handling
+                # - Status checks and approvals
+                # - Integration with project automation scripts
+                # - Branch/path filters and triggers
+
+          # package.json review
+          - path: 'scripts/package.json'
+            instructions: |
+              # Review package.json for automation dependencies:
+              # - Ensure only necessary devDependencies are included (e.g., markdownlint-cli)
+              # - Validate scripts for linting and testing are present and correct
+              # - Check for security vulnerabilities in dependencies
+              # - Confirm semantic versioning and proper separation of dev/prod dependencies
+
+          # markdownlint config review
+          - path: '**/.markdownlint.json'
+            instructions: |
+              # Review markdownlint configuration:
+              # - Ensure rules enforce repo documentation standards
+              # - Validate config is compatible with markdownlint-cli and CI workflows
+              # - Confirm strict enforcement of code block language and heading structure
+          # Utility function review
+          - path: 'scripts/utility-functions.sh'
+            instructions: |
+              # Review utility functions for script automation:
+              # - Ensure functions are modular, reusable, and well-documented
+              # - Validate error handling and input validation
+              # - Confirm functions are tested and used consistently across scripts
+              # - Check for code style and maintainability
+
+          # .github workflow review
+          - path: '**/.github/workflows/*.yml'
+            instructions: |
+              # Review .github workflows for CI/CD:
+              # - Ensure workflows enforce linting, testing, and release policies
+              # - Validate status checks are required for merges
+              # - Check for proper branch and path filters
+              # - Confirm workflows are documented and maintainable
+              # - Ensure workflows run markdownlint and test jobs as required checks
+
+# Early access and auto-labeling (legacy/compatibility)
+
 early_access: false
+
 auto_labels:
-  enabled: true
-  rules:
-    - path: "scripts/**/*.sh"
-      label: "shell"
-    - path: "**/*.md"
-      label: "docs"
-    - path: "workflows/**/*.yml"
-      label: "ci"
-    - path: "tests/**/*.bats"
-      label: "test"
+  enabled: false
+  rules: []
+
 auto_assign:
-  enabled: true
-  reviewers:
-    - "ash"
-    - "lightspeedwp"
+  enabled: false
+  users: []
+
 auto_review:
-  enabled: true
-  ignore_title_keywords:
-    - "WIP"
-    - "DO NOT MERGE"
-    - "DRAFT"
-  drafts: false
-  base_branches:
-    - "main"
-    - "develop"
-    - "feature/*"
+  enabled: false
+  reviewers: []

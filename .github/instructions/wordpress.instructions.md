@@ -6,7 +6,11 @@ version: '0.1.0'
 author: 'LightSpeed WP Team'
 audience: ['contributor', 'maintainer', 'reviewer', 'automation']
 status: 'approved'
-changelog: ['2025-10-15: Initial version', '2025-10-15: Added extended fields for governance']
+changelog:
+    [
+        '2025-10-15: Initial version',
+        '2025-10-15: Added extended fields for governance',
+    ]
 tags: ['standards', 'wordpress', 'security', 'testing']
 feedback: 'Submit suggestions or issues via repository discussions or PR comments.'
 deprecated: false
@@ -20,15 +24,18 @@ created: '2025-10-15'
 You are a WordPress developer. Follow our WordPress coding standards and security patterns to create and maintain plugins and themes. Avoid modifying WordPress core, using unsafe practices, or omitting documentation unless specified.
 
 ## Purpose and Scope
+
 This instruction covers coding, security, and testing standards for WordPress plugins and themes. It is intended for contributors, maintainers, and reviewers working on WordPress codebases.
 
 ## Core Principles
+
 - Clarity, security, and maintainability
 - Actionable, testable code
 - Consistent structure and documentation
 - Integration with org-wide standards
 
 ## Required Sections
+
 - Role definition and context
 - Framework and standards to follow
 - Task types and scenarios
@@ -36,14 +43,17 @@ This instruction covers coding, security, and testing standards for WordPress pl
 - Examples and references
 
 ## Formatting Guidelines
+
 - Use markdown headings and bullet lists
 - Include code blocks for templates and examples
 - Reference related files using relative links
 
 ## Integration References
+
 - See `.github/custom-instructions.md` and related agent, prompt, and chatmode files
 
 ## Review and Enforcement
+
 - Use the checklist in `create-or-update-copilot.instructions.md` to validate clarity, completeness, and compliance
 
 **Goal:** Generate WordPress code that is secure, performant, testable, and compliant with official WordPress practices. Prefer hooks, small functions, dependency injection (where sensible), and clear separation of concerns.
@@ -112,57 +122,64 @@ defined('ABSPATH') || exit;
     }
 }
 ```
+
 ```json
 // package.json (snippet)
 {
-  "devDependencies": {
-    "@wordpress/eslint-plugin": "^x.y.z"
-  },
-  "scripts": {
-    "lint:js": "eslint ."
-  }
+    "devDependencies": {
+        "@wordpress/eslint-plugin": "^x.y.z"
+    },
+    "scripts": {
+        "lint:js": "eslint ."
+    }
 }
 ```
 
 ## 3) Security & Data Handling
 
 - **Escape on output, sanitize on input.**
-  - Escape: `esc_html()`, `esc_attr()`, `esc_url()`, `wp_kses_post()`.
-  - Sanitize: `sanitize_text_field()`, `sanitize_email()`, `sanitize_key()`, `absint()`, `intval()`.
+    - Escape: `esc_html()`, `esc_attr()`, `esc_url()`, `wp_kses_post()`.
+    - Sanitize: `sanitize_text_field()`, `sanitize_email()`, `sanitize_key()`, `absint()`, `intval()`.
 - **Capabilities & nonces** for forms, AJAX, REST:
-  - Add nonces with `wp_nonce_field()` and verify via `check_admin_referer()` / `wp_verify_nonce()`.
-  - Restrict mutations with `current_user_can( 'manage_options' /* or specific cap */ )`.
+    - Add nonces with `wp_nonce_field()` and verify via `check_admin_referer()` / `wp_verify_nonce()`.
+    - Restrict mutations with `current_user_can( 'manage_options' /* or specific cap */ )`.
 - **Database:** always use `$wpdb->prepare()` with placeholders; never concatenate untrusted input.
 - **Uploads:** validate MIME/type and use `wp_handle_upload()`/`media_handle_upload()`.
 
 ## 4) Internationalization (i18n)
+
 - Wrap user‑visible strings with translation functions using your text domain:
-  - `__( 'Text', 'awesome-feature' )`, `_x()`, `esc_html__()`.
+    - `__( 'Text', 'awesome-feature' )`, `_x()`, `esc_html__()`.
 - Load translations with `load_plugin_textdomain()` or `load_theme_textdomain()`.
 - Keep a `.pot` in `/languages` and ensure consistent domain usage.
 
 ## 5) Performance
+
 - Defer heavy logic to specific hooks; avoid expensive work on `init`/`wp_loaded` unless necessary.
 - Use transients or object caching for expensive queries; plan invalidation.
 - Enqueue only what you need and conditionally (front vs admin; specific screens/routes).
 - Prefer paginated/parameterized queries over unbounded loops.
 
 ## 6) Admin UI & Settings
+
 - Use **Settings API** for options pages; provide `sanitize_callback` for each setting.
 - For tables, follow `WP_List_Table` patterns. For notices, use the admin notices API.
 - Avoid direct HTML echoing for complex UIs; prefer templates or small view helpers with escaping.
 
 ## 7) REST API
+
 - Register with `register_rest_route()`; always set a `permission_callback`.
 - Validate/sanitize request args via the `args` schema.
 - Return `WP_REST_Response` or arrays/objects that map cleanly to JSON.
 
 ## 8) Blocks & Editor (Gutenberg)
+
 - Use `block.json` + `register_block_type()`; rely on `@wordpress/*` packages.
 - Provide server render callbacks when needed (dynamic blocks).
 - E2E tests should cover: insert block → edit → save → front‑end render.
 
 ## 9) Asset Loading
+
 ```php
 add_action('wp_enqueue_scripts', function () {
   wp_enqueue_style(
@@ -181,11 +198,14 @@ add_action('wp_enqueue_scripts', function () {
   );
 });
 ```
+
 - Use `wp_register_style/script` to register first if multiple components depend on the same assets.
 - For admin screens, hook into `admin_enqueue_scripts` and check screen IDs.
 
 ## 10) Testing
+
 ### PHP Unit/Integration
+
 - Use **WordPress test suite** with `PHPUnit` and `WP_UnitTestCase`.
 - Test: sanitization, capability checks, REST permissions, DB queries, hooks.
 - Prefer factories (`self::factory()->post->create()` etc.) to set up fixtures.
@@ -212,15 +232,19 @@ tests_add_filter( 'muplugins_loaded', function () {
 } );
 require $_tests_dir . '/includes/bootstrap.php';
 ```
+
 ### E2E
+
 - Use Playwright (or Puppeteer) for editor/front‑end flows.
 - Cover basic user journeys and regressions (block insertion, settings save, front‑end render).
 
 ## 11) Documentation & Commits
+
 - Keep `README.md` up to date: install, usage, capabilities, hooks/filters, and test instructions.
 - Use clear, imperative commit messages; reference issues/tickets and summarize impact.
 
 ## 12) What Copilot Must Ensure (Checklist)
+
 - ✅ Unique prefixes/namespaces; no accidental globals.
 - ✅ Nonce + capability checks for any write action (AJAX/REST/forms).
 - ✅ Inputs sanitized; outputs escaped.

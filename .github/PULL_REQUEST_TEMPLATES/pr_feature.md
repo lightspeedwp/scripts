@@ -1,10 +1,8 @@
 ---
-
-name: "Feature PR"  
-about: "New features or enhancements"  
-title: "feat: {short summary}"  
-labels: ["status:needs-review", "area:feature"]  
-
+name: 'Feature PR'
+about: 'New features or enhancements'
+title: 'feat: {short summary}'
+labels: ['status:needs-review', 'area:feature']
 ---
 
 # Feature Pull Request
@@ -55,7 +53,6 @@ If no user-facing changelog entry is needed, apply the skip-changelog label to t
 -->
 
 ---
-
 
 ### Checklist (Global DoD / PR)
 

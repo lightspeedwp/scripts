@@ -78,10 +78,10 @@ We need to implement Jest and Playwright for:
 
 1. Install Playwright and its dependencies:
 
-   ```sh
-   npm install --save-dev @playwright/test
-   npx playwright install
-   ```
+    ```sh
+    npm install --save-dev @playwright/test
+    npx playwright install
+    ```
 
 2. Create Playwright configuration file (`playwright.config.ts` or `.js`) in the project root.
 3. Store Playwright tests in the `tests/playwright/` folder.

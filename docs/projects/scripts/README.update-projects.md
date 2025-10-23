@@ -15,8 +15,8 @@ This script automates the creation, update, and deletion of GitHub Project field
 
 - Comprehensive Bats tests for argument parsing, dry-run simulation, field creation, deletion, authentication, and CSV import.
 - Tests are organized into files:
-  - `tests/project-scripts/test-update-projects.bats`: Main functionality tests
-  - `tests/project-scripts/test-create-project-field.bats`: Field creation helper tests
+    - `tests/project-scripts/test-update-projects.bats`: Main functionality tests
+    - `tests/project-scripts/test-create-project-field.bats`: Field creation helper tests
 - All test output is logged to a central log file via `run-tests.sh`
 
 ### Logging
@@ -35,32 +35,32 @@ This script automates the creation, update, and deletion of GitHub Project field
 ## How It Works
 
 1. **Setup & Error Handling**
-   - Enables strict error handling (`set -euo pipefail`).
-   - Defines colorized logging functions for clear output.
+    - Enables strict error handling (`set -euo pipefail`).
+    - Defines colorized logging functions for clear output.
 
 2. **Argument Parsing**
-   - Parses command-line options to determine project owner, project number, field CSV file, dry-run mode, and other behaviors.
-   - Example: `--fields-file <path>` specifies a CSV of fields to create or delete.
+    - Parses command-line options to determine project owner, project number, field CSV file, dry-run mode, and other behaviors.
+    - Example: `--fields-file <path>` specifies a CSV of fields to create or delete.
 
 3. **Authentication & Scopes**
-   - Checks for the GitHub CLI and verifies authentication.
-   - Supports GitHub App authentication via environment variables.
-   - Validates required scopes (`repo`, `project`, `read:org`, `read:user`) and can auto-refresh them interactively if needed.
+    - Checks for the GitHub CLI and verifies authentication.
+    - Supports GitHub App authentication via environment variables.
+    - Validates required scopes (`repo`, `project`, `read:org`, `read:user`) and can auto-refresh them interactively if needed.
 
 4. **Project Detection**
-   - Auto-detects project owner and number from environment variables, git remote, or authenticated user.
-   - Can parse these from `LS_PROJECT_URL` if set.
+    - Auto-detects project owner and number from environment variables, git remote, or authenticated user.
+    - Can parse these from `LS_PROJECT_URL` if set.
 
 5. **Field Management**
-   - Reads field definitions from a CSV file (see format below).
-   - For each field, either creates or deletes (archives) it using the GitHub CLI.
-   - Supports single-select, number, date, and text field types.
-   - In dry-run mode, prints the commands instead of executing them.
+    - Reads field definitions from a CSV file (see format below).
+    - For each field, either creates or deletes (archives) it using the GitHub CLI.
+    - Supports single-select, number, date, and text field types.
+    - In dry-run mode, prints the commands instead of executing them.
 
 6. **Execution Flow**
-   - Runs all checks and processes fields as specified.
-   - If no CSV is provided, creates example fields for demonstration.
-   - Logs all actions with colorized output for clarity.
+    - Runs all checks and processes fields as specified.
+    - If no CSV is provided, creates example fields for demonstration.
+    - Logs all actions with colorized output for clarity.
 
 ## Security Warning: Hardcoded Credentials
 
@@ -103,15 +103,15 @@ gh auth refresh -s repo,project,read:org,read:user
 
 ## Flags & Options
 
-| Option                    | Description                                                              |
-|---------------------------|--------------------------------------------------------------------------|
-| `--project-owner <org>`   | Override project owner (default: auto-detect from repo or LS_PROJECT_URL) |
-| `--project-number <num>`  | Override project number (default: auto-detect from LS_PROJECT_URL)        |
-| `--fields-file <path>`    | CSV file of fields to create (see format below)                           |
-| `--delete-fields`         | Delete (archive) fields listed in CSV instead of creating them            |
-| `--auto-refresh`          | Interactively refresh GitHub CLI scopes if needed                         |
-| `--dry-run`               | Print commands instead of executing them                                  |
-| `--help`                  | Show this help message                                                    |
+| Option                   | Description                                                               |
+| ------------------------ | ------------------------------------------------------------------------- |
+| `--project-owner <org>`  | Override project owner (default: auto-detect from repo or LS_PROJECT_URL) |
+| `--project-number <num>` | Override project number (default: auto-detect from LS_PROJECT_URL)        |
+| `--fields-file <path>`   | CSV file of fields to create (see format below)                           |
+| `--delete-fields`        | Delete (archive) fields listed in CSV instead of creating them            |
+| `--auto-refresh`         | Interactively refresh GitHub CLI scopes if needed                         |
+| `--dry-run`              | Print commands instead of executing them                                  |
+| `--help`                 | Show this help message                                                    |
 
 ## CSV Format for Field Creation
 
@@ -189,4 +189,3 @@ Auto-refresh scopes interactively:
 
 - [product-dev-project.sh](./product-dev-project.sh) for product development project creation
 - [client-delivery-project.sh](./client-delivery-project.sh) for client delivery project creation
-

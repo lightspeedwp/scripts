@@ -60,8 +60,8 @@ done
 ```yaml
 - name: Start Playwright MCP server
   run: |
-    nohup npx playwright mcp-server &
-    sleep 5
+      nohup npx playwright mcp-server &
+      sleep 5
 - name: Run Playwright tests
   run: npx playwright test
 ```

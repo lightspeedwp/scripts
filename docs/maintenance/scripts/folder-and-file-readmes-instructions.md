@@ -1,4 +1,3 @@
-
 # README Generation Script Instructions
 
 You are a documentation specialist. Follow our LightSpeed WP documentation standards to generate comprehensive README files for folders and individual scripts. Avoid creating shallow or incomplete documentation unless a dry-run is specified.
@@ -75,37 +74,37 @@ This ensures every part of the repository is discoverable, understandable, and m
 ## Generated Files
 
 - **Folder README:** `README.md` in the target folder, including:
-  - Project/folder description
-  - Table of contents (if enabled)
-  - List of files and subdirectories
-  - Badges (if enabled)
-  - Usage and installation instructions
-  - Statistics (if enabled)
-  - Contributor info (if enabled)
-  - Links to related files/modules
-  - Accessibility and link validation results (if enabled)
+    - Project/folder description
+    - Table of contents (if enabled)
+    - List of files and subdirectories
+    - Badges (if enabled)
+    - Usage and installation instructions
+    - Statistics (if enabled)
+    - Contributor info (if enabled)
+    - Links to related files/modules
+    - Accessibility and link validation results (if enabled)
 - **File READMEs:** `README.<filename>.md` for each file, including:
-  - File type, shebang, and metadata
-  - Detailed description and usage
-  - Options, environment variables, and examples
-  - Author/contributor info
-  - API reference or function documentation (for scripts)
-  - Dependency/import graph (if enabled)
-  - Accessibility and link validation results (if enabled)
+    - File type, shebang, and metadata
+    - Detailed description and usage
+    - Options, environment variables, and examples
+    - Author/contributor info
+    - API reference or function documentation (for scripts)
+    - Dependency/import graph (if enabled)
+    - Accessibility and link validation results (if enabled)
 
 ## Standards Alignment
 
 - **Shell Script Documentation:** All generated documentation and the script itself must follow the standards in `shell-script-header-and-docs.md`:
-  - Full, framed header block with all required fields
-  - Inline function documentation for every function
-  - No truncation, duplication, or omission of documentation
-  - Consistent formatting and indentation
+    - Full, framed header block with all required fields
+    - Inline function documentation for every function
+    - No truncation, duplication, or omission of documentation
+    - Consistent formatting and indentation
 - **Bats Test Standards:** All tests for this script must follow `bats-tests-and-runner-scripts.md`:
-  - Standardized test file header
-  - Section headers for logical grouping
-  - Inline documentation for every test function
-  - Coverage summary and usage documentation in `/tests/README.md`
-  - Use of `test-helper.bash` for shared logic
+    - Standardized test file header
+    - Section headers for logical grouping
+    - Inline documentation for every test function
+    - Coverage summary and usage documentation in `/tests/README.md`
+    - Use of `test-helper.bash` for shared logic
 
 ## Best Practices
 

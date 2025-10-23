@@ -1,59 +1,85 @@
-#!/usr/bin/env node
-const core = require('@actions/core');
-const github = require('@actions/github');
+/**
+ * ============================================================================
+ * Agent: status-one-hot.enforcer.js
+ * Location: .github/agents/status-one-hot.enforcer.js
+ * Description:
+ *   - Enforces exactly one status label per issue/PR and applies default priority/status labels.
+ *   - Main functions: run(), enforceOneHotStatus(), applyDefaultStatus(), applyDefaultPriority().
+ *   - Uses shared utilities: status-enforcer.
+ *   - Shared test helpers: mockOctokit, mockContext, expectDryRun, etc.
+ *   - Coverage: Enforces one-hot status, applies defaults, handles dry-run and error scenarios.
+ * Standards:
+ *   - Follows [LightSpeed Coding Standards](https://github.com/lightspeedwp/.github/blob/master/.github/instructions/coding-standards.instructions.md)
+ *   - See org instructions: [Custom Instructions](https://github.com/lightspeedwp/.github/blob/master/.github/custom-instructions.md)
+ * Contribution:
+ *   - Update docblock when logic or helpers expand
+ *   - Add new helpers to tests/utility/test-helpers.js as needed
+ * ============================================================================
+ */
 
-const STATUS_PREFIX = 'status:';
-const PRIORITY_PREFIX = 'priority:';
-const DEFAULT_STATUS_ISSUE = 'status:needs-triage';
-const DEFAULT_STATUS_PR = 'status:needs-review';
-const DEFAULT_PRIORITY = 'priority:normal';
+const {
+    enforceOneHotStatus,
+    applyDefaultStatus,
+    applyDefaultPriority,
+} = require('../../scripts/utility/status-enforcer');
+const actionsCore = require('@actions/core');
+const actionsGithub = require('@actions/github');
 
-async function run() {
-  try {
-    const token = process.env.GITHUB_TOKEN || core.getInput('github-token');
-    if (!token) throw new Error('Missing GITHUB_TOKEN');
-    const octo = github.getOctokit(token);
-    const ctx = github.context;
-    const isIssue = !!ctx.payload.issue;
-    const isPR = !!ctx.payload.pull_request;
-    if (!isIssue && !isPR) {
-      core.info('No issue or PR context; exiting.');
-      return;
+/**
+ * Main orchestrator for Status One-Hot Enforcer Agent.
+ * Ensures only one status label is present and applies defaults as needed.
+ * @param {Object} context - GitHub Actions context object.
+ * @returns {Promise<void>}
+ */
+// ...existing code...
+async function run(context = actionsGithub.context) {
+    try {
+        const token = process.env.GITHUB_TOKEN || core.getInput('github-token');
+        if (!token) {
+            throw new Error('GITHUB_TOKEN is required');
+        }
+        const octokit = actionsGithub.getOctokit(token);
+
+        const owner = context.repo.owner;
+        const repo = context.repo.repo;
+
+        const item = context.payload.issue || context.payload.pull_request;
+        if (!item) {
+            core.info('No issue or PR in context; exiting.');
+            return;
+        }
+        const issueOrPrNumber = item.number;
+        const currentLabels = (item.labels || []).map((l) => l.name || l);
+        const isPR = !!context.payload.pull_request;
+
+        // Enforce one-hot status, apply default status/priority as needed
+        await enforceOneHotStatus(
+            octokit,
+            owner,
+            repo,
+            issueOrPrNumber,
+            currentLabels,
+            isPR
+        );
+        await applyDefaultStatus(octokit, owner, repo, issueOrPrNumber, isPR);
+        if (!isPR) {
+            await applyDefaultPriority(
+                octokit,
+                owner,
+                repo,
+                issueOrPrNumber,
+                currentLabels
+            );
+        }
+
+        actionsCore.info('Status enforcement complete.');
+    } catch (e) {
+        actionsCore.setFailed(e.message);
     }
-    const number = isIssue ? ctx.payload.issue.number : ctx.payload.pull_request.number;
-    const owner = ctx.repo.owner, repo = ctx.repo.repo;
-
-    const { data: current } = await octo.rest.issues.get({ owner, repo, issue_number: number });
-    const names = (current.labels || []).map(l => l.name).filter(Boolean);
-
-    // Enforce exactly one status:*
-    const statuses = names.filter(n => n.startsWith(STATUS_PREFIX));
-    if (statuses.length === 0) {
-      const desired = isPR ? DEFAULT_STATUS_PR : DEFAULT_STATUS_ISSUE;
-      await octo.rest.issues.addLabels({ owner, repo, issue_number: number, labels: [desired] });
-      core.info(`Applied default status: ${desired}`);
-    } else if (statuses.length > 1) {
-      const keep = statuses[0];
-      for (const name of statuses.slice(1)) {
-        await octo.rest.issues.removeLabel({ owner, repo, issue_number: number, name });
-        core.info(`Removed extra status label: ${name}`);
-      }
-      core.info(`Kept status label: ${keep}`);
-    }
-
-    // Default priority on issues
-    if (isIssue) {
-      const hasPriority = names.some(n => n.startsWith(PRIORITY_PREFIX));
-      if (!hasPriority) {
-        await octo.rest.issues.addLabels({ owner, repo, issue_number: number, labels: [DEFAULT_PRIORITY] });
-        core.info(`Applied default priority: ${DEFAULT_PRIORITY}`);
-      }
-    }
-  } catch (e) {
-    core.setFailed(e.message);
-  }
 }
 
-if (require.main === module) run();
-module.exports = { run };
+if (require.main === module) {
+    run();
+}
 
+module.exports = { run };

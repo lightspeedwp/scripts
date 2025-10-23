@@ -11,17 +11,17 @@
 const labelingAgent = require('../../.github/agents/labeling.agent.js');
 
 describe('Labeling Agent', () => {
-  it('should initialize without error', () => {
-    // TODO: Implement agent initialization test
-    expect(labelingAgent).toBeDefined();
-  });
+    it('should initialize without error', () => {
+        // TODO: Implement agent initialization test
+        expect(labelingAgent).toBeDefined();
+    });
 
-  it('should apply labels according to org-wide standards', () => {
-    // TODO: Implement label application logic test
-    // Example: Simulate issue/PR event and check label output
-  });
+    it('should apply labels according to org-wide standards', () => {
+        // TODO: Implement label application logic test
+        // Example: Simulate issue/PR event and check label output
+    });
 
-  it('should handle dry-run and verbose modes', () => {
-    // TODO: Test DRY_RUN and VERBOSE environment variable handling
-  });
+    it('should handle dry-run and verbose modes', () => {
+        // TODO: Test DRY_RUN and VERBOSE environment variable handling
+    });
 });

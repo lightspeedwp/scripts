@@ -1,4 +1,3 @@
-
 #!/bin/bash
 ###############################################################################
 #
@@ -119,7 +118,7 @@ jq -r '.[].name' "$tmpdir/labels.json" > "$tmpdir/canonical.txt"
 
 # Repo list
 if [[ -n "$ONLY" ]]; then
-  mapfile -t REPOS < <(printf "%s\n" $ONLY)
+  mapfile -t REPOS < <(printf "%s\n" "$ONLY")
 else
   mapfile -t REPOS < <(gh repo list "$ORG" --archived=false --source --limit 1000 --json name -q '.[].name')
 fi
@@ -212,4 +211,5 @@ done
 
 # Cleanup
 echo "Done."
+# shellcheck disable=SC2317,SC2329
 exit 0 # Always exit 0 to not break CI/CD, errors are logged above

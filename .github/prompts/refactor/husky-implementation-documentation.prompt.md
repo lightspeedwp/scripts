@@ -23,7 +23,6 @@ Ensure Husky is configured to run linting, formatting, and test checks on releva
 
 ## Checklist
 
-
 ## Current Repository State & Action Items
 
 - Husky and lint-staged are not yet installed or configured in this branch.
@@ -47,42 +46,40 @@ Husky must be set up to:
 
 1. Install Husky:
 
-   ```sh
-   npm install --save-dev husky
-   npx husky install
-   ```
+    ```sh
+    npm install --save-dev husky
+    npx husky install
+    ```
 
 2. Add Husky initialization to `package.json` scripts:
 
-   ```json
-   "scripts": {
-     "prepare": "husky install"
-   }
-   ```
+    ```json
+    "scripts": {
+      "prepare": "husky install"
+    }
+    ```
 
 3. Create pre-commit hook for linting and formatting:
 
-   ```sh
-   npx husky add .husky/pre-commit "npm run lint && npm run format"
-   ```
+    ```sh
+    npx husky add .husky/pre-commit "npm run lint && npm run format"
+    ```
 
 4. Create pre-push hook for running tests:
 
-   ```sh
-   npx husky add .husky/pre-push "npm test"
-   ```
+    ```sh
+    npx husky add .husky/pre-push "npm test"
+    ```
 
 5. Integrate additional linters and test runners as needed (ShellCheck, markdownlint, Jest, Bats, Pytest)
 6. Document Husky setup and usage in project README files
 7. Validate hook execution and error handling
 8. Commit changes with a message such as:
 
-   ```sh
-   git commit -am "Add Husky hooks for linting, formatting, and tests"
-   ```
+    ```sh
+    git commit -am "Add Husky hooks for linting, formatting, and tests"
+    ```
 
 ### Validation Steps
-
-
 
 Use this prompt to guide and document all Husky setup and integration operations, ensuring automated quality checks and improved code standards across the repository. Use this as a template for future Husky or pre-commit hook integrations.

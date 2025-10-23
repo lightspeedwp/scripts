@@ -1,0 +1,50 @@
+{
+    // .npmpackagejsonlintrc.json
+    // Purpose: Lint rules for npm-package-json-lint
+    "rules": {
+        "name-format": "error", // Enforce valid package name
+        "version-format": "error", // Enforce valid semver version
+        "require-author": "error", // Require author field
+        "require-description": "error", // Require description field
+        "require-license": "error", // Require license field
+        "require-repository": "error", // Require repository field
+        "require-homepage": "warning", // Warn if homepage missing
+        "require-keywords": "warning", // Warn if keywords missing
+        "require-bugs": "warning", // Warn if bugs field missing
+        "require-main": "error", // Require main field
+        "prefer-caret-version-dependencies": "warning", // Prefer ^ for deps
+        "prefer-caret-version-devDependencies": "warning", // Prefer ^ for devDeps
+        "no-duplicate-properties": "error", // Disallow duplicate keys
+        "valid-values-license": [
+            "error",
+            ["GPL-3.0-or-later", "MIT", "ISC", "Apache-2.0"] // Allowed licenses
+        ],
+        "valid-values-name-scope": ["warning", ["@lightspeedwp"]], // Warn if not scoped
+        "no-restricted-dependencies": ["error", ["lodash"]], // Disallow lodash
+        "no-restricted-devDependencies": ["warning", ["gulp"]] // Warn if gulp in devDeps
+    }
+}
+{
+    "rules": {
+        "name-format": "error",
+        "version-format": "error",
+        "require-author": "error",
+        "require-description": "error",
+        "require-license": "error",
+        "require-repository": "error",
+        "require-homepage": "warning",
+        "require-keywords": "warning",
+        "require-bugs": "warning",
+        "require-main": "error",
+        "prefer-caret-version-dependencies": "warning",
+        "prefer-caret-version-devDependencies": "warning",
+        "no-duplicate-properties": "error",
+        "valid-values-license": [
+            "error",
+            ["GPL-3.0-or-later", "MIT", "ISC", "Apache-2.0"]
+        ],
+        "valid-values-name-scope": ["warning", ["@lightspeedwp"]],
+        "no-restricted-dependencies": ["error", ["lodash"]],
+        "no-restricted-devDependencies": ["warning", ["gulp"]]
+    }
+}

@@ -6,6 +6,7 @@ LOG_DATE="$(date +%d-%m-%Y)"
 LOG_FILE="$LOG_DIR/$SCRIPT_NAME-$LOG_DATE.log"
 
 # Logging function: logs to stdout and appends to log file
+# shellcheck disable=SC2317,SC2329
 log_msg() {
   local msg="$1"
   echo "$msg"
@@ -174,6 +175,7 @@ main() {
 # Function: log_info
 # Description: Prints an informational message with blue [INFO] prefix and writes to log file
 # Args: $1 - The message to print
+# shellcheck disable=SC2317,SC2329
 log_info() {
     local timestamp
     timestamp=$(date '+%Y-%m-%d %H:%M:%S')
@@ -185,6 +187,7 @@ log_info() {
 # Function: log_success
 # Description: Prints a success message with green [SUCCESS] prefix and writes to log file
 # Args: $1 - The message to print
+# shellcheck disable=SC2317,SC2329
 log_success() {
     local timestamp
     timestamp=$(date '+%Y-%m-%d %H:%M:%S')
@@ -196,6 +199,7 @@ log_success() {
 # Function: log_warning
 # Description: Prints a warning message with yellow [WARNING] prefix and writes to log file
 # Args: $1 - The message to print
+# shellcheck disable=SC2317,SC2329
 log_warning() {
     local timestamp
     timestamp=$(date '+%Y-%m-%d %H:%M:%S')
@@ -207,6 +211,7 @@ log_warning() {
 # Function: log_error
 # Description: Prints an error message with red [ERROR] prefix to stderr and writes to log file
 # Args: $1 - The message to print
+# shellcheck disable=SC2317,SC2329
 log_error() {
     local timestamp
     timestamp=$(date '+%Y-%m-%d %H:%M:%S')
@@ -513,7 +518,7 @@ log_error() {
         echo "${GH_SCOPES:-}" | tr ',' '\n'
         return 0
       fi
-      echo "repo\nproject\nread:org\nread:user"
+      printf "%s\n" "repo" "project" "read:org" "read:user"
       return 0
     fi
     local scopes_response
@@ -626,19 +631,19 @@ else
   if [[ -n "$SETTINGS_PROJECT_NAME" ]]; then
     echo "Updating project name to '$PROJECT_TITLE'"
     # gh project update is not supported for V2, use GraphQL mutation
-    gh api graphql -F projectId="$PROJECT_NODE_ID" -F title="$PROJECT_TITLE" -f query='mutation($projectId: ID!, $title: String!) { updateProjectV2(input: { projectId: $projectId, title: $title }) { projectV2 { id title } } }'
+    gh api graphql -F projectId="$PROJECT_NODE_ID" -F title="$PROJECT_TITLE" -f query="mutation(4projectId: ID!, 4title: String!) { updateProjectV2(input: { projectId: 4projectId, title: 4title }) { projectV2 { id title } } }"
   fi
   if [[ -n "$PROJECT_SHORT_DESC" ]]; then
     echo "Updating short description to '$PROJECT_SHORT_DESC'"
-    gh api graphql -F projectId="$PROJECT_NODE_ID" -F shortDescription="$PROJECT_SHORT_DESC" -f query='mutation($projectId: ID!, $shortDescription: String!) { updateProjectV2(input: { projectId: $projectId, shortDescription: $shortDescription }) { projectV2 { id shortDescription } } }'
+    gh api graphql -F projectId="$PROJECT_NODE_ID" -F shortDescription="$PROJECT_SHORT_DESC" -f query="mutation(4projectId: ID!, 4shortDescription: String!) { updateProjectV2(input: { projectId: 4projectId, shortDescription: 4shortDescription }) { projectV2 { id shortDescription } } }"
   fi
   if [[ -n "$SETTINGS_README" ]]; then
     echo "Updating README for project #$PROJECT_NUM"
-    gh api graphql -F projectId="$PROJECT_NODE_ID" -F body="$SETTINGS_README" -f query='mutation($projectId: ID!, $body: String!) { updateProjectV2(input: { projectId: $projectId, readme: $body }) { projectV2 { id } } }'
+    gh api graphql -F projectId="$PROJECT_NODE_ID" -F body="$SETTINGS_README" -f query="mutation(4projectId: ID!, 4body: String!) { updateProjectV2(input: { projectId: 4projectId, readme: 4body }) { projectV2 { id } } }"
   fi
   if [[ -n "$SETTINGS_VISIBILITY" ]]; then
     echo "Updating visibility to '$SETTINGS_VISIBILITY'"
-    gh api graphql -F projectId="$PROJECT_NODE_ID" -F visibility="$SETTINGS_VISIBILITY" -f query='mutation($projectId: ID!, $visibility: ProjectV2Visibility!) { updateProjectV2(input: { projectId: $projectId, visibility: $visibility }) { projectV2 { id visibility } } }'
+    gh api graphql -F projectId="$PROJECT_NODE_ID" -F visibility="$SETTINGS_VISIBILITY" -f query="mutation(4projectId: ID!, 4visibility: ProjectV2Visibility!) { updateProjectV2(input: { projectId: 4projectId, visibility: 4visibility }) { projectV2 { id visibility } } }"
   fi
   # Manage access (optional)
   if [[ "$MANAGE_ACCESS" == "true" ]]; then
@@ -687,10 +692,10 @@ create_single_select_field() {
     local label="${opts[$i]}"
     local color="${cols[$i]}"
     local option_id
-    option_id=$(gh api graphql -f query='query($field: ID!) { node(id: $field) { ... on ProjectV2Field { configuration { ... on ProjectV2SingleSelectFieldConfiguration { options { id name } } } } } }' -F field="$field_id" | jq -r --arg lbl "$label" '.data.node.configuration.options[] | select(.name==$lbl) | .id') || true
+    option_id=$(gh api graphql -f query="query(4field: ID!) { node(id: 4field) { ... on ProjectV2Field { configuration { ... on ProjectV2SingleSelectFieldConfiguration { options { id name } } } } } }" -F field="$field_id" | jq -r --arg lbl "$label" '.data.node.configuration.options[] | select(.name==$lbl) | .id') || true
     if [[ -n "$option_id" ]]; then
       echo "Setting color for $field_name:$label → $color"
-      gh api graphql -f query='mutation($optionId: ID!, $color: String!) { updateProjectV2SingleSelectFieldOption(input: { id: $optionId, name: null, color: $color }) { singleSelectFieldOption { id name } } }' -F optionId="$option_id" -F color="$color" >/dev/null
+      gh api graphql -f query="mutation(4optionId: ID!, 4color: String!) { updateProjectV2SingleSelectFieldOption(input: { id: 4optionId, name: null, color: 4color }) { singleSelectFieldOption { id name } } }" -F optionId="$option_id" -F color="$color" >/dev/null
     else
       echo "(Warning) Could not determine option id for $field_name:$label; color assignment skipped."
     fi
@@ -703,6 +708,7 @@ create_single_select_field() {
 #   $1 - field_name: The name of the field to create
 #   $2 - field_type: The data type of the field (number, date, or text)
 # Returns: None
+# shellcheck disable=SC2317,SC2329
 create_field() {
   local field_name="$1"
   local field_type="$2"

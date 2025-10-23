@@ -12,27 +12,32 @@ Thank you for your interest in contributing to our automation scripts repository
 **Getting Started Resources:**
 
 📖 **Essential Reading:**
+
 - [Contributing Guide](CONTRIBUTING.md) - Complete contribution process and standards
 - [Development Setup](DEVELOPMENT.md) - Local environment setup instructions
 - [Code of Conduct](CODE_OF_CONDUCT.md) - Community guidelines and expectations
 
 🛠️ **Development Resources:**
+
 - [Shell Script Standards](.github/instructions/shell-script-copilot.md) - Our coding standards and best practices
 - [Testing Guidelines](.github/instructions/bats-tests-and-runner-scripts.md) - How to write and run tests
 - [Documentation Standards](.github/instructions/documentation-standards.md) - Writing effective documentation
 
 🤝 **Getting Help:**
+
 - **Questions?** Feel free to ask in this issue/PR or open a [discussion](../../discussions)
-- **Stuck?** Check our [troubleshooting guide](DEVELOPMENT.md#troubleshooting) 
+- **Stuck?** Check our [troubleshooting guide](DEVELOPMENT.md#troubleshooting)
 - **Need review?** Tag `@lightspeedwp/maintainers` for assistance
 
 **First Contribution Tips:**
+
 1. Start with a small change to get familiar with our process
 2. Look for issues labeled `good first issue` for beginner-friendly tasks
 3. Don't hesitate to ask questions - we're here to help!
 4. Take your time - quality is more important than speed
 
 **What Happens Next:**
+
 - We'll review your contribution thoroughly and provide constructive feedback
 - Our automated tests will run to ensure quality and compatibility
 - We'll work with you to address any suggestions or improvements
@@ -54,8 +59,9 @@ Great to see you back! 🎉 Thank you for continuing to contribute to the LightS
 
 **Since Your Last Contribution:**
 [Include any relevant updates, such as:]
+
 - New testing framework implementation
-- Updated coding standards or guidelines  
+- Updated coding standards or guidelines
 - New automation tools or workflows
 - Community growth and achievements
 
@@ -63,12 +69,14 @@ Great to see you back! 🎉 Thank you for continuing to contribute to the LightS
 I see you're working on [brief description of the current contribution]. This aligns well with our current priorities around [relevant project goals].
 
 **Quick Reminders:**
+
 - Our [standards](.github/instructions/) may have been updated since your last contribution
 - New [testing requirements](.github/instructions/bats-tests-and-runner-scripts.md) are in place
 - We've added new [automation agents](AGENTS.md) that might be helpful
 
 **Need a Refresher?**
 If you need to catch up on any changes since your last contribution:
+
 - Check the [CHANGELOG](CHANGELOG.md) for recent updates
 - Review any updated documentation in the `.github/instructions/` directory
 - Feel free to ask questions about anything that's changed
@@ -88,28 +96,33 @@ Hi @username,
 I wanted to take a moment to recognize your outstanding contributions to the LightSpeed WP automation project:
 
 **Your Impact:**
+
 - **{Number}** successful contributions merged
 - **{Description}** of key improvements you've made
 - **{Specific impact}** on the project and community
 
 **Notable Contributions:**
+
 1. **{Contribution 1}** - {Impact description}
 2. **{Contribution 2}** - {Impact description}
 3. **{Contribution 3}** - {Impact description}
 
 **Community Impact:**
 Your contributions have:
+
 - ✅ Improved reliability for {number} users
 - ✅ Enhanced documentation and onboarding experience
 - ✅ Strengthened our testing infrastructure
 - ✅ Advanced our automation capabilities
 
 **Recognition:**
+
 - 🏆 Added to our [contributors hall of fame](README.md#contributors)
 - 📧 Sent details for potential swag/recognition package
 - 🌟 Highlighted in our community updates
 
 **Looking Forward:**
+
 - Would you be interested in becoming a community maintainer?
 - Are there particular areas of the project you'd like to focus on?
 - Any ideas for new features or improvements you'd like to champion?
@@ -133,6 +146,7 @@ To help ensure a smooth review process, I wanted to point out our contribution g
 **Helpful Reminders:**
 
 📋 **PR Checklist:**
+
 - [ ] Descriptive PR title following [conventional commits](https://www.conventionalcommits.org/)
 - [ ] Complete PR description explaining the changes and reasoning
 - [ ] Tests added for new functionality
@@ -140,12 +154,14 @@ To help ensure a smooth review process, I wanted to point out our contribution g
 - [ ] All automated checks passing
 
 🔧 **Code Standards:**
+
 - Follow our [shell script standards](.github/instructions/shell-script-copilot.md)
 - Include proper error handling with `set -euo pipefail`
 - Add comprehensive documentation for new functions
 - Ensure all variables are properly quoted
 
 🧪 **Testing Requirements:**
+
 - Create corresponding `.bats` test files for new scripts
 - Test both success and failure scenarios
 - Include edge case testing
@@ -155,6 +171,7 @@ To help ensure a smooth review process, I wanted to point out our contribution g
 These guidelines might seem extensive, but they help us maintain code quality and make the project easier for everyone to work with. Don't feel overwhelmed - we're here to help you through the process!
 
 **Next Steps:**
+
 1. Review the items above and make any needed adjustments
 2. Ask questions if anything isn't clear
 3. Request review when you're ready
@@ -174,11 +191,13 @@ Welcome to LightSpeed WP! 🎉 Perfect timing - there are some exciting opportun
 **Current Events:**
 
 🎃 **Hacktoberfest 2024** (if applicable)
+
 - This repository participates in Hacktoberfest
 - Look for issues labeled `hacktoberfest` for event-eligible contributions
 - Complete 4 quality contributions during October to earn rewards
 
 🚀 **Community Initiatives:**
+
 - **Documentation Sprint:** Help us improve our getting-started guides
 - **Testing Marathon:** Add test coverage to existing scripts
 - **Automation Enhancement:** Build new agents and workflow improvements
@@ -186,16 +205,19 @@ Welcome to LightSpeed WP! 🎉 Perfect timing - there are some exciting opportun
 **Great Starting Points:**
 
 🟢 **Beginner-Friendly Issues:**
+
 - Look for `good first issue` labels
 - Documentation improvements are always welcome
 - Test coverage additions are great first contributions
 
 🟡 **Intermediate Challenges:**
+
 - Bug fixes and feature enhancements
 - Performance optimizations
 - New automation script development
 
 🔴 **Advanced Projects:**
+
 - New agent development
 - Complex workflow integrations
 - Infrastructure and tooling improvements
@@ -203,16 +225,19 @@ Welcome to LightSpeed WP! 🎉 Perfect timing - there are some exciting opportun
 **Community Resources:**
 
 💬 **Stay Connected:**
+
 - Join our [discussions](../../discussions) for questions and ideas
 - Follow the repository for updates and announcements
 - Subscribe to issues you're interested in
 
 📚 **Learning Opportunities:**
+
 - [Shell scripting tutorials](link-to-resources)
 - [GitHub Actions workshops](link-to-resources)
 - [WordPress automation best practices](link-to-resources)
 
 **Recognition Program:**
+
 - Outstanding contributions are featured in our monthly community updates
 - Top contributors receive recognition badges and potential swag
 - Opportunity to become a community maintainer for regular contributors
@@ -249,12 +274,14 @@ Welcome to LightSpeed WP! To help you get started successfully, I'd like to intr
 4. **Pairing:** Consider pairing on your first contribution for hands-on learning
 
 **Mentor Guidelines:**
+
 - Response time: Mentors typically respond within 24-48 hours
 - Communication: Use GitHub comments, discussions, or direct messages as preferred
 - Scope: Focus on contribution-related questions and technical guidance
 - Duration: Mentorship continues as long as it's helpful for both parties
 
 **Additional Resources:**
+
 - [Mentorship Program Guidelines](link-to-guidelines)
 - [New Contributor FAQ](link-to-faq)
 - [Community Discussions](../../discussions) for broader questions
@@ -273,7 +300,7 @@ Welcome aboard! 🎉
 ```markdown
 Hi @username,
 
-Thank you for this contribution! I can see you've put effort into understanding our project and creating something valuable. 
+Thank you for this contribution! I can see you've put effort into understanding our project and creating something valuable.
 
 **What's Working Well:**
 ✅ Good understanding of the project's goals and requirements
@@ -284,30 +311,33 @@ Thank you for this contribution! I can see you've put effort into understanding 
 To make this contribution even better, let's focus on a few areas:
 
 1. **Code Quality:**
-   - [Specific, actionable feedback]
-   - [Link to relevant standards or examples]
+    - [Specific, actionable feedback]
+    - [Link to relevant standards or examples]
 
 2. **Testing:**
-   - [Testing improvements needed]
-   - [Resources for test development]
+    - [Testing improvements needed]
+    - [Resources for test development]
 
 3. **Documentation:**
-   - [Documentation updates required]
-   - [Examples of good documentation patterns]
+    - [Documentation updates required]
+    - [Examples of good documentation patterns]
 
 **Learning Resources:**
 I've noticed you might benefit from these resources:
+
 - [Specific tutorial or guide link]
 - [Relevant documentation section]
 - [Example of similar, well-implemented feature]
 
 **Next Steps:**
+
 1. Review the feedback above and ask questions if anything is unclear
 2. Make the suggested improvements
 3. Let me know when you're ready for another review
 4. Don't hesitate to ask for help along the way!
 
 **Remember:**
+
 - Every experienced contributor started where you are now
 - The learning process is just as valuable as the final contribution
 - Our community is here to support your growth as a developer

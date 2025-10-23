@@ -1,6 +1,7 @@
 # .github/PR_LABELS.md
 
 ## Purpose
+
 Provide high‑signal, automated **PR labels** for review routing, release hygiene, and search—without introducing `type:*` PR labels.
 
 This file is managed centrally in the LightSpeed WP community health repository.

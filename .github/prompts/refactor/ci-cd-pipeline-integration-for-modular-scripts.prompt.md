@@ -23,7 +23,6 @@ Establish robust CI/CD pipelines that automate testing, validation, security sca
 
 ### Requirements
 
-
 ## Current Repository State & Action Items
 
 - CI/CD workflows for markdownlint, shellcheck, ESLint, and others exist in `.github/workflows/`.
@@ -32,6 +31,7 @@ Establish robust CI/CD pipelines that automate testing, validation, security sca
 - Folder structure: `/scripts/project/` and `/tests/project-scripts/` currently used; planned renaming for consistency.
 
 **Action:** Add missing config files, expand documentation, and update folder names for consistency. Document workflow addition steps in README files.
+
 - Commit changes with a message like `docs: update CI process documentation`.
 
 ## Notes
@@ -62,453 +62,453 @@ Establish robust CI/CD pipelines that automate testing, validation, security sca
 name: Modular Scripts CI/CD Pipeline
 
 on:
-  push:
-    branches: [main, develop, 'feature/*', 'hotfix/*']
-    paths:
-      - 'scripts/**'
-      - 'tests/**'
-      - '.github/workflows/**'
-  pull_request:
-    branches: [main, develop]
-    paths:
-      - 'scripts/**'
-      - 'tests/**'
-  release:
-    types: [published]
-  schedule:
-    # Daily security and quality checks
-    - cron: '0 2 * * *'
-  workflow_dispatch:
-    inputs:
-      deploy_environment:
-        description: 'Target deployment environment'
-        required: false
-        default: 'staging'
-        type: choice
-        options:
-          - staging
-          - production
-      force_deploy:
-        description: 'Force deployment despite warnings'
-        required: false
-        default: false
-        type: boolean
+    push:
+        branches: [main, develop, 'feature/*', 'hotfix/*']
+        paths:
+            - 'scripts/**'
+            - 'tests/**'
+            - '.github/workflows/**'
+    pull_request:
+        branches: [main, develop]
+        paths:
+            - 'scripts/**'
+            - 'tests/**'
+    release:
+        types: [published]
+    schedule:
+        # Daily security and quality checks
+        - cron: '0 2 * * *'
+    workflow_dispatch:
+        inputs:
+            deploy_environment:
+                description: 'Target deployment environment'
+                required: false
+                default: 'staging'
+                type: choice
+                options:
+                    - staging
+                    - production
+            force_deploy:
+                description: 'Force deployment despite warnings'
+                required: false
+                default: false
+                type: boolean
 
-  PIPELINE_VERSION: "v2.0.0"
-  QUALITY_THRESHOLD: 80
-  SECURITY_THRESHOLD: "high"
-  NODE_VERSION: "18"
-  SHELLCHECK_VERSION: "0.9.0"
+    PIPELINE_VERSION: 'v2.0.0'
+    QUALITY_THRESHOLD: 80
+    SECURITY_THRESHOLD: 'high'
+    NODE_VERSION: '18'
+    SHELLCHECK_VERSION: '0.9.0'
 
 jobs:
-  # Stage 1: Static Analysis and Validation
-  static-analysis:
-    name: "Stage 1: Static Analysis"
+    # Stage 1: Static Analysis and Validation
+    static-analysis:
+        name: 'Stage 1: Static Analysis'
 
-    timeout-minutes: 15
+        timeout-minutes: 15
 
-    outputs:
-      changes-detected: ${{ steps.changes.outputs.scripts }}
-      quality-score: ${{ steps.quality.outputs.score }}
-      security-issues: ${{ steps.security.outputs.issues }}
+        outputs:
+            changes-detected: ${{ steps.changes.outputs.scripts }}
+            quality-score: ${{ steps.quality.outputs.score }}
+            security-issues: ${{ steps.security.outputs.issues }}
 
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0  # Full history for change detection
+        steps:
+            - name: Checkout Repository
+              uses: actions/checkout@v4
+              with:
+                  fetch-depth: 0 # Full history for change detection
 
-      - name: Detect Changes
-        id: changes
-        uses: dorny/paths-filter@v2
-        with:
-          filters: |
-            scripts:
-              - 'scripts/**'
-            tests:
-              - 'tests/**'
-            includes:
-              - 'scripts/includes/**'
+            - name: Detect Changes
+              id: changes
+              uses: dorny/paths-filter@v2
+              with:
+                  filters: |
+                      scripts:
+                        - 'scripts/**'
+                      tests:
+                        - 'tests/**'
+                      includes:
+                        - 'scripts/includes/**'
 
-      - name: Setup Node.js
-        if: steps.changes.outputs.scripts == 'true'
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
+            - name: Setup Node.js
+              if: steps.changes.outputs.scripts == 'true'
+              uses: actions/setup-node@v4
+              with:
+                  node-version: ${{ env.NODE_VERSION }}
+                  cache: 'npm'
 
-      - name: Install Dependencies
-        if: steps.changes.outputs.scripts == 'true'
-        run: |
-          npm ci
-          sudo apt-get update
-          sudo apt-get install -y shellcheck yamllint jq bc
+            - name: Install Dependencies
+              if: steps.changes.outputs.scripts == 'true'
+              run: |
+                  npm ci
+                  sudo apt-get update
+                  sudo apt-get install -y shellcheck yamllint jq bc
 
-      - name: ShellCheck Analysis
-        if: steps.changes.outputs.scripts == 'true'
-        id: shellcheck
-        run: |
-          echo "Running ShellCheck analysis..."
-          find scripts/ -name "*.sh" -type f | while read -r script; do
-            echo "Checking: $script"
-            shellcheck -f json "$script" > "shellcheck-$(basename "$script").json" || true
-          done
+            - name: ShellCheck Analysis
+              if: steps.changes.outputs.scripts == 'true'
+              id: shellcheck
+              run: |
+                  echo "Running ShellCheck analysis..."
+                  find scripts/ -name "*.sh" -type f | while read -r script; do
+                    echo "Checking: $script"
+                    shellcheck -f json "$script" > "shellcheck-$(basename "$script").json" || true
+                  done
 
-          # Aggregate results
-          jq -s 'add' shellcheck-*.json > shellcheck-results.json
+                  # Aggregate results
+                  jq -s 'add' shellcheck-*.json > shellcheck-results.json
 
-          # Check for critical issues
-          critical_count=$(jq '[.[] | select(.level == "error")] | length' shellcheck-results.json)
-          warning_count=$(jq '[.[] | select(.level == "warning")] | length' shellcheck-results.json)
+                  # Check for critical issues
+                  critical_count=$(jq '[.[] | select(.level == "error")] | length' shellcheck-results.json)
+                  warning_count=$(jq '[.[] | select(.level == "warning")] | length' shellcheck-results.json)
 
-          echo "critical-issues=$critical_count" >> $GITHUB_OUTPUT
-          echo "warning-issues=$warning_count" >> $GITHUB_OUTPUT
+                  echo "critical-issues=$critical_count" >> $GITHUB_OUTPUT
+                  echo "warning-issues=$warning_count" >> $GITHUB_OUTPUT
 
-          # Fail if critical issues found
-          if [[ $critical_count -gt 0 ]]; then
-            echo "❌ Critical ShellCheck issues found: $critical_count"
-            exit 1
-          fi
+                  # Fail if critical issues found
+                  if [[ $critical_count -gt 0 ]]; then
+                    echo "❌ Critical ShellCheck issues found: $critical_count"
+                    exit 1
+                  fi
 
-      - name: Markdown Linting
-        if: steps.changes.outputs.scripts == 'true'
-        run: |
-          echo "Running markdown lint..."
-          npx markdownlint docs/ README.md --config .markdownlint.yml
+            - name: Markdown Linting
+              if: steps.changes.outputs.scripts == 'true'
+              run: |
+                  echo "Running markdown lint..."
+                  npx markdownlint docs/ README.md --config .markdownlint.yml
 
-      - name: YAML Linting
-        if: steps.changes.outputs.scripts == 'true'
-        run: |
-          echo "Running YAML lint..."
-          find .github/ -name "*.yml" -o -name "*.yaml" | xargs yamllint
+            - name: YAML Linting
+              if: steps.changes.outputs.scripts == 'true'
+              run: |
+                  echo "Running YAML lint..."
+                  find .github/ -name "*.yml" -o -name "*.yaml" | xargs yamllint
 
-      - name: Quality Score Calculation
-        if: steps.changes.outputs.scripts == 'true'
-        id: quality
-        run: |
-          # Calculate overall quality score
-          ./scripts/maintenance/calculate-quality-score.sh > quality-report.json
-          quality_score=$(jq -r '.overall_score' quality-report.json)
-          echo "score=$quality_score" >> $GITHUB_OUTPUT
-          echo "📊 Quality Score: $quality_score%"
+            - name: Quality Score Calculation
+              if: steps.changes.outputs.scripts == 'true'
+              id: quality
+              run: |
+                  # Calculate overall quality score
+                  ./scripts/maintenance/calculate-quality-score.sh > quality-report.json
+                  quality_score=$(jq -r '.overall_score' quality-report.json)
+                  echo "score=$quality_score" >> $GITHUB_OUTPUT
+                  echo "📊 Quality Score: $quality_score%"
 
-      - name: Security Scanning
-        if: steps.changes.outputs.scripts == 'true'
-        id: security
-        run: |
-          # Run security analysis
-          ./scripts/security/security-audit.sh
-          security_issues=$(jq '.findings | length' security-audit-*.json)
-          echo "issues=$security_issues" >> $GITHUB_OUTPUT
+            - name: Security Scanning
+              if: steps.changes.outputs.scripts == 'true'
+              id: security
+              run: |
+                  # Run security analysis
+                  ./scripts/security/security-audit.sh
+                  security_issues=$(jq '.findings | length' security-audit-*.json)
+                  echo "issues=$security_issues" >> $GITHUB_OUTPUT
 
-      - name: Upload Analysis Artifacts
-        if: steps.changes.outputs.scripts == 'true'
-        uses: actions/upload-artifact@v4
-        with:
-          name: static-analysis-results
-          path: |
-            shellcheck-results.json
-            quality-report.json
-            security-audit-*.json
-          retention-days: 30
+            - name: Upload Analysis Artifacts
+              if: steps.changes.outputs.scripts == 'true'
+              uses: actions/upload-artifact@v4
+              with:
+                  name: static-analysis-results
+                  path: |
+                      shellcheck-results.json
+                      quality-report.json
+                      security-audit-*.json
+                  retention-days: 30
 
-  # Stage 2: Unit and Integration Testing
-  testing:
-    name: "Stage 2: Testing"
-    needs: static-analysis
-    if: needs.static-analysis.outputs.changes-detected == 'true'
-    runs-on: ubuntu-latest
-    timeout-minutes: 30
-    strategy:
-      matrix:
-        test-suite: [unit, integration, performance, security]
+    # Stage 2: Unit and Integration Testing
+    testing:
+        name: 'Stage 2: Testing'
+        needs: static-analysis
+        if: needs.static-analysis.outputs.changes-detected == 'true'
+        runs-on: ubuntu-latest
+        timeout-minutes: 30
+        strategy:
+            matrix:
+                test-suite: [unit, integration, performance, security]
 
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
+        steps:
+            - name: Checkout Repository
+              uses: actions/checkout@v4
 
-      - name: Setup Test Environment
-        run: |
-          # Install Bats testing framework
-          git clone https://github.com/bats-core/bats-core.git
-          cd bats-core && sudo ./install.sh /usr/local && cd ..
+            - name: Setup Test Environment
+              run: |
+                  # Install Bats testing framework
+                  git clone https://github.com/bats-core/bats-core.git
+                  cd bats-core && sudo ./install.sh /usr/local && cd ..
 
-          # Install Bats helpers
-          git clone https://github.com/bats-core/bats-support.git tests/test_helper/bats-support
-          git clone https://github.com/bats-core/bats-assert.git tests/test_helper/bats-assert
+                  # Install Bats helpers
+                  git clone https://github.com/bats-core/bats-support.git tests/test_helper/bats-support
+                  git clone https://github.com/bats-core/bats-assert.git tests/test_helper/bats-assert
 
-          # Setup test isolation
-          mkdir -p test-results/${{ matrix.test-suite }}
+                  # Setup test isolation
+                  mkdir -p test-results/${{ matrix.test-suite }}
 
-      - name: Run Unit Tests
-        if: matrix.test-suite == 'unit'
-        run: |
-          echo "Running unit tests..."
-          bats --formatter junit tests/includes/*/test-*.bats > test-results/unit/junit.xml
-          bats --formatter tap tests/includes/*/test-*.bats > test-results/unit/results.tap
+            - name: Run Unit Tests
+              if: matrix.test-suite == 'unit'
+              run: |
+                  echo "Running unit tests..."
+                  bats --formatter junit tests/includes/*/test-*.bats > test-results/unit/junit.xml
+                  bats --formatter tap tests/includes/*/test-*.bats > test-results/unit/results.tap
 
-      - name: Run Integration Tests
-        if: matrix.test-suite == 'integration'
-        run: |
-          echo "Running integration tests..."
-          bats --formatter junit tests/integration/ > test-results/integration/junit.xml
+            - name: Run Integration Tests
+              if: matrix.test-suite == 'integration'
+              run: |
+                  echo "Running integration tests..."
+                  bats --formatter junit tests/integration/ > test-results/integration/junit.xml
 
-      - name: Run Performance Tests
-        if: matrix.test-suite == 'performance'
-        run: |
-          echo "Running performance tests..."
-          ./tests/performance/benchmark-all-includes.sh > test-results/performance/benchmarks.json
+            - name: Run Performance Tests
+              if: matrix.test-suite == 'performance'
+              run: |
+                  echo "Running performance tests..."
+                  ./tests/performance/benchmark-all-includes.sh > test-results/performance/benchmarks.json
 
-      - name: Run Security Tests
-        if: matrix.test-suite == 'security'
-        run: |
-          echo "Running security tests..."
-          ./tests/security/security-test-suite.sh > test-results/security/security-tests.json
+            - name: Run Security Tests
+              if: matrix.test-suite == 'security'
+              run: |
+                  echo "Running security tests..."
+                  ./tests/security/security-test-suite.sh > test-results/security/security-tests.json
 
-      - name: Generate Test Coverage
-        run: |
-          ./scripts/maintenance/generate-test-coverage.sh > test-results/${{ matrix.test-suite }}/coverage.json
+            - name: Generate Test Coverage
+              run: |
+                  ./scripts/maintenance/generate-test-coverage.sh > test-results/${{ matrix.test-suite }}/coverage.json
 
-      - name: Upload Test Results
-        uses: actions/upload-artifact@v4
-        with:
-          name: test-results-${{ matrix.test-suite }}
-          path: test-results/${{ matrix.test-suite }}/
+            - name: Upload Test Results
+              uses: actions/upload-artifact@v4
+              with:
+                  name: test-results-${{ matrix.test-suite }}
+                  path: test-results/${{ matrix.test-suite }}/
 
-  # Stage 3: Quality Gates and Validation
-  quality-gates:
-    name: "Stage 3: Quality Gates"
-    needs: [static-analysis, testing]
-    if: always() && needs.static-analysis.outputs.changes-detected == 'true'
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
-    outputs:
-      quality-passed: ${{ steps.gates.outputs.passed }}
-      deploy-ready: ${{ steps.gates.outputs.deploy-ready }}
+    # Stage 3: Quality Gates and Validation
+    quality-gates:
+        name: 'Stage 3: Quality Gates'
+        needs: [static-analysis, testing]
+        if: always() && needs.static-analysis.outputs.changes-detected == 'true'
+        runs-on: ubuntu-latest
+        timeout-minutes: 10
+        outputs:
+            quality-passed: ${{ steps.gates.outputs.passed }}
+            deploy-ready: ${{ steps.gates.outputs.deploy-ready }}
 
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
+        steps:
+            - name: Checkout Repository
+              uses: actions/checkout@v4
 
-      - name: Download Analysis Results
-        uses: actions/download-artifact@v4
-        with:
-          pattern: "*-results*"
-          merge-multiple: true
+            - name: Download Analysis Results
+              uses: actions/download-artifact@v4
+              with:
+                  pattern: '*-results*'
+                  merge-multiple: true
 
-      - name: Evaluate Quality Gates
-        id: gates
-        run: |
-          echo "Evaluating quality gates..."
+            - name: Evaluate Quality Gates
+              id: gates
+              run: |
+                  echo "Evaluating quality gates..."
 
-          # Quality score gate
-          quality_score="${{ needs.static-analysis.outputs.quality-score }}"
-          if [[ $quality_score -lt $QUALITY_THRESHOLD ]]; then
-            echo "❌ Quality gate failed: $quality_score% < $QUALITY_THRESHOLD%"
-            quality_passed="false"
-          else
-            echo "✅ Quality gate passed: $quality_score%"
-            quality_passed="true"
-          fi
+                  # Quality score gate
+                  quality_score="${{ needs.static-analysis.outputs.quality-score }}"
+                  if [[ $quality_score -lt $QUALITY_THRESHOLD ]]; then
+                    echo "❌ Quality gate failed: $quality_score% < $QUALITY_THRESHOLD%"
+                    quality_passed="false"
+                  else
+                    echo "✅ Quality gate passed: $quality_score%"
+                    quality_passed="true"
+                  fi
 
-          # Security issues gate
-          security_issues="${{ needs.static-analysis.outputs.security-issues }}"
-          if [[ $security_issues -gt 0 ]]; then
-            echo "❌ Security gate failed: $security_issues issues found"
-            security_passed="false"
-          else
-            echo "✅ Security gate passed: no issues"
-            security_passed="true"
-          fi
+                  # Security issues gate
+                  security_issues="${{ needs.static-analysis.outputs.security-issues }}"
+                  if [[ $security_issues -gt 0 ]]; then
+                    echo "❌ Security gate failed: $security_issues issues found"
+                    security_passed="false"
+                  else
+                    echo "✅ Security gate passed: no issues"
+                    security_passed="true"
+                  fi
 
-          # Test results gate
-          test_passed="true"
-          if [[ "${{ needs.testing.result }}" != "success" ]]; then
-            echo "❌ Test gate failed: tests did not pass"
-            test_passed="false"
-          else
-            echo "✅ Test gate passed: all tests successful"
-          fi
+                  # Test results gate
+                  test_passed="true"
+                  if [[ "${{ needs.testing.result }}" != "success" ]]; then
+                    echo "❌ Test gate failed: tests did not pass"
+                    test_passed="false"
+                  else
+                    echo "✅ Test gate passed: all tests successful"
+                  fi
 
-          # Overall gate evaluation
-          if [[ "$quality_passed" == "true" && "$security_passed" == "true" && "$test_passed" == "true" ]]; then
-            echo "passed=true" >> $GITHUB_OUTPUT
-            echo "deploy-ready=true" >> $GITHUB_OUTPUT
-            echo "🎉 All quality gates passed!"
-          else
-            echo "passed=false" >> $GITHUB_OUTPUT
-            echo "deploy-ready=false" >> $GITHUB_OUTPUT
-            echo "❌ Quality gates failed"
-            exit 1
-          fi
+                  # Overall gate evaluation
+                  if [[ "$quality_passed" == "true" && "$security_passed" == "true" && "$test_passed" == "true" ]]; then
+                    echo "passed=true" >> $GITHUB_OUTPUT
+                    echo "deploy-ready=true" >> $GITHUB_OUTPUT
+                    echo "🎉 All quality gates passed!"
+                  else
+                    echo "passed=false" >> $GITHUB_OUTPUT
+                    echo "deploy-ready=false" >> $GITHUB_OUTPUT
+                    echo "❌ Quality gates failed"
+                    exit 1
+                  fi
 
-      - name: Generate Quality Report
-        run: |
-          ./scripts/maintenance/generate-pipeline-report.sh \
-            --quality-score "${{ needs.static-analysis.outputs.quality-score }}" \
-            --security-issues "${{ needs.static-analysis.outputs.security-issues }}" \
-            --test-status "${{ needs.testing.result }}" \
-            --output "pipeline-quality-report.json"
+            - name: Generate Quality Report
+              run: |
+                  ./scripts/maintenance/generate-pipeline-report.sh \
+                    --quality-score "${{ needs.static-analysis.outputs.quality-score }}" \
+                    --security-issues "${{ needs.static-analysis.outputs.security-issues }}" \
+                    --test-status "${{ needs.testing.result }}" \
+                    --output "pipeline-quality-report.json"
 
-      - name: Upload Quality Report
-        uses: actions/upload-artifact@v4
-        with:
-          name: quality-gate-report
-          path: pipeline-quality-report.json
+            - name: Upload Quality Report
+              uses: actions/upload-artifact@v4
+              with:
+                  name: quality-gate-report
+                  path: pipeline-quality-report.json
 
-  # Stage 4: Security Deep Scan
-  security-scan:
-    name: "Stage 4: Security Deep Scan"
-    needs: [static-analysis, quality-gates]
-    if: needs.quality-gates.outputs.quality-passed == 'true'
-    runs-on: ubuntu-latest
-    timeout-minutes: 20
+    # Stage 4: Security Deep Scan
+    security-scan:
+        name: 'Stage 4: Security Deep Scan'
+        needs: [static-analysis, quality-gates]
+        if: needs.quality-gates.outputs.quality-passed == 'true'
+        runs-on: ubuntu-latest
+        timeout-minutes: 20
 
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
+        steps:
+            - name: Checkout Repository
+              uses: actions/checkout@v4
 
-      - name: Dependency Security Scan
-        run: |
-          echo "Scanning dependencies for vulnerabilities..."
-          # Scan npm dependencies if package.json exists
-          if [[ -f package.json ]]; then
-            npm audit --audit-level moderate --json > npm-audit.json || true
+            - name: Dependency Security Scan
+              run: |
+                  echo "Scanning dependencies for vulnerabilities..."
+                  # Scan npm dependencies if package.json exists
+                  if [[ -f package.json ]]; then
+                    npm audit --audit-level moderate --json > npm-audit.json || true
 
-            # Check for high/critical vulnerabilities
-            high_vulns=$(jq '.metadata.vulnerabilities.high // 0' npm-audit.json)
-            critical_vulns=$(jq '.metadata.vulnerabilities.critical // 0' npm-audit.json)
+                    # Check for high/critical vulnerabilities
+                    high_vulns=$(jq '.metadata.vulnerabilities.high // 0' npm-audit.json)
+                    critical_vulns=$(jq '.metadata.vulnerabilities.critical // 0' npm-audit.json)
 
-            if [[ $((high_vulns + critical_vulns)) -gt 0 ]]; then
-              echo "❌ High/Critical vulnerabilities found: High=$high_vulns, Critical=$critical_vulns"
-              exit 1
-            fi
-          fi
+                    if [[ $((high_vulns + critical_vulns)) -gt 0 ]]; then
+                      echo "❌ High/Critical vulnerabilities found: High=$high_vulns, Critical=$critical_vulns"
+                      exit 1
+                    fi
+                  fi
 
-      - name: Secret Scanning
-        run: |
-          echo "Scanning for exposed secrets..."
-          ./scripts/security/scan-secrets.sh --strict > secret-scan-results.json
+            - name: Secret Scanning
+              run: |
+                  echo "Scanning for exposed secrets..."
+                  ./scripts/security/scan-secrets.sh --strict > secret-scan-results.json
 
-          secret_count=$(jq '.secrets | length' secret-scan-results.json)
-          if [[ $secret_count -gt 0 ]]; then
-            echo "❌ Potential secrets found: $secret_count"
-            exit 1
-          fi
+                  secret_count=$(jq '.secrets | length' secret-scan-results.json)
+                  if [[ $secret_count -gt 0 ]]; then
+                    echo "❌ Potential secrets found: $secret_count"
+                    exit 1
+                  fi
 
-      - name: Container Security Scan
-        if: hashFiles('Dockerfile*') != ''
-        run: |
-          echo "Scanning container images..."
-          # Run container security scan if Dockerfiles present
-          docker build -t lightspeed-scripts:latest .
-          # Use trivy or similar tool for container scanning
+            - name: Container Security Scan
+              if: hashFiles('Dockerfile*') != ''
+              run: |
+                  echo "Scanning container images..."
+                  # Run container security scan if Dockerfiles present
+                  docker build -t lightspeed-scripts:latest .
+                  # Use trivy or similar tool for container scanning
 
-      - name: Upload Security Reports
-        uses: actions/upload-artifact@v4
-        with:
-          name: security-scan-results
-          path: |
-            npm-audit.json
-            secret-scan-results.json
+            - name: Upload Security Reports
+              uses: actions/upload-artifact@v4
+              with:
+                  name: security-scan-results
+                  path: |
+                      npm-audit.json
+                      secret-scan-results.json
 
-  # Stage 5: Documentation and Deployment
-  documentation-and-deploy:
-    name: "Stage 5: Documentation & Deployment"
-    needs: [quality-gates, security-scan]
-    if: needs.quality-gates.outputs.deploy-ready == 'true'
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
-    environment:
-      name: ${{ github.event.inputs.deploy_environment || (github.ref == 'refs/heads/main' && 'production' || 'staging') }}
+    # Stage 5: Documentation and Deployment
+    documentation-and-deploy:
+        name: 'Stage 5: Documentation & Deployment'
+        needs: [quality-gates, security-scan]
+        if: needs.quality-gates.outputs.deploy-ready == 'true'
+        runs-on: ubuntu-latest
+        timeout-minutes: 15
+        environment:
+            name: ${{ github.event.inputs.deploy_environment || (github.ref == 'refs/heads/main' && 'production' || 'staging') }}
 
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+        steps:
+            - name: Checkout Repository
+              uses: actions/checkout@v4
+              with:
+                  token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Generate Documentation
-        run: |
-          echo "Generating updated documentation..."
-          ./scripts/maintenance/generate-include-docs.sh
-          ./scripts/maintenance/update-readme-and-changelog.sh
+            - name: Generate Documentation
+              run: |
+                  echo "Generating updated documentation..."
+                  ./scripts/maintenance/generate-include-docs.sh
+                  ./scripts/maintenance/update-readme-and-changelog.sh
 
-      - name: Validate Documentation
-        run: |
-          echo "Validating documentation completeness..."
-          ./scripts/maintenance/validate-docs-quality.sh
+            - name: Validate Documentation
+              run: |
+                  echo "Validating documentation completeness..."
+                  ./scripts/maintenance/validate-docs-quality.sh
 
-      - name: Deploy to Environment
-        run: |
-          echo "Deploying to ${{ github.event.inputs.deploy_environment || 'staging' }}..."
+            - name: Deploy to Environment
+              run: |
+                  echo "Deploying to ${{ github.event.inputs.deploy_environment || 'staging' }}..."
 
-          # Deployment logic based on environment
-          case "${{ github.event.inputs.deploy_environment || 'staging' }}" in
-            "staging")
-              ./scripts/deployment/deploy-to-staging.sh
-              ;;
-            "production")
-              ./scripts/deployment/deploy-to-production.sh
-              ;;
-          esac
+                  # Deployment logic based on environment
+                  case "${{ github.event.inputs.deploy_environment || 'staging' }}" in
+                    "staging")
+                      ./scripts/deployment/deploy-to-staging.sh
+                      ;;
+                    "production")
+                      ./scripts/deployment/deploy-to-production.sh
+                      ;;
+                  esac
 
-      - name: Commit Documentation Updates
-        if: github.ref == 'refs/heads/main'
-        run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
+            - name: Commit Documentation Updates
+              if: github.ref == 'refs/heads/main'
+              run: |
+                  git config --local user.email "action@github.com"
+                  git config --local user.name "GitHub Action"
 
-          if git diff --quiet; then
-            echo "No documentation changes to commit"
-          else
-            git add docs/ README.md CHANGELOG.md
-            git commit -m "docs: Auto-update documentation [skip ci]"
-            git push
-          fi
+                  if git diff --quiet; then
+                    echo "No documentation changes to commit"
+                  else
+                    git add docs/ README.md CHANGELOG.md
+                    git commit -m "docs: Auto-update documentation [skip ci]"
+                    git push
+                  fi
 
-      - name: Create Release
-        if: github.event_name == 'release' && github.ref == 'refs/heads/main'
-        run: |
-          echo "Creating release artifacts..."
-          ./scripts/deployment/create-release-package.sh
+            - name: Create Release
+              if: github.event_name == 'release' && github.ref == 'refs/heads/main'
+              run: |
+                  echo "Creating release artifacts..."
+                  ./scripts/deployment/create-release-package.sh
 
-      - name: Notify Deployment
-        run: |
-          echo "Sending deployment notifications..."
-          ./scripts/maintenance/notify-deployment.sh \
-            --environment "${{ github.event.inputs.deploy_environment || 'staging' }}" \
-            --status "success" \
-            --commit "${{ github.sha }}"
+            - name: Notify Deployment
+              run: |
+                  echo "Sending deployment notifications..."
+                  ./scripts/maintenance/notify-deployment.sh \
+                    --environment "${{ github.event.inputs.deploy_environment || 'staging' }}" \
+                    --status "success" \
+                    --commit "${{ github.sha }}"
 
-  # Stage 6: Post-Deployment Monitoring
-  post-deployment:
-    name: "Stage 6: Post-Deployment Monitoring"
-    needs: documentation-and-deploy
-    if: always() && needs.documentation-and-deploy.result == 'success'
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
+    # Stage 6: Post-Deployment Monitoring
+    post-deployment:
+        name: 'Stage 6: Post-Deployment Monitoring'
+        needs: documentation-and-deploy
+        if: always() && needs.documentation-and-deploy.result == 'success'
+        runs-on: ubuntu-latest
+        timeout-minutes: 10
 
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
+        steps:
+            - name: Checkout Repository
+              uses: actions/checkout@v4
 
-      - name: Health Check
-        run: |
-          echo "Running post-deployment health checks..."
-          ./scripts/monitoring/health-check.sh
+            - name: Health Check
+              run: |
+                  echo "Running post-deployment health checks..."
+                  ./scripts/monitoring/health-check.sh
 
-      - name: Performance Monitoring
-        run: |
-          echo "Monitoring deployment performance..."
-          ./scripts/monitoring/performance-check.sh
+            - name: Performance Monitoring
+              run: |
+                  echo "Monitoring deployment performance..."
+                  ./scripts/monitoring/performance-check.sh
 
-      - name: Update Deployment Status
-        run: |
-          echo "Updating deployment status..."
-          ./scripts/maintenance/update-deployment-status.sh \
-            --status "deployed" \
-            --environment "${{ github.event.inputs.deploy_environment || 'staging' }}"
+            - name: Update Deployment Status
+              run: |
+                  echo "Updating deployment status..."
+                  ./scripts/maintenance/update-deployment-status.sh \
+                    --status "deployed" \
+                    --environment "${{ github.event.inputs.deploy_environment || 'staging' }}"
 ```
 
 ##### 2. Quality Gate Implementation
@@ -846,4 +846,3 @@ Implement comprehensive CI/CD pipeline for modular shell script architecture. Cr
 ## Closing Statement
 
 Comprehensive CI/CD pipeline integration ensures modular shell script components maintain high quality standards throughout their development lifecycle while providing automated testing, security validation, and reliable deployment processes that support continuous delivery.
-

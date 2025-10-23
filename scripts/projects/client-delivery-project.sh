@@ -47,24 +47,28 @@ EOF
 }
 
 # Logging functions (only one set)
+# shellcheck disable=SC2317,SC2329
 log_info() {
   local timestamp
   timestamp=$(date '+%Y-%m-%d %H:%M:%S')
   echo -e "${BLUE}[INFO]${NC} $1"
   echo "[INFO] [$timestamp] $1" >> "$LOG_FILE"
 }
+# shellcheck disable=SC2317,SC2329
 log_success() {
   local timestamp
   timestamp=$(date '+%Y-%m-%d %H:%M:%S')
   echo -e "${GREEN}[SUCCESS]${NC} $1"
   echo "[SUCCESS] [$timestamp] $1" >> "$LOG_FILE"
 }
+# shellcheck disable=SC2317,SC2329
 log_warning() {
   local timestamp
   timestamp=$(date '+%Y-%m-%d %H:%M:%S')
   echo -e "${YELLOW}[WARNING]${NC} $1"
   echo "[WARNING] [$timestamp] $1" >> "$LOG_FILE"
 }
+# shellcheck disable=SC2317,SC2329
 log_error() {
   local timestamp
   timestamp=$(date '+%Y-%m-%d %H:%M:%S')
@@ -90,7 +94,7 @@ fi
 
 
 # Robust argument parsing for direct and bash -c invocation (safe defaults)
-ORG="${ORG:-${1:-lightspeedwp}}"
+ORG="${ORG:-${ARGS[0]:-lightspeedwp}}"
 CLIENT_NAME="${CLIENT_NAME:-${2:-}}"
 PROJECT_NUM="${PROJECT_NUM:-${3:-}}"
 
@@ -253,28 +257,32 @@ if [[ "${GH_CLI_MOCK:-}" == "1" ]]; then
   exit 1
 fi
 
-log_info() {
+  # shellcheck disable=SC2317,SC2329
+  log_info() {
     local timestamp
     timestamp=$(date '+%Y-%m-%d %H:%M:%S')
     echo -e "${BLUE}[INFO]${NC} $1"
     echo "[INFO] [$timestamp] $1" >> "$LOG_FILE"
 }
 
-log_success() {
+  # shellcheck disable=SC2317,SC2329
+  log_success() {
     local timestamp
     timestamp=$(date '+%Y-%m-%d %H:%M:%S')
     echo -e "${GREEN}[SUCCESS]${NC} $1"
     echo "[SUCCESS] [$timestamp] $1" >> "$LOG_FILE"
 }
 
-log_warning() {
+  # shellcheck disable=SC2317,SC2329
+  log_warning() {
     local timestamp
     timestamp=$(date '+%Y-%m-%d %H:%M:%S')
     echo -e "${YELLOW}[WARNING]${NC} $1"
     echo "[WARNING] [$timestamp] $1" >> "$LOG_FILE"
 }
 
-log_error() {
+  # shellcheck disable=SC2317,SC2329
+  log_error() {
     local timestamp
     timestamp=$(date '+%Y-%m-%d %H:%M:%S')
     echo -e "${RED}[ERROR]${NC} $1" >&2
@@ -339,6 +347,7 @@ load_access_csv() {
 }
 
 # Field creation functions
+# shellcheck disable=SC2317,SC2329
 create_single_select_field() {
   local field_name="$1"
   local options="$2"
@@ -361,16 +370,17 @@ create_single_select_field() {
     local label="${opts[$i]}"
     local color="${cols[$i]}"
     local option_id
-    option_id=$(gh api graphql -f query='query($field: ID!) { node(id: $field) { ... on ProjectV2Field { configuration { ... on ProjectV2SingleSelectFieldConfiguration { options { id name } } } } } }' -F field="$field_id" | jq -r --arg lbl "$label" '.data.node.configuration.options[] | select(.name==$lbl) | .id') || true
+    option_id=$(gh api graphql -f query="query(4field: ID!) { node(id: 4field) { ... on ProjectV2Field { configuration { ... on ProjectV2SingleSelectFieldConfiguration { options { id name } } } } } }" -F field="$field_id" | jq -r --arg lbl "$label" '.data.node.configuration.options[] | select(.name==$lbl) | .id') || true
     if [[ -n "$option_id" ]]; then
       echo "Setting color for $field_name:$label → $color"
-      gh api graphql -f query='mutation($optionId: ID!, $color: String!) { updateProjectV2SingleSelectFieldOption(input: { id: $optionId, name: null, color: $color }) { singleSelectFieldOption { id name } } }' -F optionId="$option_id" -F color="$color" >/dev/null
+      gh api graphql -f query="mutation(4optionId: ID!, 4color: String!) { updateProjectV2SingleSelectFieldOption(input: { id: 4optionId, name: null, color: 4color }) { singleSelectFieldOption { id name } } }" -F optionId="$option_id" -F color="$color" >/dev/null
     else
       echo "(Warning) Could not determine option id for $field_name:$label; color assignment skipped."
     fi
   done
 }
 
+# shellcheck disable=SC2317,SC2329
 create_field() {
   local field_name="$1"
   local field_type="$2"
@@ -551,11 +561,7 @@ fi
 
   # Validate positional arguments (missing or empty client name)
   # Respect ORG environment variable override for all scenarios
-  if [[ -n "${ORG:-}" ]]; then
-    ORG="$ORG"
-  else
-    ORG="${ARGS[0]:-lightspeedwp}"
-  fi
+  ORG="${ORG:-${ARGS[0]:-lightspeedwp}}"
   CLIENT_NAME="${ARGS[1]:-}"
   PROJECT_NUM="${ARGS[2]:-}"
 
@@ -602,6 +608,7 @@ fi
   #   $3 - descriptions: Pipe-separated list of option descriptions (aligned with options)
   #   $4 - colors: Pipe-separated list of color values (aligned with options)
   # Returns: None
+  # shellcheck disable=SC2317,SC2329
   create_single_select_field() {
     local field_name="$1"
     local options="$2"
@@ -637,10 +644,10 @@ fi
       local label="${opts[$i]}"
       local color="${cols[$i]}"
       local option_id
-    option_id=$(gh api graphql -f query='query($field: ID!) { node(id: $field) { ... on ProjectV2Field { configuration { ... on ProjectV2SingleSelectFieldConfiguration { options { id name } } } } } }' -F field="$field_id" | jq -r --arg lbl "$label" '.data.node.configuration.options[] | select(.name==$lbl) | .id') || true
+    option_id=$(gh api graphql -f query="query(4field: ID!) { node(id: 4field) { ... on ProjectV2Field { configuration { ... on ProjectV2SingleSelectFieldConfiguration { options { id name } } } } } }" -F field="$field_id" | jq -r --arg lbl "$label" '.data.node.configuration.options[] | select(.name==$lbl) | .id') || true
       if [[ -n "$option_id" ]]; then
         echo "Setting color for $field_name:$label → $color"
-  gh api graphql -f query='mutation($optionId: ID!, $color: String!) { updateProjectV2SingleSelectFieldOption(input: { id: $optionId, name: null, color: $color }) { singleSelectFieldOption { id name } } }' -F optionId="$option_id" -F color="$color" >/dev/null
+  gh api graphql -f query="mutation(4optionId: ID!, 4color: String!) { updateProjectV2SingleSelectFieldOption(input: { id: 4optionId, name: null, color: 4color }) { singleSelectFieldOption { id name } } }" -F optionId="$option_id" -F color="$color" >/dev/null
       else
         echo "(Warning) Could not determine option id for $field_name:$label; color assignment skipped."
       fi
@@ -653,6 +660,7 @@ fi
   #   $1 - field_name: The name of the field to create
   #   $2 - field_type: The data type of the field (number, date, or text)
   # Returns: None
+  # shellcheck disable=SC2317,SC2329
   create_field() {
     local field_name="$1"
     local field_type="$2"

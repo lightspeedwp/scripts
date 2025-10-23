@@ -11,11 +11,11 @@ Ship product increments on a regular train (**vX.Y.Z**), with tight QA, changelo
 ## Monthly release train
 
 - **Week 1 — Scope & Plan**
-  - Set Milestone **vX.Y.0**; select Features/Stories; create **Release Gate — vX.Y.Z** view.
+    - Set Milestone **vX.Y.0**; select Features/Stories; create **Release Gate — vX.Y.Z** view.
 - **Week 2–3 — Build**
-  - Drive via **Board (by Assignee)**; prioritise **P1/P0**; keep PRs small and linked.
+    - Drive via **Board (by Assignee)**; prioritise **P1/P0**; keep PRs small and linked.
 - **Week 4 — Freeze & Cut**
-  - **Code freeze (24–48h)**; **QA Gate** on RC; **Release PR → main**; **tag** and publish notes.
+    - **Code freeze (24–48h)**; **QA Gate** on RC; **Release PR → main**; **tag** and publish notes.
 
 ## Weekly rhythm (Mon–Fri)
 

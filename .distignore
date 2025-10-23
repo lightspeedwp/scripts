@@ -1,0 +1,59 @@
+# ============================================================================
+# .distignore
+# Purpose: Exclude files/folders from distribution zips (WordPress/CI/CD)
+# Used by: wp dist-archive, CI packaging, etc.
+# ============================================================================
+
+.git/
+.github/
+.vscode/
+node_modules/
+logs/
+dist/
+build/
+coverage/
+tests/
+*.log
+*.tmp
+*.bak
+*.backup
+*.swp
+*.swo
+*.DS_Store
+*.env*
+*.zip
+*.webm
+*.png
+*.mp4
+*.pem
+*.key
+id_rsa*
+known_hosts*
+# .distignore
+# Exclude files/folders from distribution zips (WordPress/CI/CD)
+
+.git/
+.github/
+.vscode/
+node_modules/
+logs/
+dist/
+build/
+coverage/
+tests/
+*.log
+*.tmp
+*.bak
+*.backup
+*.swp
+*.swo
+*.DS_Store
+*.env*
+*.zip
+*.webm
+*.png
+*.mp4
+*.pem
+*.key
+id_rsa*
+known_hosts*

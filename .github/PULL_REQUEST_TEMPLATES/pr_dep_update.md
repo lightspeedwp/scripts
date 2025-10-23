@@ -1,10 +1,8 @@
 ---
-
-name: "Dependencies/Maintenance PR"  
-about: "Routine upkeep: dependency bumps, lint/format, low-risk hygiene"  
-title: "chore(deps): {packages}"  
-labels: ["status:needs-review", "area:dependencies"]  
-
+name: 'Dependencies/Maintenance PR'
+about: 'Routine upkeep: dependency bumps, lint/format, low-risk hygiene'
+title: 'chore(deps): {packages}'
+labels: ['status:needs-review', 'area:dependencies']
 ---
 
 # Dependencies/Maintenance Pull Request
@@ -69,7 +67,6 @@ If no user-facing changelog entry is needed, apply the skip-changelog label to t
 -->
 
 ---
-
 
 ### Checklist (Global DoD / PR)
 

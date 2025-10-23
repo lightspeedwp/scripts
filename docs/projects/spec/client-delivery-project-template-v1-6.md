@@ -25,56 +25,56 @@ Backlog → To-do → In progress → In review → In QA → Done
 
 ### Views
 
-- **Board (by Assignee)** — *board*  
+- **Board (by Assignee)** — _board_  
   Group by **Assignee** · Sort **Priority desc** · **Field sum:** Estimate
 
-- **Backlog (Priority)** — *table*  
-  Filter **Status = Backlog** · Sort **Priority desc, Size asc** *(Size uses numeric prefixes to enforce order)* · **Field sum:** Estimate
+- **Backlog (Priority)** — _table_  
+  Filter **Status = Backlog** · Sort **Priority desc, Size asc** _(Size uses numeric prefixes to enforce order)_ · **Field sum:** Estimate
 
-- **QA Gate** — *table*  
+- **QA Gate** — _table_  
   Filter **Status ∈ {In review, In QA}** · **Group by Environment** · Sort **Severity desc, Priority desc**
 
-- **UAT (Staging)** — *table*  
+- **UAT (Staging)** — _table_  
   Filter **Environment = Staging** AND **Status ∈ {In review, In QA}**
 
-- **Epics — Tracking (Table)** — *table*  
+- **Epics — Tracking (Table)** — _table_  
   Filter **Issue Type = Epic** · Group by **Phase** · Sort **Priority desc**
 
-- **Epics — Roadmap (Table)** — *table*  
+- **Epics — Roadmap (Table)** — _table_  
   Filter **Issue Type = Epic** · Group by **Theme** · Sort **Phase, Priority**
 
-- **Epics — Board** — *board*  
+- **Epics — Board** — _board_  
   Filter **Issue Type = Epic** · Group by **Status**
 
-- **Roadmap (Dates)** — *roadmap*  
+- **Roadmap (Dates)** — _roadmap_  
   Start field = **Start Date** · Target field = **Deadline** · Group by **Theme**
 
-- **Blocked** — *table*  
+- **Blocked** — _table_  
   Filter **Label = blocked** OR **Status note contains "blocked"**
 
 ### Automations
 
-- On item added → **Status = Backlog**  
-- On assignee set → **Status = In progress**  
-- On PR opened → **Status = In review**  
-- On label `status:needs-qa` → **Status = In QA**  
+- On item added → **Status = Backlog**
+- On assignee set → **Status = In progress**
+- On PR opened → **Status = In review**
+- On label `status:needs-qa` → **Status = In QA**
 - On PR merged / issue closed → **Status = Done**
 
 ### Cadence
 
-- Weekly grooming (prioritise **High**, then **Medium**)  
-- Daily stand-up (focus on **Blocked** view)  
-- UAT every Thursday; ship as needed  
-- *(Optional)* Mid-week triage; fortnightly show-and-tell; monthly retro
+- Weekly grooming (prioritise **High**, then **Medium**)
+- Daily stand-up (focus on **Blocked** view)
+- UAT every Thursday; ship as needed
+- _(Optional)_ Mid-week triage; fortnightly show-and-tell; monthly retro
 
 ### Field defaults
 
-- **Priority:** **Medium** (default)  
-- **Phase:** **Pre-launch** (default)  
-- **Environment:** **Staging** (default)  
-- **Size:** **0 – Unknown** (default)  
-- **Theme, Area:** set at triage (choose exactly **one** Theme per item)  
-- **Estimate/Start Date/Deadline:** set when scheduled  
+- **Priority:** **Medium** (default)
+- **Phase:** **Pre-launch** (default)
+- **Environment:** **Staging** (default)
+- **Size:** **0 – Unknown** (default)
+- **Theme, Area:** set at triage (choose exactly **one** Theme per item)
+- **Estimate/Start Date/Deadline:** set when scheduled
 - **Milestone (Iteration):** optional for client windows (e.g., UAT-1, Go-Live)
 
 ### Definition of Ready (DoR) — Checklist

@@ -1,4 +1,3 @@
-
 ---
 applyTo: '**'
 description: 'Prompt for interactive Copilot implementation for modular shell script architecture.'
@@ -22,9 +21,7 @@ You are a prompt engineering specialist. Follow our LightSpeed WP Copilot framew
 
 Comprehensive interactive prompt implementation ensures systematic and guided development of modular shell script components with consistent quality, thorough validation, and seamless integration into enterprise automation workflows.
 
-
 ## Checklist
-
 
 ## Current Repository State & Action Items
 

@@ -1,4 +1,3 @@
-
 ---
 applyTo: '**'
 description: 'Prompt for workflow documentation integration with automation and CI/CD.'
@@ -38,6 +37,7 @@ Define systematic approaches for automatically generating, updating, and maintai
 #### Documentation Generation Pipeline
 
 **Trigger Mechanisms**
+
 - Workflow file changes in `.github/workflows/`
 - Script modifications in `scripts/` directories
 - Agent updates in `.github/agents/`
@@ -45,6 +45,7 @@ Define systematic approaches for automatically generating, updating, and maintai
 - Manual documentation refresh requests
 
 **Generation Components**
+
 - Workflow metadata extraction
 - Script header parsing and analysis
 - Agent capability documentation
@@ -52,6 +53,7 @@ Define systematic approaches for automatically generating, updating, and maintai
 - Markdown formatting and validation
 
 **Output Targets**
+
 - README files for workflow directories
 - Agent capability matrices
 - Script usage documentation
@@ -68,9 +70,9 @@ Every GitHub Actions workflow must include:
 # .github/workflows/example-workflow.yml
 name: Example Workflow
 on:
-  push:
-    branches: [main]
-  workflow_dispatch:
+    push:
+        branches: [main]
+    workflow_dispatch:
 
 # Workflow metadata for documentation generation
 # Description: Automated workflow for example processing
@@ -81,18 +83,18 @@ on:
 # Owner: DevOps Team <devops@lightspeedwp.agency>
 
 jobs:
-  example:
-    name: Example Processing Job
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
+    example:
+        name: Example Processing Job
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout Repository
+              uses: actions/checkout@v4
 
-      # Step documentation inline
-      - name: Process Files
-        run: |
-          # Execute file processing with logging
-          ./scripts/utility/process-files.sh --verbose --log-file "logs/process-files.log"
+            # Step documentation inline
+            - name: Process Files
+              run: |
+                  # Execute file processing with logging
+                  ./scripts/utility/process-files.sh --verbose --log-file "logs/process-files.log"
 ```
 
 **Documentation Generation from Workflows**
@@ -142,73 +144,73 @@ EOF
 # .github/workflows/update-documentation.yml
 name: Update Documentation
 on:
-  push:
-    paths:
-      - 'scripts/**/*.sh'
-      - '.github/workflows/*.yml'
-      - '.github/agents/*.js'
-  schedule:
-    - cron: '0 2 * * 1'  # Weekly on Monday at 2 AM
-  workflow_dispatch:
+    push:
+        paths:
+            - 'scripts/**/*.sh'
+            - '.github/workflows/*.yml'
+            - '.github/agents/*.js'
+    schedule:
+        - cron: '0 2 * * 1' # Weekly on Monday at 2 AM
+    workflow_dispatch:
 
 jobs:
-  update-docs:
-    name: Update All Documentation
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+    update-docs:
+        name: Update All Documentation
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout Repository
+              uses: actions/checkout@v4
+              with:
+                  token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '18'
+            - name: Setup Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: '18'
 
-      - name: Install Dependencies
-        run: npm install
+            - name: Install Dependencies
+              run: npm install
 
-      - name: Generate Script Documentation
-        run: |
-          ./scripts/maintenance/generate-script-docs.sh \
-            --output-dir docs/scripts/ \
-            --format markdown \
-            --include-examples true
+            - name: Generate Script Documentation
+              run: |
+                  ./scripts/maintenance/generate-script-docs.sh \
+                    --output-dir docs/scripts/ \
+                    --format markdown \
+                    --include-examples true
 
-      - name: Generate Workflow Documentation
-        run: |
-          node .github/agents/workflow-docs-generator.agent.js \
-            --workflows-dir .github/workflows/ \
-            --output-dir docs/workflows/ \
-            --format markdown
+            - name: Generate Workflow Documentation
+              run: |
+                  node .github/agents/workflow-docs-generator.agent.js \
+                    --workflows-dir .github/workflows/ \
+                    --output-dir docs/workflows/ \
+                    --format markdown
 
-      - name: Generate Agent Documentation
-        run: |
-          node .github/agents/agent-docs-generator.agent.js \
-            --agents-dir .github/agents/ \
-            --output-dir docs/agents/ \
-            --include-integration-examples true
+            - name: Generate Agent Documentation
+              run: |
+                  node .github/agents/agent-docs-generator.agent.js \
+                    --agents-dir .github/agents/ \
+                    --output-dir docs/agents/ \
+                    --include-integration-examples true
 
-      - name: Validate Documentation
-        run: |
-          npm run lint:md docs/
-          ./scripts/utility/validate-doc-links.sh docs/
+            - name: Validate Documentation
+              run: |
+                  npm run lint:md docs/
+                  ./scripts/utility/validate-doc-links.sh docs/
 
-      - name: Update Cross-References
-        run: |
-          ./scripts/maintenance/update-doc-references.sh \
-            --base-dir docs/ \
-            --check-external-links false \
-            --fix-broken-links true
+            - name: Update Cross-References
+              run: |
+                  ./scripts/maintenance/update-doc-references.sh \
+                    --base-dir docs/ \
+                    --check-external-links false \
+                    --fix-broken-links true
 
-      - name: Commit Documentation Updates
-        uses: stefanzweifel/git-auto-commit-action@v4
-        with:
-          commit_message: 'docs: Auto-update documentation [skip ci]'
-          file_pattern: 'docs/ README.md AGENTS.md'
-          commit_user_name: 'github-actions[bot]'
-          commit_user_email: 'github-actions[bot]@users.noreply.github.com'
+            - name: Commit Documentation Updates
+              uses: stefanzweifel/git-auto-commit-action@v4
+              with:
+                  commit_message: 'docs: Auto-update documentation [skip ci]'
+                  file_pattern: 'docs/ README.md AGENTS.md'
+                  commit_user_name: 'github-actions[bot]'
+                  commit_user_email: 'github-actions[bot]@users.noreply.github.com'
 ```
 
 #### Release Documentation Integration
@@ -217,37 +219,37 @@ jobs:
 # .github/workflows/release-docs.yml
 name: Release Documentation
 on:
-  release:
-    types: [published]
+    release:
+        types: [published]
 
 jobs:
-  release-docs:
-    name: Generate Release Documentation
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
+    release-docs:
+        name: Generate Release Documentation
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout Repository
+              uses: actions/checkout@v4
 
-      - name: Generate Release Notes
-        run: |
-          # Extract release information
-          RELEASE_TAG="${{ github.event.release.tag_name }}"
-          RELEASE_NOTES="${{ github.event.release.body }}"
+            - name: Generate Release Notes
+              run: |
+                  # Extract release information
+                  RELEASE_TAG="${{ github.event.release.tag_name }}"
+                  RELEASE_NOTES="${{ github.event.release.body }}"
 
-          # Generate comprehensive release documentation
-          ./scripts/maintenance/generate-release-docs.sh \
-            --version "$RELEASE_TAG" \
-            --notes "$RELEASE_NOTES" \
-            --output-dir "docs/releases/" \
-            --include-migration-guide true
+                  # Generate comprehensive release documentation
+                  ./scripts/maintenance/generate-release-docs.sh \
+                    --version "$RELEASE_TAG" \
+                    --notes "$RELEASE_NOTES" \
+                    --output-dir "docs/releases/" \
+                    --include-migration-guide true
 
-      - name: Update Version Documentation
-        run: |
-          # Update version references across documentation
-          ./scripts/maintenance/update-version-docs.sh \
-            --new-version "${{ github.event.release.tag_name }}" \
-            --docs-dir docs/ \
-            --update-examples true
+            - name: Update Version Documentation
+              run: |
+                  # Update version references across documentation
+                  ./scripts/maintenance/update-version-docs.sh \
+                    --new-version "${{ github.event.release.tag_name }}" \
+                    --docs-dir docs/ \
+                    --update-examples true
 ```
 
 ### Documentation Quality Assurance
@@ -398,7 +400,7 @@ class WorkflowDocsGenerator {
             triggers: this.extractTriggers(workflow.on),
             jobs: this.extractJobs(workflow.jobs),
             dependencies: metadata.dependencies,
-            owner: metadata.owner
+            owner: metadata.owner,
         };
     }
 }
@@ -411,14 +413,15 @@ class WorkflowDocsGenerator {
 class DocsCompletenessChecker {
     constructor(config) {
         this.docsDir = config.docsDir;
-        this.requirements = config.requirements || this.getDefaultRequirements();
+        this.requirements =
+            config.requirements || this.getDefaultRequirements();
     }
 
     async checkCompleteness() {
         const results = {
             passed: true,
             issues: [],
-            coverage: {}
+            coverage: {},
         };
 
         // Check script documentation coverage

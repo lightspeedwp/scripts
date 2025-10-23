@@ -1,5 +1,6 @@
 # ---
-applyTo: '**'
+
+applyTo: '\*\*'
 description: 'Prompt for advanced deployment strategies for modular shell script components.'
 version: '1.0.0'
 author: 'LightSpeed WP Team'
@@ -9,6 +10,7 @@ tags: ['deployment', 'automation', 'modular']
 feedback: 'Submit suggestions or issues via repository discussions or PR comments.'
 updated: '2025-10-17'
 created: '2025-10-17'
+
 ---
 
 # Advanced Deployment Strategies for Modular Components
@@ -1098,4 +1100,3 @@ Implement advanced deployment strategies for modular shell script components. Cr
 ## Closing Statement
 
 Advanced deployment strategies ensure modular shell script components can be deployed reliably across diverse environments with zero downtime, comprehensive validation, and automated recovery capabilities that maintain service quality and availability.
-

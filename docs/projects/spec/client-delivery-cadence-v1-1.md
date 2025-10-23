@@ -11,16 +11,16 @@ Keep client work flowing from intake → UAT → release with clear checkpoints,
 ## Weekly rhythm (Mon–Fri)
 
 - **Mon — Intake & Plan (45–60m)**
-  - View: **Backlog (Priority)**; clear **Intake** subset (missing Assignee/Priority/Type).
-  - Actions: confirm **Theme/Area**, set **Priority/Size**, add **Start Date/Deadline** for time-bound items.
+    - View: **Backlog (Priority)**; clear **Intake** subset (missing Assignee/Priority/Type).
+    - Actions: confirm **Theme/Area**, set **Priority/Size**, add **Start Date/Deadline** for time-bound items.
 - **Tue — Build Focus**
-  - View: **Board (by Assignee)**; swarm **Blocked** and live **S0/S1** bugs first.
+    - View: **Board (by Assignee)**; swarm **Blocked** and live **S0/S1** bugs first.
 - **Wed — QA Prep & Reviews**
-  - Views: **QA Gate**, **UAT (Staging)**. Ensure test notes and staging links on each item.
+    - Views: **QA Gate**, **UAT (Staging)**. Ensure test notes and staging links on each item.
 - **Thu — UAT Day**
-  - Client UAT window; triage feedback into **Bugs/Tasks** for the current Milestone/Phase.
+    - Client UAT window; triage feedback into **Bugs/Tasks** for the current Milestone/Phase.
 - **Fri — Ship & Sweep**
-  - Ship when ready; close **Done**; move stragglers to next **Milestone**; update **Epic Tracking**.
+    - Ship when ready; close **Done**; move stragglers to next **Milestone**; update **Epic Tracking**.
 
 ## Ceremonies
 

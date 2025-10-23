@@ -69,5 +69,5 @@ This script is a simple test utility designed to verify the functionality of the
 
 - **Description:** The main function that runs the PR labeler test. It handles argument parsing and prints verification messages.
 - **Arguments:**
-  - `$@`: Command-line arguments passed to the script.
+    - `$@`: Command-line arguments passed to the script.
 - **Output:** Prints verification messages for the PR labeler workflow to standard output.

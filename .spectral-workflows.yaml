@@ -1,0 +1,38 @@
+extends: ["spectral:common"]
+
+# .spectral-workflows.yaml
+# Purpose: Spectral lint rules for GitHub Actions workflow YAML files
+# Docs: https://meta.stoplight.io/docs/spectral/latest/
+extends: ["spectral:common"]
+
+rules:
+  # Require description in workflow
+  description-present:
+    description: "Workflows should have a description field."
+    message: "Workflow is missing a description."
+    given: "$"
+    severity: warn
+    then:
+      field: description
+      function: truthy
+
+  # Enforce lowercase job names (e.g., 'build', 'test')
+  job-names-lowercase:
+    description: "Job names should be lowercase."
+    message: "Job name '{{value}}' should be lowercase."
+    given: "$.jobs.*~"
+    severity: warn
+    then:
+      function: pattern
+      functionOptions:
+        match: "^[a-z0-9\-]+$"
+
+  # Require 'runs-on' for all jobs (specifies runner type)
+  runs-on-required:
+    description: "Each job must specify 'runs-on'."
+    message: "Job '{{property}}' is missing 'runs-on'."
+    given: "$.jobs.*"
+    severity: error
+    then:
+      field: runs-on
+      function: truthy

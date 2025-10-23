@@ -117,7 +117,7 @@ Use this prompt as a template for future folder renaming or refactoring tasks.
 ### 4. Update Test Files
 
 - Update all loader lines for test helpers to use the new path:
-   - Example: `load "$(dirname \"$BATS_TEST_FILENAME\")/../test-helper.bash"`
+    - Example: `load "$(dirname \"$BATS_TEST_FILENAME\")/../test-helper.bash"`
 - Update all references to scripts under test to use `/scripts/projects/`.
 - Update setup and teardown blocks to resolve new script and log paths.
 - Update log file creation and cleanup logic to use the new folder name.
@@ -176,7 +176,6 @@ Use this prompt as a template for future folder renaming or refactoring tasks.
 
 - Commit all changes with a clear message:
 
-
 ## Checklist
 
 - [ ] Identify all references to the old folder names in scripts, tests, and documentation
@@ -203,19 +202,23 @@ We need to rename the following folders for consistency:
 Based on codebase analysis, the following files contain references that must be updated:
 
 **Documentation Files:**
+
 - `README.md` - Update test command examples and script references
 - `tests/TEST_COVERAGE_SUMMARY.md` - Update script and test path references
-- `tests/README.md` - Update test command examples  
+- `tests/README.md` - Update test command examples
 - `docs/utility/scripts/README.standardize-logging.md` - Update script path references
 
 **Configuration Files:**
+
 - `.github/labeler.yml` - Update `scripts/project/**` to `scripts/projects/**`
 
 **Script Files:**
+
 - `scripts/project/run-project-tests.sh` - Update `TEST_DIR` variable, documentation, and references to `update-projects.sh`
 - `scripts/maintenance/folder-and-file-readmes.sh` - Update example paths in comments
 
 **Test Files (All in `/tests/project-scripts/`):**
+
 - `test-update-projects.bats` - Update `SCRIPT` variable path and references to `update-projects.sh`
 - `test-project-csv.bats` - Update `SCRIPT` variable, fixture paths, and references to `update-projects.sh`
 - `test-client-delivery-project.bats` - Update `SCRIPT` variable, source paths, and references to `update-projects.sh`
@@ -223,23 +226,24 @@ Based on codebase analysis, the following files contain references that must be 
 - `test-product-dev-project.bats` - Update documentation comments and references to `update-projects.sh`
 
 **Include/Helper Files:**
+
 - Any includes or helper scripts that source or reference `update-projects.sh` must be updated to use `manage-projects.sh`.
 
 #### Migration Steps
 
 1. Search the codebase for all references to the old folder names
 2. Rename the folders using `git mv` to preserve history:
-   ```sh
-   git mv scripts/project scripts/projects
-   git mv tests/project-scripts tests/projects
-   ```
+    ```sh
+    git mv scripts/project scripts/projects
+    git mv tests/project-scripts tests/projects
+    ```
 3. Update all scripts, tests, and documentation to use the new folder names
 4. Run all tests to ensure functionality is preserved
 5. Update any CI/CD configuration or scripts that reference the old folder names
 6. Commit the changes with a message such as:
-   ```sh
-   git commit -am "refactor: rename project folders for consistency"
-   ```
+    ```sh
+    git commit -am "refactor: rename project folders for consistency"
+    ```
 7. Update changelog and release notes to document the migration
 8. Notify team members of the breaking change and provide migration instructions
 
@@ -264,21 +268,23 @@ Based on codebase analysis, the following files contain references that must be 
 ### Post-Migration Verification
 
 1. Run the test suite:
-   ```sh
-   npm test
-   bats tests/projects/test-*.bats
-   ```
+
+    ```sh
+    npm test
+    bats tests/projects/test-*.bats
+    ```
 
 2. Verify script functionality:
-   ```sh
-   scripts/projects/run-project-tests.sh --list
-   ```
+
+    ```sh
+    scripts/projects/run-project-tests.sh --list
+    ```
 
 3. Check documentation links and references:
-   ```sh
-   grep -r "scripts/project[^s]" . --exclude-dir=.git
-   grep -r "tests/project-scripts" . --exclude-dir=.git
-   ```
+    ```sh
+    grep -r "scripts/project[^s]" . --exclude-dir=.git
+    grep -r "tests/project-scripts" . --exclude-dir=.git
+    ```
 
 ---
 

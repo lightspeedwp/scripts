@@ -39,36 +39,36 @@ fi
 ### common-functions.sh
 
 - **Logging Functions:**
-  - `log_info()` - Log informational messages
-  - `log_error()` - Log error messages to stderr
-  - `log_warn()` - Log warning messages
-  - `log_success()` - Log success messages
-  - `setup_logging()` - Initialize logging with file
+    - `log_info()` - Log informational messages
+    - `log_error()` - Log error messages to stderr
+    - `log_warn()` - Log warning messages
+    - `log_success()` - Log success messages
+    - `setup_logging()` - Initialize logging with file
 
 - **Validation Functions:**
-  - `validate_required_tools()` - Check for required commands
-  - `validate_file_exists()` - Check if file exists and is readable
-  - `validate_directory_exists()` - Check if directory exists and is accessible
+    - `validate_required_tools()` - Check for required commands
+    - `validate_file_exists()` - Check if file exists and is readable
+    - `validate_directory_exists()` - Check if directory exists and is accessible
 
 - **Utility Functions:**
-  - `check_dry_run()` - Check if in dry-run mode
-  - `execute_with_dry_run()` - Execute command respecting dry-run mode
-  - `get_script_dir()` - Get directory containing current script
-  - `confirm_action()` - Prompt user for confirmation
-  - `cleanup_temp_files()` - Clean up temporary files
-  - `create_backup()` - Create timestamped backup of file
+    - `check_dry_run()` - Check if in dry-run mode
+    - `execute_with_dry_run()` - Execute command respecting dry-run mode
+    - `get_script_dir()` - Get directory containing current script
+    - `confirm_action()` - Prompt user for confirmation
+    - `cleanup_temp_files()` - Clean up temporary files
+    - `create_backup()` - Create timestamped backup of file
 
 ### git-functions.sh
 
 - **Repository Functions:**
-  - `is_git_repo()` - Check if in git repository
-  - `get_current_branch()` - Get current branch name
-  - `get_repo_root()` - Get repository root directory
-  - `get_commit_hash()` - Get current commit hash
+    - `is_git_repo()` - Check if in git repository
+    - `get_current_branch()` - Get current branch name
+    - `get_repo_root()` - Get repository root directory
+    - `get_commit_hash()` - Get current commit hash
 
 - **Status Functions:**
-  - `has_uncommitted_changes()` - Check for uncommitted changes
-  - `validate_clean_working_tree()` - Ensure clean working tree
+    - `has_uncommitted_changes()` - Check for uncommitted changes
+    - `validate_clean_working_tree()` - Ensure clean working tree
 
 ## Standards
 

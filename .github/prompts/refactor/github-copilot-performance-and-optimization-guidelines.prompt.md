@@ -1,7 +1,7 @@
 ---
 applyTo: '**'
 description: 'Prompt for Copilot performance and optimization guidelines for shell script automation.'
-version: '1.0.0'
+version: '0.1.0'
 author: 'LightSpeed WP Team'
 status: 'draft'
 changelog: ['2025-10-17: Initial version']
@@ -23,7 +23,6 @@ Establish comprehensive performance guidelines, optimization strategies, and mon
 
 ## Checklist
 
-
 ## Current Repository State & Action Items
 
 - Modular includes present: `common-functions.sh`, `git-functions.sh` in `scripts/includes/`. Additional includes recommended for full optimization coverage.
@@ -32,6 +31,7 @@ Establish comprehensive performance guidelines, optimization strategies, and mon
 - Performance benchmarks and optimization strategies should be documented in README files and implemented in includes.
 
 **Action:** Expand includes, add monitoring/profiling scripts, document performance benchmarks, and update folder names for consistency.
+
 - [ ] Create performance regression testing frameworks
 
 ## Instructions
@@ -748,4 +748,3 @@ Implement comprehensive performance optimization for the modular shell script ar
 ## Closing Statement
 
 Comprehensive performance optimization ensures modular shell script automation operates at peak efficiency with systematic monitoring, proactive optimization, and reliable performance characteristics that support enterprise-scale operations.
-

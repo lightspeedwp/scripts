@@ -28,6 +28,7 @@ else
 fi
 
 # Logging functions
+# shellcheck disable=SC2317,SC2329
 log_info() {
     local timestamp
     timestamp=$(date '+%Y-%m-%d %H:%M:%S')
@@ -35,6 +36,7 @@ log_info() {
     echo "[INFO] [$timestamp] $1" >> "$LOG_FILE"
 }
 
+# shellcheck disable=SC2317,SC2329
 log_success() {
     local timestamp
     timestamp=$(date '+%Y-%m-%d %H:%M:%S')
@@ -42,6 +44,7 @@ log_success() {
     echo "[SUCCESS] [$timestamp] $1" >> "$LOG_FILE"
 }
 
+# shellcheck disable=SC2317,SC2329
 log_warning() {
     local timestamp
     timestamp=$(date '+%Y-%m-%d %H:%M:%S')
@@ -49,6 +52,7 @@ log_warning() {
     echo "[WARNING] [$timestamp] $1" >> "$LOG_FILE"
 }
 
+# shellcheck disable=SC2317,SC2329
 log_error() {
     local timestamp
     timestamp=$(date '+%Y-%m-%d %H:%M:%S')
@@ -57,6 +61,7 @@ log_error() {
 }
 
 # Show help function
+# shellcheck disable=SC2317,SC2329
 show_help() {
     cat <<EOF
 GitHub Projects Field Update Script
@@ -73,6 +78,7 @@ EOF
 }
 
 # Argument parsing
+# shellcheck disable=SC2317,SC2329
 parse_args() {
     while [[ $# -gt 0 ]]; do
         case $1 in
@@ -284,6 +290,7 @@ NC='\033[0m' # No Color
 # Function: log_info
 # Description: Prints an informational message with blue [INFO] prefix and writes to log file
 # Args: $1 - The message to print
+# shellcheck disable=SC2317,SC2329
 log_info() {
         local timestamp
         timestamp=$(date '+%Y-%m-%d %H:%M:%S')
@@ -295,6 +302,7 @@ log_info() {
 # Function: log_success
 # Description: Prints a success message with green [SUCCESS] prefix and writes to log file
 # Args: $1 - The message to print
+# shellcheck disable=SC2317,SC2329
 log_success() {
         local timestamp
         timestamp=$(date '+%Y-%m-%d %H:%M:%S')
@@ -306,6 +314,7 @@ log_success() {
 # Function: log_warning
 # Description: Prints a warning message with yellow [WARNING] prefix and writes to log file
 # Args: $1 - The message to print
+# shellcheck disable=SC2317,SC2329
 log_warning() {
         local timestamp
         timestamp=$(date '+%Y-%m-%d %H:%M:%S')
@@ -317,6 +326,7 @@ log_warning() {
 # Function: log_error
 # Description: Prints an error message with red [ERROR] prefix to stderr and writes to log file
 # Args: $1 - The message to print
+# shellcheck disable=SC2317,SC2329
 log_error() {
         local timestamp
         timestamp=$(date '+%Y-%m-%d %H:%M:%S')
@@ -328,6 +338,7 @@ log_error() {
 log_info "Script started. Log file: ${LOG_FILE}"
 
 # Show help message
+# shellcheck disable=SC2317,SC2329
 show_help() {
     cat << EOF
 GitHub Projects Field Update Script
@@ -371,6 +382,7 @@ EOF
 # Description: Parses command line arguments and sets global variables accordingly
 # Args: $@ - All command line arguments passed to the script
 # Returns: None, but sets global variables based on arguments
+# shellcheck disable=SC2317,SC2329
 parse_args() {
     while [[ $# -gt 0 ]]; do
         case $1 in

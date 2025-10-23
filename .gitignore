@@ -1,3 +1,90 @@
+# ============================================================================
+# .gitignore
+# Purpose: Exclude files and directories from git tracking (local, build, secrets)
+# Reference: https://git-scm.com/docs/gitignore
+# ============================================================================
+
+# Logs and log directories
+/logs/
+*.log
+logs/
+
+# Temporary files and directories
+*.tmp
+*.temp
+/tmp/
+.tmp/
+
+# OS-generated files (macOS, Windows)
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Editor/IDE files
+.vscode/settings.json
+.idea/
+*.swp
+*.swo
+*~
+
+# Runtime files
+*.pid
+
+# Build artifacts and dependencies
+dist/
+build/
+node_modules/
+
+# Environment files (never commit secrets)
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Test artifacts and output
+playwright-report/
+test-results/
+trace/
+screenshots/
+storage/
+*.png
+*.webm
+*.zip
+coverage/
+*.coverage
+tests/
+*.spec.ts
+*.test.ts
+*.spec.js
+*.test.js
+
+# ShellCheck reports (if you save them)
+shellcheck-report*.txt
+
+# Backup files
+*.bak
+*.backup
+
+# Cache directories
+.cache/
+.npm/
+.yarn/
+
+# Local configuration (user-specific)
+local-config.json
+local-settings.yaml
+
+# SSH keys and sensitive files (never commit)
+*.pem
+*.key
+id_rsa*
+known_hosts*
+.early.coverage
 # Exclude logs directory
 /logs/
 # Logs

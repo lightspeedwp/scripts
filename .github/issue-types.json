@@ -1,54 +1,54 @@
 [
-  {
-    "name": "Epic",
-    "label": "type:epic"
-  },
-  {
-    "name": "Feature",
-    "label": "type:feature"
-  },
-  {
-    "name": "Story",
-    "label": "type:story"
-  },
-  {
-    "name": "Task",
-    "label": "type:task"
-  },
-  {
-    "name": "Bug",
-    "label": "type:bug"
-  },
-  {
-    "name": "Refactor",
-    "label": "type:refactor"
-  },
-  {
-    "name": "Design",
-    "label": "type:design"
-  },
-  {
-    "name": "Documentation",
-    "label": "type:documentation"
-  },
-  {
-    "name": "Research",
-    "label": "type:research"
-  },
-  {
-    "name": "Performance",
-    "label": "type:performance"
-  },
-  {
-    "name": "Accessibility",
-    "label": "type:a11y"
-  },
-  {
-    "name": "Test",
-    "label": "type:test"
-  },
-  {
-    "name": "Chore",
-    "label": "type:chore"
-  }
+    {
+        "name": "Epic",
+        "label": "type:epic"
+    },
+    {
+        "name": "Feature",
+        "label": "type:feature"
+    },
+    {
+        "name": "Story",
+        "label": "type:story"
+    },
+    {
+        "name": "Task",
+        "label": "type:task"
+    },
+    {
+        "name": "Bug",
+        "label": "type:bug"
+    },
+    {
+        "name": "Refactor",
+        "label": "type:refactor"
+    },
+    {
+        "name": "Design",
+        "label": "type:design"
+    },
+    {
+        "name": "Documentation",
+        "label": "type:documentation"
+    },
+    {
+        "name": "Research",
+        "label": "type:research"
+    },
+    {
+        "name": "Performance",
+        "label": "type:performance"
+    },
+    {
+        "name": "Accessibility",
+        "label": "type:a11y"
+    },
+    {
+        "name": "Test",
+        "label": "type:test"
+    },
+    {
+        "name": "Chore",
+        "label": "type:chore"
+    }
 ]

@@ -54,9 +54,9 @@ Automated labeling must be refactored to:
 7. Validate labeling accuracy and error handling
 8. Commit changes with a message such as:
 
-   ```sh
-   git commit -am "Refactor automated labeling to match project specs and improve accuracy"
-   ```
+    ```sh
+    git commit -am "Refactor automated labeling to match project specs and improve accuracy"
+    ```
 
 ### Validation Steps
 

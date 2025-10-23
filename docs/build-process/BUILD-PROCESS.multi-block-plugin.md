@@ -39,34 +39,35 @@ A solid development environment is essential for complex multi-block projects:
 Choose one of these options:
 
 1. **@wordpress/env (Recommended)**
-   ```bash
-   npm i -g @wordpress/env
-   wp-env start
-   ```
+
+    ```bash
+    npm i -g @wordpress/env
+    wp-env start
+    ```
 
 2. **LocalWP**
-   - Create a new local site
-   - Configure with latest WordPress
+    - Create a new local site
+    - Configure with latest WordPress
 
 3. **Custom Docker Setup**
-   - Configure containers for WordPress, MySQL, and PHP
-   - Mount plugin directory for development
+    - Configure containers for WordPress, MySQL, and PHP
+    - Mount plugin directory for development
 
 ### Required Development Tools
 
 1. **Node.js and npm**
-   - Node.js v16+ recommended
-   - npm v7+ or Yarn v1.22+
+    - Node.js v16+ recommended
+    - npm v7+ or Yarn v1.22+
 
 2. **Development Tools**
-   - Modern code editor (VS Code recommended)
-   - Git for version control
-   - Browser devtools and React Developer Tools
+    - Modern code editor (VS Code recommended)
+    - Git for version control
+    - Browser devtools and React Developer Tools
 
 3. **WordPress Block Development Tools**
-   - Block Inspector
-   - React Developer Tools browser extension
-   - Redux DevTools (if using @wordpress/data)
+    - Block Inspector
+    - React Developer Tools browser extension
+    - Redux DevTools (if using @wordpress/data)
 
 ## Project Structure and Organization
 
@@ -109,41 +110,48 @@ my-blocks-plugin/
 
 1. Create the plugin directory and main plugin file
 2. Initialize package.json:
-   ```bash
-   npm init
-   ```
+
+    ```bash
+    npm init
+    ```
+
 3. Install core dependencies:
-   ```bash
-   npm install --save-dev @wordpress/scripts @wordpress/env
-   ```
+
+    ```bash
+    npm install --save-dev @wordpress/scripts @wordpress/env
+    ```
 
 ### Using @wordpress/create-block as a Foundation
 
 1. Create an initial block:
-   ```bash
-   npx @wordpress/create-block my-blocks-plugin
-   ```
+
+    ```bash
+    npx @wordpress/create-block my-blocks-plugin
+    ```
+
 2. Restructure for multiple blocks:
-   ```bash
-   cd my-blocks-plugin
-   mkdir -p src/blocks/first-block
-   # Move initial block files into this directory
-   ```
+
+    ```bash
+    cd my-blocks-plugin
+    mkdir -p src/blocks/first-block
+    # Move initial block files into this directory
+    ```
 
 ### Adding Additional Blocks
 
 Two approaches for adding more blocks:
 
 1. **Create-Block with --no-plugin Flag**
-   ```bash
-   cd src/blocks
-   npx @wordpress/create-block second-block --no-plugin
-   ```
+
+    ```bash
+    cd src/blocks
+    npx @wordpress/create-block second-block --no-plugin
+    ```
 
 2. **Manual Creation**
-   - Create a new directory in src/blocks/
-   - Add block.json, edit.js, save.js, etc.
-   - Register the block in your index.js
+    - Create a new directory in src/blocks/
+    - Add block.json, edit.js, save.js, etc.
+    - Register the block in your index.js
 
 ## Block Development Workflow
 
@@ -152,16 +160,16 @@ Two approaches for adding more blocks:
 When working with multiple blocks, consider:
 
 1. **Component Reusability**
-   - Create shared components in src/components/
-   - Import these components in multiple blocks
+    - Create shared components in src/components/
+    - Import these components in multiple blocks
 
 2. **Consistent Styling**
-   - Use shared SCSS variables and mixins
-   - Create a design system for visual consistency
+    - Use shared SCSS variables and mixins
+    - Create a design system for visual consistency
 
 3. **State Management**
-   - Consider using @wordpress/data for shared state
-   - Create custom stores for complex state requirements
+    - Consider using @wordpress/data for shared state
+    - Create custom stores for complex state requirements
 
 ### Managing Block Variations
 
@@ -204,7 +212,7 @@ import { variations } from './variations';
 
 export default function Edit({ attributes }) {
   const { variant } = attributes;
-  
+
   return variant === 'card' ? <CardComponent /> : <ListComponent />;
 }
 ```
@@ -225,25 +233,25 @@ const { readdirSync } = require('fs');
 
 // Get all block directories
 const blockDirs = readdirSync('./src/blocks').filter(
-  (file) => file.indexOf('.') === -1
+    (file) => file.indexOf('.') === -1
 );
 
 // Create entry points for each block
 const entries = {};
 blockDirs.forEach((blockDir) => {
-  entries[blockDir] = `./src/blocks/${blockDir}/index.js`;
+    entries[blockDir] = `./src/blocks/${blockDir}/index.js`;
 });
 
 // Add shared entry point
 entries.shared = './src/index.js';
 
 module.exports = {
-  ...defaultConfig,
-  entry: entries,
-  output: {
-    ...defaultConfig.output,
-    path: path.resolve(process.cwd(), 'build'),
-  },
+    ...defaultConfig,
+    entry: entries,
+    output: {
+        ...defaultConfig.output,
+        path: path.resolve(process.cwd(), 'build'),
+    },
 };
 ```
 
@@ -260,14 +268,14 @@ $secondary-color: #11a0c4;
 @import '../../styles/variables';
 
 .wp-block-myplugin-block-a {
-  background-color: $primary-color;
+    background-color: $primary-color;
 }
 
 // src/blocks/block-b/style.scss
 @import '../../styles/variables';
 
 .wp-block-myplugin-block-b {
-  border-color: $primary-color;
+    border-color: $primary-color;
 }
 ```
 
@@ -284,13 +292,13 @@ For multi-block plugins, automate block registration:
 function my_blocks_plugin_register_blocks() {
     // Get all block.json files from build directory
     $block_dirs = glob(plugin_dir_path(__FILE__) . 'build/*', GLOB_ONLYDIR);
-    
+
     foreach ($block_dirs as $block_dir) {
         // Skip the shared directory
         if (basename($block_dir) === 'shared') {
             continue;
         }
-        
+
         if (file_exists($block_dir . '/block.json')) {
             register_block_type($block_dir);
         }
@@ -317,14 +325,14 @@ import * as blockBFunctions from './blocks/block-b';
 
 // Register all blocks
 [
-  { metadata: blockA, ...blockAFunctions },
-  { metadata: blockB, ...blockBFunctions },
+    { metadata: blockA, ...blockAFunctions },
+    { metadata: blockB, ...blockBFunctions },
 ].forEach(({ metadata, name, settings }) => {
-  const { name: blockName, ...restMetadata } = metadata;
-  registerBlockType(blockName, {
-    ...restMetadata,
-    ...settings,
-  });
+    const { name: blockName, ...restMetadata } = metadata;
+    registerBlockType(blockName, {
+        ...restMetadata,
+        ...settings,
+    });
 });
 ```
 
@@ -342,10 +350,10 @@ import { render, screen } from '@testing-library/react';
 import { SharedControl } from '../shared-control';
 
 describe('SharedControl', () => {
-  test('renders correctly', () => {
-    render(<SharedControl value="test" onChange={() => {}} />);
-    expect(screen.getByText('test')).toBeInTheDocument();
-  });
+    test('renders correctly', () => {
+        render(<SharedControl value="test" onChange={() => {}} />);
+        expect(screen.getByText('test')).toBeInTheDocument();
+    });
 });
 ```
 
@@ -358,13 +366,13 @@ Test how blocks work together:
 import { createBlock } from '@wordpress/blocks';
 
 describe('Block Integration', () => {
-  test('blocks can be transformed', () => {
-    const blockA = createBlock('my-plugin/block-a', { content: 'Test' });
-    const transformed = blockA.transforms.to[0].transform(blockA);
-    
-    expect(transformed.name).toBe('my-plugin/block-b');
-    expect(transformed.attributes.content).toBe('Test');
-  });
+    test('blocks can be transformed', () => {
+        const blockA = createBlock('my-plugin/block-a', { content: 'Test' });
+        const transformed = blockA.transforms.to[0].transform(blockA);
+
+        expect(transformed.name).toBe('my-plugin/block-b');
+        expect(transformed.attributes.content).toBe('Test');
+    });
 });
 ```
 
@@ -375,21 +383,21 @@ Test the complete user experience:
 ```js
 // e2e/blocks.spec.js
 describe('Blocks', () => {
-  test('can insert all blocks', async ({ page }) => {
-    await page.goto('/wp-admin/post-new.php');
-    
-    // Insert Block A
-    await page.click('.block-editor-inserter__toggle');
-    await page.fill('input[placeholder="Search"]', 'Block A');
-    await page.click('button:has-text("Block A")');
-    await expect(page.locator('.wp-block-my-plugin-block-a')).toBeVisible();
-    
-    // Insert Block B
-    await page.click('.block-editor-inserter__toggle');
-    await page.fill('input[placeholder="Search"]', 'Block B');
-    await page.click('button:has-text("Block B")');
-    await expect(page.locator('.wp-block-my-plugin-block-b')).toBeVisible();
-  });
+    test('can insert all blocks', async ({ page }) => {
+        await page.goto('/wp-admin/post-new.php');
+
+        // Insert Block A
+        await page.click('.block-editor-inserter__toggle');
+        await page.fill('input[placeholder="Search"]', 'Block A');
+        await page.click('button:has-text("Block A")');
+        await expect(page.locator('.wp-block-my-plugin-block-a')).toBeVisible();
+
+        // Insert Block B
+        await page.click('.block-editor-inserter__toggle');
+        await page.fill('input[placeholder="Search"]', 'Block B');
+        await page.click('button:has-text("Block B")');
+        await expect(page.locator('.wp-block-my-plugin-block-b')).toBeVisible();
+    });
 });
 ```
 
@@ -408,24 +416,25 @@ npm run build
 Prepare for distribution:
 
 1. Include only necessary files:
-   - PHP files
-   - build directory (compiled assets)
-   - block.json files
-   - readme.txt and LICENSE
+    - PHP files
+    - build directory (compiled assets)
+    - block.json files
+    - readme.txt and LICENSE
 
 2. Create a .distignore file to exclude development files:
-   ```
-   .git
-   .github
-   node_modules
-   src
-   tests
-   .eslintrc
-   .gitignore
-   package.json
-   package-lock.json
-   webpack.config.js
-   ```
+
+    ```
+    .git
+    .github
+    node_modules
+    src
+    tests
+    .eslintrc
+    .gitignore
+    package.json
+    package-lock.json
+    webpack.config.js
+    ```
 
 ### Plugin ZIP Creation
 
@@ -448,20 +457,20 @@ Optimize loading by splitting code:
 ```js
 // webpack.config.js
 module.exports = {
-  ...defaultConfig,
-  optimization: {
-    ...defaultConfig.optimization,
-    splitChunks: {
-      cacheGroups: {
-        shared: {
-          name: 'shared',
-          chunks: 'all',
-          test: /[\\/]src[\\/](components|utils|hooks)[\\/]/,
-          priority: 10,
+    ...defaultConfig,
+    optimization: {
+        ...defaultConfig.optimization,
+        splitChunks: {
+            cacheGroups: {
+                shared: {
+                    name: 'shared',
+                    chunks: 'all',
+                    test: /[\\/]src[\\/](components|utils|hooks)[\\/]/,
+                    priority: 10,
+                },
+            },
         },
-      },
     },
-  },
 };
 ```
 
@@ -476,7 +485,7 @@ function my_blocks_plugin_enqueue_block_assets() {
     if (!is_singular() || !has_block('my-plugin/block-a')) {
         return;
     }
-    
+
     wp_enqueue_style(
         'my-plugin-block-a-style',
         plugins_url('build/block-a/style-index.css', __FILE__),
@@ -494,16 +503,16 @@ Leverage AI tools to streamline multi-block development:
 ### Code Generation with AI
 
 1. **Block Scaffolding**
-   - Use AI to generate boilerplate for new blocks
-   - Create consistent patterns across blocks
+    - Use AI to generate boilerplate for new blocks
+    - Create consistent patterns across blocks
 
 2. **Component Development**
-   - Generate shared components based on requirements
-   - Refactor duplicate code into reusable components
+    - Generate shared components based on requirements
+    - Refactor duplicate code into reusable components
 
 3. **Testing Assistance**
-   - Generate test cases for blocks and components
-   - Create mock data for testing
+    - Generate test cases for blocks and components
+    - Create mock data for testing
 
 ### AI Workflow Integration
 
@@ -515,46 +524,46 @@ Example GitHub Copilot workflow:
 
 // Copilot will suggest code like:
 export default function PricingTableEdit({ attributes, setAttributes }) {
-  const { title, price, features = [], currency = '$' } = attributes;
-  
-  const toggleFeature = (index) => {
-    const newFeatures = [...features];
-    newFeatures[index].enabled = !newFeatures[index].enabled;
-    setAttributes({ features: newFeatures });
-  };
-  
-  return (
-    <div className="pricing-table">
-      <RichText
-        tagName="h3"
-        value={title}
-        onChange={(title) => setAttributes({ title })}
-        placeholder="Plan name"
-      />
-      
-      <div className="pricing-table__price">
-        <span className="currency">{currency}</span>
-        <RichText
-          tagName="span"
-          value={price}
-          onChange={(price) => setAttributes({ price })}
-          placeholder="Price"
-        />
-      </div>
-      
-      <ul className="pricing-table__features">
-        {features.map((feature, index) => (
-          <li 
-            key={index}
-            className={!feature.enabled ? 'disabled' : ''}
-            onClick={() => toggleFeature(index)}
-          >
-            {feature.text}
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
+    const { title, price, features = [], currency = '$' } = attributes;
+
+    const toggleFeature = (index) => {
+        const newFeatures = [...features];
+        newFeatures[index].enabled = !newFeatures[index].enabled;
+        setAttributes({ features: newFeatures });
+    };
+
+    return (
+        <div className="pricing-table">
+            <RichText
+                tagName="h3"
+                value={title}
+                onChange={(title) => setAttributes({ title })}
+                placeholder="Plan name"
+            />
+
+            <div className="pricing-table__price">
+                <span className="currency">{currency}</span>
+                <RichText
+                    tagName="span"
+                    value={price}
+                    onChange={(price) => setAttributes({ price })}
+                    placeholder="Price"
+                />
+            </div>
+
+            <ul className="pricing-table__features">
+                {features.map((feature, index) => (
+                    <li
+                        key={index}
+                        className={!feature.enabled ? 'disabled' : ''}
+                        onClick={() => toggleFeature(index)}
+                    >
+                        {feature.text}
+                    </li>
+                ))}
+            </ul>
+        </div>
+    );
 }
 ```
 
@@ -575,22 +584,22 @@ Handle changes to block structure:
 ```js
 // blocks/feature-block/index.js
 export const deprecated = [
-  {
-    attributes: {
-      // Old attribute schema
-      text: { type: 'string' }
+    {
+        attributes: {
+            // Old attribute schema
+            text: { type: 'string' },
+        },
+        save: ({ attributes }) => {
+            // Old save implementation
+            return <p>{attributes.text}</p>;
+        },
+        migrate: (attributes) => {
+            // Migration function to new structure
+            return {
+                content: attributes.text,
+            };
+        },
     },
-    save: ({ attributes }) => {
-      // Old save implementation
-      return <p>{attributes.text}</p>;
-    },
-    migrate: (attributes) => {
-      // Migration function to new structure
-      return {
-        content: attributes.text,
-      };
-    },
-  }
 ];
 ```
 

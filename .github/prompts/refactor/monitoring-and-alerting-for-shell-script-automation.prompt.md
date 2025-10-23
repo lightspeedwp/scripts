@@ -1,4 +1,3 @@
-
 ---
 applyTo: '**'
 description: 'Prompt for monitoring and alerting for shell script automation.'
@@ -93,86 +92,86 @@ alerting:
 # monitoring/alertmanager/alertmanager.yml
 
 global:
-  smtp_smarthost: 'smtp.gmail.com:587'
-  smtp_from: 'alerts@lightspeedwp.agency'
-  smtp_auth_username: 'alerts@lightspeedwp.agency'
-  smtp_auth_password_file: '/etc/alertmanager/smtp_password'
+    smtp_smarthost: 'smtp.gmail.com:587'
+    smtp_from: 'alerts@lightspeedwp.agency'
+    smtp_auth_username: 'alerts@lightspeedwp.agency'
+    smtp_auth_password_file: '/etc/alertmanager/smtp_password'
 
 inhibit_rules:
-  - source_match:
-      severity: 'critical'
-    target_match:
-      severity: 'warning'
-    equal: ['alertname', 'script_name', 'instance']
+    - source_match:
+          severity: 'critical'
+      target_match:
+          severity: 'warning'
+      equal: ['alertname', 'script_name', 'instance']
 
 route:
-  group_by: ['alertname', 'cluster', 'service']
-  group_wait: 30s
-  group_interval: 5m
-  repeat_interval: 12h
-  receiver: 'default-receiver'
+    group_by: ['alertname', 'cluster', 'service']
+    group_wait: 30s
+    group_interval: 5m
+    repeat_interval: 12h
+    receiver: 'default-receiver'
 
-  routes:
-    - match:
-        severity: critical
-      receiver: 'critical-alerts'
-      group_wait: 10s
-      repeat_interval: 1h
+    routes:
+        - match:
+              severity: critical
+          receiver: 'critical-alerts'
+          group_wait: 10s
+          repeat_interval: 1h
 
-    - match:
-        category: deployment
-      receiver: 'deployment-team'
+        - match:
+              category: deployment
+          receiver: 'deployment-team'
 
-    - match:
-        category: maintenance
-      receiver: 'maintenance-team'
+        - match:
+              category: maintenance
+          receiver: 'maintenance-team'
 
-    - match:
-        category: security
-      receiver: 'security-team'
-      group_wait: 5s
-      repeat_interval: 30m
+        - match:
+              category: security
+          receiver: 'security-team'
+          group_wait: 5s
+          repeat_interval: 30m
 
 receivers:
-  - name: 'default-receiver'
-    email_configs:
-      - to: 'devops@lightspeedwp.agency'
-        subject: 'LightSpeed Alert: {{ .GroupLabels.alertname }}'
-        body: |
-          {{ range .Alerts }}
-          Alert: {{ .Annotations.summary }}
-          Description: {{ .Annotations.description }}
-          Script: {{ .Labels.script_name }}
-          Severity: {{ .Labels.severity }}
-          Instance: {{ .Labels.instance }}
-          {{ end }}
+    - name: 'default-receiver'
+      email_configs:
+          - to: 'devops@lightspeedwp.agency'
+            subject: 'LightSpeed Alert: {{ .GroupLabels.alertname }}'
+            body: |
+                {{ range .Alerts }}
+                Alert: {{ .Annotations.summary }}
+                Description: {{ .Annotations.description }}
+                Script: {{ .Labels.script_name }}
+                Severity: {{ .Labels.severity }}
+                Instance: {{ .Labels.instance }}
+                {{ end }}
 
-  - name: 'critical-alerts'
-    email_configs:
-      - to: 'critical-alerts@lightspeedwp.agency'
-        subject: '🚨 CRITICAL: {{ .GroupLabels.alertname }}'
-    slack_configs:
-      - api_url: '{{ .SlackWebhookURL }}'
-        channel: '#critical-alerts'
-        title: 'Critical Script Alert'
-        text: |
-          {{ range .Alerts }}
-          *Alert:* {{ .Annotations.summary }}
-          *Script:* {{ .Labels.script_name }}
-          *Environment:* {{ .Labels.environment }}
-          *Runbook:* {{ .Annotations.runbook_url }}
-          {{ end }}
+    - name: 'critical-alerts'
+      email_configs:
+          - to: 'critical-alerts@lightspeedwp.agency'
+            subject: '🚨 CRITICAL: {{ .GroupLabels.alertname }}'
+      slack_configs:
+          - api_url: '{{ .SlackWebhookURL }}'
+            channel: '#critical-alerts'
+            title: 'Critical Script Alert'
+            text: |
+                {{ range .Alerts }}
+                *Alert:* {{ .Annotations.summary }}
+                *Script:* {{ .Labels.script_name }}
+                *Environment:* {{ .Labels.environment }}
+                *Runbook:* {{ .Annotations.runbook_url }}
+                {{ end }}
 
-  - name: 'deployment-team'
-    email_configs:
-      - to: 'deployment@lightspeedwp.agency'
+    - name: 'deployment-team'
+      email_configs:
+          - to: 'deployment@lightspeedwp.agency'
 
-  - name: 'security-team'
-    email_configs:
-      - to: 'security@lightspeedwp.agency'
-    pagerduty_configs:
-      - routing_key: '{{ .PagerDutyIntegrationKey }}'
-        description: 'Security Alert: {{ .GroupLabels.alertname }}'
+    - name: 'security-team'
+      email_configs:
+          - to: 'security@lightspeedwp.agency'
+      pagerduty_configs:
+          - routing_key: '{{ .PagerDutyIntegrationKey }}'
+            description: 'Security Alert: {{ .GroupLabels.alertname }}'
 ```
 
 ##### 2. Alert Rules Configuration
@@ -181,91 +180,91 @@ receivers:
 # monitoring/prometheus/rules/shell_script_alerts.yml
 
 groups:
-  - name: shell_script_alerts
-    rules:
-      - alert: ScriptExecutionFailure
-        expr: script_execution_success{job="lightspeed-scripts"} == 0
-        for: 2m
-        labels:
-          severity: warning
-          category: execution
-        annotations:
-          summary: "Script {{ $labels.script_name }} execution failed"
-          description: "Script {{ $labels.script_name }} has failed execution for more than 2 minutes"
-          runbook_url: "https://docs.lightspeedwp.agency/runbooks/script-execution-failure"
+    - name: shell_script_alerts
+      rules:
+          - alert: ScriptExecutionFailure
+            expr: script_execution_success{job="lightspeed-scripts"} == 0
+            for: 2m
+            labels:
+                severity: warning
+                category: execution
+            annotations:
+                summary: 'Script {{ $labels.script_name }} execution failed'
+                description: 'Script {{ $labels.script_name }} has failed execution for more than 2 minutes'
+                runbook_url: 'https://docs.lightspeedwp.agency/runbooks/script-execution-failure'
 
-      - alert: ScriptExecutionHigh
-        expr: rate(script_execution_duration_seconds{job="lightspeed-scripts"}[5m]) > 300
-        for: 5m
-        labels:
-          severity: warning
-          category: performance
-        annotations:
-          summary: "Script {{ $labels.script_name }} execution time high"
-          description: "Script {{ $labels.script_name }} execution duration is above 300 seconds for 5 minutes"
+          - alert: ScriptExecutionHigh
+            expr: rate(script_execution_duration_seconds{job="lightspeed-scripts"}[5m]) > 300
+            for: 5m
+            labels:
+                severity: warning
+                category: performance
+            annotations:
+                summary: 'Script {{ $labels.script_name }} execution time high'
+                description: 'Script {{ $labels.script_name }} execution duration is above 300 seconds for 5 minutes'
 
-      - alert: ScriptExecutionCritical
-        expr: script_execution_success{job="lightspeed-scripts"} == 0 and script_critical == 1
-        for: 1m
-        labels:
-          severity: critical
-          category: execution
-        annotations:
-          summary: "Critical script {{ $labels.script_name }} failed"
-          description: "Critical script {{ $labels.script_name }} has failed execution"
-          runbook_url: "https://docs.lightspeedwp.agency/runbooks/critical-script-failure"
+          - alert: ScriptExecutionCritical
+            expr: script_execution_success{job="lightspeed-scripts"} == 0 and script_critical == 1
+            for: 1m
+            labels:
+                severity: critical
+                category: execution
+            annotations:
+                summary: 'Critical script {{ $labels.script_name }} failed'
+                description: 'Critical script {{ $labels.script_name }} has failed execution'
+                runbook_url: 'https://docs.lightspeedwp.agency/runbooks/critical-script-failure'
 
-      - alert: ScriptMemoryUsageHigh
-        expr: script_memory_usage_bytes{job="lightspeed-scripts"} > 1073741824  # 1GB
-        for: 3m
-        labels:
-          severity: warning
-          category: resource
-        annotations:
-          summary: "Script {{ $labels.script_name }} high memory usage"
-          description: "Script {{ $labels.script_name }} is using more than 1GB of memory"
+          - alert: ScriptMemoryUsageHigh
+            expr: script_memory_usage_bytes{job="lightspeed-scripts"} > 1073741824 # 1GB
+            for: 3m
+            labels:
+                severity: warning
+                category: resource
+            annotations:
+                summary: 'Script {{ $labels.script_name }} high memory usage'
+                description: 'Script {{ $labels.script_name }} is using more than 1GB of memory'
 
-      - alert: ScriptErrorRateHigh
-        expr: rate(script_errors_total{job="lightspeed-scripts"}[10m]) > 0.1
-        for: 5m
-        labels:
-          severity: warning
-          category: error
-        annotations:
-          summary: "High error rate for script {{ $labels.script_name }}"
-          description: "Script {{ $labels.script_name }} error rate is above 10% for 5 minutes"
+          - alert: ScriptErrorRateHigh
+            expr: rate(script_errors_total{job="lightspeed-scripts"}[10m]) > 0.1
+            for: 5m
+            labels:
+                severity: warning
+                category: error
+            annotations:
+                summary: 'High error rate for script {{ $labels.script_name }}'
+                description: 'Script {{ $labels.script_name }} error rate is above 10% for 5 minutes'
 
-      - alert: ScriptConcurrencyLimit
-        expr: script_concurrent_executions{job="lightspeed-scripts"} >= script_max_concurrent
-        for: 2m
-        labels:
-          severity: warning
-          category: concurrency
-        annotations:
-          summary: "Script {{ $labels.script_name }} concurrency limit reached"
-          description: "Script {{ $labels.script_name }} has reached maximum concurrent executions"
+          - alert: ScriptConcurrencyLimit
+            expr: script_concurrent_executions{job="lightspeed-scripts"} >= script_max_concurrent
+            for: 2m
+            labels:
+                severity: warning
+                category: concurrency
+            annotations:
+                summary: 'Script {{ $labels.script_name }} concurrency limit reached'
+                description: 'Script {{ $labels.script_name }} has reached maximum concurrent executions'
 
-  - name: system_health_alerts
-    rules:
-      - alert: DiskSpaceUsageHigh
-        expr: (1 - (node_filesystem_avail_bytes / node_filesystem_size_bytes)) * 100 > 80
-        for: 5m
-        labels:
-          severity: warning
-          category: system
-        annotations:
-          summary: "High disk usage on {{ $labels.instance }}"
-          description: "Disk usage is above 80% on {{ $labels.instance }}"
+    - name: system_health_alerts
+      rules:
+          - alert: DiskSpaceUsageHigh
+            expr: (1 - (node_filesystem_avail_bytes / node_filesystem_size_bytes)) * 100 > 80
+            for: 5m
+            labels:
+                severity: warning
+                category: system
+            annotations:
+                summary: 'High disk usage on {{ $labels.instance }}'
+                description: 'Disk usage is above 80% on {{ $labels.instance }}'
 
-      - alert: SystemLoadHigh
-        expr: node_load15 > 4
-        for: 10m
-        labels:
-          severity: warning
-          category: system
-        annotations:
-          summary: "High system load on {{ $labels.instance }}"
-          description: "15-minute load average is above 4 on {{ $labels.instance }}"
+          - alert: SystemLoadHigh
+            expr: node_load15 > 4
+            for: 10m
+            labels:
+                severity: warning
+                category: system
+            annotations:
+                summary: 'High system load on {{ $labels.instance }}'
+                description: '15-minute load average is above 4 on {{ $labels.instance }}'
 ```
 
 #### Script Instrumentation and Metrics Collection
@@ -550,123 +549,123 @@ end_performance_monitoring() {
 
 ```json
 {
-  "dashboard": {
-    "id": null,
-    "title": "LightSpeed WP Shell Script Monitoring",
-    "tags": ["lightspeed", "automation", "shell-scripts"],
-    "timezone": "browser",
-    "panels": [
-      {
-        "title": "Script Execution Status",
-        "type": "stat",
-        "targets": [
-          {
-            "expr": "sum(script_execution_active) by (category)",
-            "legendFormat": "{{category}} - Active"
-          },
-          {
-            "expr": "sum(rate(script_execution_duration_seconds_count[5m])) by (category)",
-            "legendFormat": "{{category}} - Executions/min"
-          }
-        ],
-        "fieldConfig": {
-          "defaults": {
-            "color": {
-              "mode": "palette-classic"
+    "dashboard": {
+        "id": null,
+        "title": "LightSpeed WP Shell Script Monitoring",
+        "tags": ["lightspeed", "automation", "shell-scripts"],
+        "timezone": "browser",
+        "panels": [
+            {
+                "title": "Script Execution Status",
+                "type": "stat",
+                "targets": [
+                    {
+                        "expr": "sum(script_execution_active) by (category)",
+                        "legendFormat": "{{category}} - Active"
+                    },
+                    {
+                        "expr": "sum(rate(script_execution_duration_seconds_count[5m])) by (category)",
+                        "legendFormat": "{{category}} - Executions/min"
+                    }
+                ],
+                "fieldConfig": {
+                    "defaults": {
+                        "color": {
+                            "mode": "palette-classic"
+                        },
+                        "custom": {
+                            "displayMode": "list",
+                            "orientation": "horizontal"
+                        }
+                    }
+                },
+                "gridPos": { "h": 8, "w": 12, "x": 0, "y": 0 }
             },
-            "custom": {
-              "displayMode": "list",
-              "orientation": "horizontal"
+            {
+                "title": "Script Success Rate",
+                "type": "stat",
+                "targets": [
+                    {
+                        "expr": "avg(script_execution_success) by (script_name)",
+                        "legendFormat": "{{script_name}}"
+                    }
+                ],
+                "fieldConfig": {
+                    "defaults": {
+                        "unit": "percentunit",
+                        "min": 0,
+                        "max": 1,
+                        "thresholds": {
+                            "steps": [
+                                { "color": "red", "value": 0 },
+                                { "color": "yellow", "value": 0.8 },
+                                { "color": "green", "value": 0.95 }
+                            ]
+                        }
+                    }
+                },
+                "gridPos": { "h": 8, "w": 12, "x": 12, "y": 0 }
+            },
+            {
+                "title": "Script Execution Duration",
+                "type": "graph",
+                "targets": [
+                    {
+                        "expr": "histogram_quantile(0.95, sum(rate(script_execution_duration_seconds_bucket[5m])) by (le, script_name))",
+                        "legendFormat": "{{script_name}} - 95th percentile"
+                    },
+                    {
+                        "expr": "histogram_quantile(0.50, sum(rate(script_execution_duration_seconds_bucket[5m])) by (le, script_name))",
+                        "legendFormat": "{{script_name}} - 50th percentile"
+                    }
+                ],
+                "gridPos": { "h": 8, "w": 24, "x": 0, "y": 8 },
+                "yAxes": [
+                    {
+                        "label": "Duration (seconds)",
+                        "min": 0
+                    }
+                ]
+            },
+            {
+                "title": "Error Rate by Script",
+                "type": "graph",
+                "targets": [
+                    {
+                        "expr": "rate(script_errors_total[5m])",
+                        "legendFormat": "{{script_name}} - {{error_type}}"
+                    }
+                ],
+                "gridPos": { "h": 8, "w": 24, "x": 0, "y": 16 },
+                "yAxes": [
+                    {
+                        "label": "Errors per second",
+                        "min": 0
+                    }
+                ]
+            },
+            {
+                "title": "System Resource Usage",
+                "type": "graph",
+                "targets": [
+                    {
+                        "expr": "avg(script_memory_usage_bytes) by (script_name) / 1024 / 1024",
+                        "legendFormat": "{{script_name}} - Memory (MB)"
+                    },
+                    {
+                        "expr": "rate(node_cpu_seconds_total{mode!=\"idle\"}[5m]) * 100",
+                        "legendFormat": "CPU Usage %"
+                    }
+                ],
+                "gridPos": { "h": 8, "w": 24, "x": 0, "y": 24 }
             }
-          }
+        ],
+        "time": {
+            "from": "now-1h",
+            "to": "now"
         },
-        "gridPos": {"h": 8, "w": 12, "x": 0, "y": 0}
-      },
-      {
-        "title": "Script Success Rate",
-        "type": "stat",
-        "targets": [
-          {
-            "expr": "avg(script_execution_success) by (script_name)",
-            "legendFormat": "{{script_name}}"
-          }
-        ],
-        "fieldConfig": {
-          "defaults": {
-            "unit": "percentunit",
-            "min": 0,
-            "max": 1,
-            "thresholds": {
-              "steps": [
-                {"color": "red", "value": 0},
-                {"color": "yellow", "value": 0.8},
-                {"color": "green", "value": 0.95}
-              ]
-            }
-          }
-        },
-        "gridPos": {"h": 8, "w": 12, "x": 12, "y": 0}
-      },
-      {
-        "title": "Script Execution Duration",
-        "type": "graph",
-        "targets": [
-          {
-            "expr": "histogram_quantile(0.95, sum(rate(script_execution_duration_seconds_bucket[5m])) by (le, script_name))",
-            "legendFormat": "{{script_name}} - 95th percentile"
-          },
-          {
-            "expr": "histogram_quantile(0.50, sum(rate(script_execution_duration_seconds_bucket[5m])) by (le, script_name))",
-            "legendFormat": "{{script_name}} - 50th percentile"
-          }
-        ],
-        "gridPos": {"h": 8, "w": 24, "x": 0, "y": 8},
-        "yAxes": [
-          {
-            "label": "Duration (seconds)",
-            "min": 0
-          }
-        ]
-      },
-      {
-        "title": "Error Rate by Script",
-        "type": "graph",
-        "targets": [
-          {
-            "expr": "rate(script_errors_total[5m])",
-            "legendFormat": "{{script_name}} - {{error_type}}"
-          }
-        ],
-        "gridPos": {"h": 8, "w": 24, "x": 0, "y": 16},
-        "yAxes": [
-          {
-            "label": "Errors per second",
-            "min": 0
-          }
-        ]
-      },
-      {
-        "title": "System Resource Usage",
-        "type": "graph",
-        "targets": [
-          {
-            "expr": "avg(script_memory_usage_bytes) by (script_name) / 1024 / 1024",
-            "legendFormat": "{{script_name}} - Memory (MB)"
-          },
-          {
-            "expr": "rate(node_cpu_seconds_total{mode!=\"idle\"}[5m]) * 100",
-            "legendFormat": "CPU Usage %"
-          }
-        ],
-        "gridPos": {"h": 8, "w": 24, "x": 0, "y": 24}
-      }
-    ],
-    "time": {
-      "from": "now-1h",
-      "to": "now"
-    },
-    "refresh": "30s"
-  }
+        "refresh": "30s"
+    }
 }
 ```
 
@@ -844,4 +843,3 @@ Implement comprehensive monitoring and alerting system for modular shell script 
 ## Closing Statement
 
 Comprehensive monitoring and alerting ensures modular shell script automation operates reliably with proactive issue detection, automated incident response, and continuous optimization based on performance metrics and operational insights.
-

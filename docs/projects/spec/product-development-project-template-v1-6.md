@@ -25,55 +25,55 @@ Backlog → Ready → In progress → In review → In QA → Done
 
 ### Views
 
-- **Board (by Assignee)** — *board*  
+- **Board (by Assignee)** — _board_  
   Group by **Assignee** · Sort **Priority desc** · **Field sum:** Estimate
 
-- **Release Gate — vX.Y.Z** — *table*  
+- **Release Gate — vX.Y.Z** — _table_  
   Filter **Milestone matches `^v\d+\.\d+\.\d+$`** (current release) · Group by **Issue Type** · Sort **Priority desc, Size asc** · **Field sum:** Estimate
 
-- **Backlog (Priority)** — *table*  
-  Filter **Status = Backlog** · Sort **Priority desc, Size asc** *(Size uses numeric prefixes to enforce order)*
+- **Backlog (Priority)** — _table_  
+  Filter **Status = Backlog** · Sort **Priority desc, Size asc** _(Size uses numeric prefixes to enforce order)_
 
-- **Hotfix Lane** — *table* *(optional to pin)*  
+- **Hotfix Lane** — _table_ _(optional to pin)_  
   Filter **Release type = Hotfix** OR **Severity ∈ {S0, S1}** · Sort **Severity desc, Priority desc**
 
-- **QA Gate** — *table*  
+- **QA Gate** — _table_  
   Filter **Status = In QA** · Sort **Severity desc, Priority desc**
 
-- **Epics — Tracking (Table)** — *table*  
+- **Epics — Tracking (Table)** — _table_  
   Filter **Issue Type = Epic** · Group by **Milestone/Release** · Sort **Priority desc**
 
-- **Roadmap (Dates)** — *roadmap*  
+- **Roadmap (Dates)** — _roadmap_  
   Start field = **Start Date** · Target field = **Deadline** · Group by **Theme**
 
-- **Tech Debt** — *table*  
+- **Tech Debt** — _table_  
   Filter **Label = tech-debt** OR **Issue Type = Refactor**
 
 ### Automations
 
-- On item added → **Status = Backlog**  
-- On assignee set → **Status = In progress**  
-- On PR opened → **Status = In review**  
-- On label `status:needs-qa` → **Status = In QA**  
-- On PR merged / issue closed → **Status = Done**  
-- *(Optional rule)* If **Issue Type = Bug** AND **Environment = Live** AND **Severity ∈ {S0, S1}** → **Priority = High**
+- On item added → **Status = Backlog**
+- On assignee set → **Status = In progress**
+- On PR opened → **Status = In review**
+- On label `status:needs-qa` → **Status = In QA**
+- On PR merged / issue closed → **Status = Done**
+- _(Optional rule)_ If **Issue Type = Bug** AND **Environment = Live** AND **Severity ∈ {S0, S1}** → **Priority = High**
 
 ### Cadence
 
-- Weekly planning (select **Release Gate — vX.Y.Z** scope)  
-- Daily stand-up (focus **Hotfix Lane** + blockers)  
-- **Monthly Minor** releases; **Patches as needed**; short freeze window before release  
+- Weekly planning (select **Release Gate — vX.Y.Z** scope)
+- Daily stand-up (focus **Hotfix Lane** + blockers)
+- **Monthly Minor** releases; **Patches as needed**; short freeze window before release
 - Release notes on merge to `main`; tag **vX.Y.Z**
 
 ### Field defaults
 
-- **Priority:** **Medium** (default)  
-- **Phase:** **Pre-launch** (default)  
-- **Release type:** **Minor** (default; set to **Patch**/**Hotfix** as needed)  
-- **Environment:** **Prototype/Staging** (default; per flow)  
-- **Size:** **0 – Unknown** (default)  
-- **Theme, Area:** set at triage (choose exactly **one** Theme per item)  
-- **Milestone (Iteration):** required for all in-scope release items (**vX.Y.Z**)  
+- **Priority:** **Medium** (default)
+- **Phase:** **Pre-launch** (default)
+- **Release type:** **Minor** (default; set to **Patch**/**Hotfix** as needed)
+- **Environment:** **Prototype/Staging** (default; per flow)
+- **Size:** **0 – Unknown** (default)
+- **Theme, Area:** set at triage (choose exactly **one** Theme per item)
+- **Milestone (Iteration):** required for all in-scope release items (**vX.Y.Z**)
 - **Estimate/Start Date/Deadline:** set when scheduled
 
 ### Definition of Ready (DoR) — Checklist

@@ -11,17 +11,17 @@
 const labelStandardizationAgent = require('../../.github/agents/label-standardization.agent.js');
 
 describe('Label Standardization Agent', () => {
-  it('should initialize without error', () => {
-    // TODO: Implement agent initialization test
-    expect(labelStandardizationAgent).toBeDefined();
-  });
+    it('should initialize without error', () => {
+        // TODO: Implement agent initialization test
+        expect(labelStandardizationAgent).toBeDefined();
+    });
 
-  it('should detect and migrate non-standard labels', () => {
-    // TODO: Implement label migration logic test
-    // Example: Simulate repo with non-standard labels and check migration
-  });
+    it('should detect and migrate non-standard labels', () => {
+        // TODO: Implement label migration logic test
+        // Example: Simulate repo with non-standard labels and check migration
+    });
 
-  it('should handle dry-run and verbose modes', () => {
-    // TODO: Test DRY_RUN and VERBOSE environment variable handling
-  });
+    it('should handle dry-run and verbose modes', () => {
+        // TODO: Test DRY_RUN and VERBOSE environment variable handling
+    });
 });

@@ -1,3 +1,16 @@
+# ============================================================================
+# .prettierignore
+# Purpose: Exclude files and folders from Prettier formatting
+# Reference: https://prettier.io/docs/en/ignore.html
+# ============================================================================
+# .prettierignore
+# Purpose: Exclude files and folders from Prettier formatting
+# Docs: https://prettier.io/docs/en/ignore.html
+node_modules/
+dist/
+build/
+coverage/
+*.log
 node_modules/
 dist/
 build/

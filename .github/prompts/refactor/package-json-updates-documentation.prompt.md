@@ -1,4 +1,3 @@
-
 # package.json Updates Documentation Prompt
 
 ## Role
@@ -72,9 +71,9 @@ git commit -am "chore: update package.json for Husky and linting"
 1. Audit current dependencies and scripts in `package.json` and `package-lock.json`.
 2. Add Husky as a dev dependency:
 
-   ```sh
-   npm install --save-dev husky
-   ```
+    ```sh
+    npm install --save-dev husky
+    ```
 
 3. Add or update linting, formatting, and test scripts as shown above.
 4. Add a script to install Husky hooks (e.g., `prepare`).

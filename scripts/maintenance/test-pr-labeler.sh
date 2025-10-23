@@ -63,6 +63,7 @@ readonly NC
 mkdir -p "${LOG_DIR}"
 
 # Logging functions
+# shellcheck disable=SC2317,SC2329
 function log_info() {
     local timestamp
     timestamp=$(date "+%Y-%m-%d %H:%M:%S")
@@ -70,6 +71,7 @@ function log_info() {
     echo "[INFO] ${timestamp}: $*" >> "${LOG_FILE}"
 }
 
+# shellcheck disable=SC2317,SC2329
 function log_warn() {
     local timestamp
     timestamp=$(date "+%Y-%m-%d %H:%M:%S")
@@ -77,6 +79,7 @@ function log_warn() {
     echo "[WARNING] ${timestamp}: $*" >> "${LOG_FILE}"
 }
 
+# shellcheck disable=SC2317,SC2329
 function log_error() {
     local timestamp
     timestamp=$(date "+%Y-%m-%d %H:%M:%S")
@@ -84,6 +87,7 @@ function log_error() {
     echo "[ERROR] ${timestamp}: $*" >> "${LOG_FILE}"
 }
 
+# shellcheck disable=SC2317,SC2329
 function log_debug() {
     if [[ "${VERBOSE}" == "true" ]]; then
         local timestamp
@@ -139,6 +143,7 @@ main() {
                 return 1
                 ;;
         esac
+    # shellcheck disable=SC2317
         shift
     done
     

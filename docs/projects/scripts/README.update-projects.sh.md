@@ -7,4 +7,3 @@
 ## Description
 
 _Auto-generated documentation stub for update-projects.sh._
-

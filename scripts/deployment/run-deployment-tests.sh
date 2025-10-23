@@ -97,7 +97,7 @@
 # Standardized logging - LightSpeed WP
 #
 # Source standardized logging functions and variables from modular includes system
-LOGGING_SH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/../includes/logging.sh"
+LOGGING_SH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/../includes/core/logging.sh"
 if [[ -f "$LOGGING_SH" ]]; then
     if ! source "$LOGGING_SH"; then
         echo -e "\033[0;31m[ERROR]\033[0m Failed to source logging module at $LOGGING_SH. Please check for syntax errors." >&2
@@ -112,13 +112,6 @@ set -euo pipefail
 # Determine script and repository root directories
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
-
-# Colors for output
-RED='\033[0;31m'
-GREEN='\033[0;32m'
-YELLOW='\033[0;33m'
-BLUE='\033[0;34m'
-NC='\033[0m' # No Color
 
 show_help() {
     cat << EOF
@@ -169,41 +162,7 @@ Options:
 EOF
 }
 
-#############################################################################
-# Function: log_info
-# Description: Logs an informational message.
-# Arguments:
-#   $1 - The message to log.
-# Output: Prints the message to stdout.
-###############################################################################
-# Logging functions
-log_info() {
-    echo -e "${BLUE}[INFO]${NC} $1"
-}
-
-#############################################################################
-# Function: log_success
-# Description: Logs a success message.
-# Arguments:
-#   $1 - The message to log.
-# Output: Prints the message to stdout.
-###############################################################################
-# Log success messages
-log_success() {
-    echo -e "${GREEN}[SUCCESS]${NC} $1"
-}
-
-#############################################################################
-# Function: log_error
-# Description: Logs an error message.
-# Arguments:
-#   $1 - The message to log.
-# Output: Prints the message to stderr.
-###############################################################################
-# Log error messages
-log_error() {
-    echo -e "${RED}[ERROR]${NC} $1" >&2
-}
+# Logging functions are now provided by the sourced logging module
 
 main() {
     if [[ "$#" -gt 0 ]] && [[ "$1" == "--help" ]]; then

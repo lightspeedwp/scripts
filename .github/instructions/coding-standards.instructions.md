@@ -5,7 +5,11 @@ version: '1.1'
 author: 'LightSpeed WP Team'
 audience: ['contributor', 'maintainer', 'reviewer', 'automation']
 status: 'approved'
-changelog: ['2025-10-15: Initial version', '2025-10-15: Added extended fields for governance']
+changelog:
+    [
+        '2025-10-15: Initial version',
+        '2025-10-15: Added extended fields for governance',
+    ]
 tags: ['standards', 'shell', 'wordpress', 'coding']
 feedback: 'Submit suggestions or issues via repository discussions or PR comments.'
 deprecated: false
@@ -14,24 +18,37 @@ updated: '2025-10-15'
 created: '2025-10-15'
 ---
 
+<<<<<<< Updated upstream
+
 # Coding Standards Instructions
 
-You are a shell script and WordPress developer. Follow our coding standards and documentation patterns to create and maintain automation scripts and WordPress code. Avoid unsafe practices, missing documentation, or non-compliant code unless specified.
+# You are a shell script and WordPress developer. Follow our coding standards and documentation patterns to create and maintain automation scripts and WordPress code. Avoid unsafe practices, missing documentation, or non-compliant code unless specified.
+
+# Coding Standards - LightSpeed WP Automation
+
+You are a code quality specialist. Follow our LightSpeed WP coding standards framework to ensure consistent, maintainable, and secure code across all languages and frameworks. Avoid deviating from established patterns unless specified for specific use cases.
+
+> > > > > > > Stashed changes
 
 ## Overview
 
 This document establishes comprehensive coding standards for the LightSpeed WP automation ecosystem, covering multiple programming languages, frameworks, and toolchains used in our development and operations workflows.
 
+<<<<<<< Updated upstream
+
 ## Purpose and Scope
+
 Covers shell script and WordPress coding standards, error handling, documentation, linting, and enforcement. Intended for contributors, maintainers, and reviewers working on shell scripts and WordPress codebases.
 
 ## Core Principles
+
 - Clarity, maintainability, and security
 - Actionable, testable code
 - Consistent structure and documentation
 - Integration with org-wide standards
 
 ## Required Sections
+
 - Role definition and context
 - Framework and standards to follow
 - Task types and scenarios
@@ -39,14 +56,17 @@ Covers shell script and WordPress coding standards, error handling, documentatio
 - Examples and references
 
 ## Formatting Guidelines
+
 - Use markdown headings and bullet lists
 - Include code blocks for templates and examples
 - Reference related files using relative links
 
 ## Integration References
+
 - See `.github/custom-instructions.md` and related agent, prompt, and chatmode files
 
 ## Review and Enforcement
+
 - Use the checklist in `create-or-update-copilot.instructions.md` to validate clarity, completeness, and compliance
 
 ## Shell script coding standards
@@ -88,6 +108,10 @@ Covers shell script and WordPress coding standards, error handling, documentatio
 - [eslint-config-wordpress](https://www.npmjs.com/package/eslint-config-wordpress)
 - [stylelint-config-wordpress](https://github.com/WordPress/stylelint-config-wordpress)
 
+=======
+
+> > > > > > > Stashed changes
+
 ## Universal Coding Principles
 
 ### Code Quality Foundations
@@ -107,7 +131,11 @@ deployment/deploy-wordpress-site.sh
 maintenance/prune-labels.sh
 utility/backup-database.sh
 
+<<<<<<< Updated upstream
 # JavaScript/Node.js files
+=======
+# JavaScript/Node.js files
+>>>>>>> Stashed changes
 lib/                  # camelCase for JS files and functions
 utils/stringHelpers.js
 config/databaseConfig.js
@@ -166,13 +194,21 @@ verbose=false
 #######################################
 validate_config() {
     local config_path="$1"
+<<<<<<< Updated upstream
 
+=======
+
+>>>>>>> Stashed changes
     # Validation logic with clear error messages
     if [[ ! -f "$config_path" ]]; then
         echo "Error: Configuration file not found: $config_path" >&2
         return 1
     fi
+<<<<<<< Updated upstream
 
+=======
+
+>>>>>>> Stashed changes
     # Additional validation...
     return 0
 }
@@ -205,10 +241,17 @@ main() {
                 ;;
         esac
     done
+<<<<<<< Updated upstream
 
     # Validation and execution
     validate_config "$config_file" || exit 1
 
+=======
+
+    # Validation and execution
+    validate_config "$config_file" || exit 1
+
+>>>>>>> Stashed changes
     # Main script logic...
 }
 
@@ -280,7 +323,11 @@ class DeploymentConfig {
     try {
       const configData = await fs.readFile(this.configPath, 'utf8');
       const config = JSON.parse(configData);
+<<<<<<< Updated upstream
 
+=======
+
+>>>>>>> Stashed changes
       // Validate required fields
       const requiredFields = ['environment', 'database', 'deployment'];
       for (const field of requiredFields) {
@@ -288,7 +335,11 @@ class DeploymentConfig {
           throw new Error(`Missing required configuration field: ${field}`);
         }
       }
+<<<<<<< Updated upstream
 
+=======
+
+>>>>>>> Stashed changes
       this.logger.info('Configuration validation successful');
       return true;
     } catch (error) {
@@ -366,7 +417,11 @@ EnvironmentName = str
 class DeploymentResult:
     """
     Represents the result of a deployment operation.
+<<<<<<< Updated upstream
 
+=======
+
+>>>>>>> Stashed changes
     Attributes:
         success: Whether the deployment succeeded
         environment: Target environment name
@@ -383,11 +438,19 @@ class DeploymentResult:
 
 class DeploymentError(Exception):
     """Custom exception for deployment-related errors."""
+<<<<<<< Updated upstream
 
     def __init__(self, message: str, error_code: int = 1) -> None:
         """
         Initialize deployment error.
 
+=======
+
+    def __init__(self, message: str, error_code: int = 1) -> None:
+        """
+        Initialize deployment error.
+
+>>>>>>> Stashed changes
         Args:
             message: Error description
             error_code: Numeric error code for categorization
@@ -398,11 +461,16 @@ class DeploymentError(Exception):
 
 class BaseDeploymentStrategy(ABC):
     """Abstract base class for deployment strategies."""
+<<<<<<< Updated upstream
 
+=======
+
+>>>>>>> Stashed changes
     @abstractmethod
     def deploy(self, config: ConfigDict) -> DeploymentResult:
         """
         Execute deployment with given configuration.
+<<<<<<< Updated upstream
 
         Args:
             config: Deployment configuration dictionary
@@ -410,6 +478,15 @@ class BaseDeploymentStrategy(ABC):
         Returns:
             DeploymentResult with operation details
 
+=======
+
+        Args:
+            config: Deployment configuration dictionary
+
+        Returns:
+            DeploymentResult with operation details
+
+>>>>>>> Stashed changes
         Raises:
             DeploymentError: When deployment fails
         """
@@ -419,6 +496,7 @@ class BaseDeploymentStrategy(ABC):
 class WordPressDeploymentStrategy(BaseDeploymentStrategy):
     """
     WordPress-specific deployment strategy implementation.
+<<<<<<< Updated upstream
 
     Handles WordPress site deployment including database migration,
     file synchronization, and configuration management.
@@ -428,6 +506,17 @@ class WordPressDeploymentStrategy(BaseDeploymentStrategy):
         """
         Initialize WordPress deployment strategy.
 
+=======
+
+    Handles WordPress site deployment including database migration,
+    file synchronization, and configuration management.
+    """
+
+    def __init__(self, dry_run: bool = False, timeout: int = 300) -> None:
+        """
+        Initialize WordPress deployment strategy.
+
+>>>>>>> Stashed changes
         Args:
             dry_run: Enable preview mode without actual changes
             timeout: Maximum deployment time in seconds
@@ -441,6 +530,7 @@ class WordPressDeploymentStrategy(BaseDeploymentStrategy):
             self._update_configuration,
             self._verify_deployment,
         ]
+<<<<<<< Updated upstream
 
     def deploy(self, config: ConfigDict) -> DeploymentResult:
         """
@@ -449,11 +539,22 @@ class WordPressDeploymentStrategy(BaseDeploymentStrategy):
         Args:
             config: WordPress deployment configuration
 
+=======
+
+    def deploy(self, config: ConfigDict) -> DeploymentResult:
+        """
+        Execute WordPress deployment process.
+
+        Args:
+            config: WordPress deployment configuration
+
+>>>>>>> Stashed changes
         Returns:
             DeploymentResult with deployment status and details
         """
         import time
         start_time = time.time()
+<<<<<<< Updated upstream
 
         try:
             logger.info(f"Starting WordPress deployment to {config['environment']}")
@@ -461,6 +562,15 @@ class WordPressDeploymentStrategy(BaseDeploymentStrategy):
             # Validate configuration
             self._validate_config(config)
 
+=======
+
+        try:
+            logger.info(f"Starting WordPress deployment to {config['environment']}")
+
+            # Validate configuration
+            self._validate_config(config)
+
+>>>>>>> Stashed changes
             # Execute deployment steps
             for step in self._deployment_steps:
                 if self.dry_run:
@@ -468,22 +578,37 @@ class WordPressDeploymentStrategy(BaseDeploymentStrategy):
                 else:
                     logger.info(f"Executing: {step.__name__}")
                     step(config)
+<<<<<<< Updated upstream
 
             duration = time.time() - start_time
             logger.info(f"Deployment completed in {duration:.2f} seconds")
 
+=======
+
+            duration = time.time() - start_time
+            logger.info(f"Deployment completed in {duration:.2f} seconds")
+
+>>>>>>> Stashed changes
             return DeploymentResult(
                 success=True,
                 environment=config['environment'],
                 duration_seconds=duration,
                 rollback_available=True
             )
+<<<<<<< Updated upstream
 
+=======
+
+>>>>>>> Stashed changes
         except Exception as error:
             duration = time.time() - start_time
             error_msg = f"Deployment failed: {str(error)}"
             logger.error(error_msg)
+<<<<<<< Updated upstream
 
+=======
+
+>>>>>>> Stashed changes
             return DeploymentResult(
                 success=False,
                 environment=config['environment'],
@@ -491,37 +616,65 @@ class WordPressDeploymentStrategy(BaseDeploymentStrategy):
                 error_message=error_msg,
                 rollback_available=False
             )
+<<<<<<< Updated upstream
 
+=======
+
+>>>>>>> Stashed changes
     def _validate_config(self, config: ConfigDict) -> None:
         """Validate deployment configuration."""
         required_keys = ['environment', 'database_url', 'target_path']
         missing_keys = [key for key in required_keys if key not in config]
+<<<<<<< Updated upstream
 
+=======
+
+>>>>>>> Stashed changes
         if missing_keys:
             raise DeploymentError(
                 f"Missing required configuration keys: {', '.join(missing_keys)}"
             )
+<<<<<<< Updated upstream
 
+=======
+
+>>>>>>> Stashed changes
     def _backup_database(self, config: ConfigDict) -> None:
         """Create database backup before deployment."""
         # Implementation details...
         pass
+<<<<<<< Updated upstream
 
+=======
+
+>>>>>>> Stashed changes
     def _sync_files(self, config: ConfigDict) -> None:
         """Synchronize application files."""
         # Implementation details...
         pass
+<<<<<<< Updated upstream
 
+=======
+
+>>>>>>> Stashed changes
     def _run_migrations(self, config: ConfigDict) -> None:
         """Execute database migrations."""
         # Implementation details...
         pass
+<<<<<<< Updated upstream
 
+=======
+
+>>>>>>> Stashed changes
     def _update_configuration(self, config: ConfigDict) -> None:
         """Update application configuration."""
         # Implementation details...
         pass
+<<<<<<< Updated upstream
 
+=======
+
+>>>>>>> Stashed changes
     def _verify_deployment(self, config: ConfigDict) -> None:
         """Verify deployment health and functionality."""
         # Implementation details...
@@ -531,7 +684,11 @@ class WordPressDeploymentStrategy(BaseDeploymentStrategy):
 def main() -> int:
     """
     Main entry point for deployment script.
+<<<<<<< Updated upstream
 
+=======
+
+>>>>>>> Stashed changes
     Returns:
         Exit code (0 for success, non-zero for failure)
     """
@@ -542,17 +699,28 @@ def main() -> int:
             'database_url': 'mysql://localhost/wp_staging',
             'target_path': '/var/www/staging'
         }
+<<<<<<< Updated upstream
 
         strategy = WordPressDeploymentStrategy(dry_run=False)
         result = strategy.deploy(config)
 
+=======
+
+        strategy = WordPressDeploymentStrategy(dry_run=False)
+        result = strategy.deploy(config)
+
+>>>>>>> Stashed changes
         if result.success:
             logger.info("Deployment completed successfully")
             return 0
         else:
             logger.error(f"Deployment failed: {result.error_message}")
             return 1
+<<<<<<< Updated upstream
 
+=======
+
+>>>>>>> Stashed changes
     except KeyboardInterrupt:
         logger.info("Deployment cancelled by user")
         return 130
@@ -583,27 +751,24 @@ if __name__ == '__main__':
 
 ```json
 {
-  "extends": [
-    "eslint:recommended",
-    "@wordpress/eslint-config"
-  ],
-  "env": {
-    "node": true,
-    "es6": true,
-    "jest": true
-  },
-  "parserOptions": {
-    "ecmaVersion": 2022,
-    "sourceType": "module"
-  },
-  "rules": {
-    "no-console": "warn",
-    "no-unused-vars": "error",
-    "prefer-const": "error",
-    "no-var": "error",
-    "object-shorthand": "error",
-    "prefer-arrow-callback": "error"
-  }
+    "extends": ["eslint:recommended", "@wordpress/eslint-config"],
+    "env": {
+        "node": true,
+        "es6": true,
+        "jest": true
+    },
+    "parserOptions": {
+        "ecmaVersion": 2022,
+        "sourceType": "module"
+    },
+    "rules": {
+        "no-console": "warn",
+        "no-unused-vars": "error",
+        "prefer-const": "error",
+        "no-var": "error",
+        "object-shorthand": "error",
+        "prefer-arrow-callback": "error"
+    }
 }
 ```
 
@@ -611,13 +776,13 @@ if __name__ == '__main__':
 
 ```json
 {
-  "semi": true,
-  "singleQuote": true,
-  "tabWidth": 2,
-  "trailingComma": "es5",
-  "printWidth": 100,
-  "bracketSpacing": true,
-  "arrowParens": "avoid"
+    "semi": true,
+    "singleQuote": true,
+    "tabWidth": 2,
+    "trailingComma": "es5",
+    "printWidth": 100,
+    "bracketSpacing": true,
+    "arrowParens": "avoid"
 }
 ```
 
@@ -676,7 +841,11 @@ tests/
 validate_input() {
     local input="$1"
     local pattern="^[a-zA-Z0-9_-]+$"
+<<<<<<< Updated upstream
 
+=======
+
+>>>>>>> Stashed changes
     if [[ ! "$input" =~ $pattern ]]; then
         echo "Error: Invalid input format" >&2
         return 1
@@ -702,6 +871,7 @@ function validateEnvironmentName(name) {
   if (!name || typeof name !== 'string') {
     throw new Error('Environment name must be a non-empty string');
   }
+<<<<<<< Updated upstream
 
   if (!validator.matches(name, /^[a-zA-Z0-9_-]+$/)) {
     throw new Error('Environment name contains invalid characters');
@@ -711,6 +881,17 @@ function validateEnvironmentName(name) {
     throw new Error('Environment name too long (max 50 characters)');
   }
 
+=======
+
+  if (!validator.matches(name, /^[a-zA-Z0-9_-]+$/)) {
+    throw new Error('Environment name contains invalid characters');
+  }
+
+  if (name.length > 50) {
+    throw new Error('Environment name too long (max 50 characters)');
+  }
+
+>>>>>>> Stashed changes
   return name.toLowerCase();
 }
 ```

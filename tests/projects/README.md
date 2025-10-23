@@ -1,4 +1,3 @@
-
 # Project Script Test Suite
 
 [![License: GPL v3 or later](https://img.shields.io/badge/License-GPL%20v3%20or%20later-blue.svg)](https://www.gnu.org/licenses/gpl-3.0.html)
@@ -16,20 +15,18 @@ This folder contains comprehensive [Bats](https://github.com/bats-core/bats-core
 
 ## Test Files Overview
 
-
-| Test File                                 | Purpose                                                                                       | Status |
-|-------------------------------------------|-----------------------------------------------------------------------------------------------|--------|
-| `test-client-delivery-project.bats`       | Tests `client-delivery-project.sh` for argument handling, help output, dry-run, field creation, idempotency, env overrides, and error handling | 6/9 pass |
-| `test-client-delivery-project-auth.bats`  | Tests authentication logic for `client-delivery-project.sh` (gh CLI presence, auth, scopes)    | 4/4 pass |
-| `test-client-delivery-project-csv.bats`   | Tests CSV-driven settings import and access management for `client-delivery-project.sh`         | 2/2 pass |
-| `test-product_dev_project.bats`           | Tests `product-dev-project.sh` for CLI commands, dry-run, field creation, idempotency, env overrides, and error handling | 12/12 pass |
-| `test-product-dev-project-auth.bats`      | Tests authentication logic for `product-dev-project.sh` (gh CLI presence, auth, scopes)        | 4/4 pass |
-| `test-product-dev-project-csv.bats`       | Tests CSV-driven settings import and access management for `product-dev-project.sh`             | 0/2 pass |
-| `test-create-project-field.bats`          | Tests helper logic for field command construction and dry-run output in project scripts        | 2/2 pass |
-| `test-update-projects.bats`               | Tests `update-projects.sh` for field management, CSV-driven creation, options, dry-run, deletion, and error handling | 19/19 pass |
+| Test File                                | Purpose                                                                                                                                        | Status     |
+| ---------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- | ---------- |
+| `test-client-delivery-project.bats`      | Tests `client-delivery-project.sh` for argument handling, help output, dry-run, field creation, idempotency, env overrides, and error handling | 6/9 pass   |
+| `test-client-delivery-project-auth.bats` | Tests authentication logic for `client-delivery-project.sh` (gh CLI presence, auth, scopes)                                                    | 4/4 pass   |
+| `test-client-delivery-project-csv.bats`  | Tests CSV-driven settings import and access management for `client-delivery-project.sh`                                                        | 2/2 pass   |
+| `test-product_dev_project.bats`          | Tests `product-dev-project.sh` for CLI commands, dry-run, field creation, idempotency, env overrides, and error handling                       | 12/12 pass |
+| `test-product-dev-project-auth.bats`     | Tests authentication logic for `product-dev-project.sh` (gh CLI presence, auth, scopes)                                                        | 4/4 pass   |
+| `test-product-dev-project-csv.bats`      | Tests CSV-driven settings import and access management for `product-dev-project.sh`                                                            | 0/2 pass   |
+| `test-create-project-field.bats`         | Tests helper logic for field command construction and dry-run output in project scripts                                                        | 2/2 pass   |
+| `test-update-projects.bats`              | Tests `update-projects.sh` for field management, CSV-driven creation, options, dry-run, deletion, and error handling                           | 19/19 pass |
 
 ---
-
 
 ## How the Tests Work
 

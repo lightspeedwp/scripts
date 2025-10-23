@@ -1,3 +1,20 @@
+# ============================================================================
+# .shellcheckrc
+# Purpose: ShellCheck configuration for repo shell scripts
+# Reference: https://github.com/koalaman/shellcheck/wiki
+# ============================================================================
+
+# Disable specific checks that are not applicable or too strict for our use case
+disable=SC2034      # Variable appears unused (common in sourced scripts)
+disable=SC2039      # Bash-specific features (we explicitly use bash)
+disable=SC1090      # Can't follow sourced files (dynamic sourcing)
+disable=SC1091      # Not following sourced files (external dependencies)
+
+# Set shell dialect to bash
+shell=bash
+
+# Allow external sources (ignore sourcing errors)
+external-sources=true
 # ShellCheck configuration
 # Disable specific checks that are not applicable or too strict for our use case
 

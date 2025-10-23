@@ -143,7 +143,11 @@ async function updateLabels(octokit, owner, repo, labels) {
                 });
                 results.push({ name: label.name, status: 'updated' });
             } else {
-                results.push({ name: label.name, status: 'failed', error: error.message });
+                results.push({
+                    name: label.name,
+                    status: 'failed',
+                    error: error.message,
+                });
             }
         }
     }
@@ -169,7 +173,9 @@ function validateConfig() {
 
     for (const key of required) {
         if (!config[key]) {
-            throw new WorkflowError(`Missing required environment variable: ${key.toUpperCase()}`);
+            throw new WorkflowError(
+                `Missing required environment variable: ${key.toUpperCase()}`
+            );
         }
     }
 }
@@ -222,7 +228,9 @@ async function writeJsonFile(filePath, data) {
 
         console.log(`Written: ${filePath}`);
     } catch (error) {
-        throw new WorkflowError(`Failed to write ${filePath}: ${error.message}`);
+        throw new WorkflowError(
+            `Failed to write ${filePath}: ${error.message}`
+        );
     }
 }
 ```
@@ -266,7 +274,9 @@ describe('Workflow Script', () => {
     test('handles missing configuration gracefully', async () => {
         delete process.env.GITHUB_TOKEN;
 
-        await expect(main()).rejects.toThrow('Missing required environment variable');
+        await expect(main()).rejects.toThrow(
+            'Missing required environment variable'
+        );
     });
 
     test('processes valid input correctly', async () => {
@@ -345,7 +355,9 @@ function createProgressBar(total, label = 'Processing') {
         increment() {
             current++;
             const percentage = Math.round((current / total) * 100);
-            process.stdout.write(`\r${label}: ${current}/${total} (${percentage}%)`);
+            process.stdout.write(
+                `\r${label}: ${current}/${total} (${percentage}%)`
+            );
 
             if (current === total) {
                 process.stdout.write('\n');
@@ -365,7 +377,9 @@ async function processBatch(items, batchSize = 10, processor) {
 
     for (let i = 0; i < items.length; i += batchSize) {
         const batch = items.slice(i, i + batchSize);
-        const batchResults = await Promise.all(batch.map((item) => processor(item)));
+        const batchResults = await Promise.all(
+            batch.map((item) => processor(item))
+        );
         results.push(...batchResults);
 
         // Rate limiting pause

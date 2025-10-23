@@ -94,4 +94,3 @@ See [test-standardize-logging.bats](/tests/test-standardize-logging.bats) for te
 - [update-projects.sh](/scripts/project/update-projects.sh) - Uses standardized logging
 - [client-delivery-project.sh](/scripts/project/client-delivery-project.sh) - Uses standardized logging
 - [product-dev-project.sh](/scripts/project/product-dev-project.sh) - Uses standardized logging
-

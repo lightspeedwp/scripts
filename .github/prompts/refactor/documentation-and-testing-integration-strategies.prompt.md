@@ -1,4 +1,3 @@
-
 ---
 applyTo: '**'
 description: 'Prompt for documentation and testing integration strategies for modular shell script includes.'
@@ -23,7 +22,6 @@ You are a documentation and testing integration specialist. Follow our LightSpee
 Define systematic approaches for integrating documentation generation, test validation, coverage reporting, and quality assurance into the development workflow for modular shell script components.
 
 ## Checklist
-
 
 ## Current Repository State & Action Items
 
@@ -80,31 +78,31 @@ EOF
 name: Generate Documentation
 
 on:
-  push:
-    branches: [main]
-    paths: ['scripts/includes/**/*.sh']
+    push:
+        branches: [main]
+        paths: ['scripts/includes/**/*.sh']
 
 jobs:
-  update-docs:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
+    update-docs:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
 
-      - name: Generate Include Documentation
-        run: |
-          ./scripts/maintenance/generate-include-docs.sh
+            - name: Generate Include Documentation
+              run: |
+                  ./scripts/maintenance/generate-include-docs.sh
 
-      - name: Update README Files
-        run: |
-          ./scripts/maintenance/update-include-readmes.sh
+            - name: Update README Files
+              run: |
+                  ./scripts/maintenance/update-include-readmes.sh
 
-      - name: Commit Documentation Updates
-        run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-          git add docs/includes/
-          git diff --staged --quiet || git commit -m "docs: Auto-update include documentation"
-          git push
+            - name: Commit Documentation Updates
+              run: |
+                  git config --local user.email "action@github.com"
+                  git config --local user.name "GitHub Action"
+                  git add docs/includes/
+                  git diff --staged --quiet || git commit -m "docs: Auto-update include documentation"
+                  git push
 ```
 
 #### Documentation Quality Validation
@@ -477,115 +475,115 @@ generate_quality_scores_table() {
 name: Include Quality Pipeline
 
 on:
-  push:
-    branches: [main, develop]
-    paths: ['scripts/includes/**']
-  pull_request:
-    branches: [main]
-    paths: ['scripts/includes/**']
+    push:
+        branches: [main, develop]
+        paths: ['scripts/includes/**']
+    pull_request:
+        branches: [main]
+        paths: ['scripts/includes/**']
 
 env:
-  COVERAGE_THRESHOLD: 80
-  QUALITY_THRESHOLD: 75
+    COVERAGE_THRESHOLD: 80
+    QUALITY_THRESHOLD: 75
 
 jobs:
-  lint-includes:
-    name: Lint Include Files
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
+    lint-includes:
+        name: Lint Include Files
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
 
-      - name: Install ShellCheck
-        run: |
-          sudo apt-get update
-          sudo apt-get install shellcheck
+            - name: Install ShellCheck
+              run: |
+                  sudo apt-get update
+                  sudo apt-get install shellcheck
 
-      - name: Lint Shell Scripts
-        run: |
-          find scripts/includes -name "*.sh" -exec shellcheck {} \;
+            - name: Lint Shell Scripts
+              run: |
+                  find scripts/includes -name "*.sh" -exec shellcheck {} \;
 
-      - name: Validate Documentation
-        run: |
-          ./scripts/maintenance/validate-docs-quality.sh
+            - name: Validate Documentation
+              run: |
+                  ./scripts/maintenance/validate-docs-quality.sh
 
-  test-includes:
-    name: Test Include Functions
-    runs-on: ubuntu-latest
-    needs: lint-includes
-    steps:
-      - uses: actions/checkout@v4
+    test-includes:
+        name: Test Include Functions
+        runs-on: ubuntu-latest
+        needs: lint-includes
+        steps:
+            - uses: actions/checkout@v4
 
-      - name: Setup Bats
-        run: |
-          git clone https://github.com/bats-core/bats-core.git
-          cd bats-core && sudo ./install.sh /usr/local
+            - name: Setup Bats
+              run: |
+                  git clone https://github.com/bats-core/bats-core.git
+                  cd bats-core && sudo ./install.sh /usr/local
 
-      - name: Run Unit Tests
-        run: |
-          bats tests/includes/*/test-*.bats
+            - name: Run Unit Tests
+              run: |
+                  bats tests/includes/*/test-*.bats
 
-      - name: Run Integration Tests
-        run: |
-          bats tests/includes/integration/
+            - name: Run Integration Tests
+              run: |
+                  bats tests/includes/integration/
 
-      - name: Performance Benchmarks
-        run: |
-          ./tests/includes/performance/benchmark-includes.sh
+            - name: Performance Benchmarks
+              run: |
+                  ./tests/includes/performance/benchmark-includes.sh
 
-  quality-analysis:
-    name: Quality Analysis
-    runs-on: ubuntu-latest
-    needs: [lint-includes, test-includes]
-    steps:
-      - uses: actions/checkout@v4
+    quality-analysis:
+        name: Quality Analysis
+        runs-on: ubuntu-latest
+        needs: [lint-includes, test-includes]
+        steps:
+            - uses: actions/checkout@v4
 
-      - name: Install Dependencies
-        run: |
-          sudo apt-get install jq bc
+            - name: Install Dependencies
+              run: |
+                  sudo apt-get install jq bc
 
-      - name: Generate Coverage Report
-        run: |
-          ./scripts/maintenance/generate-test-coverage.sh
+            - name: Generate Coverage Report
+              run: |
+                  ./scripts/maintenance/generate-test-coverage.sh
 
-      - name: Collect Quality Metrics
-        run: |
-          ./scripts/maintenance/collect-quality-metrics.sh
+            - name: Collect Quality Metrics
+              run: |
+                  ./scripts/maintenance/collect-quality-metrics.sh
 
-      - name: Generate Quality Dashboard
-        run: |
-          ./scripts/maintenance/generate-quality-report.sh
+            - name: Generate Quality Dashboard
+              run: |
+                  ./scripts/maintenance/generate-quality-report.sh
 
-      - name: Check Quality Thresholds
-        run: |
-          ./scripts/maintenance/check-quality-gates.sh
+            - name: Check Quality Thresholds
+              run: |
+                  ./scripts/maintenance/check-quality-gates.sh
 
-      - name: Upload Reports
-        uses: actions/upload-artifact@v4
-        with:
-          name: quality-reports
-          path: reports/
+            - name: Upload Reports
+              uses: actions/upload-artifact@v4
+              with:
+                  name: quality-reports
+                  path: reports/
 
-  update-documentation:
-    name: Update Documentation
-    runs-on: ubuntu-latest
-    needs: quality-analysis
-    if: github.ref == 'refs/heads/main'
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+    update-documentation:
+        name: Update Documentation
+        runs-on: ubuntu-latest
+        needs: quality-analysis
+        if: github.ref == 'refs/heads/main'
+        steps:
+            - uses: actions/checkout@v4
+              with:
+                  token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Generate Documentation
-        run: |
-          ./scripts/maintenance/generate-include-docs.sh
+            - name: Generate Documentation
+              run: |
+                  ./scripts/maintenance/generate-include-docs.sh
 
-      - name: Commit Documentation
-        run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-          git add docs/includes/
-          git diff --staged --quiet || git commit -m "docs: Auto-update include documentation [skip ci]"
-          git push
+            - name: Commit Documentation
+              run: |
+                  git config --local user.email "action@github.com"
+                  git config --local user.name "GitHub Action"
+                  git add docs/includes/
+                  git diff --staged --quiet || git commit -m "docs: Auto-update include documentation [skip ci]"
+                  git push
 ```
 
 #### Quality Gates Implementation

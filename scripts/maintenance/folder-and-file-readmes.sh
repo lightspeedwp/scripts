@@ -407,7 +407,8 @@ parse_arguments() {
             --profile) PROFILE=true; shift ;;
             --help)
                 echo "[$(date '+%Y-%m-%d %H:%M:%S')] Help requested" >> "$LOG_FILE"
-                show_help; exit 0 ;;
+                show_help; # shellcheck disable=SC2317
+                exit 0 ;;
             --file) FILE_MODE=true; FILE_PATH="$2"; shift 2 ;;
             --merge) MERGE_MODE=true; shift ;;
             --overwrite) OVERWRITE_MODE=true; shift ;;
@@ -418,13 +419,15 @@ parse_arguments() {
                 done ;;
             --*)
                 log_error "Unknown option: $1"
-                show_help; exit 1 ;;
+                show_help; # shellcheck disable=SC2317
+                exit 1 ;;
             *)
                 if [[ -z "$TARGET_FOLDER" ]]; then
                     TARGET_FOLDER="$1"; shift
                 else
                     log_error "Unknown argument: $1"
-                    show_help; exit 1
+                    show_help; # shellcheck disable=SC2317
+                    exit 1
                 fi ;;
         esac
     done
@@ -475,11 +478,13 @@ main() {
     if [[ -z "$TARGET_FOLDER" && "$CREATE_MODE" != true && "$FILE_MODE" != true ]]; then
         log_error "No target folder specified"
         show_help
+        # shellcheck disable=SC2317
         exit 1
     fi
     if [[ -n "$TARGET_FOLDER" && ! -d "$TARGET_FOLDER" ]]; then
         log_error "Target folder does not exist: $TARGET_FOLDER"
         show_help
+        # shellcheck disable=SC2317
         exit 1
     fi
 

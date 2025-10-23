@@ -325,7 +325,7 @@
   description: Requires a decision or alignment.
 - name: status:needs-documentation
   color: C5DEF5
-  description: Deliverable is blocked pending docs\: release notes, change log, admin/how-to steps, or onboarding content. Add links or attachments (screenshots/GIFs), then move to review/QA once documentation is complete.
+  description: 'Deliverable is blocked pending docs: release notes, change log, admin/how-to steps, or onboarding content. Add links or attachments (screenshots/GIFs), then move to review/QA once documentation is complete.'
 - name: status:needs-loom-video
   color: C5DEF5
   description: Request a short screen recording to demonstrate the issue or desired behaviour (voiceover recommended). Acceptable evidence includes a Loom link or BugHerd’s built-in video feedback capture added directly to the task. This reduces back-and-forth and speeds reproduction.
@@ -394,10 +394,10 @@
   description: Site Editor (Appearance → Editor).
 - name: phase:post-launch
   color: E1E4E8
-  description: Live operations after release\: hotfixes, regression control and incremental improvements. Emphasis on stability, monitoring and user impact.
+  description: 'Live operations after release: hotfixes, regression control and incremental improvements. Emphasis on stability, monitoring and user impact.'
 - name: phase:pre-launch
   color: E1E4E8
-  description: Build, design and internal QA ahead of UAT; changes are frequent. Work may run on prototype or staging. Objective\: reach production-like readiness for acceptance.
+  description: 'Build, design and internal QA ahead of UAT; changes are frequent. Work may run on prototype or staging. Objective: reach production-like readiness for acceptance.'
 - name: phase:staging-uat
   color: E1E4E8
   description: Pre-production validation on staging; stakeholders run UAT to confirm requirements, performance and tracking before release. No new scope unless agreed.

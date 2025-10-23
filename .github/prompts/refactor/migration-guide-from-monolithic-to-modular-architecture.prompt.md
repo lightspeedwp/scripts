@@ -1,4 +1,3 @@
-
 ---
 applyTo: '**'
 description: 'Prompt for migration guide from monolithic to modular shell script architecture.'

@@ -342,16 +342,15 @@ create_feature_branch() {
 - When refactoring or patching: If you find documentation above the header block, move it below the header and strict mode, above the relevant function. If you find multiple header blocks, merge them into a single block at the top of the file. Never place any code, comments, or sourcing above the header block.
 
 - **Summary:**
-  - The header block is always first (**MANDATORY**).
-  - Strict mode is always second (**MANDATORY**).
-  - Inline function documentation is always directly above the function it describes, never above the header (**MANDATORY**).
-  - No code, comments, or documentation may appear before the header block (**MANDATORY**).
-  - This is mandatory for all LightSpeed WP shell scripts.
+    - The header block is always first (**MANDATORY**).
+    - Strict mode is always second (**MANDATORY**).
+    - Inline function documentation is always directly above the function it describes, never above the header (**MANDATORY**).
+    - No code, comments, or documentation may appear before the header block (**MANDATORY**).
+    - This is mandatory for all LightSpeed WP shell scripts.
 
 ---
 
 ## Additional Guidance
-
 
 - Always use plural forms for "Notes" and "Examples" in headers, even if only one item is present.
 - If a header field is duplicated or outdated, merge and update for completeness.

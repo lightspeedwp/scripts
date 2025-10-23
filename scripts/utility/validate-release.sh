@@ -1,10 +1,10 @@
+#!/bin/bash
 # Logging setup: always log to /logs/validate-release.log in repo root
 REPO_ROOT="$(cd "$(dirname "$0")/../../.." && pwd)"
 LOG_DIR="$REPO_ROOT/logs"
 SCRIPT_NAME="validate-release"
 LOG_FILE="$LOG_DIR/$SCRIPT_NAME.log"
 mkdir -p "$LOG_DIR"
-#!/bin/bash
 # Logging setup
 LOG_DIR="$(cd "$(dirname "$0")/../../logs" && pwd)"
 mkdir -p "$LOG_DIR"

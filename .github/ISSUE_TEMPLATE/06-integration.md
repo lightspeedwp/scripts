@@ -20,7 +20,7 @@ Describe the integration that's affected:
 - [ ] CI/CD system
 - [ ] Deployment platform
 - [ ] Authentication system
-- [ ] Other: _____
+- [ ] Other: **\_**
 
 ## Current Behavior
 
@@ -39,9 +39,9 @@ What should be happening instead?
 
 ## Steps to Reproduce
 
-1. 
-2. 
-3. 
+1.
+2.
+3.
 
 ## Logs or Error Messages
 
@@ -59,7 +59,7 @@ If you have ideas about how to fix the integration, please share them.
 
 ### Fixed
 
-- 
+-
 
 ## Definition of Ready (DoR) Checklist
 

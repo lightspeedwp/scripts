@@ -5,9 +5,8 @@ This document provides an overview of the unit and integration tests for the Lig
 ## Test Suite Overview
 
 - **Test Directory**: `/tests/`
-
-  - Organized by script type and feature area
-  - Subfolders for maintenance, project, utility, and release validation
+    - Organized by script type and feature area
+    - Subfolders for maintenance, project, utility, and release validation
 
 - **Total Test Files**: 5 primary suites (with additional subfolder tests)
 - **Total Test Cases**: 900+ comprehensive cases
@@ -15,19 +14,19 @@ This document provides an overview of the unit and integration tests for the Lig
 ## Test Organization
 
 - **run-all-tests.sh**
-    Main test runner script in repo root. Discovers and runs all Bats test files in `/tests` and subfolders. Supports dry-run, verbose, and pattern filtering. Integrates with CI/CD and CodeRabbit review automation.
+  Main test runner script in repo root. Discovers and runs all Bats test files in `/tests` and subfolders. Supports dry-run, verbose, and pattern filtering. Integrates with CI/CD and CodeRabbit review automation.
 - **tests/tests-run-all-tests.bats**
-    Bats test suite for the test runner script. Validates test discovery, dry-run, verbose, and pattern filtering. Ensures runner script works as expected and covers edge cases.
+  Bats test suite for the test runner script. Validates test discovery, dry-run, verbose, and pattern filtering. Ensures runner script works as expected and covers edge cases.
 - **tests/test-utility-functions.bats**
-    Covers core utility functions in `scripts/utility-functions.sh`
+  Covers core utility functions in `scripts/utility-functions.sh`
 - **tests/maintenance/test-prune-labels.bats**
-    Tests label pruning logic for `scripts/maintenance/prune-labels.sh`
+  Tests label pruning logic for `scripts/maintenance/prune-labels.sh`
 - **tests/maintenance/test-sync-org-labels.bats**
-    Validates organization-wide label sync in `scripts/maintenance/sync-org-labels.sh`
+  Validates organization-wide label sync in `scripts/maintenance/sync-org-labels.sh`
 - **tests/test-validate-release.bats**
-    Ensures release validation logic in `scripts/validate-release.sh`
+  Ensures release validation logic in `scripts/validate-release.sh`
 - **tests/project/test-update-projects.bats**
-    Tests project update automation in `scripts/project/update-projects.sh`
+  Tests project update automation in `scripts/project/update-projects.sh`
 
 ## How to Run Tests
 
@@ -66,12 +65,13 @@ bats tests/maintenance/test-prune-labels.bats
 - Descriptive, maintainable test names
 - Coverage of both happy paths and failure scenarios
 
-
 - Add integration tests for MCP server scripts and end-to-end workflows
 - Add more runner script options and reporting features
+
 ## Reference
 
 See [tests/TEST_COVERAGE_SUMMARY.md](tests/TEST_COVERAGE_SUMMARY.md) for full details.
+
 ### Project Scripts
 
 - product-dev-project.sh: Covered by test-project-auth.bats, test-project-csv.bats, test-product-dev-project.bats

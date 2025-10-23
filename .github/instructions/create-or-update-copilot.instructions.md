@@ -38,6 +38,7 @@ You are an instruction author. Follow our LightSpeed WP instruction framework an
 ## How to Create New Instruction Files
 
 When creating a new instruction file:
+
 1. **Start with the YAML frontmatter block** at the top of the file, including all required metadata fields.
 2. **Add the heading one (`# ...`)** immediately after the frontmatter block and an empty line.
 3. **Write the intro paragraph** immediately after the heading one and an empty line, following the required format.
@@ -50,22 +51,31 @@ When creating a new instruction file:
 ## How to Merge Existing Content
 
 When updating or refactoring instruction files:
+
 1. **YAML frontmatter block:**
-  - Begins with `---` on its own line
-  - Validate that the frontmatter is present, complete, and unbroken at the top of the file, and that the heading and intro follow the required format and spacing
-  - Contains all required and governance fields
-  - Ends with `---` on its own line
+
+- Begins with `---` on its own line
+- Validate that the frontmatter is present, complete, and unbroken at the top of the file, and that the heading and intro follow the required format and spacing
+- Contains all required and governance fields
+- Ends with `---` on its own line
+
 2. **Heading One (`# ...`)**
-  - Placed immediately after the frontmatter block and empty line
-  - Followed by one empty line
+
+- Placed immediately after the frontmatter block and empty line
+- Followed by one empty line
+
 3. **Intro Paragraph:**
-  - Format: `You are a [role]. Follow our [framework/patterns] to [type of task]. Avoid [practices or tools] unless specified.`
-  - Placed immediately after the heading one and empty line
-  - Followed by one empty line
+
+- Format: `You are a [role]. Follow our [framework/patterns] to [type of task]. Avoid [practices or tools] unless specified.`
+- Placed immediately after the heading one and empty line
+- Followed by one empty line
+
 4. **Carefully merge all existing content into the new recommended sections.**
-  - Do not delete, overwrite, or lose any original material.
-  - Reorganize content to fit the standard structure below.
-  - Expand or clarify sections as needed, but preserve all substantive information.
+
+- Do not delete, overwrite, or lose any original material.
+- Reorganize content to fit the standard structure below.
+- Expand or clarify sections as needed, but preserve all substantive information.
+
 5. **Complete the review checklist below for every update.**
 6. **Always validate that the frontmatter is present, complete, and unbroken at the top of the file, and that the heading and intro follow the required format and spacing.**
 7. **All instruction files must respect ALL markdown linting rules.**
@@ -83,14 +93,14 @@ This file meets most requirements for instruction authoring standards, but the f
 2. **Section Headers**: Use consistent markdown heading levels (avoid skipping levels, e.g., H2 to H4).
 3. **Examples and References**: Expand the examples section with more real-world templates and incorrect patterns for clarity.
 4. **File References**: Remove or update links to files that do not exist (e.g., `shell-script-header-and-docs.md`, `shell-script-copilot.md`) to avoid lint errors.
-6. **Validation Steps**: Include a sample validation checklist for contributors to follow before submitting instruction files.
-7. **Conflict Resolution**: Add a section describing how to resolve conflicting instructions or merge disputes.
-8. **Changelog Management**: Clarify how to update the changelog field and track changes for audit purposes.
-9. **Automation Integration**: Add explicit instructions for integrating with CI/CD and review bots.
-10. **Localization**: Reference localization guidelines for markdown documents if applicable.
-11. **Security Considerations**: Include a section on ensuring instructions do not introduce unsafe practices or unsupported tools.
-12. **Accessibility**: Add guidelines for ensuring documentation is accessible and uses inclusive language.
-13. **Impact Statement**: Include a brief statement on the impact of the instruction file on workflows and automation.
+5. **Validation Steps**: Include a sample validation checklist for contributors to follow before submitting instruction files.
+6. **Conflict Resolution**: Add a section describing how to resolve conflicting instructions or merge disputes.
+7. **Changelog Management**: Clarify how to update the changelog field and track changes for audit purposes.
+8. **Automation Integration**: Add explicit instructions for integrating with CI/CD and review bots.
+9. **Localization**: Reference localization guidelines for markdown documents if applicable.
+10. **Security Considerations**: Include a section on ensuring instructions do not introduce unsafe practices or unsupported tools.
+11. **Accessibility**: Add guidelines for ensuring documentation is accessible and uses inclusive language.
+12. **Impact Statement**: Include a brief statement on the impact of the instruction file on workflows and automation.
 
 ---
 
@@ -114,13 +124,13 @@ This file meets most requirements for instruction authoring standards, but the f
 ## Required Sections
 
 1. **Frontmatter**
-   - YAML block at the top of the file with metadata fields (see below)
+    - YAML block at the top of the file with metadata fields (see below)
 2. **Opening Paragraph**
-   - Format: `You are a [role]. Follow our [framework/patterns] to [type of task]. Avoid [practices or tools] unless specified.`
+    - Format: `You are a [role]. Follow our [framework/patterns] to [type of task]. Avoid [practices or tools] unless specified.`
 3. **Purpose and Scope**
-   - Briefly describe what the instruction covers and who should use it.
+    - Briefly describe what the instruction covers and who should use it.
 4. **Core Principles**
-   - List the key principles for effective instructions (clarity, actionability, etc.).
+    - List the key principles for effective instructions (clarity, actionability, etc.).
 5. **Role Definition and Context**
 6. **Framework or Standards to Follow**
 7. **Task Types and Scenarios**
@@ -129,10 +139,11 @@ This file meets most requirements for instruction authoring standards, but the f
     - Use markdown headings and bullet lists for readability.
     - Include code blocks for templates and examples.
     - Reference related files using relative links.
-11. **Integration References**
+10. **Integration References**
     - Reference `.github/custom-instructions.md` and any related agent, prompt, or chatmode files
-12. **Review and Enforcement**
+11. **Review and Enforcement**
     - Checklist for clarity, completeness, and compliance
+
 ---
 
 ## Frontmatter Guidelines
@@ -140,6 +151,7 @@ This file meets most requirements for instruction authoring standards, but the f
 All instruction, prompt, chatmode, and agent files must begin with a YAML frontmatter block containing relevant metadata. Example fields:
 
 ### Instruction Files
+
 ```yaml
 ---
 applyTo: '**'
@@ -157,6 +169,7 @@ created: 'YYYY-MM-DD'
 ```
 
 ### Prompt Files
+
 ```yaml
 ---
 promptType: 'copilot|review|automation|custom'
@@ -174,6 +187,7 @@ created: 'YYYY-MM-DD'
 ```
 
 ### Chatmode Files
+
 ```yaml
 ---
 chatmodeType: 'scenario|role|custom'
@@ -191,6 +205,7 @@ created: 'YYYY-MM-DD'
 ```
 
 ### Agent Files
+
 ```yaml
 ---
 name: 'Agent Name'
@@ -246,8 +261,9 @@ deprecated: false
 - [ ] Examples of usage are included
 - [ ] Integration references are included
 - [ ] Reviewed for clarity and enforceability
- * Description: Example plugin scaffold.
- * Version: 0.1.0
+
+* Description: Example plugin scaffold.
+* Version: 0.1.0
 
 ### Agent File Creation Checklist
 
@@ -323,6 +339,7 @@ deprecated: false
 ---
 
 **Reference:**
+
 - Always follow these standards for all instruction, prompt, chatmode, and agent files.
 - See any related instructions referenced above for further details.
 - Each instruction file should refer back to the main instructions [.github/custom-instructions.md](../custom-instructions.md).

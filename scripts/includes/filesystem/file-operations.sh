@@ -57,7 +57,8 @@ create_backup() {
     local backup_dir="${2:-$(dirname "$file")}"
     local filename
     filename=$(basename "$file")
-    local backup_file="${backup_dir}/${filename}.backup.$(timestamp)"
+    local backup_file
+    backup_file="${backup_dir}/${filename}.backup.$(timestamp)"
     
     # Validate source file exists
     if ! validate_file_exists "$file" "Source file"; then
@@ -94,8 +95,10 @@ create_backup() {
 safe_write_file() {
     local target_file="$1"
     local content="${2:-}"
-    local temp_file="${target_file}.tmp.$(timestamp)"
-    local backup_file=""
+    local temp_file
+    temp_file="${target_file}.tmp.$(timestamp)"
+    local backup_file
+    backup_file=""
     
     # Create backup if target file exists
     if [[ -f "$target_file" ]]; then
@@ -157,7 +160,8 @@ safe_write_file() {
 safe_copy_file() {
     local source_file="$1"
     local dest_file="$2"
-    local backup_file=""
+    local backup_file
+    backup_file=""
     
     # Validate source file
     if ! validate_file_exists "$source_file" "Source file"; then
@@ -206,7 +210,8 @@ safe_copy_file() {
 safe_move_file() {
     local source_file="$1"
     local dest_file="$2"
-    local backup_file=""
+    local backup_file
+    backup_file=""
     
     # Validate source file
     if ! validate_file_exists "$source_file" "Source file"; then
@@ -275,7 +280,7 @@ cleanup_temp_files() {
 create_temp_file() {
     local template="${1:-tmp.XXXXXXXXXX}"
     local temp_file
-    
+    temp_file=""
     if temp_file=$(mktemp "$template"); then
         # Set secure permissions (readable/writable by owner only)
         chmod 600 "$temp_file"
@@ -298,7 +303,7 @@ create_temp_file() {
 create_temp_dir() {
     local template="${1:-tmp.XXXXXXXXXX}"
     local temp_dir
-    
+    temp_dir=""
     if temp_dir=$(mktemp -d "$template"); then
         # Set secure permissions (accessible by owner only)
         chmod 700 "$temp_dir"
@@ -389,7 +394,7 @@ rotate_file() {
         local backup_file
         if backup_file=$(create_backup "$file_path"); then
             # Clear the original file
-            > "$file_path"
+            : > "$file_path"
             log_info "File rotated (size: $file_size bytes): $backup_file"
             return 0
         else

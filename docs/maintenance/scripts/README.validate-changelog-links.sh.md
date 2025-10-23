@@ -66,5 +66,5 @@ On release, changelog entries under `[Unreleased]` are compiled into a new versi
 
 - **Description:** Logs error messages to standard error with an `[ERROR]` prefix.
 - **Arguments:**
-  - `$*`: The error message to log.
+    - `$*`: The error message to log.
 - **Output:** Prints the formatted error message to standard error.

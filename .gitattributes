@@ -1,0 +1,65 @@
+# ============================================================================
+# .gitattributes
+# Purpose: Enforce consistent line endings, diff behavior, and file type handling
+# Reference: https://git-scm.com/docs/gitattributes
+# ============================================================================
+
+# Enforce LF line endings and mark all text files for normalization
+* text=auto eol=lf
+
+# Shell scripts: always treat as text, enforce LF
+*.sh text eol=lf
+
+# JavaScript/TypeScript: treat as text, enforce LF
+*.js text eol=lf
+*.ts text eol=lf
+
+# Markdown: treat as text, enforce LF
+*.md text eol=lf
+
+# YAML/JSON: treat as text, enforce LF
+*.yml text eol=lf
+*.yaml text eol=lf
+*.json text eol=lf
+
+# Mark lock files as binary to avoid merge conflicts
+package-lock.json binary
+
+# Exclude generated or binary files from diff and enforce binary handling
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.webm binary
+*.zip binary
+*.mp4 binary
+# .gitattributes
+# Enforce LF line endings and mark text files
+* text=auto eol=lf
+
+# Treat shell scripts as text
+*.sh text eol=lf
+
+# Treat JS/TS as text
+*.js text eol=lf
+*.ts text eol=lf
+
+# Treat markdown as text
+*.md text eol=lf
+
+# Treat YAML/JSON as text
+*.yml text eol=lf
+*.yaml text eol=lf
+*.json text eol=lf
+
+# Mark lock files as binary
+package-lock.json binary
+
+# Exclude generated or binary files from diff
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.webm binary
+*.zip binary
+*.mp4 binary

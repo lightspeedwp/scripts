@@ -27,11 +27,11 @@ Additional agent-related logic is managed via:
 1. Create a new folder: `./github/agents/`
 2. Add agent implementation files (e.g., `copilot-agent.js`, `review-agent.py`)
 3. Document each agent in this file:
-   - Name
-   - Purpose
-   - Integration points
-   - Usage instructions
-   - Maintenance notes
+    - Name
+    - Purpose
+    - Integration points
+    - Usage instructions
+    - Maintenance notes
 
 ## Example Entry (for future agents)
 
@@ -52,16 +52,16 @@ Additional agent-related logic is managed via:
 - **Usage:** Automatically runs when issues are opened or reopened
 - **Standards:** Aligned with [ISSUE_TYPES.md](https://github.com/lightspeedwp/.github/blob/develop/.github/ISSUE_TYPES.md) and project templates. The org wide default [issue-types.yml](https://github.com/lightspeedwp/.github/blob/develop/.github/issue-types.yml)
 - **Functionality:**
-  - Analyzes issue template metadata, content, title, and labels
-  - Determines appropriate issue type using the standardized types (Bug, Feature, Task, Epic, Story, etc.)
-  - Updates GitHub ProjectsV2 issue type field 
-  - Adds issues to relevant projects if not already added
+    - Analyzes issue template metadata, content, title, and labels
+    - Determines appropriate issue type using the standardized types (Bug, Feature, Task, Epic, Story, etc.)
+    - Updates GitHub ProjectsV2 issue type field
+    - Adds issues to relevant projects if not already added
 - **Definition of Done:**
-  - Correctly identifies all standard issue types per org-wide standards
-  - Prioritizes template metadata over content analysis
-  - Documents behavior in .github/docs/auto-issue-type.md
-  - Integrates with PR and issue templates
-  - Follows the standard branch naming conventions when modified
+    - Correctly identifies all standard issue types per org-wide standards
+    - Prioritizes template metadata over content analysis
+    - Documents behavior in .github/docs/auto-issue-type.md
+    - Integrates with PR and issue templates
+    - Follows the standard branch naming conventions when modified
 
 ### label-standardization-agent
 
@@ -71,16 +71,16 @@ Additional agent-related logic is managed via:
 - **Usage:** Runs weekly and can be triggered manually via `workflow_dispatch`
 - **Standards:** Aligned with [ISSUE_LABELS](https://github.com/lightspeedwp/.github/blob/develop/.github/ISSUE_LABELS.md), [PR_LABELS](https://github.com/lightspeedwp/.github/blob/develop/.github/PR_LABELS.md) and standard prefixes. The org-wide labels are defined in this [labels.yml](https://github.com/lightspeedwp/.github/blob/develop/.github/labels.yml) and [project-pr-labeler.yml](https://github.com/lightspeedwp/.github/blob/develop/.github/project-pr-labeler.yml).
 - **Functionality:**
-  - Detects non-standard labels with standard equivalents (e.g., "php" vs "lang:php")
-  - Migrates issues/PRs from non-standard to standard labels
-  - Removes redundant non-standard labels after migration
-  - Supports dry-run mode for testing before applying changes
+    - Detects non-standard labels with standard equivalents (e.g., "php" vs "lang:php")
+    - Migrates issues/PRs from non-standard to standard labels
+    - Removes redundant non-standard labels after migration
+    - Supports dry-run mode for testing before applying changes
 - **Definition of Done:**
-  - Successfully standardizes all labels according to organization conventions
-  - Properly migrates issues/PRs to use standard labels
-  - Provides clear logging and summary reports
-  - Integrates with existing label workflows
-  - Documents behavior in `.github/docs/label-standardization.md`
+    - Successfully standardizes all labels according to organization conventions
+    - Properly migrates issues/PRs to use standard labels
+    - Provides clear logging and summary reports
+    - Integrates with existing label workflows
+    - Documents behavior in `.github/docs/label-standardization.md`
 
 ### script-header-docs-agent
 
@@ -90,16 +90,16 @@ Additional agent-related logic is managed via:
 - **Usage:** Automatically triggered on shell script changes via pull requests
 - **Standards:** Aligned with LightSpeed WP shell script documentation standards and header requirements
 - **Functionality:**
-  - Validates script headers follow LightSpeed WP standards (shebang, script name, description, usage, author, date)
-  - Checks for proper inline documentation and comments
-  - Ensures function documentation and usage examples
-  - Validates parameter and variable documentation
-  - Generates documentation quality scores and improvement suggestions
+    - Validates script headers follow LightSpeed WP standards (shebang, script name, description, usage, author, date)
+    - Checks for proper inline documentation and comments
+    - Ensures function documentation and usage examples
+    - Validates parameter and variable documentation
+    - Generates documentation quality scores and improvement suggestions
 - **Definition of Done:**
-  - All shell scripts have compliant headers with required components
-  - Functions and important variables are properly documented
-  - Provides clear feedback on documentation gaps with actionable suggestions
-  - Integrates with PR review process for automated documentation validation
+    - All shell scripts have compliant headers with required components
+    - Functions and important variables are properly documented
+    - Provides clear feedback on documentation gaps with actionable suggestions
+    - Integrates with PR review process for automated documentation validation
 
 ### bats-tests-runner-agent
 
@@ -109,16 +109,16 @@ Additional agent-related logic is managed via:
 - **Usage:** Automatically triggered on script or test file changes during PR reviews
 - **Standards:** Aligned with LightSpeed WP Bats testing requirements and coverage thresholds
 - **Functionality:**
-  - Ensures every shell script has corresponding Bats tests
-  - Validates test coverage and quality against script type requirements
-  - Manages test runner scripts and CI integration
-  - Checks for proper test structure and naming conventions
-  - Analyzes test categories (basic functionality, error handling, dry-run, etc.)
+    - Ensures every shell script has corresponding Bats tests
+    - Validates test coverage and quality against script type requirements
+    - Manages test runner scripts and CI integration
+    - Checks for proper test structure and naming conventions
+    - Analyzes test categories (basic functionality, error handling, dry-run, etc.)
 - **Definition of Done:**
-  - All shell scripts have corresponding test files with minimum coverage threshold
-  - Test files follow naming conventions and quality standards
-  - Test runners are properly configured for CI/CD integration
-  - Provides comprehensive testing reports with coverage metrics and suggestions
+    - All shell scripts have corresponding test files with minimum coverage threshold
+    - Test files follow naming conventions and quality standards
+    - Test runners are properly configured for CI/CD integration
+    - Provides comprehensive testing reports with coverage metrics and suggestions
 
 ### release-agent
 
@@ -128,16 +128,16 @@ Additional agent-related logic is managed via:
 - **Usage:** Automatically triggered on release branch creation, tag creation, and release publication
 - **Standards:** Aligned with LightSpeed WP semantic versioning and changelog standards
 - **Functionality:**
-  - Validates release readiness and quality gates
-  - Manages semantic versioning and changelog automation
-  - Coordinates release branches and tag creation
-  - Handles release notes and documentation updates
-  - Performs comprehensive pre-release validation (files, tests, documentation, dependencies)
+    - Validates release readiness and quality gates
+    - Manages semantic versioning and changelog automation
+    - Coordinates release branches and tag creation
+    - Handles release notes and documentation updates
+    - Performs comprehensive pre-release validation (files, tests, documentation, dependencies)
 - **Definition of Done:**
-  - All release criteria are validated before release creation
-  - Version consistency is maintained across all files (VERSION, package.json, CHANGELOG.md)
-  - Release process is fully automated with proper quality gates
-  - Provides detailed release validation reports and blocks releases with critical issues
+    - All release criteria are validated before release creation
+    - Version consistency is maintained across all files (VERSION, package.json, CHANGELOG.md)
+    - Release process is fully automated with proper quality gates
+    - Provides detailed release validation reports and blocks releases with critical issues
 
 ### linting-workflow-agent
 
@@ -147,16 +147,16 @@ Additional agent-related logic is managed via:
 - **Usage:** Automatically triggered on code changes via pull requests and repository validation
 - **Standards:** Aligned with LightSpeed WP multi-language linting standards (ShellCheck, markdownlint, ESLint, Prettier, yamllint)
 - **Functionality:**
-  - Validates linting configuration consistency across multiple languages
-  - Enforces code quality standards for shell, JavaScript, Markdown, YAML
-  - Manages automated fixes and suggestions
-  - Coordinates with CI/CD workflows for quality gates
-  - Analyzes changed files for linting issues with detailed reporting
+    - Validates linting configuration consistency across multiple languages
+    - Enforces code quality standards for shell, JavaScript, Markdown, YAML
+    - Manages automated fixes and suggestions
+    - Coordinates with CI/CD workflows for quality gates
+    - Analyzes changed files for linting issues with detailed reporting
 - **Definition of Done:**
-  - All supported file types have proper linting configurations
-  - Linting workflows are integrated into CI/CD with appropriate triggers
-  - Code quality issues are detected and reported with auto-fix suggestions
-  - Comprehensive linting reports provide actionable feedback for developers
+    - All supported file types have proper linting configurations
+    - Linting workflows are integrated into CI/CD with appropriate triggers
+    - Code quality issues are detected and reported with auto-fix suggestions
+    - Comprehensive linting reports provide actionable feedback for developers
 
 ### labeling-agent
 
@@ -165,16 +165,16 @@ Additional agent-related logic is managed via:
 - **Integration:** GitHub Actions on issue/PR creation and updates, label management workflows (`.github/workflows/labeler-pr.yml`)
 - **Usage:** Automatically triggered on issue/PR creation, updates, and periodic label synchronization
 - **Standards:** Aligned with LightSpeed WP label categories and naming conventions (area:, lang:, priority:, status:, size:, type:). Aligned with [ISSUE_LABELS](https://github.com/lightspeedwp/.github/blob/develop/.github/ISSUE_LABELS.md), [PR_LABELS](https://github.com/lightspeedwp/.github/blob/develop/.github/PR_LABELS.md) and standard prefixes. The org-wide labels are defined in this [labels.yml](https://github.com/lightspeedwp/.github/blob/develop/.github/labels.yml) and [project-pr-labeler.yml](https://github.com/lightspeedwp/.github/blob/develop/.github/project-pr-labeler.yml).
-  - Automatically applies labels based on content, files changed, and context
-  - Enforces label consistency and naming conventions
-  - Manages label hierarchies and relationships
-  - Integrates with project management and workflow automation
-  - Validates repository labels against organizational standards
+    - Automatically applies labels based on content, files changed, and context
+    - Enforces label consistency and naming conventions
+    - Manages label hierarchies and relationships
+    - Integrates with project management and workflow automation
+    - Validates repository labels against organizational standards
 - **Definition of Done:**
-  - All issues and PRs receive appropriate labels based on standardized categories
-  - Repository labels conform to organizational naming conventions
-  - Label application is consistent and automated across content and file patterns
-  - Provides comprehensive labeling reports with suggestions for improvement
+    - All issues and PRs receive appropriate labels based on standardized categories
+    - Repository labels conform to organizational naming conventions
+    - Label application is consistent and automated across content and file patterns
+    - Provides comprehensive labeling reports with suggestions for improvement
 
 ---
 

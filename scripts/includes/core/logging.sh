@@ -260,7 +260,8 @@ rotate_log() {
     file_size=$(stat -f%z "$LOG_FILE" 2>/dev/null || stat -c%s "$LOG_FILE" 2>/dev/null || echo 0)
     
     if [[ $file_size -gt $max_size ]]; then
-        local backup_file="${LOG_FILE}.$(date +%Y%m%d-%H%M%S).old"
+        local backup_file
+        backup_file="${LOG_FILE}.$(date +%Y%m%d-%H%M%S).old"
         mv "$LOG_FILE" "$backup_file"
         touch "$LOG_FILE"
         log_info "Log rotated: $backup_file"

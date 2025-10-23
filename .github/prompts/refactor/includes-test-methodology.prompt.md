@@ -1,4 +1,3 @@
-
 ---
 applyTo: '**'
 description: 'Prompt for Bats test methodology for modular shell script includes.'
@@ -24,7 +23,6 @@ Define systematic testing methodology for validating extracted shell script func
 
 ## Checklist
 
-
 ## Current Repository State & Action Items
 
 - Modular includes present: `common-functions.sh`, `git-functions.sh` in `scripts/includes/`. Additional includes recommended.
@@ -39,6 +37,7 @@ Define systematic testing methodology for validating extracted shell script func
 ### Test Structure Requirements
 
 #### Directory Organization
+
 ```
 tests/includes/
 ├── test-logging.bats          # Tests for logging.sh
@@ -54,6 +53,7 @@ tests/includes/
 ```
 
 #### Test File Template
+
 ```bash
 #!/usr/bin/env bats
 
@@ -87,18 +87,21 @@ teardown() {
 #### 1. Unit Tests for Individual Functions
 
 **Function Signature Testing**
+
 - Verify function accepts correct number of arguments
 - Test with no arguments (if applicable)
 - Test with excessive arguments
 - Validate argument type handling
 
 **Success Path Testing**
+
 - Test normal operation with valid inputs
 - Verify expected output format
 - Confirm return codes for success cases
 - Validate side effects (file creation, etc.)
 
 **Error Condition Testing**
+
 - Test with invalid arguments
 - Test with missing required files/directories
 - Test permission denied scenarios
@@ -106,6 +109,7 @@ teardown() {
 - Verify appropriate error messages and return codes
 
 **Edge Case Testing**
+
 - Empty string inputs
 - Very long string inputs
 - Special characters in inputs
@@ -115,18 +119,21 @@ teardown() {
 #### 2. Integration Tests
 
 **Function Interaction Testing**
+
 - Test functions that depend on other functions
 - Verify shared state management
 - Test function call chains
 - Validate data flow between functions
 
 **Environment Dependency Testing**
+
 - Test with different environment variable settings
 - Test with missing environment variables
 - Test with readonly environment variables
 - Verify environment cleanup
 
 **File System Integration**
+
 - Test with different file permissions
 - Test with different file system types
 - Test with network mounted directories
@@ -135,18 +142,21 @@ teardown() {
 #### 3. Performance Tests
 
 **Execution Time Testing**
+
 - Measure function execution time
 - Test with large input sets
 - Identify performance regressions
 - Validate timeout handling
 
 **Memory Usage Testing**
+
 - Monitor memory consumption
 - Test with large data sets
 - Verify memory cleanup
 - Test memory leak detection
 
 **Resource Usage Testing**
+
 - File descriptor usage
 - Process spawning limits
 - Network connection handling
@@ -314,18 +324,21 @@ teardown() {
 ### Test Data Management
 
 #### Test Fixtures
+
 - Create standardized test data files
 - Use predictable test input patterns
 - Version control test fixtures
 - Document test data requirements
 
 #### Mock Services
+
 - Mock GitHub API responses
 - Simulate network failures
 - Mock file system errors
 - Create test doubles for external commands
 
 #### Environment Isolation
+
 - Use temporary directories for all file operations
 - Clean up environment variables after tests
 - Reset global state between tests
@@ -334,30 +347,33 @@ teardown() {
 ### Test Execution Standards
 
 #### Continuous Integration Integration
+
 ```yaml
 # .github/workflows/test-includes.yml
 name: Test Include Functions
 on: [push, pull_request]
 jobs:
-  test-includes:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Install Bats
-        run: npm install -g bats
-      - name: Run Include Tests
-        run: bats tests/includes/
-      - name: Run Integration Tests
-        run: bats tests/includes/integration/
+    test-includes:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+            - name: Install Bats
+              run: npm install -g bats
+            - name: Run Include Tests
+              run: bats tests/includes/
+            - name: Run Integration Tests
+              run: bats tests/includes/integration/
 ```
 
 #### Coverage Requirements
+
 - Minimum 90% line coverage for all include functions
 - 100% coverage for error conditions
 - All public functions must have tests
 - All edge cases must be documented and tested
 
 #### Test Reporting
+
 - Generate test coverage reports
 - Create test execution summaries
 - Log test performance metrics

@@ -49,19 +49,20 @@ Document all shell script functions that should be extracted into includes with 
 
 - Stderr: Colored message with timestamp
 - File: Timestamped message in `${LOG_FILE}`
-**Behavior**:
+  **Behavior**:
 - Creates log directory if it doesn't exist
 - Formats message with timestamp and level
 - Uses colors based on log level
 - Appends to log file atomically
-**Dependencies**: `colors.sh` for color variables
-**Test Requirements**:
+  **Dependencies**: `colors.sh` for color variables
+  **Test Requirements**:
 - Verify log file creation
 - Validate message format in file
 - Check color output on stderr
 - Test with multiple message arguments
 
 ##### `log_info(message)`
+
 **Extracted From**: validate-release.sh, standardize-logging.sh, utility-functions.sh
 **Purpose**: Log informational messages
 **Arguments**: `message` - Information to log
@@ -69,6 +70,7 @@ Document all shell script functions that should be extracted into includes with 
 **Implementation**: Calls `log_msg "INFO" "$@"`
 
 ##### `log_success(message)`
+
 **Extracted From**: validate-release.sh, utility-functions.sh
 **Purpose**: Log success messages
 **Arguments**: `message` - Success message to log
@@ -76,6 +78,7 @@ Document all shell script functions that should be extracted into includes with 
 **Implementation**: Calls `log_msg "SUCCESS" "$@"`
 
 ##### `log_warning(message)` / `log_warn(message)`
+
 **Extracted From**: Multiple scripts with inconsistent naming
 **Purpose**: Log warning messages
 **Arguments**: `message` - Warning to log
@@ -84,6 +87,7 @@ Document all shell script functions that should be extracted into includes with 
 **Note**: Standardize on `log_warning` name
 
 ##### `log_error(message)`
+
 **Extracted From**: All scripts with error handling
 **Purpose**: Log error messages
 **Arguments**: `message` - Error to log
@@ -91,12 +95,14 @@ Document all shell script functions that should be extracted into includes with 
 **Implementation**: Calls `log_msg "ERROR" "$@"`
 
 ##### `log_debug(message)`
+
 **Extracted From**: Scripts with verbose mode
 **Purpose**: Log debug messages when verbose mode enabled
 **Arguments**: `message` - Debug information to log
 **Output**: Blue colored output (if VERBOSE=true), timestamped entry to log file
 **Behavior**: Only outputs if `VERBOSE` environment variable is true
 **Implementation**:
+
 ```bash
 log_debug() {
     if [[ "${VERBOSE:-false}" == "true" ]]; then
@@ -108,23 +114,27 @@ log_debug() {
 #### 2. Validation Functions
 
 ##### `command_exists(command)`
+
 **Extracted From**: utility-functions.sh
 **Purpose**: Check if a command is available in PATH
 **Arguments**: `command` - Command name to check
 **Returns**: 0 if exists, 1 if not found
 **Implementation**: Uses `command -v "$1" >/dev/null 2>&1`
 **Test Requirements**:
+
 - Test with existing commands (bash, ls)
 - Test with non-existent commands
 - Verify return codes
 
 ##### `check_dependencies(commands_array)`
+
 **Extracted From**: Multiple scripts with dependency validation
 **Purpose**: Validate that all required commands are available
 **Arguments**: Array of command names
 **Returns**: 0 if all found, 1 if any missing
 **Output**: Error messages for missing commands
 **Implementation**:
+
 ```bash
 check_dependencies() {
     local missing_commands=()
@@ -142,26 +152,31 @@ check_dependencies() {
 ```
 
 ##### `validate_file_exists(filepath, description)`
+
 **Extracted From**: Scripts with file validation
 **Purpose**: Validate file exists with descriptive error
 **Arguments**:
+
 - `filepath` - Path to file to check
 - `description` - Human-readable description for errors
-**Returns**: 0 if exists, 1 if not found
-**Output**: Error message if file not found
+  **Returns**: 0 if exists, 1 if not found
+  **Output**: Error message if file not found
 
 ##### `validate_version_format(version)`
+
 **Extracted From**: validate-release.sh
 **Purpose**: Validate semantic version format
 **Arguments**: `version` - Version string to validate
 **Returns**: 0 if valid semver, 1 if invalid
 **Test Requirements**:
+
 - Valid versions: v1.0.0, 1.2.3, 1.0.0-alpha.1
 - Invalid versions: 1, v1, 1.2, invalid
 
 #### 3. File Operation Functions
 
 ##### `create_backup(filepath)`
+
 **Extracted From**: folder-and-file-readmes.sh, update scripts
 **Purpose**: Create timestamped backup of file before modification
 **Arguments**: `filepath` - Path to file to backup
@@ -169,6 +184,7 @@ check_dependencies() {
 **Output**: Backup file path on stdout, log messages
 **Behavior**: Creates `${filepath}.backup.$(timestamp)`
 **Implementation**:
+
 ```bash
 create_backup() {
     local file="$1"
@@ -185,6 +201,7 @@ create_backup() {
 ```
 
 ##### `timestamp()`
+
 **Extracted From**: utility-functions.sh
 **Purpose**: Generate consistent timestamp for filenames
 **Arguments**: None
@@ -193,26 +210,31 @@ create_backup() {
 **Implementation**: `date +"%Y-%m-%d-%H%M%S"`
 
 ##### `safe_write_file(filepath, content)`
+
 **Purpose**: Write file with automatic backup
 **Arguments**:
+
 - `filepath` - Target file path
 - `content` - Content to write (from stdin if not provided)
-**Returns**: 0 on success, 1 on failure
-**Behavior**: Creates backup if file exists, then writes new content
+  **Returns**: 0 on success, 1 on failure
+  **Behavior**: Creates backup if file exists, then writes new content
 
 #### 4. CLI Utility Functions
 
 ##### `show_help(script_name, description, usage, options_array)`
+
 **Extracted From**: All scripts with --help functionality
 **Purpose**: Generate consistent help output
 **Arguments**:
+
 - `script_name` - Name of the script
 - `description` - Brief description
 - `usage` - Usage pattern
 - `options_array` - Array of option descriptions
-**Output**: Formatted help message to stdout
+  **Output**: Formatted help message to stdout
 
 ##### `parse_common_args(args_array)`
+
 **Extracted From**: Multiple scripts with similar argument patterns
 **Purpose**: Parse standard arguments (--help, --verbose, --dry-run)
 **Arguments**: Array of command line arguments
@@ -222,6 +244,7 @@ create_backup() {
 #### 5. Path Resolution Functions
 
 ##### `get_script_dir()`
+
 **Extracted From**: All scripts with path resolution
 **Purpose**: Get directory containing the current script
 **Arguments**: None
@@ -230,6 +253,7 @@ create_backup() {
 **Implementation**: `cd "$(dirname "${BASH_SOURCE[1]}")" && pwd`
 
 ##### `get_repo_root()`
+
 **Extracted From**: Scripts needing repository root
 **Purpose**: Get repository root directory
 **Arguments**: None
@@ -238,6 +262,7 @@ create_backup() {
 **Implementation**: Uses git rev-parse or relative path calculation
 
 ##### `resolve_logs_dir()`
+
 **Extracted From**: All scripts with logging
 **Purpose**: Get standardized logs directory path
 **Arguments**: None
@@ -248,6 +273,7 @@ create_backup() {
 #### 6. GitHub Utility Functions
 
 ##### `gh_authenticate()`
+
 **Extracted From**: Scripts using GitHub CLI
 **Purpose**: Ensure GitHub CLI is authenticated
 **Arguments**: None
@@ -255,6 +281,7 @@ create_backup() {
 **Output**: Error messages if authentication fails
 
 ##### `gh_check_scopes(required_scopes_array)`
+
 **Purpose**: Validate GitHub token has required scopes
 **Arguments**: Array of required scope names
 **Returns**: 0 if all scopes present, 1 if missing scopes

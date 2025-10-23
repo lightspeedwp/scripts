@@ -33,15 +33,15 @@ The script is executed with environment variables to control its behavior.
 
 ## Environment Variables
 
-| Variable         | Description                                                                                             |
-| :--------------- | :------------------------------------------------------------------------------------------------------ |
-| `ORG`            | The GitHub organization. Default: `lightspeedwp`.                                                       |
-| `DRY_RUN`        | If `true` (default), shows what would happen without making changes. Set to `false` to apply changes.     |
-| `STRICT_PRUNE`   | If `true`, deletes non-canonical labels. Default: `false`.                                              |
-| `CANON_REPO`     | The repository containing the canonical `labels.yml` file. Default: `.github`.                          |
-| `LABELS_PATH`    | The path to the `labels.yml` file in the canonical repository. Default: `.github/labels.yml`.             |
-| `PROTECT_REGEX`  | An optional regex to protect certain labels from being deleted (e.g., `"^lang: + ^area:"`).             |
-| `ONLY`           | A space-separated list of repositories to process exclusively.                                          |
+| Variable        | Description                                                                                           |
+| :-------------- | :---------------------------------------------------------------------------------------------------- |
+| `ORG`           | The GitHub organization. Default: `lightspeedwp`.                                                     |
+| `DRY_RUN`       | If `true` (default), shows what would happen without making changes. Set to `false` to apply changes. |
+| `STRICT_PRUNE`  | If `true`, deletes non-canonical labels. Default: `false`.                                            |
+| `CANON_REPO`    | The repository containing the canonical `labels.yml` file. Default: `.github`.                        |
+| `LABELS_PATH`   | The path to the `labels.yml` file in the canonical repository. Default: `.github/labels.yml`.         |
+| `PROTECT_REGEX` | An optional regex to protect certain labels from being deleted (e.g., `"^lang: + ^area:"`).           |
+| `ONLY`          | A space-separated list of repositories to process exclusively.                                        |
 
 ## Options
 

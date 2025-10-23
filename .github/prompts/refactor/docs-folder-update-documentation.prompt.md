@@ -67,4 +67,5 @@ The `/docs/` folder must be updated to:
 - Document any major changes in the changelog if user-facing
 
 ---
+
 Use this prompt to guide and document all `/docs/` folder update operations, ensuring clarity, completeness, and maintainability across the repository. Use this as a template for future documentation structure updates.

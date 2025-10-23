@@ -37,6 +37,7 @@ Define comprehensive integration strategies for connecting shell scripts with AI
 #### Core Integration Components
 
 **Agent-Script Communication Layer**
+
 - Standardized input/output protocols
 - Event-driven trigger mechanisms
 - Error propagation and handling
@@ -44,12 +45,14 @@ Define comprehensive integration strategies for connecting shell scripts with AI
 - Logging and audit trail integration
 
 **Configuration Management**
+
 - Agent configuration via environment variables
 - Script metadata for agent discovery
 - Runtime parameter passing
 - Dynamic configuration updates
 
 **Testing Integration**
+
 - Agent behavior validation
 - Integration test automation
 - Performance monitoring
@@ -62,6 +65,7 @@ Define comprehensive integration strategies for connecting shell scripts with AI
 **Integration Pattern**: Pre-commit hooks and pull request validation
 
 **Script Integration Points**:
+
 ```bash
 # Header validation trigger in scripts
 # Automatically invoked by git hooks
@@ -83,6 +87,7 @@ validate_script_header() {
 ```
 
 **Agent Configuration**:
+
 ```javascript
 // .github/agents/script-header-docs.agent.js
 const config = {
@@ -92,14 +97,15 @@ const config = {
         'Version',
         'Author',
         'Usage',
-        'Options'
+        'Options',
     ],
     headerFormat: 'lightspeed-wp',
-    validationLevel: process.env.HEADER_VALIDATION_LEVEL || 'strict'
+    validationLevel: process.env.HEADER_VALIDATION_LEVEL || 'strict',
 };
 ```
 
 **Integration Workflow**:
+
 1. Git pre-commit hook detects shell script changes
 2. Hook invokes header validation script
 3. Script calls agent with file path
@@ -112,6 +118,7 @@ const config = {
 **Integration Pattern**: Continuous integration and automated testing
 
 **Script Integration**:
+
 ```bash
 # Test execution with agent orchestration
 run_tests_with_agent() {
@@ -132,6 +139,7 @@ run_tests_with_agent() {
 ```
 
 **Agent Responsibilities**:
+
 - Discover and categorize test files
 - Execute tests in appropriate order
 - Collect and aggregate results
@@ -140,6 +148,7 @@ run_tests_with_agent() {
 - Update test coverage metrics
 
 **Integration Events**:
+
 - Script file modifications trigger relevant tests
 - New script creation triggers test file generation
 - Test failures trigger notification workflows
@@ -150,6 +159,7 @@ run_tests_with_agent() {
 **Integration Pattern**: Release workflow automation and validation
 
 **Script Integration**:
+
 ```bash
 # Release validation with agent
 validate_release_with_agent() {
@@ -181,6 +191,7 @@ EOF
 ```
 
 **Agent Validation Checklist**:
+
 - Version format compliance
 - Changelog completeness
 - Test coverage requirements
@@ -193,6 +204,7 @@ EOF
 **Integration Pattern**: Code quality enforcement and automated fixes
 
 **Script Integration**:
+
 ```bash
 # Linting with agent orchestration
 lint_with_agent() {
@@ -219,6 +231,7 @@ lint_with_agent() {
 ```
 
 **Agent Capabilities**:
+
 - Multi-language linting coordination
 - Automatic fix application
 
@@ -231,6 +244,7 @@ lint_with_agent() {
 #### Input/Output Standardization
 
 **Standard Input Format**:
+
 ```json
 {
     "action": "validate|fix|analyze|report",
@@ -253,6 +267,7 @@ lint_with_agent() {
 ```
 
 **Standard Output Format**:
+
 ```json
 {
     "status": "success|warning|error",
@@ -281,12 +296,14 @@ lint_with_agent() {
 #### Error Handling Protocol
 
 **Agent Error Categories**:
+
 - Configuration errors (invalid config, missing dependencies)
 - Runtime errors (file access, network issues)
 - Validation errors (rule violations, format issues)
 - Integration errors (communication failures, timeout issues)
 
 **Error Propagation**:
+
 ```bash
 handle_agent_error() {
     local agent_output="$1"
@@ -312,6 +329,7 @@ handle_agent_error() {
 #### Environment-Based Configuration
 
 **Development Environment**:
+
 ```bash
 # .env.development
 AGENT_VALIDATION_LEVEL=lenient
@@ -322,6 +340,7 @@ AGENT_LOGGING_LEVEL=debug
 ```
 
 **Production Environment**:
+
 ```bash
 # .env.production
 AGENT_VALIDATION_LEVEL=strict
@@ -334,6 +353,7 @@ AGENT_LOGGING_LEVEL=info
 #### Runtime Configuration
 
 **Dynamic Agent Configuration**:
+
 ```bash
 configure_agent() {
     local agent_name="$1"
@@ -356,6 +376,7 @@ configure_agent() {
 #### Agent Behavior Validation
 
 **Integration Test Framework**:
+
 ```bash
 # Test agent integration behavior
 test_agent_integration() {
@@ -386,6 +407,7 @@ test_agent_integration() {
 #### Performance Testing
 
 **Agent Performance Monitoring**:
+
 ```bash
 monitor_agent_performance() {
     local agent_name="$1"

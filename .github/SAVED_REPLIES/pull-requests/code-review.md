@@ -16,10 +16,12 @@ Thanks for this contribution! I've reviewed the shell script changes and noticed
 3. **Function Documentation:** Please add documentation blocks for functions following our [documentation standards](.github/instructions/shell-script-header-and-docs.md)
 
 **Specific Suggestions:**
+
 - Line {X}: {Specific issue and suggested fix}
 - Line {Y}: {Specific issue and suggested fix}
 
 **Helpful Resources:**
+
 - [Shell Script Copilot Instructions](.github/instructions/shell-script-copilot.md)
 - [Script Header Standards](.github/instructions/shell-script-header-and-docs.md)
 
@@ -30,7 +32,7 @@ Once these changes are made, this will be ready to merge. Thanks for helping imp
 
 **Use case**: When a PR lacks required test coverage.
 
-```markdown
+````markdown
 Hi @username,
 
 Thank you for this contribution! The code changes look good, but we need to add test coverage before we can merge this PR.
@@ -39,18 +41,19 @@ Thank you for this contribution! The code changes look good, but we need to add 
 Based on our [testing standards](.github/instructions/bats-tests-and-runner-scripts.md), please add:
 
 1. **Bats Tests:** Create `tests/test-{script-name}.bats` with coverage for:
-   - Basic functionality (happy path)
-   - Error handling (invalid inputs, missing dependencies)
-   - Dry-run mode testing
-   - Edge cases specific to your changes
+    - Basic functionality (happy path)
+    - Error handling (invalid inputs, missing dependencies)
+    - Dry-run mode testing
+    - Edge cases specific to your changes
 
 2. **Test Categories Needed:**
-   - ✅ Basic functionality
-   - ⚠️  Error handling (missing)
-   - ⚠️  Parameter validation (missing)
-   - ⚠️  Integration testing (missing)
+    - ✅ Basic functionality
+    - ⚠️ Error handling (missing)
+    - ⚠️ Parameter validation (missing)
+    - ⚠️ Integration testing (missing)
 
 **Example Test Structure:**
+
 ```bash
 @test "script-name: executes successfully with valid parameters" {
     run ./scripts/path/script-name.sh --dry-run --valid-option
@@ -64,15 +67,18 @@ Based on our [testing standards](.github/instructions/bats-tests-and-runner-scri
     [[ "$output" =~ "error message" ]]
 }
 ```
+````
 
 **Running Tests:**
 You can run your tests locally with:
+
 ```bash
 bats tests/test-{script-name}.bats
 ```
 
 Let me know if you need any help with the test implementation!
-```
+
+````
 
 ## Documentation Updates Needed
 
@@ -111,30 +117,31 @@ Please follow our [documentation guidelines](.github/instructions/documentation-
 - {File/section 2}: {What needs to be updated}
 
 Once the documentation is updated, this will be ready to merge. Thanks for the great contribution!
-```
+````
 
 ## Performance Concerns
 
 **Use case**: When code changes may have performance implications.
 
-```markdown
+````markdown
 Hi @username,
 
 Thank you for this contribution! I've reviewed the changes and have some concerns about potential performance implications:
 
 **Performance Considerations:**
 
-1. **{Specific Issue 1}:** 
-   - Current implementation: {description}
-   - Performance impact: {explanation}
-   - Suggested improvement: {recommendation}
+1. **{Specific Issue 1}:**
+    - Current implementation: {description}
+    - Performance impact: {explanation}
+    - Suggested improvement: {recommendation}
 
 2. **{Specific Issue 2}:**
-   - Concern: {description}
-   - Potential optimization: {suggestion}
+    - Concern: {description}
+    - Potential optimization: {suggestion}
 
 **Benchmarking Request:**
 Could you please run some basic performance tests to compare before/after performance? For example:
+
 ```bash
 # Test current performance
 time ./script-name.sh --test-scenario
@@ -142,21 +149,25 @@ time ./script-name.sh --test-scenario
 # Test with large dataset
 time ./script-name.sh --large-input-test
 ```
+````
 
 **Optimization Suggestions:**
+
 - Consider caching results for repeated operations
 - Use more efficient algorithms for data processing
 - Minimize external command calls in loops
 - Implement batch processing where appropriate
 
 **Resources:**
+
 - [Performance best practices documentation]
 - [Benchmarking tools and techniques]
 
 If the performance impact is minimal for typical use cases, we can proceed. Otherwise, let's explore optimization options together.
 
 Thanks for your understanding and cooperation!
-```
+
+````
 
 ## Security Review Required
 
@@ -200,9 +211,10 @@ if [[ "$file_path" =~ \.\. ]]; then
     echo "Error: Invalid file path" >&2
     exit 1
 fi
-```
+````
 
 **Security Checklist:**
+
 - [ ] All user inputs are validated
 - [ ] No command injection vulnerabilities
 - [ ] File operations are secure
@@ -210,12 +222,14 @@ fi
 - [ ] Error messages don't leak sensitive information
 
 **Next Steps:**
+
 1. Please address the identified security concerns
 2. Add security-focused tests to your test suite
 3. Update documentation to include security considerations
 
 Our security team will do a final review once these items are addressed. Thanks for helping us maintain secure code!
-```
+
+````
 
 ## Code Style and Formatting
 
@@ -247,12 +261,13 @@ shfmt -i 2 -w script-name.sh
 # For JavaScript
 npm run format
 
-# For Python  
+# For Python
 black script-name.py
-```
+````
 
 **Linting:**
 Please also run our linters to catch any remaining issues:
+
 ```bash
 # Shell scripts
 shellcheck script-name.sh
@@ -265,11 +280,13 @@ flake8 script-name.py
 ```
 
 **Standards Reference:**
+
 - [Coding Standards](.github/instructions/coding-standards.md)
 - [Style Guide Documentation]
 
 Once these formatting issues are resolved, this will be ready for final review. Thanks for your attention to code quality!
-```
+
+````
 
 ## Architecture and Design Feedback
 
@@ -286,29 +303,31 @@ Thank you for this substantial contribution! The functionality is impressive, an
    ```bash
    # Consider splitting this large function into smaller, focused functions:
    # Current: process_deployment() does everything
-   # Suggested: 
+   # Suggested:
    #   - validate_config()
-   #   - backup_data()  
+   #   - backup_data()
    #   - deploy_files()
    #   - verify_deployment()
-   ```
+````
 
 2. **Error Handling Strategy:**
-   - Implement consistent error handling across all functions
-   - Consider using a centralized error logging function
-   - Add proper cleanup in error scenarios
+    - Implement consistent error handling across all functions
+    - Consider using a centralized error logging function
+    - Add proper cleanup in error scenarios
 
 3. **Configuration Management:**
-   - Extract hardcoded values to configuration variables
-   - Make the script more configurable for different environments
-   - Validate configuration early in the process
+    - Extract hardcoded values to configuration variables
+    - Make the script more configurable for different environments
+    - Validate configuration early in the process
 
 **Design Patterns to Consider:**
+
 - **Template Method Pattern:** For deployment workflows with customizable steps
 - **Strategy Pattern:** For different deployment types (staging vs production)
 - **Command Pattern:** For undoable operations and rollback capability
 
 **Refactoring Suggestions:**
+
 ```bash
 # Instead of one large function:
 deploy_application() {
@@ -325,6 +344,7 @@ deploy_application() {
 ```
 
 **Benefits of These Changes:**
+
 - Improved testability (smaller functions)
 - Better error handling and debugging
 - Enhanced maintainability and readability
@@ -333,7 +353,8 @@ deploy_application() {
 Would you be interested in refactoring this into smaller, more focused functions? I'm happy to help with the design if needed.
 
 Great work overall – these suggestions are about making good code even better!
-```
+
+````
 
 ## Approval and Praise
 
@@ -377,4 +398,4 @@ This contribution will {describe the positive impact on the project/users}.
 Thank you for taking the time to create such a well-crafted contribution. This is exactly the kind of work that makes our project better!
 
 **Approved and ready to merge** ✨
-```
+````

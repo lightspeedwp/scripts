@@ -1,4 +1,3 @@
-
 ---
 applyTo: '**'
 description: 'Prompt for security considerations for modular shell script automation.'

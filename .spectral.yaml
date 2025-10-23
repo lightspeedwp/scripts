@@ -1,0 +1,11 @@
+rules:
+extends: ["spectral:oas"]
+
+# .spectral.yaml
+# Purpose: Spectral lint rules for OpenAPI/Swagger files
+# Docs: https://meta.stoplight.io/docs/spectral/latest/
+rules:
+  info-contact: off # Don't require contact info
+  info-description: error # Require description
+  info-title: error # Require title
+  openapi-tags-alphabetical: warn # Warn if tags not alphabetical

@@ -1,10 +1,8 @@
 ---
-
-name: "Hotfix PR"  
-about: "Critical fixes for production issues"  
-title: "fix: {short summary}"  
-labels: ["status:needs-review", "area:hotfix"]  
-
+name: 'Hotfix PR'
+about: 'Critical fixes for production issues'
+title: 'fix: {short summary}'
+labels: ['status:needs-review', 'area:hotfix']
 ---
 
 # Hotfix Pull Request
@@ -59,7 +57,6 @@ If no user-facing changelog entry is needed, apply the skip-changelog label to t
 -->
 
 ---
-
 
 ### Checklist (Global DoD / PR)
 

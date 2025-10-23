@@ -21,9 +21,9 @@ This script automates the creation and update of a GitHub Project for client del
 
 - Comprehensive Bats tests for argument parsing, dry-run simulation, field creation, idempotency, authentication, CSV import, and access management.
 - Tests are organized into three files:
-  - `tests/project-scripts/test-client-delivery-project.bats`: Core functionality tests
-  - `tests/project-scripts/test-client-delivery-project-auth.bats`: Authentication validation tests
-  - `tests/project-scripts/test-client-delivery-project-csv.bats`: CSV import and settings tests
+    - `tests/project-scripts/test-client-delivery-project.bats`: Core functionality tests
+    - `tests/project-scripts/test-client-delivery-project-auth.bats`: Authentication validation tests
+    - `tests/project-scripts/test-client-delivery-project-csv.bats`: CSV import and settings tests
 - All test output is logged to a central log file via `run-tests.sh`
 
 ### Logging
@@ -82,25 +82,25 @@ This script automates the creation and update of a GitHub Project for client del
 
 ## Standard Fields Created
 
-| Field Name      | Type         | Options/Notes                                   |
-|-----------------|--------------|------------------------------------------------|
-| Theme           | Single-select| Design System, Platform, ...                    |
-| Area            | Single-select| Frontend, Backend, ...                          |
-| Priority        | Single-select| High, Medium, Low                              |
-| Severity        | Single-select| Blocker, Critical, Major, Minor, Trivial        |
-| Size            | Single-select| XS, S, M, L, XL                                 |
-| Phase           | Single-select| Discovery, Build, QA, Launch, ...               |
-| Release type    | Single-select| Major, Minor, Patch                             |
-| Environment     | Single-select| Production, Staging, QA, ...                    |
-| Status          | Single-select| Todo, In Progress, Done, Blocked, ...           |
-| Issue Type      | Single-select| Bug, Feature, Chore, ...                        |
-| Milestone       | Single-select| (custom per project)                            |
-| Story Points    | Number       | (for estimation)                                |
-| Estimate        | Number       | (for time/cost)                                 |
-| Due Date        | Date         | (deadline)                                      |
-| Start Date      | Date         | (kickoff)                                       |
-| Deadline        | Date         | (final deadline)                                |
-| Assignee        | Text         | (person responsible)                            |
+| Field Name   | Type          | Options/Notes                            |
+| ------------ | ------------- | ---------------------------------------- |
+| Theme        | Single-select | Design System, Platform, ...             |
+| Area         | Single-select | Frontend, Backend, ...                   |
+| Priority     | Single-select | High, Medium, Low                        |
+| Severity     | Single-select | Blocker, Critical, Major, Minor, Trivial |
+| Size         | Single-select | XS, S, M, L, XL                          |
+| Phase        | Single-select | Discovery, Build, QA, Launch, ...        |
+| Release type | Single-select | Major, Minor, Patch                      |
+| Environment  | Single-select | Production, Staging, QA, ...             |
+| Status       | Single-select | Todo, In Progress, Done, Blocked, ...    |
+| Issue Type   | Single-select | Bug, Feature, Chore, ...                 |
+| Milestone    | Single-select | (custom per project)                     |
+| Story Points | Number        | (for estimation)                         |
+| Estimate     | Number        | (for time/cost)                          |
+| Due Date     | Date          | (deadline)                               |
+| Start Date   | Date          | (kickoff)                                |
+| Deadline     | Date          | (final deadline)                         |
+| Assignee     | Text          | (person responsible)                     |
 
 See [field spec doc](../docs/update-projects/client-delivery-field-specs-v1-1.md) for authoritative options, descriptions, and colors.
 

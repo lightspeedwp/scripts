@@ -10,12 +10,12 @@ Use this template to document and implement new agents in the `.github/agents/` 
 - **Location:** `.github/agents/agent-name.js` (or `.py`, `.sh`, etc.)
 - **Integration Points:** List workflows, scripts, or systems this agent interacts with (e.g., Copilot, CodeRabbit, GitHub Actions).
 - **Usage Instructions:**
-  - How to invoke or configure the agent
-  - Required environment variables or secrets
-  - Example usage or workflow snippet
+    - How to invoke or configure the agent
+    - Required environment variables or secrets
+    - Example usage or workflow snippet
 - **Maintenance Notes:**
-  - How to update, test, or extend the agent
-  - Known limitations or troubleshooting tips
+    - How to update, test, or extend the agent
+    - Known limitations or troubleshooting tips
 
 ---
 

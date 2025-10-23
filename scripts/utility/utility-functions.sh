@@ -20,9 +20,6 @@
 # Options:
 #   --help                  Show this help message
 #   --verbose               Enable verbose logging
-#
-# Examples:
-#   source ./utility-functions.sh --help        # Show help message
 #   source ./utility-functions.sh --verbose     # Enable verbose logging
 #   source ./utility-functions.sh               # Load with default settings
 #
@@ -31,9 +28,6 @@
 #
 
 
-# Standardized logging - LightSpeed WP
-#
-# Global variables for logging
 SCRIPT_NAME="$(basename "${BASH_SOURCE[0]}" .sh)"
 LOG_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/../logs"
 LOG_FILE="${LOG_DIR}/${SCRIPT_NAME}.log"
@@ -42,9 +36,6 @@ readonly SCRIPT_NAME
 readonly LOG_DIR
 readonly LOG_FILE
 
-# Colors for terminal output
-RED='\033[0;31m'
-GREEN='\033[0;32m'
 YELLOW='\033[0;33m'
 BLUE='\033[0;34m'
 NC='\033[0m' # No Color
@@ -55,41 +46,6 @@ readonly YELLOW
 readonly BLUE
 readonly NC
 
-# Create log directory if it doesn't exist
-mkdir -p "${LOG_DIR}"
-
-# Logging functions
-function log_info() {
-    local timestamp
-    timestamp=$(date "+%Y-%m-%d %H:%M:%S")
-    echo -e "${GREEN}[INFO]${NC} $*" >&2
-    echo "[INFO] ${timestamp}: $*" >> "${LOG_FILE}"
-}
-
-function log_warn() {
-    local timestamp
-    timestamp=$(date "+%Y-%m-%d %H:%M:%S")
-    echo -e "${YELLOW}[WARNING]${NC} $*" >&2
-    echo "[WARNING] ${timestamp}: $*" >> "${LOG_FILE}"
-}
-
-function log_error() {
-    local timestamp
-    timestamp=$(date "+%Y-%m-%d %H:%M:%S")
-    echo -e "${RED}[ERROR]${NC} $*" >&2
-    echo "[ERROR] ${timestamp}: $*" >> "${LOG_FILE}"
-}
-
-function log_debug() {
-    if [[ "${VERBOSE}" == "true" ]]; then
-        local timestamp
-        timestamp=$(date "+%Y-%m-%d %H:%M:%S")
-        echo -e "[DEBUG] $*" >&2
-        echo "[DEBUG] ${timestamp}: $*" >> "${LOG_FILE}"
-    fi
-}
-
-set -euo pipefail
 
 readonly COLOR_RED='\033[0;31m'
 readonly COLOR_GREEN='\033[0;32m'
@@ -104,41 +60,48 @@ readonly LOG_LEVEL_DEBUG=3
 # Default log level
 LOG_LEVEL=${LOG_LEVEL:-$LOG_LEVEL_INFO}
 # Colored logging functions
+ # shellcheck disable=SC2317,SC2329
 log_error() {
     if [ "$LOG_LEVEL" -ge "$LOG_LEVEL_ERROR" ]; then
         echo -e "${COLOR_RED}[ERROR]${COLOR_NC} $*" >&2
     fi
 }
 
+ # shellcheck disable=SC2317,SC2329
 log_warn() {
     if [ "$LOG_LEVEL" -ge "$LOG_LEVEL_WARN" ]; then
         echo -e "${COLOR_YELLOW}[WARN]${COLOR_NC} $*" >&2
     fi
 }
 
+ # shellcheck disable=SC2317,SC2329
 log_info() {
     if [ "$LOG_LEVEL" -ge "$LOG_LEVEL_INFO" ]; then
         echo -e "${COLOR_BLUE}[INFO]${COLOR_NC} $*"
     fi
 }
 
+ # shellcheck disable=SC2317,SC2329
 log_success() {
     if [ "$LOG_LEVEL" -ge "$LOG_LEVEL_INFO" ]; then
         echo -e "${COLOR_GREEN}[SUCCESS]${COLOR_NC} $*"
     fi
 }
 
+ # shellcheck disable=SC2317,SC2329
 log_debug() {
     if [ "$LOG_LEVEL" -ge "$LOG_LEVEL_DEBUG" ]; then
         echo -e "[DEBUG] $*" >&2
     fi
 }
 
+ # shellcheck disable=SC2317,SC2329
 # Check if command exists
 command_exists() {
     command -v "$1" >/dev/null 2>&1
 }
 
+ # shellcheck disable=SC2317,SC2329
 # Check if required commands are available
 check_dependencies() {
     local missing_deps=()
@@ -158,6 +121,7 @@ check_dependencies() {
     return 0
 }
 
+ # shellcheck disable=SC2317,SC2329
 # Prompt for yes/no confirmation
 confirm() {
     local prompt="${1:-Are you sure?}"
@@ -195,6 +159,7 @@ confirm() {
     done
 }
 
+ # shellcheck disable=SC2317,SC2329
 # Create backup of a file
 backup_file() {
     local file="$1"
@@ -218,6 +183,7 @@ backup_file() {
     fi
 }
 
+ # shellcheck disable=SC2317,SC2329
 # Retry a command with exponential backoff
 retry() {
     local max_attempts="$1"
@@ -231,7 +197,7 @@ retry() {
         fi
 
         log_warn "Attempt $attempt/$max_attempts failed. Retrying in ${delay}s..."
-        sleep $delay
+        sleep "$delay"
 
         attempt=$((attempt + 1))
         delay=$((delay * 2))
@@ -241,11 +207,13 @@ retry() {
     return 1
 }
 
+ # shellcheck disable=SC2317,SC2329
 # Get script directory
 get_script_dir() {
     cd "$(dirname "${BASH_SOURCE[0]}")" && pwd
 }
 
+ # shellcheck disable=SC2317,SC2329
 # Validate URL format
 validate_url() {
     local url="$1"
@@ -259,11 +227,13 @@ validate_url() {
     fi
 }
 
+ # shellcheck disable=SC2317,SC2329
 # Check if running as root
 is_root() {
     [ "$EUID" -eq 0 ]
 }
 
+ # shellcheck disable=SC2317,SC2329
 # Generate timestamp
 timestamp() {
     date '+%Y-%m-%d %H:%M:%S'

@@ -1,5 +1,3 @@
-
-
 # Scripts Directory
 
 [![License: GPL v3 or later](https://img.shields.io/badge/License-GPL%20v3%20or%20later-blue.svg)](https://www.gnu.org/licenses/gpl-3.0.html)
@@ -10,12 +8,12 @@ This directory contains all automation scripts for LightSpeed WP, organized by f
 
 Scripts are grouped as follows:
 
-| Subfolder      | Purpose                                                      |
-|----------------|--------------------------------------------------------------|
-| `deployment/`  | Deployment automation scripts.                               |
-| `project/`     | Project management and update scripts.                       |
-| `maintenance/` | Maintenance and label management scripts.                    |
-| `utility/`     | Utility functions and server startup scripts.                |
+| Subfolder      | Purpose                                       |
+| -------------- | --------------------------------------------- |
+| `deployment/`  | Deployment automation scripts.                |
+| `project/`     | Project management and update scripts.        |
+| `maintenance/` | Maintenance and label management scripts.     |
+| `utility/`     | Utility functions and server startup scripts. |
 
 Refer to each subfolder for specific scripts and usage instructions.
 
@@ -43,4 +41,3 @@ All scripts must start with a header comment block:
 ## Contributing
 
 Please see [CONTRIBUTING.md](../CONTRIBUTING.md) for details.
-

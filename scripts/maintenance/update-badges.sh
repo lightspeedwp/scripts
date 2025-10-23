@@ -1,4 +1,3 @@
-
 #!/bin/bash
 ###############################################################################
 #
@@ -58,11 +57,13 @@ declare -a BADGES
 #   Generates badges that link to workflow runs on GitHub.
 ###############################################################################
 function generate_badges() {
-  local workflow_badges=()
+  local workflow_badges
+  workflow_badges=()
   for wf in .github/workflows/*.yml; do
     local workflow_name
     workflow_name=$(basename "$wf" .yml)
-    local badge_url="https://github.com/$REPO/actions/workflows/$workflow_name.yml/badge.svg?branch=$BRANCH"
+    local badge_url
+    badge_url="https://github.com/$REPO/actions/workflows/$workflow_name.yml/badge.svg?branch=$BRANCH"
     workflow_badges+=("<a href=\"https://github.com/$REPO/actions/workflows/$workflow_name.yml\"><img src=\"$badge_url\" alt=\"$workflow_name\" /></a>")
   done
   BADGES=("${workflow_badges[@]}")
@@ -81,7 +82,8 @@ function generate_badges() {
 #   Creates a temporary file to safely update the README.
 ###############################################################################
 function update_readme_badges() {
-  local badges_block="$BADGES_START\n"
+  local badges_block
+  badges_block="$BADGES_START\n"
   for badge in "${BADGES[@]}"; do
     badges_block+="$badge\n"
   done
