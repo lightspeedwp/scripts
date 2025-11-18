@@ -9,6 +9,7 @@ tags: ['documentation', 'docs', 'workflow']
 feedback: 'Submit suggestions or issues via repository discussions or PR comments.'
 updated: '2025-10-17'
 created: '2025-10-17'
+---
 
 # Docs Folder Update Documentation Prompt
 
